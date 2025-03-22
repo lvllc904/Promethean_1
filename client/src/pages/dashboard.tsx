@@ -209,9 +209,9 @@ export default function Dashboard() {
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-heading font-semibold">Featured Properties</h3>
           <Link href="/properties">
-            <a className="text-sm font-medium text-primary-500 hover:text-primary-600">
+            <div className="text-sm font-medium text-primary-500 hover:text-primary-600 cursor-pointer">
               View all properties →
-            </a>
+            </div>
           </Link>
         </div>
         
@@ -252,9 +252,9 @@ export default function Dashboard() {
           <div className="flex justify-between items-center mb-4">
             <h3 className="font-heading font-semibold">DAO Activity</h3>
             <Link href="/dao/proposals">
-              <a className="text-sm font-medium text-primary-500 hover:text-primary-600">
+              <div className="text-sm font-medium text-primary-500 hover:text-primary-600 cursor-pointer">
                 All activity →
-              </a>
+              </div>
             </Link>
           </div>
           
@@ -310,9 +310,9 @@ export default function Dashboard() {
           <div className="flex justify-between items-center mb-4">
             <h3 className="font-heading font-semibold">Available Tasks</h3>
             <Link href="/marketplace">
-              <a className="text-sm font-medium text-primary-500 hover:text-primary-600">
+              <div className="text-sm font-medium text-primary-500 hover:text-primary-600 cursor-pointer">
                 All tasks →
-              </a>
+              </div>
             </Link>
           </div>
           
@@ -365,9 +365,9 @@ export default function Dashboard() {
           <h3 className="text-lg font-heading font-semibold">Membership Tiers</h3>
           <Button variant="link" asChild>
             <Link href="/memberships">
-              <a className="text-sm font-medium text-primary-500 hover:text-primary-600">
+              <div className="text-sm font-medium text-primary-500 hover:text-primary-600 cursor-pointer">
                 Compare all features →
-              </a>
+              </div>
             </Link>
           </Button>
         </div>
