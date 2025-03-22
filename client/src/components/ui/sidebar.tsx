@@ -24,28 +24,28 @@ interface NavItemProps {
 
 const NavItem = ({ href, icon, children, isActive }: NavItemProps) => (
   <Link href={href}>
-    <a className={cn(
-      "flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors",
+    <div className={cn(
+      "flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors cursor-pointer",
       isActive 
         ? "bg-primary-50 text-primary-500" 
         : "text-neutral-700 hover:bg-neutral-100"
     )}>
       <span className="mr-3">{icon}</span>
       {children}
-    </a>
+    </div>
   </Link>
 );
 
 const NavGroupItem = ({ href, children, isActive }: Omit<NavItemProps, 'icon'>) => (
   <Link href={href}>
-    <a className={cn(
-      "block px-3 py-2 text-sm font-medium rounded-md transition-colors",
+    <div className={cn(
+      "block px-3 py-2 text-sm font-medium rounded-md transition-colors cursor-pointer",
       isActive 
         ? "text-primary-500 bg-primary-50" 
         : "text-neutral-700 hover:bg-neutral-100"
     )}>
       {children}
-    </a>
+    </div>
   </Link>
 );
 

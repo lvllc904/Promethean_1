@@ -13,16 +13,16 @@ interface ContractAddresses {
 
 // Use environment variables for contract addresses with fallbacks
 const CONTRACT_ADDRESSES: ContractAddresses = {
-  DAOGovernance: process.env.DAO_GOVERNANCE_ADDRESS || '0x1234567890123456789012345678901234567890',
-  PropertyEscrow: process.env.PROPERTY_ESCROW_ADDRESS || '0x2345678901234567890123456789012345678901',
-  MembershipNFT: process.env.MEMBERSHIP_NFT_ADDRESS || '0x3456789012345678901234567890123456789012',
-  DACToken: process.env.DAC_TOKEN_ADDRESS || '0x4567890123456789012345678901234567890123',
+  DAOGovernance: import.meta.env.VITE_DAO_GOVERNANCE_ADDRESS || '0x1234567890123456789012345678901234567890',
+  PropertyEscrow: import.meta.env.VITE_PROPERTY_ESCROW_ADDRESS || '0x2345678901234567890123456789012345678901',
+  MembershipNFT: import.meta.env.VITE_MEMBERSHIP_NFT_ADDRESS || '0x3456789012345678901234567890123456789012',
+  DACToken: import.meta.env.VITE_DAC_TOKEN_ADDRESS || '0x4567890123456789012345678901234567890123',
 };
 
 // Initialize provider (defaulting to Polygon Mumbai testnet)
 const getDefaultProvider = () => {
   // Use environment variable for RPC URL with fallback
-  const rpcUrl = process.env.RPC_URL || 'https://polygon-mumbai.g.alchemy.com/v2/';
+  const rpcUrl = import.meta.env.VITE_RPC_URL || 'https://polygon-mumbai.g.alchemy.com/v2/';
   return new ethers.JsonRpcProvider(rpcUrl);
 };
 
