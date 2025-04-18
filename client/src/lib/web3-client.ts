@@ -2,6 +2,8 @@ import { ethers } from 'ethers';
 import DAOGovernanceABI from '../contracts/abis/DAOGovernance.json';
 import PropertyEscrowABI from '../contracts/abis/PropertyEscrow.json';
 import MembershipNFTABI from '../contracts/abis/MembershipNFT.json';
+import PromTokenABI from '../contracts/abis/PromToken.json';
+import CapTableABI from '../contracts/abis/CapTable.json';
 
 // Define interface for contract addresses
 interface ContractAddresses {
@@ -9,6 +11,8 @@ interface ContractAddresses {
   PropertyEscrow: string;
   MembershipNFT: string;
   DACToken: string;
+  PromToken: string;
+  CapTable: string;
 }
 
 // Use environment variables for contract addresses with fallbacks
@@ -17,6 +21,8 @@ const CONTRACT_ADDRESSES: ContractAddresses = {
   PropertyEscrow: import.meta.env.VITE_PROPERTY_ESCROW_ADDRESS || '0x2345678901234567890123456789012345678901',
   MembershipNFT: import.meta.env.VITE_MEMBERSHIP_NFT_ADDRESS || '0x3456789012345678901234567890123456789012',
   DACToken: import.meta.env.VITE_DAC_TOKEN_ADDRESS || '0x4567890123456789012345678901234567890123',
+  PromToken: import.meta.env.VITE_PROM_TOKEN_ADDRESS || '0x5678901234567890123456789012345678901234',
+  CapTable: import.meta.env.VITE_CAP_TABLE_ADDRESS || '0x6789012345678901234567890123456789012345',
 };
 
 // Initialize provider (defaulting to Polygon Mumbai testnet)
@@ -32,6 +38,8 @@ const simulateContractABIs = () => {
     DAOGovernance: DAOGovernanceABI || [],
     PropertyEscrow: PropertyEscrowABI || [],
     MembershipNFT: MembershipNFTABI || [],
+    PromToken: PromTokenABI || [],
+    CapTable: CapTableABI || [],
   };
 };
 
@@ -54,6 +62,16 @@ export const getContracts = (signer: ethers.JsonRpcSigner | null) => {
     membershipNFT: new ethers.Contract(
       CONTRACT_ADDRESSES.MembershipNFT,
       ABIs.MembershipNFT,
+      signer || provider
+    ),
+    promToken: new ethers.Contract(
+      CONTRACT_ADDRESSES.PromToken,
+      ABIs.PromToken,
+      signer || provider
+    ),
+    capTable: new ethers.Contract(
+      CONTRACT_ADDRESSES.CapTable,
+      ABIs.CapTable,
       signer || provider
     ),
   };
@@ -152,4 +170,109 @@ export const getMembershipTier = async (
   const contracts = getContracts(null);
   const tier = await contracts.membershipNFT.getMembershipTier(address);
   return ['Free', 'Basic', 'Premium', 'Enterprise'][tier] || 'Free';
+};
+
+// Prom Token functions
+export const getPromTokenBalance = async (
+  address: string,
+  provider: ethers.JsonRpcProvider | ethers.BrowserProvider = getDefaultProvider()
+) => {
+  const contracts = getContracts(null);
+  const balance = await contracts.promToken.balanceOf(address);
+  return fromWei(balance);
+};
+
+export const getTotalTokenSupply = async (
+  provider: ethers.JsonRpcProvider | ethers.BrowserProvider = getDefaultProvider()
+) => {
+  const contracts = getContracts(null);
+  const totalSupply = await contracts.promToken.totalSupply();
+  return fromWei(totalSupply);
+};
+
+export const getCurrentTokenSupply = async (
+  provider: ethers.JsonRpcProvider | ethers.BrowserProvider = getDefaultProvider()
+) => {
+  const contracts = getContracts(null);
+  const currentSupply = await contracts.promToken.currentSupply();
+  return fromWei(currentSupply);
+};
+
+// Cap Table functions
+export const distributeInitialProm = async (
+  signer: ethers.JsonRpcSigner,
+  userAddress: string
+) => {
+  const contracts = getContracts(signer);
+  const tx = await contracts.capTable.distributeInitialProm(userAddress);
+  return await tx.wait();
+};
+
+export const distributeWorkerProm = async (
+  signer: ethers.JsonRpcSigner,
+  workerAddress: string,
+  amount: string,
+  withVesting: boolean,
+  vestingDuration: number
+) => {
+  const contracts = getContracts(signer);
+  const tx = await contracts.capTable.distributeWorkerProm(
+    workerAddress,
+    toWei(amount),
+    withVesting,
+    vestingDuration
+  );
+  return await tx.wait();
+};
+
+export const getVestingSchedules = async (
+  address: string,
+  provider: ethers.JsonRpcProvider | ethers.BrowserProvider = getDefaultProvider()
+) => {
+  const contracts = getContracts(null);
+  const schedules = await contracts.capTable.getVestingSchedules(address);
+  
+  return schedules.map((schedule: any) => ({
+    totalAmount: fromWei(schedule.totalAmount),
+    amountClaimed: fromWei(schedule.amountClaimed),
+    startTime: new Date(Number(schedule.startTime) * 1000),
+    endTime: new Date(Number(schedule.endTime) * 1000),
+    revocable: schedule.revocable,
+    revoked: schedule.revoked
+  }));
+};
+
+export const claimVestedTokens = async (
+  signer: ethers.JsonRpcSigner,
+  scheduleIndex: number
+) => {
+  const contracts = getContracts(signer);
+  const tx = await contracts.capTable.claimVestedTokens(scheduleIndex);
+  return await tx.wait();
+};
+
+export const getTotalPromTokens = async (
+  address: string,
+  provider: ethers.JsonRpcProvider | ethers.BrowserProvider = getDefaultProvider()
+) => {
+  const contracts = getContracts(null);
+  const totalTokens = await contracts.capTable.getTotalTokens(address);
+  return fromWei(totalTokens);
+};
+
+export const fractionalizeProperty = async (
+  signer: ethers.JsonRpcSigner,
+  propertyId: number,
+  totalTokens: string,
+  initialPrice: string
+) => {
+  const contracts = getContracts(signer);
+  // This would call a special function in the property escrow contract
+  // For now, we'll simulate by using the existing listProperty function with a different type code
+  const tx = await contracts.propertyEscrow.listProperty(
+    propertyId.toString(),
+    toWei(initialPrice),
+    2 // 2 would represent 'fractional' listing type
+  );
+  return await tx.wait();
 };
