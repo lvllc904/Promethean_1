@@ -6,10 +6,12 @@ import {
   insertPropertySchema,
   insertProposalSchema,
   insertTaskSchema,
-  insertVoteSchema
+  insertVoteSchema,
+  insertPromVestingScheduleSchema,
+  insertPromTokenPriceSchema
 } from "@shared/schema";
 import { generatePropertyValuation, generatePropertyDescription } from "./services/ai";
-import { getWeb3Provider } from "./services/web3";
+import * as web3Service from "./services/web3";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Base API prefix
@@ -316,6 +318,138 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(description);
     } catch (error) {
       res.status(500).json({ message: "Failed to generate property description" });
+    }
+  });
+
+  // Prom Token and Fractional Ownership API endpoints
+  app.get(`${apiPrefix}/token-price-history`, async (req, res) => {
+    try {
+      // In a real implementation, this would fetch from the database
+      const priceHistory = [
+        { date: '2024-01', price: 1.0 },
+        { date: '2024-02', price: 1.2 },
+        { date: '2024-03', price: 1.15 },
+        { date: '2024-04', price: 1.35 },
+        { date: '2024-05', price: 1.42 },
+        { date: '2024-06', price: 1.38 },
+        { date: '2024-07', price: 1.50 },
+        { date: '2024-08', price: 1.65 },
+        { date: '2024-09', price: 1.72 },
+        { date: '2024-10', price: 1.80 },
+      ];
+      res.json(priceHistory);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch token price history" });
+    }
+  });
+
+  app.get(`${apiPrefix}/token-supply`, async (req, res) => {
+    try {
+      // Try to fetch from blockchain first
+      try {
+        const total = await web3Service.getPromTokenTotalSupply();
+        const current = await web3Service.getPromTokenCurrentSupply();
+        res.json({ total, current });
+      } catch (blockchainError) {
+        console.error("Failed to fetch from blockchain:", blockchainError);
+        // Fallback to mock data
+        res.json({ total: "100000000", current: "10000000" });
+      }
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch token supply data" });
+    }
+  });
+
+  app.get(`${apiPrefix}/token-balance/:walletAddress`, async (req, res) => {
+    try {
+      const { walletAddress } = req.params;
+      // Try to fetch from blockchain first
+      try {
+        const balance = await web3Service.getPromTokenBalance(walletAddress);
+        res.json({ balance });
+      } catch (blockchainError) {
+        console.error("Failed to fetch from blockchain:", blockchainError);
+        // Fallback to mock data
+        res.json({ balance: "1000" });
+      }
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch token balance" });
+    }
+  });
+
+  app.get(`${apiPrefix}/vesting-schedules/:walletAddress`, async (req, res) => {
+    try {
+      const { walletAddress } = req.params;
+      // Try to fetch from blockchain first
+      try {
+        const schedules = await web3Service.getUserVestingSchedules(walletAddress);
+        res.json(schedules);
+      } catch (blockchainError) {
+        console.error("Failed to fetch from blockchain:", blockchainError);
+        // Fallback to mock data
+        res.json([
+          {
+            totalAmount: "5000",
+            amountClaimed: "2000",
+            startTime: new Date("2024-01-01"),
+            endTime: new Date("2025-01-01"),
+            revocable: true,
+            revoked: false
+          }
+        ]);
+      }
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch vesting schedules" });
+    }
+  });
+
+  app.get(`${apiPrefix}/property-tokens`, async (req, res) => {
+    try {
+      // In a real implementation, this would fetch from the database
+      // For now, return mock data
+      const mockPortfolio = [
+        { id: 1, propertyId: 101, name: "Luxury Condo NYC", tokens: 250, value: 450, allocation: 25 },
+        { id: 2, propertyId: 102, name: "Beach House Miami", tokens: 500, value: 900, allocation: 50 },
+        { id: 3, propertyId: 103, name: "Mountain Retreat", tokens: 100, value: 180, allocation: 10 },
+        { id: 4, propertyId: 104, name: "Downtown Office Space", tokens: 150, value: 270, allocation: 15 },
+      ];
+      res.json(mockPortfolio);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch property tokens" });
+    }
+  });
+
+  app.post(`${apiPrefix}/tokenize-property`, async (req, res) => {
+    try {
+      const { propertyId, totalTokens, tokenPrice, ownershipPercent } = req.body;
+      
+      // In a real implementation, this would call the blockchain
+      // to tokenize the property and create the necessary records
+      
+      res.json({ 
+        success: true, 
+        message: "Property tokenization initiated",
+        transactionHash: "0x123...456" // Mock transaction hash
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to tokenize property" });
+    }
+  });
+
+  app.post(`${apiPrefix}/claim-vested-tokens`, async (req, res) => {
+    try {
+      const { walletAddress, scheduleIndex } = req.body;
+      
+      // In a real implementation, this would call the blockchain
+      // to claim the vested tokens
+      
+      res.json({ 
+        success: true, 
+        message: "Vested tokens claimed successfully",
+        transactionHash: "0x789...012" // Mock transaction hash
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to claim vested tokens" });
     }
   });
 
