@@ -169,13 +169,13 @@ export class MemStorage implements IStorage {
       price: "0",
       currency: "USD",
       interval: "month",
-      dacTokens: 0,
+      dacTokens: 1,
       features: [
         "Limited property listings",
         "Access to task marketplace",
         "Community forum access",
-        "No AI valuation tools",
-        "No governance rights"
+        "1 governance token",
+        "Basic DAO voting rights"
       ],
       isActive: true
     });

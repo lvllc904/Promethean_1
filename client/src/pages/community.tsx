@@ -12,7 +12,8 @@ import {
   FileText,
   Bookmark,
   BarChart2,
-  Star 
+  Star,
+  CheckCircle
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
