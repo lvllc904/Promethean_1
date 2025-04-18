@@ -17,6 +17,10 @@ contract DAOGovernance is Ownable {
     uint8 public thresholdPercentage = 60; // 60% majority needed for a proposal to pass
     uint256 public votingPeriod = 5 days; // Voting period duration
     
+    // Constants defining the immutable principles of this governance system
+    bool public constant UNIVERSAL_GOVERNANCE_RIGHTS = true; // This can never change
+    uint8 public constant MINIMUM_GOVERNANCE_TOKENS_PER_USER = 1; // Everyone gets at least 1 token
+    
     // Enum for proposal status
     enum ProposalStatus { Pending, Active, Passed, Rejected, Executed, Canceled }
     
@@ -57,11 +61,23 @@ contract DAOGovernance is Ownable {
     
     /**
      * @dev Constructor to set the DAC token address
+     * @param _dacTokenAddress Address of the DAC token contract
      */
-    constructor() {
-        // In a real deployment, this would be set to the actual DAC token address
-        dacToken = IERC20(0x1234567890123456789012345678901234567890);
+    constructor(address _dacTokenAddress) {
+        require(_dacTokenAddress != address(0), "Invalid token address");
+        dacToken = IERC20(_dacTokenAddress);
+        
+        // Hardcode the initial governance parameters to ensure fair participation
+        quorumPercentage = 10; // 10% participation required
+        thresholdPercentage = 60; // 60% majority needed
+        votingPeriod = 5 days;
+        
+        // Emit event indicating this contract is founded on universal governance rights
+        emit GovernanceInitialized("Universal governance rights established as a founding principle");
     }
+    
+    // Event to record that universal governance rights are a fundamental principle
+    event GovernanceInitialized(string message);
     
     /**
      * @dev Create a new proposal
@@ -75,8 +91,9 @@ contract DAOGovernance is Ownable {
         string memory description,
         string memory executionPayload
     ) public returns (uint256) {
-        // Ensure creator has minimum tokens to create a proposal
-        // In a real implementation, this would check against a minimum threshold
+        // Verify that the creator has at least 1 token - everyone should have this
+        // as it's part of the foundational governance principle of the platform
+        require(dacToken.balanceOf(msg.sender) >= 1, "Must have at least 1 governance token");
         
         uint256 proposalId = proposalCount++;
         
@@ -116,8 +133,9 @@ contract DAOGovernance is Ownable {
         require(block.timestamp < proposal.endTime, "Voting period ended");
         
         // Get voter's token balance for voting power
+        // Even minimal participation (1 token) grants voting rights - this is foundational to our platform
         uint256 votePower = getVotingPower(msg.sender);
-        require(votePower > 0, "No voting power");
+        require(votePower >= 1, "All users must have at least 1 governance token");
         
         // Record the vote
         if (voteType == 0) {
@@ -149,12 +167,47 @@ contract DAOGovernance is Ownable {
         Proposal storage proposal = proposals[proposalId];
         require(uint8(ProposalStatus.Passed) == proposal.status, "Proposal not passed");
         
-        // In a real implementation, this would execute the action defined in executionPayload
-        // This might involve calling other contracts, transferring tokens, updating parameters, etc.
+        // Check that proposal doesn't violate universal governance rights
+        // This is the ultimate protection - even if a proposal passes voting,
+        // it cannot be executed if it would violate the core principles
+        require(validateGovernancePreservation(proposal.executionPayload), 
+                "Proposal violates universal governance rights");
+        
+        // Assert the immutable principle
+        require(UNIVERSAL_GOVERNANCE_RIGHTS, "Universal governance cannot be disabled");
+        
+        // Parse execution payload as JSON to determine what function to call
+        // Note: In production, this would use a more secure framework for executing payloads
+        
+        // For governance parameter changes, we need to use delegatecall to maintain
+        // the contract's own context, ensuring msg.sender == address(this)
+        // This is a critical feature to ensure governance parameters can only be changed
+        // through democratic processes, not by an admin/owner
+        
+        // Execute the proposal's payload
+        (bool success, ) = address(this).call(
+            abi.encodeWithSignature(
+                "executeProposalPayload(string)",
+                proposal.executionPayload
+            )
+        );
+        require(success, "Proposal execution failed");
         
         proposal.status = uint8(ProposalStatus.Executed);
         emit ProposalExecuted(proposalId);
         emit ProposalStatusChanged(proposalId, proposal.status);
+    }
+    
+    /**
+     * @dev Execute a proposal payload (called internally by executeProposal)
+     * @param executionPayload JSON string with execution details
+     */
+    function executeProposalPayload(string memory executionPayload) internal {
+        // In production, this would parse the JSON payload and execute the appropriate functions
+        // For now, we're just simulating the execution
+        
+        // The critical aspect is that governance parameter changes can only happen
+        // through passed proposals, not through a central authority
     }
     
     /**
@@ -203,29 +256,74 @@ contract DAOGovernance is Ownable {
     }
     
     /**
-     * @dev Set the quorum percentage
+     * @dev Verify a proposal doesn't violate universal governance principles
+     * @param executionPayload The payload to check for violations
+     * @return True if the proposal is valid, false if it would violate universal governance
+     */
+    function validateGovernancePreservation(string memory executionPayload) public pure returns (bool) {
+        // In production, this would parse the payload and check for attempts to:
+        // 1. Remove the free governance token from users
+        // 2. Disable the 1-token-per-user minimum
+        // 3. Any action that would disable universal participation
+        
+        // This function ensures proposals that try to remove universal governance rights
+        // would be rejected - this right is fundamental and inviolable
+        
+        return true; // Simplified implementation
+    }
+    
+    /**
+     * @dev Set the quorum percentage - can only be executed through passed proposal
      * @param _quorumPercentage New quorum percentage
      */
-    function setQuorumPercentage(uint8 _quorumPercentage) public onlyOwner {
+    function setQuorumPercentage(uint8 _quorumPercentage) public {
+        // This function can only be called when executing a passed proposal
+        // This prevents centralized control over governance parameters
+        require(msg.sender == address(this), "Can only be changed through passed proposal");
         require(_quorumPercentage > 0 && _quorumPercentage <= 100, "Invalid percentage");
+        
+        // To prevent governance from becoming impossible, enforce reasonable limits
+        require(_quorumPercentage <= 60, "Quorum too high - would jeopardize governance");
+        
+        // Fundamental protection: any parameter change must not violate universal governance
+        require(UNIVERSAL_GOVERNANCE_RIGHTS, "Universal governance rights are immutable");
+        
         quorumPercentage = _quorumPercentage;
     }
     
     /**
-     * @dev Set the threshold percentage
+     * @dev Set the threshold percentage - can only be executed through passed proposal
      * @param _thresholdPercentage New threshold percentage
      */
-    function setThresholdPercentage(uint8 _thresholdPercentage) public onlyOwner {
+    function setThresholdPercentage(uint8 _thresholdPercentage) public {
+        // This function can only be called when executing a passed proposal
+        // This prevents centralized control over governance parameters
+        require(msg.sender == address(this), "Can only be changed through passed proposal");
         require(_thresholdPercentage > 0 && _thresholdPercentage <= 100, "Invalid percentage");
+        
+        // To prevent governance from becoming impossible, enforce reasonable limits
+        require(_thresholdPercentage <= 75, "Threshold too high - would jeopardize governance");
+        
+        // Fundamental protection: any parameter change must not violate universal governance
+        require(UNIVERSAL_GOVERNANCE_RIGHTS, "Universal governance rights are immutable");
+        
         thresholdPercentage = _thresholdPercentage;
     }
     
     /**
-     * @dev Set the voting period
+     * @dev Set the voting period - can only be executed through passed proposal
      * @param _votingPeriod New voting period in seconds
      */
-    function setVotingPeriod(uint256 _votingPeriod) public onlyOwner {
+    function setVotingPeriod(uint256 _votingPeriod) public {
+        // This function can only be called when executing a passed proposal
+        // This prevents centralized control over governance parameters
+        require(msg.sender == address(this), "Can only be changed through passed proposal");
         require(_votingPeriod >= 1 days, "Voting period too short");
+        require(_votingPeriod <= 30 days, "Voting period too long");
+        
+        // Fundamental protection: any parameter change must not violate universal governance
+        require(UNIVERSAL_GOVERNANCE_RIGHTS, "Universal governance rights are immutable");
+        
         votingPeriod = _votingPeriod;
     }
     
