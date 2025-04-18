@@ -6,6 +6,9 @@ import {
   tasks, type Task, type InsertTask,
   membershipTiers, type MembershipTier, type InsertMembershipTier
 } from "@shared/schema";
+import * as schema from "@shared/schema";
+import { db } from "./db";
+import { eq, like, and, or, desc, asc, sql } from "drizzle-orm";
 
 // Interfaces for community features not in schema.ts
 interface CommunityPost {
@@ -759,4 +762,370 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+// Database implementation of the storage interface
+export class DatabaseStorage implements IStorage {
+  // User methods
+  async getUser(id: number): Promise<User | undefined> {
+    const users = await db.select().from(schema.users).where(eq(schema.users.id, id));
+    return users.length > 0 ? users[0] : undefined;
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    const users = await db.select().from(schema.users).where(eq(schema.users.username, username));
+    return users.length > 0 ? users[0] : undefined;
+  }
+
+  async createUser(user: InsertUser): Promise<User> {
+    const [createdUser] = await db.insert(schema.users).values(user).returning();
+    return createdUser;
+  }
+
+  async updateUserMembership(id: number, membershipTier: string): Promise<User> {
+    const [updatedUser] = await db
+      .update(schema.users)
+      .set({ membershipTier })
+      .where(eq(schema.users.id, id))
+      .returning();
+    return updatedUser;
+  }
+
+  async countDaoMembers(): Promise<number> {
+    const result = await db.select({ count: sql`count(*)` }).from(schema.users);
+    return Number(result[0].count);
+  }
+
+  // Property methods
+  async getProperty(id: number): Promise<Property | undefined> {
+    const properties = await db.select().from(schema.properties).where(eq(schema.properties.id, id));
+    return properties.length > 0 ? properties[0] : undefined;
+  }
+
+  async getProperties(search?: string): Promise<Property[]> {
+    if (!search) {
+      return await db.select().from(schema.properties).where(eq(schema.properties.active, true));
+    }
+    
+    const searchLower = `%${search.toLowerCase()}%`;
+    return await db
+      .select()
+      .from(schema.properties)
+      .where(
+        and(
+          eq(schema.properties.active, true),
+          or(
+            like(sql`lower(${schema.properties.title})`, searchLower),
+            like(sql`lower(${schema.properties.description})`, searchLower),
+            like(sql`lower(${schema.properties.location})`, searchLower),
+            like(sql`lower(${schema.properties.city})`, searchLower),
+            like(sql`lower(${schema.properties.country})`, searchLower)
+          )
+        )
+      );
+  }
+
+  async getFeaturedProperties(): Promise<Property[]> {
+    // For now, just return the latest properties as featured
+    return await db
+      .select()
+      .from(schema.properties)
+      .where(eq(schema.properties.active, true))
+      .orderBy(desc(schema.properties.createdAt))
+      .limit(3);
+  }
+
+  async createProperty(property: InsertProperty): Promise<Property> {
+    const [createdProperty] = await db.insert(schema.properties).values(property).returning();
+    return createdProperty;
+  }
+
+  // Proposal methods
+  async getProposal(id: number): Promise<Proposal | undefined> {
+    const proposals = await db.select().from(schema.proposals).where(eq(schema.proposals.id, id));
+    return proposals.length > 0 ? proposals[0] : undefined;
+  }
+
+  async getProposals(status?: string): Promise<Proposal[]> {
+    if (!status) {
+      return await db.select().from(schema.proposals).orderBy(desc(schema.proposals.createdAt));
+    }
+    
+    return await db
+      .select()
+      .from(schema.proposals)
+      .where(eq(schema.proposals.status, status))
+      .orderBy(desc(schema.proposals.createdAt));
+  }
+
+  async createProposal(proposal: InsertProposal): Promise<Proposal> {
+    const [createdProposal] = await db.insert(schema.proposals).values(proposal).returning();
+    return createdProposal;
+  }
+
+  async updateProposalVotes(proposalId: number, voteType: string, votePower: number): Promise<void> {
+    const proposal = await this.getProposal(proposalId);
+    if (!proposal) {
+      throw new Error(`Proposal with ID ${proposalId} not found`);
+    }
+
+    let updateValues = {};
+    if (voteType === 'for') {
+      updateValues = { votesFor: proposal.votesFor + votePower };
+    } else if (voteType === 'against') {
+      updateValues = { votesAgainst: proposal.votesAgainst + votePower };
+    } else if (voteType === 'abstain') {
+      updateValues = { votesAbstain: proposal.votesAbstain + votePower };
+    }
+
+    await db
+      .update(schema.proposals)
+      .set(updateValues)
+      .where(eq(schema.proposals.id, proposalId));
+  }
+
+  // Vote methods
+  async getVote(id: number): Promise<Vote | undefined> {
+    const votes = await db.select().from(schema.votes).where(eq(schema.votes.id, id));
+    return votes.length > 0 ? votes[0] : undefined;
+  }
+
+  async getVotesByProposal(proposalId: number): Promise<Vote[]> {
+    return await db
+      .select()
+      .from(schema.votes)
+      .where(eq(schema.votes.proposalId, proposalId));
+  }
+
+  async createVote(vote: InsertVote): Promise<Vote> {
+    const [createdVote] = await db.insert(schema.votes).values(vote).returning();
+    return createdVote;
+  }
+
+  // Task methods
+  async getTask(id: number): Promise<Task | undefined> {
+    const tasks = await db.select().from(schema.tasks).where(eq(schema.tasks.id, id));
+    return tasks.length > 0 ? tasks[0] : undefined;
+  }
+
+  async getTasks(status?: string, category?: string): Promise<Task[]> {
+    let query = db.select().from(schema.tasks);
+    
+    if (status && category) {
+      query = query.where(
+        and(
+          eq(schema.tasks.status, status),
+          eq(schema.tasks.category, category)
+        )
+      );
+    } else if (status) {
+      query = query.where(eq(schema.tasks.status, status));
+    } else if (category) {
+      query = query.where(eq(schema.tasks.category, category));
+    }
+    
+    return await query.orderBy(desc(schema.tasks.createdAt));
+  }
+
+  async createTask(task: InsertTask): Promise<Task> {
+    const [createdTask] = await db.insert(schema.tasks).values(task).returning();
+    return createdTask;
+  }
+
+  // Membership methods
+  async getMembershipTier(id: number): Promise<MembershipTier | undefined> {
+    const tiers = await db.select().from(schema.membershipTiers).where(eq(schema.membershipTiers.id, id));
+    return tiers.length > 0 ? tiers[0] : undefined;
+  }
+
+  async getMembershipTiers(interval?: string): Promise<MembershipTier[]> {
+    if (!interval) {
+      return await db
+        .select()
+        .from(schema.membershipTiers)
+        .where(eq(schema.membershipTiers.isActive, true));
+    }
+    
+    return await db
+      .select()
+      .from(schema.membershipTiers)
+      .where(
+        and(
+          eq(schema.membershipTiers.isActive, true),
+          eq(schema.membershipTiers.interval, interval)
+        )
+      );
+  }
+
+  // Community methods (using in-memory for now, will be moved to database tables in the future)
+  private communityPosts: Map<number, CommunityPost> = new Map();
+  private communityEvents: Map<number, CommunityEvent> = new Map();
+  private communityResources: Map<number, CommunityResource> = new Map();
+  private communityMembers: Map<number, CommunityMember> = new Map();
+  
+  private currentPostId = 1;
+  private currentEventId = 1;
+  private currentResourceId = 1;
+  private currentMemberId = 1;
+  
+  private addCommunityPost(post: Omit<CommunityPost, 'id' | 'postedAt' | 'likes' | 'replies'>): CommunityPost {
+    const id = this.currentPostId++;
+    const newPost: CommunityPost = { 
+      ...post, 
+      id, 
+      postedAt: new Date().toISOString(),
+      likes: Math.floor(Math.random() * 50),
+      replies: Math.floor(Math.random() * 20)
+    };
+    this.communityPosts.set(id, newPost);
+    return newPost;
+  }
+
+  private addCommunityEvent(event: Omit<CommunityEvent, 'id' | 'attendees'>): CommunityEvent {
+    const id = this.currentEventId++;
+    const newEvent: CommunityEvent = {
+      ...event,
+      id,
+      attendees: Math.floor(Math.random() * 100)
+    };
+    this.communityEvents.set(id, newEvent);
+    return newEvent;
+  }
+
+  private addCommunityResource(resource: Omit<CommunityResource, 'id' | 'likes' | 'downloads'>): CommunityResource {
+    const id = this.currentResourceId++;
+    const newResource: CommunityResource = {
+      ...resource,
+      id,
+      likes: Math.floor(Math.random() * 200),
+      downloads: Math.floor(Math.random() * 500)
+    };
+    this.communityResources.set(id, newResource);
+    return newResource;
+  }
+
+  private addCommunityMember(member: Omit<CommunityMember, 'id' | 'avatar'>): CommunityMember {
+    const id = this.currentMemberId++;
+    const newMember: CommunityMember = {
+      ...member,
+      id,
+      avatar: `https://i.pravatar.cc/150?img=${id}`
+    };
+    this.communityMembers.set(id, newMember);
+    return newMember;
+  }
+
+  async getCommunityPosts(search?: string): Promise<CommunityPost[]> {
+    // Initialize if empty
+    if (this.communityPosts.size === 0) {
+      this.addCommunityPost({
+        title: "How to evaluate property in a volatile market?",
+        content: "I've been looking at properties in rapidly changing markets. What strategies do you use to evaluate fair market value when prices are volatile?",
+        authorId: 1,
+        authorName: "John Doe",
+        tags: ["discussion", "valuation", "market-analysis"]
+      });
+
+      this.addCommunityPost({
+        title: "Best practices for smart contract creation",
+        content: "I'm implementing my first real estate smart contract. What are some security best practices and common pitfalls to avoid?",
+        authorId: 2,
+        authorName: "Blockchain Developer",
+        tags: ["smart-contracts", "question", "security"]
+      });
+    }
+    
+    if (!search) {
+      return Array.from(this.communityPosts.values());
+    }
+    
+    const searchLower = search.toLowerCase();
+    return Array.from(this.communityPosts.values()).filter(post => 
+      post.title.toLowerCase().includes(searchLower) || 
+      post.content.toLowerCase().includes(searchLower) ||
+      post.tags.some(tag => tag.toLowerCase().includes(searchLower))
+    );
+  }
+
+  async getCommunityEvents(): Promise<CommunityEvent[]> {
+    // Initialize if empty
+    if (this.communityEvents.size === 0) {
+      this.addCommunityEvent({
+        title: "Webinar: AI in Real Estate",
+        description: "Learn how AI is transforming property valuation and transactions.",
+        date: "June 15, 2023",
+        time: "2:00 PM EST",
+        location: "Zoom",
+        virtual: true,
+        organizer: "Tech DAO"
+      });
+
+      this.addCommunityEvent({
+        title: "Monthly DAO Meetup",
+        description: "Join our virtual governance discussion and networking session.",
+        date: "June 20, 2023",
+        time: "6:00 PM EST",
+        location: "Discord",
+        virtual: true,
+        organizer: "Community Team"
+      });
+    }
+    
+    return Array.from(this.communityEvents.values());
+  }
+
+  async getCommunityResources(): Promise<CommunityResource[]> {
+    // Initialize if empty
+    if (this.communityResources.size === 0) {
+      this.addCommunityResource({
+        title: "Complete Guide to Real Estate Tokenization",
+        type: "guide",
+        description: "A comprehensive guide to understanding and implementing real estate tokenization on blockchain.",
+        author: "Blockchain Expert",
+        publishedAt: "2023-05-10"
+      });
+
+      this.addCommunityResource({
+        title: "AI Valuation Model Tutorial",
+        type: "video",
+        description: "Step-by-step tutorial on building an AI model for property valuation using open data sources.",
+        author: "Data Science Team",
+        publishedAt: "2023-04-22"
+      });
+    }
+    
+    return Array.from(this.communityResources.values());
+  }
+
+  async getCommunityMembers(search?: string): Promise<CommunityMember[]> {
+    // Initialize if empty
+    if (this.communityMembers.size === 0) {
+      this.addCommunityMember({
+        name: "John Doe",
+        role: "Real Estate Investor",
+        badges: ["Active Contributor", "Premium Member"],
+        memberSince: "Jan 2023",
+        reputation: 4.8
+      });
+
+      this.addCommunityMember({
+        name: "Alice Smith",
+        role: "Blockchain Developer",
+        badges: ["Tech Contributor", "Smart Contract Expert"],
+        memberSince: "Mar 2023",
+        reputation: 4.9
+      });
+    }
+    
+    if (!search) {
+      return Array.from(this.communityMembers.values());
+    }
+    
+    const searchLower = search.toLowerCase();
+    return Array.from(this.communityMembers.values()).filter(member => 
+      member.name.toLowerCase().includes(searchLower) || 
+      member.role.toLowerCase().includes(searchLower)
+    );
+  }
+}
+
+// Use DatabaseStorage instead of MemStorage
+export const storage = new DatabaseStorage();

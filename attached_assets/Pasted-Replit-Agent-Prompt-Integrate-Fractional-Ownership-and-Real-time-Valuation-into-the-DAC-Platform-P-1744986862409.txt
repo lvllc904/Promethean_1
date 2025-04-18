@@ -1,0 +1,116 @@
+Replit Agent Prompt: Integrate Fractional Ownership and Real-time Valuation into the DAC Platform
+
+Project Goal:
+
+Integrate fractional ownership and real-time valuation functionality into the existing Decentralized Autonomous Community (DAC) platform. This involves implementing the "Prom" token, a smart contract-based cap table, mechanisms for distributing Prom to different stakeholders, and a system for providing users with the real-time value of Prom.  Every user should receive one (1) Prom token for free upon joining the platform.
+
+I. Core Ownership Concepts:
+
+    Prom Token:
+        An ERC-20 token named "Prom" will represent ownership shares in the platform.
+        Prom holders have rights to:
+            A share of platform revenue (if applicable, as determined by the DAC).
+            Voting power in platform governance (proportional to their Prom holdings).
+            Potential future appreciation in the platform's value.
+    Cap Table Management:
+        A smart contract-based cap table will track the issuance and ownership of Prom.
+        The cap table will record:
+            The total supply of Prom.
+            The number of Prom held by each address.
+            Any transfers or transactions involving Prom.
+            Vesting schedules for worker/user grants (if applicable).
+    Ownership Categories:
+        The platform supports different ownership categories:
+            Worker Ownership: Prom granted to individuals who contribute work.
+            User Ownership: Prom granted to users based on activity, beyond the initial free token.
+            Investor Ownership: Prom sold to investors.
+            DAC Treasury: Prom held by the DAC treasury.
+
+II. Technical Implementation:
+
+    Smart Contract Development:
+        Develop the following smart contracts:
+            Prom Token Contract: An ERC-20 token contract.
+            Cap Table Contract: A contract to manage ownership, track holdings, and enforce vesting schedules.
+    Ownership Distribution Mechanisms:
+        Implement mechanisms for distributing Prom:
+            Initial Distribution:  Every user receives one (1) Prom token for free upon joining the platform.
+            Worker Grants: Distribute Prom to workers upon successful task completion.
+            User Grants: Distribute Prom to users based on activity, beyond the initial free token.
+            Investor Sales: Sell Prom to investors, with proceeds to the DAC treasury.
+            DAC Treasury Management: The DAC manages Prom in its treasury.
+    Vesting Schedules:
+        Implement vesting schedules for worker and user grants (beyond the initial free token).
+    Governance Integration:
+        Integrate Prom holdings with the platform's governance system.
+    Real-time Prom Valuation:
+        Implement a mechanism to provide users with the real-time value of Prom. This could involve:
+            Integrating with decentralized exchanges (DEXs).
+            Using a price oracle.
+            Displaying the current market capitalization.
+    UI/UX Integration:
+        Develop UI elements to:
+            Display users' Prom holdings.
+            Show the total supply of Prom.
+            Provide information about ownership rights.
+            Enable users to participate in governance based on Prom holdings.
+            Show vesting schedules.
+            Display the real-time value of Prom.
+
+III. Integration with Existing Platform:
+
+    Marketplace Integration:
+        Connect the worker grant mechanism to the marketplace.
+        Display information about worker ownership in the marketplace UI.
+    DAC Integration:
+        Integrate Prom holdings with the DAC governance system.
+        Enable the DAC to manage the Prom in its treasury.
+    AI Agent Integration:
+        The AI agent can provide insights into Prom ownership distribution and governance participation.
+
+IV. Detailed Tasks for Replit Agent:
+
+    Smart Contract Development:
+        Create the Prom token contract and Cap Table Contract in Solidity. Ensure the Cap Table Contract can:
+            Record Prom holdings for each address.
+            Track the total supply of Prom.
+            Manage Prom transfers.
+            Enforce vesting schedules.
+            Handle the initial distribution of one (1) Prom to each new user.
+    Ownership Distribution Logic:
+        Implement the following functions:
+            distributeInitialProm(address userAddress): Distribute one (1) Prom to a user upon joining the platform.
+            distributeWorkerProm(address workerAddress, uint256 amount): Distribute Prom to a worker.
+            distributeUserProm(address userAddress, uint256 amount): Distribute Prom to a user (beyond the initial free Prom).
+            handleInvestorSale(address investorAddress, uint256 amount, uint256 price): Handle the sale of Prom to an investor.
+            manageDACTreasury(uint256 amount, string action):  Function to manage Prom in the DAC treasury.
+    Real-time Valuation:
+        Implement a mechanism for real-time Prom valuation.  Choose one of the following:
+            DEX Integration: Integrate with a decentralized exchange (e.g., Uniswap) to get the Prom price.  If this is chosen, assume the DEX and pair already exist.
+            Price Oracle:  Integrate with a price oracle (e.g., Chainlink) to get the Prom price.
+            Market Cap Calculation: Calculate the market capitalization of Prom (this requires knowing the total value locked or another metric).
+    UI Integration:
+        Modify the existing UI to:
+            Display the user's Prom balance.
+            Display the total supply of Prom.
+            Provide a link or information about Prom ownership rights.
+            Enable users to vote using their Prom balance.
+            Display the real-time Prom value.
+    Testing:
+        Write thorough unit tests for all smart contract functions, including:
+            Testing the initial Prom distribution to new users.
+            Testing Prom transfers.
+            Testing vesting schedules.
+            Testing voting power calculation.
+            Testing the real-time valuation mechanism.
+    Documentation:
+        Provide clear documentation for all implemented smart contracts and functions.
+
+V. Considerations:
+
+    Security:  Prioritize the security of the smart contracts.  Follow best practices to prevent vulnerabilities.
+    Efficiency:  Write efficient code to minimize gas costs.
+    Scalability: Design the system to be scalable to a large number of users and transactions.
+    User Experience:  Make the UI elements clear and easy to use.
+
+Please provide the code for the smart contracts, backend logic, and UI modifications to integrate these features into the existing DAC platform.
