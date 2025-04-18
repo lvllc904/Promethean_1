@@ -13,6 +13,8 @@ export const users = pgTable("users", {
   avatarUrl: text("avatar_url"),
   membershipTier: text("membership_tier").default("free"),
   dacTokenBalance: numeric("dac_token_balance").default("0"),
+  promTokenBalance: numeric("prom_token_balance").default("0"),
+  receivedInitialProm: boolean("received_initial_prom").default(false),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -141,6 +143,42 @@ export const insertMembershipTierSchema = createInsertSchema(membershipTiers).om
   isActive: true,
 });
 
+// Prom token vesting schedules
+export const promVestingSchedules = pgTable("prom_vesting_schedules", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull(),
+  totalAmount: numeric("total_amount").notNull(),
+  amountClaimed: numeric("amount_claimed").default("0"),
+  startTime: timestamp("start_time").defaultNow(),
+  endTime: timestamp("end_time").notNull(),
+  revocable: boolean("revocable").default(true),
+  revoked: boolean("revoked").default(false),
+  category: text("category").notNull(), // 'worker', 'user', 'investor'
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const insertPromVestingScheduleSchema = createInsertSchema(promVestingSchedules).omit({
+  id: true,
+  amountClaimed: true,
+  revoked: true,
+  createdAt: true,
+});
+
+// Prom token price history for real-time valuation
+export const promTokenPrices = pgTable("prom_token_prices", {
+  id: serial("id").primaryKey(),
+  price: numeric("price").notNull(),
+  marketCap: numeric("market_cap"),
+  totalSupply: numeric("total_supply"),
+  timestamp: timestamp("timestamp").defaultNow(),
+  source: text("source").notNull(), // 'dex', 'oracle', 'manual'
+});
+
+export const insertPromTokenPriceSchema = createInsertSchema(promTokenPrices).omit({
+  id: true,
+  timestamp: true,
+});
+
 // Type definitions for all schemas
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
@@ -159,3 +197,9 @@ export type Task = typeof tasks.$inferSelect;
 
 export type InsertMembershipTier = z.infer<typeof insertMembershipTierSchema>;
 export type MembershipTier = typeof membershipTiers.$inferSelect;
+
+export type InsertPromVestingSchedule = z.infer<typeof insertPromVestingScheduleSchema>;
+export type PromVestingSchedule = typeof promVestingSchedules.$inferSelect;
+
+export type InsertPromTokenPrice = z.infer<typeof insertPromTokenPriceSchema>;
+export type PromTokenPrice = typeof promTokenPrices.$inferSelect;
