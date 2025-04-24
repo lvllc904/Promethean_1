@@ -14,8 +14,11 @@ import {
   insertApiCredentialSchema,
   insertServiceIntegrationSchema,
   insertWhitelabelSettingSchema,
-  insertApiUsageLogSchema
+  insertApiUsageLogSchema,
+  insertReviewSchema,
+  insertGovernanceProposalSchema
 } from "@shared/schema";
+import { aiConcierge } from "./services/ai-concierge";
 import { generatePropertyValuation, generatePropertyDescription } from "./services/ai";
 import * as web3Service from "./services/web3";
 
@@ -459,6 +462,185 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // ======================================================================
+  // AI-Driven Review Analysis & Governance API Routes
+  // ======================================================================
+  
+  // Reviews
+  app.get(`${apiPrefix}/reviews`, async (req, res) => {
+    try {
+      const processed = req.query.processed === 'true' ? true :
+                       req.query.processed === 'false' ? false : undefined;
+      
+      const userId = req.query.userId ? parseInt(req.query.userId as string) : undefined;
+      
+      const reviews = await storage.getReviews(processed, userId);
+      res.json(reviews);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch reviews" });
+    }
+  });
+  
+  app.get(`${apiPrefix}/reviews/unprocessed`, async (req, res) => {
+    try {
+      const reviews = await storage.getUnprocessedReviews();
+      res.json(reviews);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch unprocessed reviews" });
+    }
+  });
+  
+  app.get(`${apiPrefix}/reviews/:id`, async (req, res) => {
+    try {
+      const reviewId = parseInt(req.params.id);
+      const review = await storage.getReview(reviewId);
+      
+      if (!review) {
+        return res.status(404).json({ message: "Review not found" });
+      }
+      
+      res.json(review);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch review" });
+    }
+  });
+  
+  app.post(`${apiPrefix}/reviews`, async (req, res) => {
+    try {
+      const reviewData = insertReviewSchema.parse(req.body);
+      const newReview = await storage.createReview(reviewData);
+      res.status(201).json(newReview);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid review data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to create review" });
+    }
+  });
+  
+  // AI processing endpoint - manually trigger analysis of reviews
+  app.post(`${apiPrefix}/reviews/analyze`, async (req, res) => {
+    try {
+      // This will run asynchronously and not block the response
+      aiConcierge.analyzeReviews()
+        .then(() => console.log("Review analysis completed"))
+        .catch(err => console.error("Error in review analysis:", err));
+      
+      res.status(202).json({ message: "Review analysis initiated" });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to initiate review analysis" });
+    }
+  });
+  
+  // Governance Proposals
+  app.get(`${apiPrefix}/governance/proposals`, async (req, res) => {
+    try {
+      const status = req.query.status as string;
+      const proposals = await storage.getGovernanceProposals(status);
+      res.json(proposals);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch governance proposals" });
+    }
+  });
+  
+  app.get(`${apiPrefix}/governance/proposals/:id`, async (req, res) => {
+    try {
+      const proposalId = parseInt(req.params.id);
+      const proposal = await storage.getGovernanceProposal(proposalId);
+      
+      if (!proposal) {
+        return res.status(404).json({ message: "Governance proposal not found" });
+      }
+      
+      res.json(proposal);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch governance proposal" });
+    }
+  });
+  
+  app.post(`${apiPrefix}/governance/proposals`, async (req, res) => {
+    try {
+      const proposalData = insertGovernanceProposalSchema.parse(req.body);
+      const newProposal = await storage.createGovernanceProposal(proposalData);
+      res.status(201).json(newProposal);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid governance proposal data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to create governance proposal" });
+    }
+  });
+  
+  app.patch(`${apiPrefix}/governance/proposals/:id/status`, async (req, res) => {
+    try {
+      const proposalId = parseInt(req.params.id);
+      const { status } = req.body;
+      
+      if (!status || typeof status !== 'string') {
+        return res.status(400).json({ message: "Invalid status" });
+      }
+      
+      const updatedProposal = await storage.updateGovernanceProposalStatus(proposalId, status);
+      res.json(updatedProposal);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to update governance proposal status" });
+    }
+  });
+  
+  app.post(`${apiPrefix}/governance/votes`, async (req, res) => {
+    try {
+      const { proposalId, userId, voteType, votePower } = req.body;
+      
+      // Validate inputs
+      if (!proposalId || !userId || !voteType || !votePower) {
+        return res.status(400).json({ message: "Missing required fields" });
+      }
+      
+      // Update proposal vote counts
+      const updatedProposal = await storage.updateGovernanceProposalVotes(
+        proposalId,
+        voteType,
+        Number(votePower)
+      );
+      
+      // Create a vote record (using the existing votes table)
+      const newVote = await storage.createVote({
+        proposalId,
+        userId,
+        voteType,
+        votePower: votePower.toString()
+      });
+      
+      res.status(201).json({ proposal: updatedProposal, vote: newVote });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to record governance vote" });
+    }
+  });
+  
+  app.post(`${apiPrefix}/governance/proposals/:id/implement`, async (req, res) => {
+    try {
+      const proposalId = parseInt(req.params.id);
+      const proposal = await storage.getGovernanceProposal(proposalId);
+      
+      if (!proposal) {
+        return res.status(404).json({ message: "Governance proposal not found" });
+      }
+      
+      if (proposal.status !== 'passed') {
+        return res.status(400).json({ message: "Only passed proposals can be implemented" });
+      }
+      
+      // This will run asynchronously and not block the response
+      aiConcierge.orchestrateAIAssistedImplementation(proposalId, proposal.proposedAction)
+        .then(() => console.log(`Implementation of proposal #${proposalId} completed`))
+        .catch(err => console.error(`Error in implementation of proposal #${proposalId}:`, err));
+      
+      res.status(202).json({ message: "Implementation initiated" });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to initiate proposal implementation" });
+    }
+  });
+  
   // ======================================================================
   // Admin Dashboard API Routes
   // ======================================================================

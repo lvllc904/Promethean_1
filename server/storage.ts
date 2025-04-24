@@ -1945,6 +1945,177 @@ export class DatabaseStorage implements IStorage {
       };
     }
   }
+
+  // Review methods for AI-driven review analysis
+  async getReview(id: number): Promise<Review | undefined> {
+    const [review] = await db.select().from(schema.reviews).where(eq(schema.reviews.id, id));
+    return review || undefined;
+  }
+  
+  async getReviews(processed?: boolean, userId?: number): Promise<Review[]> {
+    let query = db.select().from(schema.reviews);
+    
+    // Apply filters if provided
+    if (processed !== undefined) {
+      query = query.where(eq(schema.reviews.processed, processed));
+    }
+    
+    if (userId !== undefined) {
+      query = query.where(eq(schema.reviews.userId, userId));
+    }
+    
+    // Order by most recent first
+    query = query.orderBy(desc(schema.reviews.timestamp));
+    
+    return await query;
+  }
+  
+  async getUnprocessedReviews(): Promise<Review[]> {
+    return await db
+      .select()
+      .from(schema.reviews)
+      .where(eq(schema.reviews.processed, false))
+      .orderBy(asc(schema.reviews.timestamp));
+  }
+  
+  async createReview(review: InsertReview): Promise<Review> {
+    const [newReview] = await db
+      .insert(schema.reviews)
+      .values(review)
+      .returning();
+    return newReview;
+  }
+  
+  async updateReview(id: number, updates: Partial<Review>): Promise<Review> {
+    const [updatedReview] = await db
+      .update(schema.reviews)
+      .set(updates)
+      .where(eq(schema.reviews.id, id))
+      .returning();
+    return updatedReview;
+  }
+  
+  async markReviewAsProcessed(
+    id: number, 
+    category: string, 
+    sentiment: string, 
+    summary: string
+  ): Promise<Review> {
+    const [updatedReview] = await db
+      .update(schema.reviews)
+      .set({
+        category,
+        sentiment,
+        summary,
+        processed: true
+      })
+      .where(eq(schema.reviews.id, id))
+      .returning();
+    return updatedReview;
+  }
+  
+  async linkReviewToProposal(reviewId: number, proposalId: number): Promise<Review> {
+    const [updatedReview] = await db
+      .update(schema.reviews)
+      .set({ proposalId })
+      .where(eq(schema.reviews.id, reviewId))
+      .returning();
+    return updatedReview;
+  }
+  
+  // Governance Proposal methods for AI-generated proposals
+  async getGovernanceProposal(id: number): Promise<GovernanceProposal | undefined> {
+    const [proposal] = await db
+      .select()
+      .from(schema.governanceProposals)
+      .where(eq(schema.governanceProposals.id, id));
+    return proposal || undefined;
+  }
+  
+  async getGovernanceProposals(status?: string): Promise<GovernanceProposal[]> {
+    let query = db.select().from(schema.governanceProposals);
+    
+    // Apply status filter if provided
+    if (status) {
+      query = query.where(eq(schema.governanceProposals.status, status));
+    }
+    
+    // Order by most recent first
+    query = query.orderBy(desc(schema.governanceProposals.createdAt));
+    
+    return await query;
+  }
+  
+  async createGovernanceProposal(proposal: InsertGovernanceProposal): Promise<GovernanceProposal> {
+    const [newProposal] = await db
+      .insert(schema.governanceProposals)
+      .values(proposal)
+      .returning();
+    return newProposal;
+  }
+  
+  async updateGovernanceProposal(
+    id: number, 
+    updates: Partial<GovernanceProposal>
+  ): Promise<GovernanceProposal> {
+    const now = new Date();
+    const [updatedProposal] = await db
+      .update(schema.governanceProposals)
+      .set({
+        ...updates,
+        updatedAt: now
+      })
+      .where(eq(schema.governanceProposals.id, id))
+      .returning();
+    return updatedProposal;
+  }
+  
+  async updateGovernanceProposalStatus(id: number, status: string): Promise<GovernanceProposal> {
+    const now = new Date();
+    const [updatedProposal] = await db
+      .update(schema.governanceProposals)
+      .set({
+        status,
+        updatedAt: now
+      })
+      .where(eq(schema.governanceProposals.id, id))
+      .returning();
+    return updatedProposal;
+  }
+  
+  async updateGovernanceProposalVotes(
+    id: number, 
+    voteType: string, 
+    votePower: number
+  ): Promise<GovernanceProposal> {
+    // Get the current proposal
+    const proposal = await this.getGovernanceProposal(id);
+    if (!proposal) {
+      throw new Error(`Proposal with ID ${id} not found`);
+    }
+    
+    // Update the appropriate vote count
+    const now = new Date();
+    let updates: Record<string, any> = { updatedAt: now };
+    
+    if (voteType === 'for') {
+      updates.votesFor = Number(proposal.votesFor || 0) + votePower;
+    } else if (voteType === 'against') {
+      updates.votesAgainst = Number(proposal.votesAgainst || 0) + votePower;
+    } else if (voteType === 'abstain') {
+      updates.votesAbstain = Number(proposal.votesAbstain || 0) + votePower;
+    } else {
+      throw new Error(`Invalid vote type: ${voteType}`);
+    }
+    
+    // Update the proposal
+    const [updatedProposal] = await db
+      .update(schema.governanceProposals)
+      .set(updates)
+      .where(eq(schema.governanceProposals.id, id))
+      .returning();
+    return updatedProposal;
+  }
 }
 
 // Use DatabaseStorage instead of MemStorage
