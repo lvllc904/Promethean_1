@@ -4,7 +4,13 @@ import {
   proposals, type Proposal, type InsertProposal,
   votes, type Vote, type InsertVote,
   tasks, type Task, type InsertTask,
-  membershipTiers, type MembershipTier, type InsertMembershipTier
+  membershipTiers, type MembershipTier, type InsertMembershipTier,
+  serviceCategories, type ServiceCategory, type InsertServiceCategory,
+  serviceProviders, type ServiceProvider, type InsertServiceProvider,
+  apiCredentials, type ApiCredential, type InsertApiCredential,
+  serviceIntegrations, type ServiceIntegration, type InsertServiceIntegration,
+  whitelabelSettings, type WhitelabelSetting, type InsertWhitelabelSetting,
+  apiUsageLogs, type ApiUsageLog, type InsertApiUsageLog
 } from "@shared/schema";
 import * as schema from "@shared/schema";
 import { db } from "./db";
@@ -98,6 +104,49 @@ export interface IStorage {
   getCommunityEvents(): Promise<CommunityEvent[]>;
   getCommunityResources(): Promise<CommunityResource[]>;
   getCommunityMembers(search?: string): Promise<CommunityMember[]>;
+  
+  // Admin dashboard methods - Service Categories
+  getServiceCategory(id: number): Promise<ServiceCategory | undefined>;
+  getServiceCategories(active?: boolean): Promise<ServiceCategory[]>;
+  createServiceCategory(category: InsertServiceCategory): Promise<ServiceCategory>;
+  updateServiceCategory(id: number, category: Partial<InsertServiceCategory>): Promise<ServiceCategory>;
+  deleteServiceCategory(id: number): Promise<boolean>;
+  
+  // Admin dashboard methods - Service Providers
+  getServiceProvider(id: number): Promise<ServiceProvider | undefined>;
+  getServiceProviders(categoryId?: number, active?: boolean): Promise<ServiceProvider[]>;
+  createServiceProvider(provider: InsertServiceProvider): Promise<ServiceProvider>;
+  updateServiceProvider(id: number, provider: Partial<InsertServiceProvider>): Promise<ServiceProvider>;
+  deleteServiceProvider(id: number): Promise<boolean>;
+  
+  // Admin dashboard methods - API Credentials
+  getApiCredential(id: number): Promise<ApiCredential | undefined>;
+  getApiCredentialsByProvider(providerId: number): Promise<ApiCredential[]>;
+  createApiCredential(credential: InsertApiCredential): Promise<ApiCredential>;
+  updateApiCredential(id: number, credential: Partial<InsertApiCredential>): Promise<ApiCredential>;
+  deleteApiCredential(id: number): Promise<boolean>;
+  testApiCredential(id: number): Promise<boolean>;
+  
+  // Admin dashboard methods - Service Integrations
+  getServiceIntegration(id: number): Promise<ServiceIntegration | undefined>;
+  getServiceIntegrations(providerId?: number, active?: boolean): Promise<ServiceIntegration[]>;
+  createServiceIntegration(integration: InsertServiceIntegration): Promise<ServiceIntegration>;
+  updateServiceIntegration(id: number, integration: Partial<InsertServiceIntegration>): Promise<ServiceIntegration>;
+  deleteServiceIntegration(id: number): Promise<boolean>;
+  
+  // Admin dashboard methods - Whitelabel Settings
+  getWhitelabelSettings(): Promise<WhitelabelSetting | undefined>;
+  updateWhitelabelSettings(settings: Partial<InsertWhitelabelSetting>): Promise<WhitelabelSetting>;
+  
+  // Admin dashboard methods - API Usage Logs
+  getApiUsageLogs(integrationId?: number, from?: Date, to?: Date): Promise<ApiUsageLog[]>;
+  createApiUsageLog(log: InsertApiUsageLog): Promise<ApiUsageLog>;
+  getApiUsageSummary(integrationId?: number, period?: 'day' | 'week' | 'month'): Promise<{
+    totalRequests: number;
+    successRate: number;
+    avgResponseTime: number;
+    totalCost: number;
+  }>;
 }
 
 export class MemStorage implements IStorage {
