@@ -1,8 +1,9 @@
 import { useState, Suspense } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Settings, Server, Database, Palette, Key, History, PlusCircle } from 'lucide-react';
+import { Settings, Server, Database, Palette, Key, History, PlusCircle, Clock } from 'lucide-react';
 import { Link } from 'wouter';
+import SchedulerSettings from './components/SchedulerSettings';
 
 // Admin dashboard tabs - to be implemented
 const ServiceCategories = () => <div>Service Categories Component (Coming Soon)</div>;
@@ -27,7 +28,7 @@ export default function AdminDashboard() {
       </div>
       
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-        <TabsList className="grid grid-cols-6 md:grid-cols-6 gap-2">
+        <TabsList className="grid grid-cols-7 md:grid-cols-7 gap-2">
           <TabsTrigger value="categories" className="flex items-center gap-2">
             <Database className="h-4 w-4" />
             <span className="hidden md:inline">Categories</span>
@@ -47,6 +48,10 @@ export default function AdminDashboard() {
           <TabsTrigger value="whitelabel" className="flex items-center gap-2">
             <Palette className="h-4 w-4" />
             <span className="hidden md:inline">Whitelabel</span>
+          </TabsTrigger>
+          <TabsTrigger value="scheduler" className="flex items-center gap-2">
+            <Clock className="h-4 w-4" />
+            <span className="hidden md:inline">Scheduler</span>
           </TabsTrigger>
           <TabsTrigger value="usage" className="flex items-center gap-2">
             <History className="h-4 w-4" />
@@ -132,6 +137,12 @@ export default function AdminDashboard() {
               </Suspense>
             </CardContent>
           </Card>
+        </TabsContent>
+        
+        <TabsContent value="scheduler" className="space-y-4">
+          <Suspense fallback={<div>Loading scheduler settings...</div>}>
+            <SchedulerSettings />
+          </Suspense>
         </TabsContent>
         
         <TabsContent value="usage" className="space-y-4">

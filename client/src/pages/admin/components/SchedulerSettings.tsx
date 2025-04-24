@@ -3,7 +3,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { apiRequest } from '@/lib/queryClient';
 import { Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -23,8 +22,12 @@ export default function SchedulerSettings() {
   const fetchStatus = async () => {
     setLoading(true);
     try {
-      const response = await apiRequest('/api/admin/scheduler/status');
-      setStatus(response);
+      const response = await fetch('/api/admin/scheduler/status');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      setStatus(data);
     } catch (error) {
       console.error('Failed to fetch scheduler status:', error);
       toast({
@@ -47,9 +50,12 @@ export default function SchedulerSettings() {
   const handleStart = async () => {
     setUpdating(true);
     try {
-      await apiRequest('/api/admin/scheduler/start', {
+      const response = await fetch('/api/admin/scheduler/start', {
         method: 'POST',
       });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       toast({
         title: 'Success',
         description: 'Scheduler started successfully',
@@ -70,9 +76,12 @@ export default function SchedulerSettings() {
   const handleStop = async () => {
     setUpdating(true);
     try {
-      await apiRequest('/api/admin/scheduler/stop', {
+      const response = await fetch('/api/admin/scheduler/stop', {
         method: 'POST',
       });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       toast({
         title: 'Success',
         description: 'Scheduler stopped successfully',
@@ -102,13 +111,19 @@ export default function SchedulerSettings() {
 
     setUpdating(true);
     try {
-      await apiRequest('/api/admin/scheduler/interval', {
+      const response = await fetch('/api/admin/scheduler/interval', {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({
           task: 'reviewAnalysis',
           minutes: newInterval,
         }),
       });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       toast({
         title: 'Success',
         description: `Review analysis interval updated to ${newInterval} minutes`,
@@ -129,9 +144,12 @@ export default function SchedulerSettings() {
   const handleManualAnalysis = async () => {
     setUpdating(true);
     try {
-      await apiRequest('/api/reviews/analyze', {
+      const response = await fetch('/api/reviews/analyze', {
         method: 'POST',
       });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       toast({
         title: 'Success',
         description: 'Review analysis initiated',
