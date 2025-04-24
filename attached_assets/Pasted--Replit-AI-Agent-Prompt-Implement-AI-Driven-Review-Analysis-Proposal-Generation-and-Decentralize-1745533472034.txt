@@ -1,0 +1,84 @@
+**Replit AI Agent Prompt: Implement AI-Driven Review Analysis, Proposal Generation, and Decentralized Implementation with AI-Assisted Development**
+
+**Project Goal:**
+
+Implement a new backend feature within the existing Rfly web application (built in Replit) to enable AI-driven analysis of user reviews, generate governance proposals, facilitate decentralized voting, and automate platform implementation (either through community bounties or AI-assisted direct implementation). This feature should integrate seamlessly with the current UI, primarily operating in the backend with minimal immediate front-end changes required beyond displaying proposal/voting information.
+
+**I. Backend Logic and Architecture:**
+
+* **1. Review Data Model:**
+    * Create or modify the existing database schema to include a `reviews` table with fields for `user_id`, `timestamp`, `category` (concern, suggestion, praise, design idea), `content` (text of the review), `sentiment` (positive, negative, neutral - to be determined by AI), `summary` (AI-generated), and `proposal_id` (linking to a governance proposal, if created).
+* **2. AI Concierge Service (Main Agent):**
+    * Create a new module or extend the existing AI agent logic to include the following functions:
+        * **`analyzeReviews()`:** Periodically (e.g., daily function triggered by a scheduler) fetch new reviews, categorize them using NLP (integrate a suitable NLP library like `natural` or leverage Replit's AI capabilities), perform sentiment analysis, and generate a concise summary for each. Update the `reviews` table with this information.
+        * **`generateFeasibilityStudies()`:** Group similar reviews based on category and sentiment. For each group, generate a feasibility study object containing `impact` (qualitative assessment), `effort_estimate` (qualitative - low, medium, high), and `alignment` (boolean - aligns with platform goals).
+        * **`generateGovernanceProposal(feasibilityStudy, representativeReviews, proposedAction, bountyAmount = null)`:** Create a new entry in a `governance_proposals` table with fields for `title` (AI-generated), `summary` (based on feasibility study and reviews), `proposed_action` (text), `proposer_id` (system - AI Concierge), `status` (pending, voting, passed, failed, implemented), `vote_start_time`, `vote_end_time`, `bounty_amount` (if applicable), and `implementation_details` (for AI-assisted implementations).
+        * **`determineBountyAmount(feasibilityStudy)`:** Implement logic to estimate a 'DAC' token bounty based on `effort_estimate`, potential `impact`, and a configurable set of rules (consider complexity, estimated time, market rates - placeholder values are acceptable initially).
+        * **`processVoteOutcome(proposalId, voteResults)`:** Update the `governance_proposals` table `status` based on the vote results.
+        * **`orchestrateAIAssistedImplementation(proposalId, requirements)`:** (See detailed logic below) This function will handle the code generation request to a coding AI and the subsequent implementation process.
+* **3. Subordinate AI Agents (Backend Modules):**
+    * Create (if not existing) or extend modules for `TravelAgent`, `SocialAgent`, `MarketplaceAgent`, and `GovernanceAgent` to provide relevant data and context to the Main AI Concierge when it's analyzing reviews and formulating proposals related to their domains. These agents do not directly interact with this review/governance process but their domain knowledge is crucial for the Concierge's analysis.
+* **4. Governance Data Model:**
+    * Create a `governance_proposals` table (if not existing) to store proposals, voting status, and implementation details.
+    * Create a `votes` table to record user votes on proposals (`user_id`, `proposal_id`, `vote_value`, `timestamp`).
+* **5. Voting Logic:**
+    * Implement backend logic (likely within the `GovernanceAgent` or a dedicated `VotingService`) to handle user voting on proposals, ensuring 'DAC' token holders have voting power. This should interact with the `votes` and `governance_proposals` tables.
+* **6. Task Scheduling:**
+    * Utilize a scheduling mechanism (e.g., Replit's cron-like features or a library like `schedule`) to trigger the `analyzeReviews()` function periodically.
+
+**II. AI-Assisted Direct Implementation Logic (`orchestrateAIAssistedImplementation`):**
+
+1.  **Requirement Formalization:** Based on the `governance_proposals.proposed_action`, create a clear and concise string describing the required code change.
+2.  **Contextual Information Retrieval:** Fetch relevant code snippets and platform architecture details (as understood by the AI Concierge's internal knowledge) related to the area of the proposed change.
+3.  **Code Generation Request:** Construct a structured prompt for a coding AI (e.g., Replit's built-in AI, or simulate an external API call to Claude or DeepSeek - focus on Replit's capabilities first). The prompt should include:
+    * The detailed requirements.
+    * Relevant code context.
+    * Desired functionality and expected behavior.
+    * Any known platform constraints or guidelines.
+    * Preferred coding style (if defined).
+4.  **Code Retrieval and Preliminary Assessment:** Receive the generated code from the coding AI. Implement basic checks for syntax errors and obvious security vulnerabilities (using Replit's linting/analysis tools if possible).
+5.  **Internal "Bounty Submission" Simulation:** Update the `governance_proposals.implementation_details` field with the generated code and mark the proposal as ready for a "simulated internal vote."
+6.  **Governance Vote on AI-Generated Code:** The existing voting logic will be used for this proposal.
+7.  **Automated Implementation (Upon Vote Approval):** If the vote passes, implement logic within the `orchestrateAIAssistedImplementation` function to:
+    * Access the generated code from `governance_proposals.implementation_details`.
+    * Use Replit's file system manipulation capabilities (or internal Rfly code deployment mechanisms) to write or modify the necessary code files within the Replit environment.
+    * Log the implementation details and status in the `governance_proposals` table.
+8.  **Automated Testing and Monitoring:** After implementation, trigger any existing automated tests relevant to the modified code. Implement basic logging to monitor the new feature's behavior.
+
+**III. UI Integration (Minimal Initial Scope):**
+
+* **Proposal Display:** Modify the existing UI (likely within the unified overlay) to display active governance proposals, including their summary, proposed action, and (if applicable) the AI-recommended bounty amount.
+* **Voting Interface:** Integrate a voting mechanism within the UI that allows 'DAC' token holders to cast their votes on active proposals.
+* **Proposal Status:** Display the current status of proposals (pending, voting, passed, failed, implemented).
+
+**IV. Task Breakdown for Replit AI:**
+
+1.  **Database Schema Modification:** Create/update the `reviews` and `governance_proposals` tables.
+2.  **AI Concierge Service Implementation:** Implement the `analyzeReviews()`, `generateFeasibilityStudies()`, `generateGovernanceProposal()`, `determineBountyAmount()`, `processVoteOutcome()`, and `orchestrateAIAssistedImplementation()` functions.
+3.  **Subordinate AI Agent Integration:** Ensure the Main AI Concierge can access relevant information from the `TravelAgent`, `SocialAgent`, `MarketplaceAgent`, and `GovernanceAgent`.
+4.  **Voting Logic Implementation:** Implement the backend voting mechanism.
+5.  **Task Scheduling:** Set up a recurring task to trigger `analyzeReviews()`.
+6.  **Basic UI Integration:** Modify the overlay to display proposals, voting options, and proposal status.
+7.  **AI-Assisted Implementation Flow:** Implement the logic within `orchestrateAIAssistedImplementation()` to interact with Replit's AI for code generation and file system for implementation (focus on a simple "hello world" or basic code modification example for initial testing).
+
+**Success Metrics:**
+
+* Successful automated analysis and categorization of user reviews.
+* Generation of coherent governance proposals.
+* Functional decentralized voting on proposals.
+* Successful creation of bounties with AI-determined compensation.
+* (Initial) Successful AI-assisted generation and implementation of a simple code change.
+* Seamless integration of governance information into the existing UI.
+
+**Important Notes for Replit AI:**
+
+* Prioritize backend logic and database interactions first.
+* Focus on clear and modular code.
+* Use descriptive variable and function names.
+* Include comments to explain complex logic.
+* Assume the existence of a user authentication system and 'DAC' token balance tracking.
+* For the AI-assisted implementation, start with a very basic code generation and implementation test case within the Replit environment itself.
+* The UI integration can be minimal initially, focusing on displaying the necessary information.
+
+This detailed prompt should provide the Replit AI agent with a clear roadmap for implementing the desired feature in a single pass, focusing on the backend logic and its integration with the existing application.
+
