@@ -373,3 +373,65 @@ export type WhitelabelSetting = typeof whitelabelSettings.$inferSelect;
 
 export type InsertApiUsageLog = z.infer<typeof insertApiUsageLogSchema>;
 export type ApiUsageLog = typeof apiUsageLogs.$inferSelect;
+
+// Review schema for AI-driven review analysis
+export const reviews = pgTable("reviews", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull(),
+  content: text("content").notNull(),
+  category: text("category"), // 'concern', 'suggestion', 'praise', 'design idea'
+  sentiment: text("sentiment"), // 'positive', 'negative', 'neutral'
+  summary: text("summary"),
+  proposalId: integer("proposal_id"),
+  processed: boolean("processed").default(false),
+  timestamp: timestamp("timestamp").defaultNow(),
+});
+
+export const insertReviewSchema = createInsertSchema(reviews).omit({
+  id: true,
+  category: true,
+  sentiment: true,
+  summary: true,
+  proposalId: true,
+  processed: true,
+  timestamp: true,
+});
+
+// Governance proposal schema for AI-generated proposals
+export const governanceProposals = pgTable("governance_proposals", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  summary: text("summary").notNull(),
+  proposedAction: text("proposed_action").notNull(),
+  proposerId: integer("proposer_id").notNull(),
+  status: text("status").default("pending"), // 'pending', 'voting', 'passed', 'failed', 'implemented'
+  voteStartTime: timestamp("vote_start_time"),
+  voteEndTime: timestamp("vote_end_time"),
+  bountyAmount: numeric("bounty_amount"),
+  implementationDetails: jsonb("implementation_details"),
+  feasibilityStudy: jsonb("feasibility_study"), // impact, effort_estimate, alignment
+  representativeReviews: jsonb("representative_reviews"), // Array of review IDs
+  aiGenerated: boolean("ai_generated").default(false),
+  votesFor: integer("votes_for").default(0),
+  votesAgainst: integer("votes_against").default(0),
+  votesAbstain: integer("votes_abstain").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const insertGovernanceProposalSchema = createInsertSchema(governanceProposals).omit({
+  id: true,
+  status: true,
+  votesFor: true,
+  votesAgainst: true,
+  votesAbstain: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// Types for reviews and governance proposals
+export type InsertReview = z.infer<typeof insertReviewSchema>;
+export type Review = typeof reviews.$inferSelect;
+
+export type InsertGovernanceProposal = z.infer<typeof insertGovernanceProposalSchema>;
+export type GovernanceProposal = typeof governanceProposals.$inferSelect;
