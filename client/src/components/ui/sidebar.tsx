@@ -8,7 +8,8 @@ import {
   MessageSquare, 
   Award,
   ChevronDown,
-  Wallet2
+  Wallet2,
+  Settings
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -173,6 +174,15 @@ export function Sidebar() {
           isActive={isActive("/memberships")}
         >
           Memberships
+        </NavItem>
+        
+        {/* Admin Dashboard */}
+        <NavItem 
+          href="/admin" 
+          icon={<Settings className="h-5 w-5" />} 
+          isActive={isActive("/admin")}
+        >
+          Admin Dashboard
         </NavItem>
       </nav>
       
