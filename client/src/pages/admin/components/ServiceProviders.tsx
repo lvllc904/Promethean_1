@@ -1,11 +1,23 @@
-import { useState } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { apiRequest } from '@/lib/queryClient';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import React, { useState } from 'react';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { apiRequest, queryClient } from '@/lib/queryClient';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { insertServiceProviderSchema } from '../../../../shared/schema';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
+import { AlertCircle, Boxes, Server, Globe, ExternalLink, Edit2, Trash2, Plus, Database, Link as LinkIcon } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { useToast } from "@/hooks/use-toast";
+import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import {
   Table,
   TableBody,
@@ -13,616 +25,653 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Badge } from '@/components/ui/badge';
-import { useToast } from '@/hooks/use-toast';
-import { Loader2, PlusCircle, Pencil, Trash2, CheckCircle, XCircle } from 'lucide-react';
+} from "@/components/ui/table";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-interface ServiceProvider {
-  id: number;
-  name: string;
-  description: string | null;
-  categoryId: number;
-  authType: string;
-  baseUrl: string | null;
-  docsUrl: string | null;
-  logoUrl: string | null;
-  requiredFields: string[] | null;
-  isActive: boolean;
-}
+// Extend the insert schema for Service Providers
+const serviceProviderSchema = insertServiceProviderSchema.extend({
+  name: z.string().min(3, "Name must be at least 3 characters"),
+  description: z.string().optional(),
+  categoryId: z.number().min(1, "Please select a category"),
+  logoUrl: z.string().url("Please enter a valid URL").optional().or(z.literal('')),
+  website: z.string().url("Please enter a valid URL").optional().or(z.literal('')),
+  documentationUrl: z.string().url("Please enter a valid URL").optional().or(z.literal('')),
+  apiBaseUrl: z.string().url("Please enter a valid URL").optional().or(z.literal('')),
+  isRapidApi: z.boolean().default(false),
+  authType: z.string().min(1, "Please select an authentication type"),
+  requiredFields: z.any().optional(),
+});
 
-interface ServiceCategory {
-  id: number;
-  name: string;
-  description: string | null;
-}
+type ServiceProviderFormValues = z.infer<typeof serviceProviderSchema>;
 
-export default function ServiceProviders() {
+const authTypes = [
+  { value: 'api_key', label: 'API Key' },
+  { value: 'oauth2', label: 'OAuth 2.0' },
+  { value: 'bearer', label: 'Bearer Token' },
+  { value: 'basic', label: 'Basic Auth' },
+  { value: 'none', label: 'No Authentication' }
+];
+
+const ServiceProviders = () => {
   const { toast } = useToast();
-  const queryClient = useQueryClient();
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [selectedProvider, setSelectedProvider] = useState<ServiceProvider | null>(null);
-  const [requiredFields, setRequiredFields] = useState('');
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [editingProvider, setEditingProvider] = useState<any>(null);
+  const [activeCategory, setActiveCategory] = useState<number | null>(null);
   
-  // Form state
-  const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    categoryId: '',
-    authType: 'api_key',
-    baseUrl: '',
-    docsUrl: '',
-    logoUrl: '',
-    isActive: true,
-  });
-  
-  // Fetch providers
-  const { data: providers, isLoading, error } = useQuery({
-    queryKey: ['/api/admin/service-providers'],
+  // Fetch all service providers
+  const { data: providers, isLoading: isLoadingProviders, error: providersError } = useQuery({
+    queryKey: ['/api/admin/providers'],
     retry: 1,
   });
   
-  // Fetch categories for dropdown
-  const { data: categories } = useQuery({
-    queryKey: ['/api/admin/service-categories'],
+  // Fetch all categories for dropdown
+  const { data: categories, isLoading: isLoadingCategories } = useQuery({
+    queryKey: ['/api/admin/categories'],
     retry: 1,
   });
   
-  // Add provider mutation
-  const addMutation = useMutation({
-    mutationFn: (newProvider: any) => {
-      return apiRequest('/api/admin/service-providers', {
-        method: 'POST',
-        data: {
-          ...newProvider,
-          requiredFields: parseRequiredFields(requiredFields),
-        },
-      });
-    },
+  // Create new service provider
+  const addProviderMutation = useMutation({
+    mutationFn: (newProvider: ServiceProviderFormValues) => 
+      apiRequest('/api/admin/providers', { method: 'POST', data: newProvider }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/service-providers'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/providers'] });
+      setAddDialogOpen(false);
       toast({
-        title: 'Success',
-        description: 'Service provider added successfully',
+        title: "Provider Added",
+        description: "Service provider has been added successfully.",
       });
-      setIsAddDialogOpen(false);
-      resetForm();
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast({
-        title: 'Error',
-        description: 'Failed to add service provider. Please try again.',
-        variant: 'destructive',
+        title: "Failed to add provider",
+        description: error.message || "An error occurred while adding the provider.",
+        variant: "destructive",
       });
+    }
+  });
+  
+  // Update service provider
+  const updateProviderMutation = useMutation({
+    mutationFn: ({ id, data }: { id: number, data: Partial<ServiceProviderFormValues> }) => 
+      apiRequest(`/api/admin/providers/${id}`, { method: 'PATCH', data }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/providers'] });
+      setEditingProvider(null);
+      setAddDialogOpen(false);
+      toast({
+        title: "Provider Updated",
+        description: "Service provider has been updated successfully.",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Failed to update provider",
+        description: error.message || "An error occurred while updating the provider.",
+        variant: "destructive",
+      });
+    }
+  });
+  
+  // Delete service provider
+  const deleteProviderMutation = useMutation({
+    mutationFn: (id: number) => 
+      apiRequest(`/api/admin/providers/${id}`, { method: 'DELETE' }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/providers'] });
+      toast({
+        title: "Provider Deleted",
+        description: "Service provider has been deleted successfully.",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Failed to delete provider",
+        description: error.message || "An error occurred while deleting the provider.",
+        variant: "destructive",
+      });
+    }
+  });
+  
+  // Toggle provider active status
+  const toggleProviderStatusMutation = useMutation({
+    mutationFn: ({ id, isActive }: { id: number, isActive: boolean }) => 
+      apiRequest(`/api/admin/providers/${id}/status`, { 
+        method: 'PATCH', 
+        data: { isActive } 
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/providers'] });
+      toast({
+        title: "Status Updated",
+        description: "Provider status has been updated successfully.",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Failed to update status",
+        description: error.message || "An error occurred while updating the status.",
+        variant: "destructive",
+      });
+    }
+  });
+  
+  // Form for adding/editing providers
+  const form = useForm<ServiceProviderFormValues>({
+    resolver: zodResolver(serviceProviderSchema),
+    defaultValues: {
+      name: "",
+      description: "",
+      categoryId: undefined,
+      logoUrl: "",
+      website: "",
+      documentationUrl: "",
+      apiBaseUrl: "",
+      isRapidApi: false,
+      authType: "",
+      requiredFields: {},
     },
   });
   
-  // Update provider mutation
-  const updateMutation = useMutation({
-    mutationFn: ({ id, ...data }: { id: number, [key: string]: any }) => {
-      return apiRequest(`/api/admin/service-providers/${id}`, {
-        method: 'PATCH',
-        data: {
-          ...data,
-          requiredFields: parseRequiredFields(requiredFields),
-        },
-      });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/service-providers'] });
-      toast({
-        title: 'Success',
-        description: 'Service provider updated successfully',
-      });
-      setIsEditDialogOpen(false);
-      resetForm();
-    },
-    onError: (error) => {
-      toast({
-        title: 'Error',
-        description: 'Failed to update service provider. Please try again.',
-        variant: 'destructive',
-      });
-    },
-  });
-  
-  // Delete provider mutation
-  const deleteMutation = useMutation({
-    mutationFn: (id: number) => {
-      return apiRequest(`/api/admin/service-providers/${id}`, {
-        method: 'DELETE',
-      });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/service-providers'] });
-      toast({
-        title: 'Success',
-        description: 'Service provider deleted successfully',
-      });
-    },
-    onError: (error) => {
-      toast({
-        title: 'Error',
-        description: 'Failed to delete service provider. Please try again.',
-        variant: 'destructive',
-      });
-    },
-  });
-  
-  // Parse required fields from comma-separated string to array
-  const parseRequiredFields = (fields: string): string[] | null => {
-    if (!fields.trim()) return null;
-    return fields.split(',').map(field => field.trim()).filter(Boolean);
-  };
-  
-  // Format array to comma-separated string
-  const formatRequiredFields = (fields: string[] | null): string => {
-    if (!fields) return '';
-    return fields.join(', ');
-  };
-  
-  // Handle form input changes
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-  
-  // Handle select changes
-  const handleSelectChange = (name: string, value: string) => {
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-  
-  // Reset form
-  const resetForm = () => {
-    setFormData({
-      name: '',
-      description: '',
-      categoryId: '',
-      authType: 'api_key',
-      baseUrl: '',
-      docsUrl: '',
-      logoUrl: '',
-      isActive: true,
-    });
-    setRequiredFields('');
-    setSelectedProvider(null);
-  };
-  
-  // Open edit dialog
-  const handleEditClick = (provider: ServiceProvider) => {
-    setSelectedProvider(provider);
-    setFormData({
-      name: provider.name,
-      description: provider.description || '',
-      categoryId: provider.categoryId.toString(),
-      authType: provider.authType,
-      baseUrl: provider.baseUrl || '',
-      docsUrl: provider.docsUrl || '',
-      logoUrl: provider.logoUrl || '',
-      isActive: provider.isActive,
-    });
-    setRequiredFields(formatRequiredFields(provider.requiredFields));
-    setIsEditDialogOpen(true);
-  };
-  
-  // Handle add form submission
-  const handleAddSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    addMutation.mutate({
-      name: formData.name,
-      description: formData.description || null,
-      categoryId: parseInt(formData.categoryId),
-      authType: formData.authType,
-      baseUrl: formData.baseUrl || null,
-      docsUrl: formData.docsUrl || null,
-      logoUrl: formData.logoUrl || null,
-      isActive: true,
-    });
-  };
-  
-  // Handle edit form submission
-  const handleEditSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!selectedProvider) return;
+  const onSubmit = (values: ServiceProviderFormValues) => {
+    // Convert requiredFields to proper JSON object if it's a string
+    if (typeof values.requiredFields === 'string') {
+      try {
+        values.requiredFields = JSON.parse(values.requiredFields);
+      } catch (e) {
+        toast({
+          title: "Invalid Required Fields Format",
+          description: "Please enter valid JSON for required fields.",
+          variant: "destructive",
+        });
+        return;
+      }
+    }
     
-    updateMutation.mutate({
-      id: selectedProvider.id,
-      name: formData.name,
-      description: formData.description || null,
-      categoryId: parseInt(formData.categoryId),
-      authType: formData.authType,
-      baseUrl: formData.baseUrl || null,
-      docsUrl: formData.docsUrl || null,
-      logoUrl: formData.logoUrl || null,
-      isActive: formData.isActive,
+    if (editingProvider) {
+      updateProviderMutation.mutate({ 
+        id: editingProvider.id, 
+        data: values 
+      });
+    } else {
+      addProviderMutation.mutate(values);
+    }
+  };
+  
+  const handleEditProvider = (provider: any) => {
+    setEditingProvider(provider);
+    form.reset({
+      name: provider.name,
+      description: provider.description || "",
+      categoryId: provider.categoryId,
+      logoUrl: provider.logoUrl || "",
+      website: provider.website || "",
+      documentationUrl: provider.documentationUrl || "",
+      apiBaseUrl: provider.apiBaseUrl || "",
+      isRapidApi: provider.isRapidApi || false,
+      authType: provider.authType,
+      requiredFields: provider.requiredFields || {},
     });
+    setAddDialogOpen(true);
   };
   
-  // Handle delete
-  const handleDelete = (id: number) => {
-    if (window.confirm('Are you sure you want to delete this service provider?')) {
-      deleteMutation.mutate(id);
-    }
+  const closeDialog = () => {
+    setAddDialogOpen(false);
+    setEditingProvider(null);
+    form.reset();
   };
   
-  // Format auth type for display
-  const formatAuthType = (authType: string): string => {
-    switch (authType) {
-      case 'api_key':
-        return 'API Key';
-      case 'api_key_secret':
-        return 'API Key + Secret';
-      case 'oauth2':
-        return 'OAuth 2.0';
-      case 'bearer':
-        return 'Bearer Token';
-      default:
-        return authType;
-    }
-  };
-  
-  if (isLoading) {
-    return <div className="flex justify-center"><Loader2 className="h-8 w-8 animate-spin" /></div>;
+  if (isLoadingProviders || isLoadingCategories) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Service Providers</CardTitle>
+          <CardDescription>Manage external service providers for integrations</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <Skeleton className="h-8 w-full" />
+            <Skeleton className="h-8 w-full" />
+            <Skeleton className="h-8 w-full" />
+          </div>
+        </CardContent>
+      </Card>
+    );
   }
   
-  if (error) {
-    return <div className="text-red-500">Error loading service providers. Please try again.</div>;
+  if (providersError) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Service Providers</CardTitle>
+          <CardDescription>Manage external service providers for integrations</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>
+              Failed to load service providers. Please try again later.
+            </AlertDescription>
+          </Alert>
+        </CardContent>
+      </Card>
+    );
   }
+  
+  // Filter providers by category if a category is selected
+  const filteredProviders = providers && (
+    activeCategory 
+      ? providers.filter((provider: any) => provider.categoryId === activeCategory)
+      : providers
+  );
   
   return (
-    <div>
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-medium">Service Providers</h3>
-        <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-          <DialogTrigger asChild>
-            <Button onClick={() => { resetForm(); setIsAddDialogOpen(true); }}>
-              <PlusCircle className="mr-2 h-4 w-4" />
-              Add Provider
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <div>
+          <CardTitle>Service Providers</CardTitle>
+          <CardDescription>Manage external service providers for integrations</CardDescription>
+        </div>
+        <Button onClick={() => setAddDialogOpen(true)} className="gap-2">
+          <Plus className="h-4 w-4" />
+          Add Provider
+        </Button>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        {/* Category Tabs */}
+        {categories && categories.length > 0 && (
+          <Tabs 
+            defaultValue="all" 
+            onValueChange={(value) => setActiveCategory(value === 'all' ? null : parseInt(value))}
+            className="w-full"
+          >
+            <TabsList className="flex flex-wrap h-auto">
+              <TabsTrigger value="all" className="mb-1">All Categories</TabsTrigger>
+              {categories.map((category: any) => (
+                <TabsTrigger 
+                  key={category.id} 
+                  value={category.id.toString()}
+                  className="mb-1"
+                >
+                  {category.name}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </Tabs>
+        )}
+        
+        {/* Provider Listing */}
+        {filteredProviders && filteredProviders.length === 0 ? (
+          <div className="text-center py-8">
+            <Server className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+            <h3 className="text-lg font-medium">No Service Providers</h3>
+            <p className="text-muted-foreground mt-2 mb-4">
+              Add service providers to enable integrations with external services.
+            </p>
+            <Button onClick={() => setAddDialogOpen(true)} className="gap-2">
+              <Plus className="h-4 w-4" />
+              Add First Provider
             </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[600px]">
-            <DialogHeader>
-              <DialogTitle>Add New Service Provider</DialogTitle>
-            </DialogHeader>
-            <form onSubmit={handleAddSubmit} className="space-y-4 mt-4">
-              <div className="grid gap-2">
-                <Label htmlFor="name">Name</Label>
-                <Input
-                  id="name"
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filteredProviders && filteredProviders.map((provider: any) => {
+              const category = categories?.find((c: any) => c.id === provider.categoryId);
+              return (
+                <Card key={provider.id} className={`${provider.isActive ? 'border-gray-200' : 'border-red-200 bg-red-50'}`}>
+                  <CardHeader className="pb-3">
+                    <div className="flex justify-between items-start">
+                      <div className="flex items-center gap-2">
+                        {provider.logoUrl ? (
+                          <img 
+                            src={provider.logoUrl} 
+                            alt={provider.name} 
+                            className="w-8 h-8 object-contain"
+                          />
+                        ) : (
+                          <Boxes className="h-8 w-8 text-muted-foreground" />
+                        )}
+                        <div>
+                          <CardTitle className="text-base">{provider.name}</CardTitle>
+                          <CardDescription className="text-xs">
+                            {category ? category.name : 'Uncategorized'}
+                          </CardDescription>
+                        </div>
+                      </div>
+                      <Badge variant={provider.isActive ? "outline" : "secondary"} className={provider.isActive ? "bg-green-50 border-green-200 text-green-800" : "bg-red-50 border-red-200 text-red-800"}>
+                        {provider.isActive ? "Active" : "Inactive"}
+                      </Badge>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="pb-3">
+                    <p className="text-sm text-muted-foreground mb-3">
+                      {provider.description || "No description provided"}
+                    </p>
+                    
+                    <div className="text-xs space-y-2">
+                      {provider.website && (
+                        <div className="flex items-center gap-2">
+                          <Globe className="h-3 w-3 text-muted-foreground" />
+                          <a 
+                            href={provider.website} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:underline truncate"
+                          >
+                            {provider.website}
+                          </a>
+                        </div>
+                      )}
+                      
+                      {provider.documentationUrl && (
+                        <div className="flex items-center gap-2">
+                          <ExternalLink className="h-3 w-3 text-muted-foreground" />
+                          <a 
+                            href={provider.documentationUrl} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:underline truncate"
+                          >
+                            Documentation
+                          </a>
+                        </div>
+                      )}
+                      
+                      {provider.apiBaseUrl && (
+                        <div className="flex items-center gap-2">
+                          <LinkIcon className="h-3 w-3 text-muted-foreground" />
+                          <span className="text-muted-foreground truncate">
+                            {provider.apiBaseUrl}
+                          </span>
+                        </div>
+                      )}
+                      
+                      <div className="flex items-center gap-2">
+                        <Database className="h-3 w-3 text-muted-foreground" />
+                        <span className="text-muted-foreground">
+                          Auth: {authTypes.find(a => a.value === provider.authType)?.label || provider.authType}
+                        </span>
+                      </div>
+                      
+                      {provider.isRapidApi && (
+                        <Badge variant="secondary" className="text-xs mt-2">
+                          RapidAPI
+                        </Badge>
+                      )}
+                    </div>
+                  </CardContent>
+                  <CardFooter className="flex justify-end gap-2 pt-2">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => toggleProviderStatusMutation.mutate({ id: provider.id, isActive: !provider.isActive })}
+                      disabled={toggleProviderStatusMutation.isPending}
+                    >
+                      {provider.isActive ? "Disable" : "Enable"}
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => handleEditProvider(provider)}
+                    >
+                      Edit
+                    </Button>
+                    <Button 
+                      variant="destructive" 
+                      size="sm" 
+                      onClick={() => {
+                        if (confirm("Are you sure you want to delete this provider?")) {
+                          deleteProviderMutation.mutate(provider.id);
+                        }
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  </CardFooter>
+                </Card>
+              );
+            })}
+          </div>
+        )}
+      </CardContent>
+      
+      {/* Add/Edit Provider Dialog */}
+      <Dialog open={addDialogOpen} onOpenChange={closeDialog}>
+        <DialogContent className="sm:max-w-[600px]">
+          <DialogHeader>
+            <DialogTitle>
+              {editingProvider ? "Edit Service Provider" : "Add Service Provider"}
+            </DialogTitle>
+            <DialogDescription>
+              {editingProvider 
+                ? "Update the details of this service provider" 
+                : "Add a new external service provider for integration"}
+            </DialogDescription>
+          </DialogHeader>
+          
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
                   name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  placeholder="Service Provider Name"
-                  required
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Provider Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="e.g. OpenAI" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="categoryId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Category</FormLabel>
+                      <Select 
+                        onValueChange={(value) => field.onChange(parseInt(value))}
+                        value={field.value?.toString()}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a category" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {categories && categories.map((category: any) => (
+                            <SelectItem key={category.id} value={category.id.toString()}>
+                              {category.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
               </div>
               
-              <div className="grid gap-2">
-                <Label htmlFor="description">Description</Label>
-                <Textarea
-                  id="description"
-                  name="description"
-                  value={formData.description}
-                  onChange={handleInputChange}
-                  placeholder="Describe what this service provider offers"
-                />
-              </div>
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Description</FormLabel>
+                    <FormControl>
+                      <Textarea 
+                        placeholder="Enter a description for this service provider" 
+                        {...field} 
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               
-              <div className="grid gap-2">
-                <Label htmlFor="categoryId">Category</Label>
-                <Select 
-                  name="categoryId" 
-                  value={formData.categoryId} 
-                  onValueChange={(value) => handleSelectChange('categoryId', value)}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {categories && categories.map((category: ServiceCategory) => (
-                      <SelectItem key={category.id} value={category.id.toString()}>
-                        {category.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div className="grid gap-2">
-                <Label htmlFor="authType">Authentication Type</Label>
-                <Select 
-                  name="authType" 
-                  value={formData.authType} 
-                  onValueChange={(value) => handleSelectChange('authType', value)}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select auth type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="api_key">API Key</SelectItem>
-                    <SelectItem value="api_key_secret">API Key + Secret</SelectItem>
-                    <SelectItem value="oauth2">OAuth 2.0</SelectItem>
-                    <SelectItem value="bearer">Bearer Token</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div className="grid gap-2">
-                <Label htmlFor="baseUrl">Base URL</Label>
-                <Input
-                  id="baseUrl"
-                  name="baseUrl"
-                  value={formData.baseUrl}
-                  onChange={handleInputChange}
-                  placeholder="https://api.example.com"
-                />
-              </div>
-              
-              <div className="grid gap-2">
-                <Label htmlFor="docsUrl">Documentation URL</Label>
-                <Input
-                  id="docsUrl"
-                  name="docsUrl"
-                  value={formData.docsUrl}
-                  onChange={handleInputChange}
-                  placeholder="https://docs.example.com"
-                />
-              </div>
-              
-              <div className="grid gap-2">
-                <Label htmlFor="logoUrl">Logo URL</Label>
-                <Input
-                  id="logoUrl"
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
                   name="logoUrl"
-                  value={formData.logoUrl}
-                  onChange={handleInputChange}
-                  placeholder="https://example.com/logo.png"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Logo URL (Optional)</FormLabel>
+                      <FormControl>
+                        <Input placeholder="https://example.com/logo.png" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="website"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Website (Optional)</FormLabel>
+                      <FormControl>
+                        <Input placeholder="https://example.com" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
               </div>
               
-              <div className="grid gap-2">
-                <Label htmlFor="requiredFields">Required Fields (comma-separated)</Label>
-                <Textarea
-                  id="requiredFields"
-                  value={requiredFields}
-                  onChange={(e) => setRequiredFields(e.target.value)}
-                  placeholder="field1, field2, field3"
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="documentationUrl"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Documentation URL (Optional)</FormLabel>
+                      <FormControl>
+                        <Input placeholder="https://docs.example.com" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-                <p className="text-sm text-muted-foreground">
-                  List any fields specific to this provider, separated by commas
-                </p>
+                
+                <FormField
+                  control={form.control}
+                  name="apiBaseUrl"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>API Base URL (Optional)</FormLabel>
+                      <FormControl>
+                        <Input placeholder="https://api.example.com" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="authType"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Authentication Type</FormLabel>
+                      <Select 
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select auth type" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {authTypes.map((authType) => (
+                            <SelectItem key={authType.value} value={authType.value}>
+                              {authType.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="isRapidApi"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-start space-x-3 space-y-0 p-4">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <div className="space-y-1 leading-none">
+                        <FormLabel>
+                          RapidAPI Integration
+                        </FormLabel>
+                        <FormDescription>
+                          This service is available through RapidAPI
+                        </FormDescription>
+                      </div>
+                    </FormItem>
+                  )}
+                />
+              </div>
+              
+              <FormField
+                control={form.control}
+                name="requiredFields"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Required Fields (JSON)</FormLabel>
+                    <FormControl>
+                      <Textarea 
+                        placeholder='{"field1": "description", "field2": "description"}'
+                        value={typeof field.value === 'object' ? JSON.stringify(field.value, null, 2) : field.value}
+                        onChange={(e) => field.onChange(e.target.value)}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      JSON object describing the fields required for configuration
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               
               <DialogFooter>
-                <Button type="button" variant="outline" onClick={() => setIsAddDialogOpen(false)}>
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={closeDialog}
+                >
                   Cancel
                 </Button>
-                <Button type="submit" disabled={addMutation.isPending}>
-                  {addMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  Save
+                <Button 
+                  type="submit"
+                  disabled={
+                    addProviderMutation.isPending || 
+                    updateProviderMutation.isPending
+                  }
+                >
+                  {editingProvider ? "Update Provider" : "Add Provider"}
                 </Button>
               </DialogFooter>
             </form>
-          </DialogContent>
-        </Dialog>
-      </div>
-      
-      {/* Edit Dialog */}
-      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent className="sm:max-w-[600px]">
-          <DialogHeader>
-            <DialogTitle>Edit Service Provider</DialogTitle>
-          </DialogHeader>
-          <form onSubmit={handleEditSubmit} className="space-y-4 mt-4">
-            <div className="grid gap-2">
-              <Label htmlFor="edit-name">Name</Label>
-              <Input
-                id="edit-name"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-            
-            <div className="grid gap-2">
-              <Label htmlFor="edit-description">Description</Label>
-              <Textarea
-                id="edit-description"
-                name="description"
-                value={formData.description}
-                onChange={handleInputChange}
-              />
-            </div>
-            
-            <div className="grid gap-2">
-              <Label htmlFor="edit-categoryId">Category</Label>
-              <Select 
-                name="categoryId" 
-                value={formData.categoryId} 
-                onValueChange={(value) => handleSelectChange('categoryId', value)}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a category" />
-                </SelectTrigger>
-                <SelectContent>
-                  {categories && categories.map((category: ServiceCategory) => (
-                    <SelectItem key={category.id} value={category.id.toString()}>
-                      {category.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            
-            <div className="grid gap-2">
-              <Label htmlFor="edit-authType">Authentication Type</Label>
-              <Select 
-                name="authType" 
-                value={formData.authType} 
-                onValueChange={(value) => handleSelectChange('authType', value)}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select auth type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="api_key">API Key</SelectItem>
-                  <SelectItem value="api_key_secret">API Key + Secret</SelectItem>
-                  <SelectItem value="oauth2">OAuth 2.0</SelectItem>
-                  <SelectItem value="bearer">Bearer Token</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            
-            <div className="grid gap-2">
-              <Label htmlFor="edit-baseUrl">Base URL</Label>
-              <Input
-                id="edit-baseUrl"
-                name="baseUrl"
-                value={formData.baseUrl}
-                onChange={handleInputChange}
-              />
-            </div>
-            
-            <div className="grid gap-2">
-              <Label htmlFor="edit-docsUrl">Documentation URL</Label>
-              <Input
-                id="edit-docsUrl"
-                name="docsUrl"
-                value={formData.docsUrl}
-                onChange={handleInputChange}
-              />
-            </div>
-            
-            <div className="grid gap-2">
-              <Label htmlFor="edit-logoUrl">Logo URL</Label>
-              <Input
-                id="edit-logoUrl"
-                name="logoUrl"
-                value={formData.logoUrl}
-                onChange={handleInputChange}
-              />
-            </div>
-            
-            <div className="grid gap-2">
-              <Label htmlFor="edit-requiredFields">Required Fields (comma-separated)</Label>
-              <Textarea
-                id="edit-requiredFields"
-                value={requiredFields}
-                onChange={(e) => setRequiredFields(e.target.value)}
-              />
-            </div>
-            
-            <div className="flex items-center space-x-2">
-              <Label htmlFor="edit-isActive" className="cursor-pointer flex items-center">
-                <input
-                  id="edit-isActive"
-                  type="checkbox"
-                  className="mr-2 h-4 w-4"
-                  checked={formData.isActive}
-                  onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-                />
-                Active
-              </Label>
-            </div>
-            
-            <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => setIsEditDialogOpen(false)}>
-                Cancel
-              </Button>
-              <Button type="submit" disabled={updateMutation.isPending}>
-                {updateMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Update
-              </Button>
-            </DialogFooter>
-          </form>
+          </Form>
         </DialogContent>
       </Dialog>
-      
-      {/* Providers Table */}
-      <div className="border rounded-md">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead className="hidden md:table-cell">Category</TableHead>
-              <TableHead className="hidden md:table-cell">Auth Type</TableHead>
-              <TableHead className="hidden lg:table-cell">Status</TableHead>
-              <TableHead className="w-[120px]">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {!providers || providers.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
-                  No service providers found. Add your first provider.
-                </TableCell>
-              </TableRow>
-            ) : (
-              providers.map((provider: ServiceProvider) => {
-                const category = categories?.find((c: ServiceCategory) => c.id === provider.categoryId);
-                return (
-                  <TableRow key={provider.id}>
-                    <TableCell className="font-medium">
-                      {provider.name}
-                      <div className="text-xs text-muted-foreground line-clamp-1 md:hidden">
-                        {category?.name} - {formatAuthType(provider.authType)}
-                      </div>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell">
-                      {category?.name || `Category #${provider.categoryId}`}
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell">
-                      <Badge variant="outline">{formatAuthType(provider.authType)}</Badge>
-                    </TableCell>
-                    <TableCell className="hidden lg:table-cell">
-                      {provider.isActive ? (
-                        <div className="flex items-center text-green-600">
-                          <CheckCircle className="h-4 w-4 mr-1" />
-                          <span className="text-xs">Active</span>
-                        </div>
-                      ) : (
-                        <div className="flex items-center text-slate-500">
-                          <XCircle className="h-4 w-4 mr-1" />
-                          <span className="text-xs">Inactive</span>
-                        </div>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex space-x-2">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => handleEditClick(provider)}
-                          title="Edit"
-                        >
-                          <Pencil className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => handleDelete(provider.id)}
-                          title="Delete"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                );
-              })
-            )}
-          </TableBody>
-        </Table>
-      </div>
-    </div>
+    </Card>
   );
-}
+};
+
+export default ServiceProviders;

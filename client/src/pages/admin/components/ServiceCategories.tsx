@@ -1,9 +1,22 @@
-import { useState } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { apiRequest } from '@/lib/queryClient';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import React, { useState } from 'react';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { apiRequest, queryClient } from '@/lib/queryClient';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { insertServiceCategorySchema } from '../../../../shared/schema';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
+import { AlertCircle, CheckCircle2, Layers, BadgePlus, Edit2, Trash2, Plus, ArrowUpDown, Package } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { useToast } from "@/hooks/use-toast";
+import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import {
   Table,
   TableBody,
@@ -11,360 +24,400 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { useToast } from '@/hooks/use-toast';
-import { Loader2, PlusCircle, Pencil, Trash2 } from 'lucide-react';
+} from "@/components/ui/table";
 
-interface ServiceCategory {
-  id: number;
-  name: string;
-  description: string | null;
-  icon: string | null;
-  displayOrder: number;
-  isActive: boolean;
-}
+// Extend the insert schema for Service Categories
+const serviceCategorySchema = insertServiceCategorySchema.extend({
+  name: z.string().min(3, "Name must be at least 3 characters"),
+  description: z.string().optional(),
+  icon: z.string().optional(),
+  displayOrder: z.number().int().nonnegative().optional(),
+});
 
-export default function ServiceCategories() {
+type ServiceCategoryFormValues = z.infer<typeof serviceCategorySchema>;
+
+const ServiceCategories = () => {
   const { toast } = useToast();
-  const queryClient = useQueryClient();
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<ServiceCategory | null>(null);
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [editingCategory, setEditingCategory] = useState<any>(null);
   
-  // Form state
-  const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    icon: '',
-    displayOrder: 0
-  });
-  
-  // Fetch categories
+  // Fetch all service categories
   const { data: categories, isLoading, error } = useQuery({
-    queryKey: ['/api/admin/service-categories'],
+    queryKey: ['/api/admin/categories'],
     retry: 1,
   });
   
-  // Add category mutation
-  const addMutation = useMutation({
-    mutationFn: (newCategory: Omit<ServiceCategory, 'id' | 'isActive'>) => {
-      return apiRequest('/api/admin/service-categories', {
-        method: 'POST',
-        data: newCategory,
-      });
-    },
+  // Create new service category
+  const addCategoryMutation = useMutation({
+    mutationFn: (newCategory: ServiceCategoryFormValues) => 
+      apiRequest('/api/admin/categories', { method: 'POST', data: newCategory }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/service-categories'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/categories'] });
+      setAddDialogOpen(false);
       toast({
-        title: 'Success',
-        description: 'Category added successfully',
+        title: "Category Added",
+        description: "Service category has been added successfully.",
       });
-      setIsAddDialogOpen(false);
-      resetForm();
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast({
-        title: 'Error',
-        description: 'Failed to add category. Please try again.',
-        variant: 'destructive',
+        title: "Failed to add category",
+        description: error.message || "An error occurred while adding the category.",
+        variant: "destructive",
       });
+    }
+  });
+  
+  // Update service category
+  const updateCategoryMutation = useMutation({
+    mutationFn: ({ id, data }: { id: number, data: Partial<ServiceCategoryFormValues> }) => 
+      apiRequest(`/api/admin/categories/${id}`, { method: 'PATCH', data }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/categories'] });
+      setEditingCategory(null);
+      toast({
+        title: "Category Updated",
+        description: "Service category has been updated successfully.",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Failed to update category",
+        description: error.message || "An error occurred while updating the category.",
+        variant: "destructive",
+      });
+    }
+  });
+  
+  // Delete service category
+  const deleteCategoryMutation = useMutation({
+    mutationFn: (id: number) => 
+      apiRequest(`/api/admin/categories/${id}`, { method: 'DELETE' }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/categories'] });
+      toast({
+        title: "Category Deleted",
+        description: "Service category has been deleted successfully.",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Failed to delete category",
+        description: error.message || "An error occurred while deleting the category.",
+        variant: "destructive",
+      });
+    }
+  });
+  
+  // Toggle category active status
+  const toggleCategoryStatusMutation = useMutation({
+    mutationFn: ({ id, isActive }: { id: number, isActive: boolean }) => 
+      apiRequest(`/api/admin/categories/${id}/status`, { 
+        method: 'PATCH', 
+        data: { isActive } 
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/categories'] });
+      toast({
+        title: "Status Updated",
+        description: "Category status has been updated successfully.",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Failed to update status",
+        description: error.message || "An error occurred while updating the status.",
+        variant: "destructive",
+      });
+    }
+  });
+  
+  // Form for adding/editing categories
+  const form = useForm<ServiceCategoryFormValues>({
+    resolver: zodResolver(serviceCategorySchema),
+    defaultValues: {
+      name: "",
+      description: "",
+      icon: "",
+      displayOrder: 0,
     },
   });
   
-  // Update category mutation
-  const updateMutation = useMutation({
-    mutationFn: ({ id, ...data }: { id: number, name?: string, description?: string, icon?: string, displayOrder?: number }) => {
-      return apiRequest(`/api/admin/service-categories/${id}`, {
-        method: 'PATCH',
-        data,
+  const onSubmit = (values: ServiceCategoryFormValues) => {
+    if (editingCategory) {
+      updateCategoryMutation.mutate({ 
+        id: editingCategory.id, 
+        data: values 
       });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/service-categories'] });
-      toast({
-        title: 'Success',
-        description: 'Category updated successfully',
-      });
-      setIsEditDialogOpen(false);
-      resetForm();
-    },
-    onError: (error) => {
-      toast({
-        title: 'Error',
-        description: 'Failed to update category. Please try again.',
-        variant: 'destructive',
-      });
-    },
-  });
-  
-  // Delete category mutation
-  const deleteMutation = useMutation({
-    mutationFn: (id: number) => {
-      return apiRequest(`/api/admin/service-categories/${id}`, {
-        method: 'DELETE',
-      });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/service-categories'] });
-      toast({
-        title: 'Success',
-        description: 'Category deleted successfully',
-      });
-    },
-    onError: (error) => {
-      toast({
-        title: 'Error',
-        description: 'Failed to delete category. Please try again.',
-        variant: 'destructive',
-      });
-    },
-  });
-  
-  // Handle form input changes
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: name === 'displayOrder' ? parseInt(value) || 0 : value,
-    });
-  };
-  
-  // Reset form
-  const resetForm = () => {
-    setFormData({
-      name: '',
-      description: '',
-      icon: '',
-      displayOrder: 0
-    });
-    setSelectedCategory(null);
-  };
-  
-  // Open edit dialog
-  const handleEditClick = (category: ServiceCategory) => {
-    setSelectedCategory(category);
-    setFormData({
-      name: category.name,
-      description: category.description || '',
-      icon: category.icon || '',
-      displayOrder: category.displayOrder
-    });
-    setIsEditDialogOpen(true);
-  };
-  
-  // Handle add form submission
-  const handleAddSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    addMutation.mutate(formData);
-  };
-  
-  // Handle edit form submission
-  const handleEditSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!selectedCategory) return;
-    
-    updateMutation.mutate({
-      id: selectedCategory.id,
-      ...formData
-    });
-  };
-  
-  // Handle delete
-  const handleDelete = (id: number) => {
-    if (window.confirm('Are you sure you want to delete this category?')) {
-      deleteMutation.mutate(id);
+    } else {
+      addCategoryMutation.mutate(values);
     }
   };
   
+  const handleEditCategory = (category: any) => {
+    setEditingCategory(category);
+    form.reset({
+      name: category.name,
+      description: category.description || "",
+      icon: category.icon || "",
+      displayOrder: category.displayOrder || 0,
+    });
+    setAddDialogOpen(true);
+  };
+  
+  const closeDialog = () => {
+    setAddDialogOpen(false);
+    setEditingCategory(null);
+    form.reset();
+  };
+  
   if (isLoading) {
-    return <div className="flex justify-center"><Loader2 className="h-8 w-8 animate-spin" /></div>;
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Service Categories</CardTitle>
+          <CardDescription>Organize external service integrations into categories</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <Skeleton className="h-8 w-full" />
+            <Skeleton className="h-8 w-full" />
+            <Skeleton className="h-8 w-full" />
+          </div>
+        </CardContent>
+      </Card>
+    );
   }
   
   if (error) {
-    return <div className="text-red-500">Error loading categories. Please try again.</div>;
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Service Categories</CardTitle>
+          <CardDescription>Organize external service integrations into categories</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>
+              Failed to load service categories. Please try again later.
+            </AlertDescription>
+          </Alert>
+        </CardContent>
+      </Card>
+    );
   }
   
+  // Sort categories by display order
+  const sortedCategories = categories && [...categories].sort((a, b) => a.displayOrder - b.displayOrder);
+  
   return (
-    <div>
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-medium">Service Categories</h3>
-        <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-          <DialogTrigger asChild>
-            <Button onClick={() => { resetForm(); setIsAddDialogOpen(true); }}>
-              <PlusCircle className="mr-2 h-4 w-4" />
-              Add Category
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <div>
+          <CardTitle>Service Categories</CardTitle>
+          <CardDescription>Organize external service integrations into categories</CardDescription>
+        </div>
+        <Button onClick={() => setAddDialogOpen(true)} className="gap-2">
+          <Plus className="h-4 w-4" />
+          Add Category
+        </Button>
+      </CardHeader>
+      <CardContent>
+        {sortedCategories && sortedCategories.length === 0 ? (
+          <div className="text-center py-8">
+            <Layers className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+            <h3 className="text-lg font-medium">No Service Categories</h3>
+            <p className="text-muted-foreground mt-2 mb-4">
+              Create categories to organize your external service integrations.
+            </p>
+            <Button onClick={() => setAddDialogOpen(true)} className="gap-2">
+              <Plus className="h-4 w-4" />
+              Create First Category
             </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Add New Service Category</DialogTitle>
-            </DialogHeader>
-            <form onSubmit={handleAddSubmit} className="space-y-4 mt-4">
-              <div className="grid gap-2">
-                <Label htmlFor="name">Name</Label>
-                <Input
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="description">Description</Label>
-                <Input
-                  id="description"
-                  name="description"
-                  value={formData.description}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="icon">Icon (CSS class or URL)</Label>
-                <Input
-                  id="icon"
-                  name="icon"
-                  value={formData.icon}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="displayOrder">Display Order</Label>
-                <Input
-                  id="displayOrder"
-                  name="displayOrder"
-                  type="number"
-                  value={formData.displayOrder}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <DialogFooter>
-                <Button type="button" variant="outline" onClick={() => setIsAddDialogOpen(false)}>
-                  Cancel
-                </Button>
-                <Button type="submit" disabled={addMutation.isPending}>
-                  {addMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  Save
-                </Button>
-              </DialogFooter>
-            </form>
-          </DialogContent>
-        </Dialog>
-      </div>
-      
-      {/* Edit Dialog */}
-      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Edit Service Category</DialogTitle>
-          </DialogHeader>
-          <form onSubmit={handleEditSubmit} className="space-y-4 mt-4">
-            <div className="grid gap-2">
-              <Label htmlFor="edit-name">Name</Label>
-              <Input
-                id="edit-name"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="edit-description">Description</Label>
-              <Input
-                id="edit-description"
-                name="description"
-                value={formData.description}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="edit-icon">Icon (CSS class or URL)</Label>
-              <Input
-                id="edit-icon"
-                name="icon"
-                value={formData.icon}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="edit-displayOrder">Display Order</Label>
-              <Input
-                id="edit-displayOrder"
-                name="displayOrder"
-                type="number"
-                value={formData.displayOrder}
-                onChange={handleInputChange}
-              />
-            </div>
-            <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => setIsEditDialogOpen(false)}>
-                Cancel
-              </Button>
-              <Button type="submit" disabled={updateMutation.isPending}>
-                {updateMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Update
-              </Button>
-            </DialogFooter>
-          </form>
-        </DialogContent>
-      </Dialog>
-      
-      {/* Categories Table */}
-      <div className="border rounded-md">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-12">Order</TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead className="hidden md:table-cell">Description</TableHead>
-              <TableHead className="w-[100px]">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {!categories || categories.length === 0 ? (
+          </div>
+        ) : (
+          <Table>
+            <TableHeader>
               <TableRow>
-                <TableCell colSpan={4} className="text-center py-8 text-muted-foreground">
-                  No categories found. Add your first category.
-                </TableCell>
+                <TableHead className="w-[50px]">#</TableHead>
+                <TableHead>Name</TableHead>
+                <TableHead className="hidden md:table-cell">Description</TableHead>
+                <TableHead className="w-[100px]">Status</TableHead>
+                <TableHead className="w-[150px] text-right">Actions</TableHead>
               </TableRow>
-            ) : (
-              categories.map((category: ServiceCategory) => (
+            </TableHeader>
+            <TableBody>
+              {sortedCategories && sortedCategories.map((category) => (
                 <TableRow key={category.id}>
-                  <TableCell>{category.displayOrder}</TableCell>
-                  <TableCell className="font-medium">
-                    {category.icon && <span className="mr-2">{category.icon}</span>}
-                    {category.name}
-                    {!category.isActive && <span className="ml-2 text-xs text-muted-foreground">(inactive)</span>}
-                  </TableCell>
-                  <TableCell className="hidden md:table-cell">{category.description}</TableCell>
+                  <TableCell className="font-medium">{category.displayOrder}</TableCell>
                   <TableCell>
-                    <div className="flex space-x-2">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => handleEditClick(category)}
-                        title="Edit"
+                    <div className="flex items-center gap-2">
+                      {category.icon ? (
+                        <span className="text-muted-foreground">{category.icon}</span>
+                      ) : (
+                        <Package className="h-4 w-4 text-muted-foreground" />
+                      )}
+                      {category.name}
+                    </div>
+                  </TableCell>
+                  <TableCell className="hidden md:table-cell text-muted-foreground">
+                    {category.description || "No description"}
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant={category.isActive ? "outline" : "secondary"} className={category.isActive ? "bg-green-50 border-green-200 text-green-800" : "bg-red-50 border-red-200 text-red-800"}>
+                      {category.isActive ? "Active" : "Inactive"}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <div className="flex justify-end gap-2">
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        onClick={() => toggleCategoryStatusMutation.mutate({ id: category.id, isActive: !category.isActive })}
+                        disabled={toggleCategoryStatusMutation.isPending}
                       >
-                        <Pencil className="h-4 w-4" />
+                        {category.isActive ? "Disable" : "Enable"}
                       </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => handleDelete(category.id)}
-                        title="Delete"
+                      <Button 
+                        variant="outline" 
+                        size="icon" 
+                        onClick={() => handleEditCategory(category)}
+                      >
+                        <Edit2 className="h-4 w-4" />
+                      </Button>
+                      <Button 
+                        variant="destructive" 
+                        size="icon" 
+                        onClick={() => {
+                          if (confirm("Are you sure you want to delete this category? This will also delete all associated service providers.")) {
+                            deleteCategoryMutation.mutate(category.id);
+                          }
+                        }}
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>
                   </TableCell>
                 </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-      </div>
-    </div>
+              ))}
+            </TableBody>
+          </Table>
+        )}
+      </CardContent>
+      
+      {/* Add/Edit Category Dialog */}
+      <Dialog open={addDialogOpen} onOpenChange={closeDialog}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle>
+              {editingCategory ? "Edit Category" : "Add Service Category"}
+            </DialogTitle>
+            <DialogDescription>
+              {editingCategory 
+                ? "Update the details of this service category" 
+                : "Create a new category for organizing external service integrations"}
+            </DialogDescription>
+          </DialogHeader>
+          
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Category Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g. AI Services" {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      A name for this category of services
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Description (Optional)</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="Enter a description for this category" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="icon"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Icon (Optional)</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Icon name or emoji" {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      Enter an icon name or emoji to represent this category
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="displayOrder"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Display Order</FormLabel>
+                    <FormControl>
+                      <Input 
+                        type="number" 
+                        min={0} 
+                        step={1} 
+                        {...field} 
+                        onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      Categories are displayed in ascending order (lower numbers first)
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <DialogFooter>
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={closeDialog}
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  type="submit"
+                  disabled={
+                    addCategoryMutation.isPending || 
+                    updateCategoryMutation.isPending
+                  }
+                >
+                  {editingCategory ? "Update Category" : "Create Category"}
+                </Button>
+              </DialogFooter>
+            </form>
+          </Form>
+        </DialogContent>
+      </Dialog>
+    </Card>
   );
-}
+};
+
+export default ServiceCategories;

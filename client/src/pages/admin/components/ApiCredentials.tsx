@@ -1,718 +1,485 @@
-import { useState, useEffect } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { apiRequest } from '@/lib/queryClient';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { useToast } from '@/hooks/use-toast';
-import { Loader2, PlusCircle, Pencil, Trash2, CheckCircle, XCircle, Play, AlertCircle } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
+import React, { useState } from 'react';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { apiRequest, queryClient } from '@/lib/queryClient';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { insertApiCredentialSchema } from '../../../../shared/schema';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
+import { AlertCircle, CheckCircle2, KeyRound, EyeOff, Eye, Pencil, Trash2, Plus } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { useToast } from "@/hooks/use-toast";
+import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
-interface ApiCredential {
-  id: number;
-  name: string;
-  providerId: number;
-  hasApiKey: boolean;
-  hasApiSecret: boolean;
-  hasAccessToken: boolean;
-  hasRefreshToken: boolean;
-  isActive: boolean;
-  lastTested: string | null;
-  testResult: boolean | null;
-  additionalSettings: Record<string, any> | null;
-}
+// Extend the insert schema for API credentials
+const apiCredentialSchema = insertApiCredentialSchema.extend({
+  providerId: z.number().min(1, "Please select a service provider"),
+  name: z.string().min(3, "Name must be at least 3 characters"),
+  apiKey: z.string().optional(),
+  apiSecret: z.string().optional(),
+  accessToken: z.string().optional(),
+  refreshToken: z.string().optional(),
+  additionalSettings: z.any().optional(),
+});
 
-interface ServiceProvider {
-  id: number;
-  name: string;
-  authType: string;
-  requiredFields: string[] | null;
-}
+type ApiCredentialFormValues = z.infer<typeof apiCredentialSchema>;
 
-export default function ApiCredentials() {
+const ApiCredentials = () => {
   const { toast } = useToast();
-  const queryClient = useQueryClient();
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [selectedCredential, setSelectedCredential] = useState<ApiCredential | null>(null);
+  const [showSecret, setShowSecret] = useState<Record<number, boolean>>({});
+  const [editMode, setEditMode] = useState<number | null>(null);
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
   
-  // Form state
-  const [formData, setFormData] = useState({
-    name: '',
-    providerId: '',
-    apiKey: '',
-    apiSecret: '',
-    accessToken: '',
-    refreshToken: '',
-    additionalSettings: ''
-  });
-  
-  // Fetch credentials
-  const { data: credentials, isLoading: isLoadingCredentials } = useQuery({
-    queryKey: ['/api/admin/api-credentials'],
+  // Fetch all API credentials
+  const { data: credentials, isLoading: isLoadingCredentials, error: credentialsError } = useQuery({
+    queryKey: ['/api/admin/credentials'],
     retry: 1,
   });
   
-  // Fetch providers for dropdown
+  // Fetch service providers for dropdown
   const { data: providers, isLoading: isLoadingProviders } = useQuery({
-    queryKey: ['/api/admin/service-providers'],
+    queryKey: ['/api/admin/providers'],
     retry: 1,
   });
   
-  // Find current provider
-  const selectedProvider = providers?.find((p: ServiceProvider) => 
-    p.id === (typeof formData.providerId === 'string' 
-      ? parseInt(formData.providerId) 
-      : formData.providerId)
-  );
-  
-  // Add credential mutation
-  const addMutation = useMutation({
-    mutationFn: (newCredential: any) => {
-      // Parse additionalSettings if it's a string
-      if (typeof newCredential.additionalSettings === 'string' && newCredential.additionalSettings.trim()) {
-        try {
-          newCredential.additionalSettings = JSON.parse(newCredential.additionalSettings);
-        } catch (e) {
-          throw new Error('Invalid JSON in additional settings');
-        }
-      } else if (typeof newCredential.additionalSettings === 'string') {
-        newCredential.additionalSettings = null;
-      }
-      
-      return apiRequest('/api/admin/api-credentials', {
-        method: 'POST',
-        data: newCredential,
-      });
-    },
+  // Create new API credential
+  const addCredentialMutation = useMutation({
+    mutationFn: (newCredential: ApiCredentialFormValues) => 
+      apiRequest('/api/admin/credentials', { method: 'POST', data: newCredential }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/api-credentials'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/credentials'] });
+      setAddDialogOpen(false);
       toast({
-        title: 'Success',
-        description: 'API credential added successfully',
+        title: "Credential Added",
+        description: "API credential has been added successfully.",
       });
-      setIsAddDialogOpen(false);
-      resetForm();
     },
     onError: (error: any) => {
       toast({
-        title: 'Error',
-        description: error.message || 'Failed to add API credential. Please try again.',
-        variant: 'destructive',
+        title: "Failed to add credential",
+        description: error.message || "An error occurred while adding the credential.",
+        variant: "destructive",
       });
-    },
-  });
-  
-  // Update credential mutation
-  const updateMutation = useMutation({
-    mutationFn: ({ id, ...data }: { id: number, [key: string]: any }) => {
-      // Parse additionalSettings if it's a string
-      if (typeof data.additionalSettings === 'string' && data.additionalSettings.trim()) {
-        try {
-          data.additionalSettings = JSON.parse(data.additionalSettings);
-        } catch (e) {
-          throw new Error('Invalid JSON in additional settings');
-        }
-      } else if (typeof data.additionalSettings === 'string') {
-        data.additionalSettings = null;
-      }
-      
-      return apiRequest(`/api/admin/api-credentials/${id}`, {
-        method: 'PATCH',
-        data,
-      });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/api-credentials'] });
-      toast({
-        title: 'Success',
-        description: 'API credential updated successfully',
-      });
-      setIsEditDialogOpen(false);
-      resetForm();
-    },
-    onError: (error: any) => {
-      toast({
-        title: 'Error',
-        description: error.message || 'Failed to update API credential. Please try again.',
-        variant: 'destructive',
-      });
-    },
-  });
-  
-  // Delete credential mutation
-  const deleteMutation = useMutation({
-    mutationFn: (id: number) => {
-      return apiRequest(`/api/admin/api-credentials/${id}`, {
-        method: 'DELETE',
-      });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/api-credentials'] });
-      toast({
-        title: 'Success',
-        description: 'API credential deleted successfully',
-      });
-    },
-    onError: () => {
-      toast({
-        title: 'Error',
-        description: 'Failed to delete API credential. Please try again.',
-        variant: 'destructive',
-      });
-    },
-  });
-  
-  // Test credential mutation
-  const testMutation = useMutation({
-    mutationFn: (id: number) => {
-      return apiRequest(`/api/admin/api-credentials/${id}/test`, {
-        method: 'POST',
-      });
-    },
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/api-credentials'] });
-      toast({
-        title: data.success ? 'Test Successful' : 'Test Failed',
-        description: data.message,
-        variant: data.success ? 'default' : 'destructive',
-      });
-    },
-    onError: () => {
-      toast({
-        title: 'Error',
-        description: 'Failed to test API credential. Please try again.',
-        variant: 'destructive',
-      });
-    },
-  });
-  
-  // Reset form
-  const resetForm = () => {
-    setFormData({
-      name: '',
-      providerId: '',
-      apiKey: '',
-      apiSecret: '',
-      accessToken: '',
-      refreshToken: '',
-      additionalSettings: ''
-    });
-    setSelectedCredential(null);
-  };
-  
-  // Handle form input changes
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-  
-  // Handle select changes
-  const handleSelectChange = (name: string, value: string) => {
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-  
-  // Open edit dialog
-  const handleEditClick = (credential: ApiCredential) => {
-    // First, fetch the full credential (including secrets if we need to show them)
-    apiRequest(`/api/admin/api-credentials/${credential.id}`, {
-      method: 'GET',
-    }).then((data) => {
-      setSelectedCredential(credential);
-      setFormData({
-        name: credential.name,
-        providerId: credential.providerId.toString(),
-        apiKey: '',  // We don't show existing secrets for security
-        apiSecret: '',
-        accessToken: '',
-        refreshToken: '',
-        additionalSettings: data.additionalSettings 
-          ? JSON.stringify(data.additionalSettings, null, 2) 
-          : ''
-      });
-      setIsEditDialogOpen(true);
-    }).catch(() => {
-      toast({
-        title: 'Error',
-        description: 'Failed to fetch credential details',
-        variant: 'destructive',
-      });
-    });
-  };
-  
-  // Handle add form submission
-  const handleAddSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    addMutation.mutate({
-      name: formData.name,
-      providerId: parseInt(formData.providerId),
-      apiKey: formData.apiKey || null,
-      apiSecret: formData.apiSecret || null,
-      accessToken: formData.accessToken || null,
-      refreshToken: formData.refreshToken || null,
-      additionalSettings: formData.additionalSettings
-    });
-  };
-  
-  // Handle edit form submission
-  const handleEditSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!selectedCredential) return;
-    
-    const updateData: Record<string, any> = {
-      id: selectedCredential.id,
-      name: formData.name,
-      providerId: parseInt(formData.providerId),
-      additionalSettings: formData.additionalSettings
-    };
-    
-    // Only include secrets if they were changed
-    if (formData.apiKey) updateData.apiKey = formData.apiKey;
-    if (formData.apiSecret) updateData.apiSecret = formData.apiSecret;
-    if (formData.accessToken) updateData.accessToken = formData.accessToken;
-    if (formData.refreshToken) updateData.refreshToken = formData.refreshToken;
-    
-    updateMutation.mutate(updateData);
-  };
-  
-  // Handle delete
-  const handleDelete = (id: number) => {
-    if (window.confirm('Are you sure you want to delete this API credential?')) {
-      deleteMutation.mutate(id);
     }
+  });
+  
+  // Update API credential
+  const updateCredentialMutation = useMutation({
+    mutationFn: ({ id, data }: { id: number, data: Partial<ApiCredentialFormValues> }) => 
+      apiRequest(`/api/admin/credentials/${id}`, { method: 'PATCH', data }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/credentials'] });
+      setEditMode(null);
+      toast({
+        title: "Credential Updated",
+        description: "API credential has been updated successfully.",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Failed to update credential",
+        description: error.message || "An error occurred while updating the credential.",
+        variant: "destructive",
+      });
+    }
+  });
+  
+  // Delete API credential
+  const deleteCredentialMutation = useMutation({
+    mutationFn: (id: number) => 
+      apiRequest(`/api/admin/credentials/${id}`, { method: 'DELETE' }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/credentials'] });
+      toast({
+        title: "Credential Deleted",
+        description: "API credential has been deleted successfully.",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Failed to delete credential",
+        description: error.message || "An error occurred while deleting the credential.",
+        variant: "destructive",
+      });
+    }
+  });
+  
+  // Test API credential
+  const testCredentialMutation = useMutation({
+    mutationFn: (id: number) => 
+      apiRequest(`/api/admin/credentials/${id}/test`, { method: 'POST' }),
+    onSuccess: (data, id) => {
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/credentials'] });
+      toast({
+        title: data.success ? "Test Successful" : "Test Failed",
+        description: data.message,
+        variant: data.success ? "default" : "destructive",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Test Failed",
+        description: error.message || "An error occurred while testing the credential.",
+        variant: "destructive",
+      });
+    }
+  });
+  
+  // Form for adding new credentials
+  const form = useForm<ApiCredentialFormValues>({
+    resolver: zodResolver(apiCredentialSchema),
+    defaultValues: {
+      name: "",
+      providerId: undefined,
+      apiKey: "",
+      apiSecret: "",
+      accessToken: "",
+      refreshToken: "",
+      additionalSettings: {},
+    },
+  });
+  
+  const onSubmit = (values: ApiCredentialFormValues) => {
+    addCredentialMutation.mutate(values);
   };
   
-  // Handle test
-  const handleTest = (id: number) => {
-    testMutation.mutate(id);
+  const toggleSecretVisibility = (id: number) => {
+    setShowSecret(prev => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
+  
+  const startEdit = (credential: any) => {
+    setEditMode(credential.id);
+    form.reset({
+      name: credential.name,
+      providerId: credential.providerId,
+      apiKey: credential.apiKey,
+      apiSecret: credential.apiSecret,
+      accessToken: credential.accessToken,
+      refreshToken: credential.refreshToken,
+      additionalSettings: credential.additionalSettings,
+    });
+  };
+  
+  const cancelEdit = () => {
+    setEditMode(null);
+    form.reset();
   };
   
   if (isLoadingCredentials || isLoadingProviders) {
-    return <div className="flex justify-center"><Loader2 className="h-8 w-8 animate-spin" /></div>;
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>API Credentials</CardTitle>
+          <CardDescription>Manage API keys and authentication tokens for external services</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <Skeleton className="h-12 w-full" />
+            <Skeleton className="h-12 w-full" />
+            <Skeleton className="h-12 w-full" />
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+  
+  if (credentialsError) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>API Credentials</CardTitle>
+          <CardDescription>Manage API keys and authentication tokens for external services</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>
+              Failed to load API credentials. Please try again later.
+            </AlertDescription>
+          </Alert>
+        </CardContent>
+      </Card>
+    );
   }
   
   return (
-    <div>
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-medium">API Credentials</h3>
-        <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-          <DialogTrigger asChild>
-            <Button onClick={() => { resetForm(); setIsAddDialogOpen(true); }}>
-              <PlusCircle className="mr-2 h-4 w-4" />
-              Add Credential
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <div>
+          <CardTitle>API Credentials</CardTitle>
+          <CardDescription>Manage API keys and authentication tokens for external services</CardDescription>
+        </div>
+        <Button onClick={() => setAddDialogOpen(true)} className="gap-2">
+          <Plus className="h-4 w-4" />
+          Add Credential
+        </Button>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        {credentials && credentials.length === 0 ? (
+          <div className="text-center py-8">
+            <KeyRound className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+            <h3 className="text-lg font-medium">No API Credentials</h3>
+            <p className="text-muted-foreground mt-2 mb-4">
+              Add API credentials to connect external services to your platform.
+            </p>
+            <Button onClick={() => setAddDialogOpen(true)} className="gap-2">
+              <Plus className="h-4 w-4" />
+              Add First Credential
             </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[600px]">
-            <DialogHeader>
-              <DialogTitle>Add New API Credential</DialogTitle>
-            </DialogHeader>
-            <form onSubmit={handleAddSubmit} className="space-y-4 mt-4">
-              <div className="grid gap-2">
-                <Label htmlFor="name">Name</Label>
-                <Input
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  placeholder="My API Credential"
-                  required
-                />
-                <p className="text-sm text-muted-foreground">
-                  Give this credential a descriptive name for easy identification
-                </p>
-              </div>
-              
-              <div className="grid gap-2">
-                <Label htmlFor="providerId">Service Provider</Label>
-                <Select name="providerId" value={formData.providerId} onValueChange={(value) => handleSelectChange('providerId', value)}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a provider" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {providers && providers.map((provider: ServiceProvider) => (
-                      <SelectItem key={provider.id} value={provider.id.toString()}>
-                        {provider.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              {selectedProvider && (
-                <Alert>
-                  <AlertDescription>
-                    This provider uses <Badge variant="outline">{selectedProvider.authType}</Badge> authentication
-                  </AlertDescription>
-                </Alert>
-              )}
-              
-              {/* Dynamic credential fields based on provider auth type */}
-              {selectedProvider && (
-                <div className="space-y-4 border rounded-md p-4">
-                  {selectedProvider.authType === 'api_key' && (
-                    <div className="grid gap-2">
-                      <Label htmlFor="apiKey">API Key</Label>
-                      <Input
-                        id="apiKey"
-                        name="apiKey"
-                        value={formData.apiKey}
-                        onChange={handleInputChange}
-                        type="password"
-                        placeholder="Your API key"
-                        required
-                      />
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {credentials && credentials.map((credential: any) => (
+              <Card key={credential.id} className={`${credential.isActive ? 'border-gray-200' : 'border-red-200 bg-red-50'}`}>
+                <CardHeader className="pb-2">
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-lg font-medium">{credential.name}</h3>
+                      {credential.testResult === true && (
+                        <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
+                          Verified
+                        </Badge>
+                      )}
+                      {credential.testResult === false && (
+                        <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200">
+                          Failed
+                        </Badge>
+                      )}
+                      {!credential.isActive && (
+                        <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200">
+                          Inactive
+                        </Badge>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        onClick={() => startEdit(credential)}
+                        className="gap-1"
+                      >
+                        <Pencil className="h-3 w-3" />
+                        Edit
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        onClick={() => testCredentialMutation.mutate(credential.id)}
+                        disabled={testCredentialMutation.isPending}
+                      >
+                        Test
+                      </Button>
+                      <Button 
+                        variant="destructive" 
+                        size="sm" 
+                        onClick={() => {
+                          if (confirm("Are you sure you want to delete this credential?")) {
+                            deleteCredentialMutation.mutate(credential.id);
+                          }
+                        }}
+                      >
+                        <Trash2 className="h-3 w-3" />
+                      </Button>
+                    </div>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    Provider: {providers?.find((p: any) => p.id === credential.providerId)?.name || 'Unknown'}
+                  </p>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {credential.apiKey && (
+                      <div className="space-y-1">
+                        <p className="text-sm font-medium">API Key</p>
+                        <div className="flex items-center gap-2">
+                          <Input 
+                            value={showSecret[credential.id] ? credential.apiKey : '•'.repeat(16)} 
+                            readOnly 
+                            className="font-mono"
+                          />
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => toggleSecretVisibility(credential.id)}
+                          >
+                            {showSecret[credential.id] ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {credential.apiSecret && (
+                      <div className="space-y-1">
+                        <p className="text-sm font-medium">API Secret</p>
+                        <Input 
+                          value={showSecret[credential.id] ? credential.apiSecret : '•'.repeat(16)} 
+                          readOnly 
+                          className="font-mono"
+                        />
+                      </div>
+                    )}
+                    
+                    {credential.accessToken && (
+                      <div className="space-y-1">
+                        <p className="text-sm font-medium">Access Token</p>
+                        <Input 
+                          value={showSecret[credential.id] ? credential.accessToken : '•'.repeat(16)} 
+                          readOnly 
+                          className="font-mono"
+                        />
+                      </div>
+                    )}
+                  </div>
+                  
+                  {credential.lastTested && (
+                    <div className="mt-4 text-sm text-muted-foreground">
+                      Last tested: {new Date(credential.lastTested).toLocaleString()}
                     </div>
                   )}
-                  
-                  {selectedProvider.authType === 'api_key_secret' && (
-                    <>
-                      <div className="grid gap-2">
-                        <Label htmlFor="apiKey">API Key</Label>
-                        <Input
-                          id="apiKey"
-                          name="apiKey"
-                          value={formData.apiKey}
-                          onChange={handleInputChange}
-                          type="password"
-                          placeholder="Your API key"
-                          required
-                        />
-                      </div>
-                      <div className="grid gap-2">
-                        <Label htmlFor="apiSecret">API Secret</Label>
-                        <Input
-                          id="apiSecret"
-                          name="apiSecret"
-                          value={formData.apiSecret}
-                          onChange={handleInputChange}
-                          type="password"
-                          placeholder="Your API secret"
-                          required
-                        />
-                      </div>
-                    </>
-                  )}
-                  
-                  {selectedProvider.authType === 'oauth2' && (
-                    <>
-                      <div className="grid gap-2">
-                        <Label htmlFor="accessToken">Access Token</Label>
-                        <Input
-                          id="accessToken"
-                          name="accessToken"
-                          value={formData.accessToken}
-                          onChange={handleInputChange}
-                          type="password"
-                          placeholder="OAuth access token"
-                          required
-                        />
-                      </div>
-                      <div className="grid gap-2">
-                        <Label htmlFor="refreshToken">Refresh Token</Label>
-                        <Input
-                          id="refreshToken"
-                          name="refreshToken"
-                          value={formData.refreshToken}
-                          onChange={handleInputChange}
-                          type="password"
-                          placeholder="OAuth refresh token"
-                        />
-                      </div>
-                    </>
-                  )}
-                  
-                  {selectedProvider.authType === 'bearer' && (
-                    <div className="grid gap-2">
-                      <Label htmlFor="accessToken">Bearer Token</Label>
-                      <Input
-                        id="accessToken"
-                        name="accessToken"
-                        value={formData.accessToken}
-                        onChange={handleInputChange}
-                        type="password"
-                        placeholder="Bearer token"
-                        required
-                      />
-                    </div>
-                  )}
-                </div>
-              )}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
+      </CardContent>
+      
+      {/* Add New Credential Dialog */}
+      <Dialog open={addDialogOpen} onOpenChange={setAddDialogOpen}>
+        <DialogContent className="sm:max-w-[540px]">
+          <DialogHeader>
+            <DialogTitle>Add API Credential</DialogTitle>
+            <DialogDescription>
+              Add a new API credential for an external service. 
+              All credentials are securely stored and encrypted.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Credential Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g. Production OpenAI Key" {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      Give this credential a recognizable name for your reference
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               
-              <div className="grid gap-2">
-                <Label htmlFor="additionalSettings">Additional Settings (JSON)</Label>
-                <Textarea
-                  id="additionalSettings"
-                  name="additionalSettings"
-                  value={formData.additionalSettings}
-                  onChange={handleInputChange}
-                  placeholder='{"setting1": "value1", "setting2": "value2"}'
-                  className="font-mono min-h-[100px]"
-                />
-                <p className="text-sm text-muted-foreground">
-                  Optional: JSON object with additional provider-specific settings
-                </p>
-              </div>
+              <FormField
+                control={form.control}
+                name="providerId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Service Provider</FormLabel>
+                    <Select 
+                      onValueChange={(value) => field.onChange(parseInt(value))}
+                      value={field.value?.toString()}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a provider" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {providers && providers.map((provider: any) => (
+                          <SelectItem key={provider.id} value={provider.id.toString()}>
+                            {provider.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormDescription>
+                      Select the service provider this credential is for
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="apiKey"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>API Key</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter API key" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="apiSecret"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>API Secret (Optional)</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter API secret if required" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="accessToken"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Access Token (Optional)</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter access token if using OAuth" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               
               <DialogFooter>
-                <Button type="button" variant="outline" onClick={() => setIsAddDialogOpen(false)}>
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={() => setAddDialogOpen(false)}
+                >
                   Cancel
                 </Button>
-                <Button type="submit" disabled={addMutation.isPending}>
-                  {addMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  Save
+                <Button 
+                  type="submit"
+                  disabled={addCredentialMutation.isPending}
+                >
+                  {addCredentialMutation.isPending ? "Saving..." : "Save Credential"}
                 </Button>
               </DialogFooter>
             </form>
-          </DialogContent>
-        </Dialog>
-      </div>
-      
-      {/* Edit Dialog */}
-      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent className="sm:max-w-[600px]">
-          <DialogHeader>
-            <DialogTitle>Edit API Credential</DialogTitle>
-          </DialogHeader>
-          <form onSubmit={handleEditSubmit} className="space-y-4 mt-4">
-            <div className="grid gap-2">
-              <Label htmlFor="edit-name">Name</Label>
-              <Input
-                id="edit-name"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-            
-            <div className="grid gap-2">
-              <Label htmlFor="edit-providerId">Service Provider</Label>
-              <Select name="providerId" value={formData.providerId} onValueChange={(value) => handleSelectChange('providerId', value)}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a provider" />
-                </SelectTrigger>
-                <SelectContent>
-                  {providers && providers.map((provider: ServiceProvider) => (
-                    <SelectItem key={provider.id} value={provider.id.toString()}>
-                      {provider.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            
-            {selectedProvider && (
-              <Alert>
-                <AlertDescription>
-                  This provider uses <Badge variant="outline">{selectedProvider.authType}</Badge> authentication
-                </AlertDescription>
-              </Alert>
-            )}
-            
-            {/* Secret fields for updating - blank means no change */}
-            {selectedProvider && (
-              <div className="space-y-4 border rounded-md p-4">
-                <p className="text-sm mb-2">
-                  Leave blank to keep existing secrets. Fill in to update with new values.
-                </p>
-                {(selectedProvider.authType === 'api_key' || selectedProvider.authType === 'api_key_secret') && (
-                  <div className="grid gap-2">
-                    <Label htmlFor="edit-apiKey">API Key</Label>
-                    <Input
-                      id="edit-apiKey"
-                      name="apiKey"
-                      value={formData.apiKey}
-                      onChange={handleInputChange}
-                      type="password"
-                      placeholder="Leave blank to keep existing API key"
-                    />
-                  </div>
-                )}
-                
-                {selectedProvider.authType === 'api_key_secret' && (
-                  <div className="grid gap-2">
-                    <Label htmlFor="edit-apiSecret">API Secret</Label>
-                    <Input
-                      id="edit-apiSecret"
-                      name="apiSecret"
-                      value={formData.apiSecret}
-                      onChange={handleInputChange}
-                      type="password"
-                      placeholder="Leave blank to keep existing API secret"
-                    />
-                  </div>
-                )}
-                
-                {(selectedProvider.authType === 'oauth2' || selectedProvider.authType === 'bearer') && (
-                  <div className="grid gap-2">
-                    <Label htmlFor="edit-accessToken">
-                      {selectedProvider.authType === 'bearer' ? 'Bearer Token' : 'Access Token'}
-                    </Label>
-                    <Input
-                      id="edit-accessToken"
-                      name="accessToken"
-                      value={formData.accessToken}
-                      onChange={handleInputChange}
-                      type="password"
-                      placeholder={`Leave blank to keep existing ${selectedProvider.authType === 'bearer' ? 'bearer token' : 'access token'}`}
-                    />
-                  </div>
-                )}
-                
-                {selectedProvider.authType === 'oauth2' && (
-                  <div className="grid gap-2">
-                    <Label htmlFor="edit-refreshToken">Refresh Token</Label>
-                    <Input
-                      id="edit-refreshToken"
-                      name="refreshToken"
-                      value={formData.refreshToken}
-                      onChange={handleInputChange}
-                      type="password"
-                      placeholder="Leave blank to keep existing refresh token"
-                    />
-                  </div>
-                )}
-              </div>
-            )}
-            
-            <div className="grid gap-2">
-              <Label htmlFor="edit-additionalSettings">Additional Settings (JSON)</Label>
-              <Textarea
-                id="edit-additionalSettings"
-                name="additionalSettings"
-                value={formData.additionalSettings}
-                onChange={handleInputChange}
-                className="font-mono min-h-[100px]"
-              />
-            </div>
-            
-            <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => setIsEditDialogOpen(false)}>
-                Cancel
-              </Button>
-              <Button type="submit" disabled={updateMutation.isPending}>
-                {updateMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Update
-              </Button>
-            </DialogFooter>
-          </form>
+          </Form>
         </DialogContent>
       </Dialog>
-      
-      {/* Credentials Table */}
-      <div className="border rounded-md">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead className="hidden md:table-cell">Provider</TableHead>
-              <TableHead className="hidden md:table-cell">Authentication</TableHead>
-              <TableHead className="hidden md:table-cell">Status</TableHead>
-              <TableHead className="w-[150px]">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {!credentials || credentials.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
-                  No API credentials found. Add your first credential.
-                </TableCell>
-              </TableRow>
-            ) : (
-              credentials.map((credential: ApiCredential) => {
-                const provider = providers?.find((p: ServiceProvider) => p.id === credential.providerId);
-                return (
-                  <TableRow key={credential.id}>
-                    <TableCell className="font-medium">
-                      {credential.name}
-                      {!credential.isActive && <span className="ml-2 text-xs text-muted-foreground">(inactive)</span>}
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell">
-                      {provider?.name || `Provider #${credential.providerId}`}
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell">
-                      <div className="flex gap-2">
-                        {credential.hasApiKey && <Badge variant="outline">API Key</Badge>}
-                        {credential.hasApiSecret && <Badge variant="outline">Secret</Badge>}
-                        {credential.hasAccessToken && <Badge variant="outline">Token</Badge>}
-                      </div>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell">
-                      {credential.testResult === true ? (
-                        <div className="flex items-center text-green-600">
-                          <CheckCircle className="h-4 w-4 mr-1" />
-                          <span className="text-xs">Verified</span>
-                        </div>
-                      ) : credential.testResult === false ? (
-                        <div className="flex items-center text-red-600">
-                          <XCircle className="h-4 w-4 mr-1" />
-                          <span className="text-xs">Failed</span>
-                        </div>
-                      ) : (
-                        <div className="flex items-center text-amber-600">
-                          <AlertCircle className="h-4 w-4 mr-1" />
-                          <span className="text-xs">Not Tested</span>
-                        </div>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex space-x-2">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => handleTest(credential.id)}
-                          title="Test Credential"
-                          disabled={testMutation.isPending}
-                        >
-                          {testMutation.isPending && testMutation.variables === credential.id ? (
-                            <Loader2 className="h-4 w-4 animate-spin" />
-                          ) : (
-                            <Play className="h-4 w-4" />
-                          )}
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => handleEditClick(credential)}
-                          title="Edit"
-                        >
-                          <Pencil className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => handleDelete(credential.id)}
-                          title="Delete"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                );
-              })
-            )}
-          </TableBody>
-        </Table>
-      </div>
-    </div>
+    </Card>
   );
-}
+};
+
+export default ApiCredentials;
