@@ -3,6 +3,18 @@ import { ethers } from 'ethers';
 import { ConnectWalletModal } from './connect-wallet-modal';
 import { useToast } from '@/hooks/use-toast';
 
+// Define window.ethereum interface for TypeScript
+declare global {
+  interface Window {
+    ethereum?: {
+      request: (args: { method: string; params?: any[] }) => Promise<any>;
+      on: (event: string, callback: (...args: any[]) => void) => void;
+      removeListener: (event: string, callback: (...args: any[]) => void) => void;
+      isMetaMask?: boolean;
+    };
+  }
+}
+
 interface User {
   id?: number;
   name?: string;
@@ -56,11 +68,12 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   // Check if wallet is already connected on component mount
   useEffect(() => {
     const checkConnection = async () => {
-      if (window.ethereum) {
+      // Check if window is defined (to prevent SSR issues)
+      if (typeof window !== 'undefined' && window.ethereum) {
         try {
           // Check if we're already connected
           const accounts = await window.ethereum.request({ method: 'eth_accounts' });
-          if (accounts.length > 0) {
+          if (accounts && accounts.length > 0) {
             const newProvider = new ethers.BrowserProvider(window.ethereum);
             const newSigner = await newProvider.getSigner();
             const address = await newSigner.getAddress();
@@ -88,9 +101,9 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   
   // Handle account and network changes
   useEffect(() => {
-    if (window.ethereum) {
+    if (typeof window !== 'undefined' && window.ethereum) {
       const handleAccountsChanged = async (accounts: string[]) => {
-        if (accounts.length === 0) {
+        if (!accounts || accounts.length === 0) {
           // User disconnected their wallet
           disconnect();
         } else if (accounts[0] !== address) {
@@ -115,8 +128,10 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       window.ethereum.on('chainChanged', handleChainChanged);
       
       return () => {
-        window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
-        window.ethereum.removeListener('chainChanged', handleChainChanged);
+        if (window.ethereum) {
+          window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
+          window.ethereum.removeListener('chainChanged', handleChainChanged);
+        }
       };
     }
   }, [address, provider]);
@@ -142,7 +157,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   };
   
   const connect = async (providerId?: string) => {
-    if (!window.ethereum) {
+    if (typeof window === 'undefined' || !window.ethereum) {
       toast({
         title: "Wallet Error",
         description: "No Ethereum wallet detected. Please install MetaMask or another compatible wallet.",
@@ -157,6 +172,10 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         method: 'eth_requestAccounts',
         params: []
       });
+      
+      if (!accounts || accounts.length === 0) {
+        throw new Error("No accounts returned from wallet");
+      }
       
       const newProvider = new ethers.BrowserProvider(window.ethereum);
       const newSigner = await newProvider.getSigner();
