@@ -19,6 +19,7 @@ import {
   insertGovernanceProposalSchema
 } from "@shared/schema";
 import { aiConcierge } from "./services/ai-concierge";
+import { scheduler } from "./services/scheduler";
 import { generatePropertyValuation, generatePropertyDescription } from "./services/ai";
 import * as web3Service from "./services/web3";
 
@@ -529,6 +530,63 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(202).json({ message: "Review analysis initiated" });
     } catch (error) {
       res.status(500).json({ message: "Failed to initiate review analysis" });
+    }
+  });
+  
+  // Scheduler management endpoints
+  app.get(`${apiPrefix}/admin/scheduler/status`, (req, res) => {
+    try {
+      const isRunning = scheduler.reviewAnalysisInterval !== null;
+      const reviewAnalysisInterval = scheduler.intervals.get('reviewAnalysis') || 3600000; // Default to 1 hour
+      
+      res.json({
+        isRunning,
+        reviewAnalysisInterval: reviewAnalysisInterval / (60 * 1000), // Convert to minutes
+        nextRunAt: isRunning ? new Date(Date.now() + reviewAnalysisInterval) : null,
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to get scheduler status" });
+    }
+  });
+  
+  app.post(`${apiPrefix}/admin/scheduler/start`, (req, res) => {
+    try {
+      scheduler.startAll();
+      res.json({ message: "Scheduler started successfully" });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to start scheduler" });
+    }
+  });
+  
+  app.post(`${apiPrefix}/admin/scheduler/stop`, (req, res) => {
+    try {
+      scheduler.stopAll();
+      res.json({ message: "Scheduler stopped successfully" });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to stop scheduler" });
+    }
+  });
+  
+  app.post(`${apiPrefix}/admin/scheduler/interval`, (req, res) => {
+    try {
+      const { task, minutes } = req.body;
+      
+      if (!task || !minutes || isNaN(minutes) || minutes < 1) {
+        return res.status(400).json({ 
+          message: "Invalid request. Provide a valid task name and interval in minutes (minimum 1)." 
+        });
+      }
+      
+      const intervalMs = minutes * 60 * 1000;
+      scheduler.updateInterval(task, intervalMs);
+      
+      res.json({ 
+        message: `${task} scheduler interval updated to ${minutes} minutes`,
+        task,
+        intervalMinutes: minutes
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to update scheduler interval" });
     }
   });
   

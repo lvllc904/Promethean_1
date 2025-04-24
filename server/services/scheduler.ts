@@ -4,8 +4,8 @@ import { aiConcierge } from './ai-concierge';
  * Scheduler Service - Handles periodic tasks like review analysis
  */
 export class SchedulerService {
-  private reviewAnalysisInterval: NodeJS.Timeout | null = null;
-  private intervals: Map<string, number> = new Map();
+  public reviewAnalysisInterval: NodeJS.Timeout | null = null;
+  public intervals: Map<string, number> = new Map();
   
   constructor() {
     // Default intervals in milliseconds
