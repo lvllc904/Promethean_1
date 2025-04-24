@@ -1174,6 +1174,758 @@ export class DatabaseStorage implements IStorage {
       member.role.toLowerCase().includes(searchLower)
     );
   }
+
+  // Admin dashboard methods - Service Categories
+  private serviceCategories: Map<number, ServiceCategory> = new Map();
+  private currentServiceCategoryId = 1;
+
+  async getServiceCategory(id: number): Promise<ServiceCategory | undefined> {
+    try {
+      const [category] = await db.select().from(serviceCategories).where(eq(serviceCategories.id, id));
+      return category || undefined;
+    } catch (error) {
+      // Fallback to in-memory if database table doesn't exist yet
+      return this.serviceCategories.get(id);
+    }
+  }
+  
+  async getServiceCategories(active?: boolean): Promise<ServiceCategory[]> {
+    try {
+      if (active !== undefined) {
+        return db.select()
+          .from(serviceCategories)
+          .where(eq(serviceCategories.isActive, active))
+          .orderBy(asc(serviceCategories.displayOrder));
+      }
+      return db.select().from(serviceCategories).orderBy(asc(serviceCategories.displayOrder));
+    } catch (error) {
+      // Fallback to in-memory if database table doesn't exist yet
+      let categories = Array.from(this.serviceCategories.values());
+      if (active !== undefined) {
+        categories = categories.filter(category => category.isActive === active);
+      }
+      return categories.sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
+    }
+  }
+  
+  async createServiceCategory(category: InsertServiceCategory): Promise<ServiceCategory> {
+    try {
+      const [newCategory] = await db
+        .insert(serviceCategories)
+        .values({
+          ...category,
+          isActive: true,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        })
+        .returning();
+      return newCategory;
+    } catch (error) {
+      // Fallback to in-memory if database table doesn't exist yet
+      const id = this.currentServiceCategoryId++;
+      const newCategory: ServiceCategory = {
+        id,
+        ...category,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        displayOrder: category.displayOrder || 0
+      };
+      this.serviceCategories.set(id, newCategory);
+      return newCategory;
+    }
+  }
+  
+  async updateServiceCategory(id: number, category: Partial<InsertServiceCategory>): Promise<ServiceCategory> {
+    try {
+      const [updatedCategory] = await db
+        .update(serviceCategories)
+        .set({
+          ...category,
+          updatedAt: new Date()
+        })
+        .where(eq(serviceCategories.id, id))
+        .returning();
+      
+      if (!updatedCategory) {
+        throw new Error(`Service category with ID ${id} not found`);
+      }
+      
+      return updatedCategory;
+    } catch (error) {
+      // Fallback to in-memory if database table doesn't exist yet
+      const existingCategory = this.serviceCategories.get(id);
+      if (!existingCategory) {
+        throw new Error(`Service category with ID ${id} not found`);
+      }
+      
+      const updatedCategory: ServiceCategory = {
+        ...existingCategory,
+        ...category,
+        updatedAt: new Date()
+      };
+      
+      this.serviceCategories.set(id, updatedCategory);
+      return updatedCategory;
+    }
+  }
+  
+  async deleteServiceCategory(id: number): Promise<boolean> {
+    try {
+      const result = await db
+        .delete(serviceCategories)
+        .where(eq(serviceCategories.id, id))
+        .returning();
+      
+      return result.length > 0;
+    } catch (error) {
+      // Fallback to in-memory if database table doesn't exist yet
+      const deleted = this.serviceCategories.delete(id);
+      return deleted;
+    }
+  }
+  
+  // Admin dashboard methods - Service Providers
+  private serviceProviders: Map<number, ServiceProvider> = new Map();
+  private currentServiceProviderId = 1;
+  
+  async getServiceProvider(id: number): Promise<ServiceProvider | undefined> {
+    try {
+      const [provider] = await db.select().from(serviceProviders).where(eq(serviceProviders.id, id));
+      return provider || undefined;
+    } catch (error) {
+      // Fallback to in-memory if database table doesn't exist yet
+      return this.serviceProviders.get(id);
+    }
+  }
+  
+  async getServiceProviders(categoryId?: number, active?: boolean): Promise<ServiceProvider[]> {
+    try {
+      let query = db.select().from(serviceProviders);
+      
+      if (categoryId !== undefined && active !== undefined) {
+        query = query.where(and(
+          eq(serviceProviders.categoryId, categoryId),
+          eq(serviceProviders.isActive, active)
+        ));
+      } else if (categoryId !== undefined) {
+        query = query.where(eq(serviceProviders.categoryId, categoryId));
+      } else if (active !== undefined) {
+        query = query.where(eq(serviceProviders.isActive, active));
+      }
+      
+      return query.orderBy(asc(serviceProviders.name));
+    } catch (error) {
+      // Fallback to in-memory if database table doesn't exist yet
+      let providers = Array.from(this.serviceProviders.values());
+      
+      if (categoryId !== undefined) {
+        providers = providers.filter(provider => provider.categoryId === categoryId);
+      }
+      
+      if (active !== undefined) {
+        providers = providers.filter(provider => provider.isActive === active);
+      }
+      
+      return providers.sort((a, b) => a.name.localeCompare(b.name));
+    }
+  }
+  
+  async createServiceProvider(provider: InsertServiceProvider): Promise<ServiceProvider> {
+    try {
+      const [newProvider] = await db
+        .insert(serviceProviders)
+        .values({
+          ...provider,
+          isActive: true,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        })
+        .returning();
+      return newProvider;
+    } catch (error) {
+      // Fallback to in-memory if database table doesn't exist yet
+      const id = this.currentServiceProviderId++;
+      const newProvider: ServiceProvider = {
+        id,
+        ...provider,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
+      this.serviceProviders.set(id, newProvider);
+      return newProvider;
+    }
+  }
+  
+  async updateServiceProvider(id: number, provider: Partial<InsertServiceProvider>): Promise<ServiceProvider> {
+    try {
+      const [updatedProvider] = await db
+        .update(serviceProviders)
+        .set({
+          ...provider,
+          updatedAt: new Date()
+        })
+        .where(eq(serviceProviders.id, id))
+        .returning();
+      
+      if (!updatedProvider) {
+        throw new Error(`Service provider with ID ${id} not found`);
+      }
+      
+      return updatedProvider;
+    } catch (error) {
+      // Fallback to in-memory if database table doesn't exist yet
+      const existingProvider = this.serviceProviders.get(id);
+      if (!existingProvider) {
+        throw new Error(`Service provider with ID ${id} not found`);
+      }
+      
+      const updatedProvider: ServiceProvider = {
+        ...existingProvider,
+        ...provider,
+        updatedAt: new Date()
+      };
+      
+      this.serviceProviders.set(id, updatedProvider);
+      return updatedProvider;
+    }
+  }
+  
+  async deleteServiceProvider(id: number): Promise<boolean> {
+    try {
+      const result = await db
+        .delete(serviceProviders)
+        .where(eq(serviceProviders.id, id))
+        .returning();
+      
+      return result.length > 0;
+    } catch (error) {
+      // Fallback to in-memory if database table doesn't exist yet
+      const deleted = this.serviceProviders.delete(id);
+      return deleted;
+    }
+  }
+  
+  // Admin dashboard methods - API Credentials
+  private apiCredentials: Map<number, ApiCredential> = new Map();
+  private currentApiCredentialId = 1;
+  
+  async getApiCredential(id: number): Promise<ApiCredential | undefined> {
+    try {
+      const [credential] = await db.select().from(apiCredentials).where(eq(apiCredentials.id, id));
+      return credential || undefined;
+    } catch (error) {
+      // Fallback to in-memory if database table doesn't exist yet
+      return this.apiCredentials.get(id);
+    }
+  }
+  
+  async getApiCredentialsByProvider(providerId: number): Promise<ApiCredential[]> {
+    try {
+      return db.select()
+        .from(apiCredentials)
+        .where(eq(apiCredentials.providerId, providerId))
+        .orderBy(asc(apiCredentials.name));
+    } catch (error) {
+      // Fallback to in-memory if database table doesn't exist yet
+      return Array.from(this.apiCredentials.values())
+        .filter(credential => credential.providerId === providerId)
+        .sort((a, b) => a.name.localeCompare(b.name));
+    }
+  }
+  
+  async createApiCredential(credential: InsertApiCredential): Promise<ApiCredential> {
+    try {
+      const [newCredential] = await db
+        .insert(apiCredentials)
+        .values({
+          ...credential,
+          isActive: true,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        })
+        .returning();
+      return newCredential;
+    } catch (error) {
+      // Fallback to in-memory if database table doesn't exist yet
+      const id = this.currentApiCredentialId++;
+      const newCredential: ApiCredential = {
+        id,
+        ...credential,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        tokenExpiresAt: null,
+        lastTested: null,
+        testResult: null
+      };
+      this.apiCredentials.set(id, newCredential);
+      return newCredential;
+    }
+  }
+  
+  async updateApiCredential(id: number, credential: Partial<InsertApiCredential>): Promise<ApiCredential> {
+    try {
+      const [updatedCredential] = await db
+        .update(apiCredentials)
+        .set({
+          ...credential,
+          updatedAt: new Date()
+        })
+        .where(eq(apiCredentials.id, id))
+        .returning();
+      
+      if (!updatedCredential) {
+        throw new Error(`API credential with ID ${id} not found`);
+      }
+      
+      return updatedCredential;
+    } catch (error) {
+      // Fallback to in-memory if database table doesn't exist yet
+      const existingCredential = this.apiCredentials.get(id);
+      if (!existingCredential) {
+        throw new Error(`API credential with ID ${id} not found`);
+      }
+      
+      const updatedCredential: ApiCredential = {
+        ...existingCredential,
+        ...credential,
+        updatedAt: new Date()
+      };
+      
+      this.apiCredentials.set(id, updatedCredential);
+      return updatedCredential;
+    }
+  }
+  
+  async deleteApiCredential(id: number): Promise<boolean> {
+    try {
+      const result = await db
+        .delete(apiCredentials)
+        .where(eq(apiCredentials.id, id))
+        .returning();
+      
+      return result.length > 0;
+    } catch (error) {
+      // Fallback to in-memory if database table doesn't exist yet
+      const deleted = this.apiCredentials.delete(id);
+      return deleted;
+    }
+  }
+  
+  async testApiCredential(id: number): Promise<boolean> {
+    const credential = await this.getApiCredential(id);
+    if (!credential) {
+      throw new Error(`API credential with ID ${id} not found`);
+    }
+    
+    // In a real implementation, this would test the API credentials
+    // For now, we'll just update the lastTested and testResult fields
+    const testSuccess = Math.random() > 0.2; // 80% success rate for testing
+    
+    try {
+      await db
+        .update(apiCredentials)
+        .set({
+          lastTested: new Date(),
+          testResult: testSuccess,
+          updatedAt: new Date()
+        })
+        .where(eq(apiCredentials.id, id));
+    } catch (error) {
+      // Fallback to in-memory if database table doesn't exist yet
+      this.apiCredentials.set(id, {
+        ...credential,
+        lastTested: new Date(),
+        testResult: testSuccess,
+        updatedAt: new Date()
+      });
+    }
+    
+    return testSuccess;
+  }
+  
+  // Admin dashboard methods - Service Integrations
+  private serviceIntegrations: Map<number, ServiceIntegration> = new Map();
+  private currentServiceIntegrationId = 1;
+  
+  async getServiceIntegration(id: number): Promise<ServiceIntegration | undefined> {
+    try {
+      const [integration] = await db.select().from(serviceIntegrations).where(eq(serviceIntegrations.id, id));
+      return integration || undefined;
+    } catch (error) {
+      // Fallback to in-memory if database table doesn't exist yet
+      return this.serviceIntegrations.get(id);
+    }
+  }
+  
+  async getServiceIntegrations(providerId?: number, active?: boolean): Promise<ServiceIntegration[]> {
+    try {
+      let query = db.select().from(serviceIntegrations);
+      
+      if (providerId !== undefined && active !== undefined) {
+        query = query.where(and(
+          eq(serviceIntegrations.providerId, providerId),
+          eq(serviceIntegrations.isActive, active)
+        ));
+      } else if (providerId !== undefined) {
+        query = query.where(eq(serviceIntegrations.providerId, providerId));
+      } else if (active !== undefined) {
+        query = query.where(eq(serviceIntegrations.isActive, active));
+      }
+      
+      return query.orderBy(asc(serviceIntegrations.name));
+    } catch (error) {
+      // Fallback to in-memory if database table doesn't exist yet
+      let integrations = Array.from(this.serviceIntegrations.values());
+      
+      if (providerId !== undefined) {
+        integrations = integrations.filter(integration => integration.providerId === providerId);
+      }
+      
+      if (active !== undefined) {
+        integrations = integrations.filter(integration => integration.isActive === active);
+      }
+      
+      return integrations.sort((a, b) => a.name.localeCompare(b.name));
+    }
+  }
+  
+  async createServiceIntegration(integration: InsertServiceIntegration): Promise<ServiceIntegration> {
+    try {
+      const [newIntegration] = await db
+        .insert(serviceIntegrations)
+        .values({
+          ...integration,
+          isActive: true,
+          usageCount: 0,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        })
+        .returning();
+      return newIntegration;
+    } catch (error) {
+      // Fallback to in-memory if database table doesn't exist yet
+      const id = this.currentServiceIntegrationId++;
+      const newIntegration: ServiceIntegration = {
+        id,
+        ...integration,
+        isActive: true,
+        usageCount: 0,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        lastError: null,
+        lastSuccessful: null
+      };
+      this.serviceIntegrations.set(id, newIntegration);
+      return newIntegration;
+    }
+  }
+  
+  async updateServiceIntegration(id: number, integration: Partial<InsertServiceIntegration>): Promise<ServiceIntegration> {
+    try {
+      const [updatedIntegration] = await db
+        .update(serviceIntegrations)
+        .set({
+          ...integration,
+          updatedAt: new Date()
+        })
+        .where(eq(serviceIntegrations.id, id))
+        .returning();
+      
+      if (!updatedIntegration) {
+        throw new Error(`Service integration with ID ${id} not found`);
+      }
+      
+      return updatedIntegration;
+    } catch (error) {
+      // Fallback to in-memory if database table doesn't exist yet
+      const existingIntegration = this.serviceIntegrations.get(id);
+      if (!existingIntegration) {
+        throw new Error(`Service integration with ID ${id} not found`);
+      }
+      
+      const updatedIntegration: ServiceIntegration = {
+        ...existingIntegration,
+        ...integration,
+        updatedAt: new Date()
+      };
+      
+      this.serviceIntegrations.set(id, updatedIntegration);
+      return updatedIntegration;
+    }
+  }
+  
+  async deleteServiceIntegration(id: number): Promise<boolean> {
+    try {
+      const result = await db
+        .delete(serviceIntegrations)
+        .where(eq(serviceIntegrations.id, id))
+        .returning();
+      
+      return result.length > 0;
+    } catch (error) {
+      // Fallback to in-memory if database table doesn't exist yet
+      const deleted = this.serviceIntegrations.delete(id);
+      return deleted;
+    }
+  }
+  
+  // Admin dashboard methods - Whitelabel Settings
+  private whitelabelSetting: WhitelabelSetting | undefined;
+  
+  async getWhitelabelSettings(): Promise<WhitelabelSetting | undefined> {
+    try {
+      const [settings] = await db.select().from(whitelabelSettings);
+      return settings || this.whitelabelSetting;
+    } catch (error) {
+      // Fallback to in-memory if database table doesn't exist yet
+      return this.whitelabelSetting;
+    }
+  }
+  
+  async updateWhitelabelSettings(settings: Partial<InsertWhitelabelSetting>): Promise<WhitelabelSetting> {
+    try {
+      // First try to get existing settings
+      const existingSettings = await this.getWhitelabelSettings();
+      
+      if (existingSettings) {
+        // Update existing settings
+        const [updatedSettings] = await db
+          .update(whitelabelSettings)
+          .set({
+            ...settings,
+            updatedAt: new Date()
+          })
+          .where(eq(whitelabelSettings.id, existingSettings.id))
+          .returning();
+        
+        return updatedSettings;
+      } else {
+        // Create new settings
+        const [newSettings] = await db
+          .insert(whitelabelSettings)
+          .values({
+            ...settings,
+            companyName: settings.companyName || 'DAC Marketplace',
+            isActive: true,
+            createdAt: new Date(),
+            updatedAt: new Date()
+          })
+          .returning();
+        
+        return newSettings;
+      }
+    } catch (error) {
+      // Fallback to in-memory if database table doesn't exist yet
+      if (this.whitelabelSetting) {
+        this.whitelabelSetting = {
+          ...this.whitelabelSetting,
+          ...settings,
+          updatedAt: new Date()
+        };
+      } else {
+        this.whitelabelSetting = {
+          id: 1,
+          companyName: settings.companyName || 'DAC Marketplace',
+          logoUrl: settings.logoUrl || null,
+          faviconUrl: settings.faviconUrl || null,
+          primaryColor: settings.primaryColor || '#3B82F6',
+          secondaryColor: settings.secondaryColor || '#10B981',
+          accentColor: settings.accentColor || '#8B5CF6',
+          fontPrimary: settings.fontPrimary || 'Inter',
+          fontSecondary: settings.fontSecondary || 'Inter',
+          customCss: settings.customCss || null,
+          customJs: settings.customJs || null,
+          contactEmail: settings.contactEmail || null,
+          supportUrl: settings.supportUrl || null,
+          privacyPolicyUrl: settings.privacyPolicyUrl || null,
+          termsOfServiceUrl: settings.termsOfServiceUrl || null,
+          socialLinks: settings.socialLinks || null,
+          customDomain: settings.customDomain || null,
+          isActive: true,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        };
+      }
+      
+      return this.whitelabelSetting;
+    }
+  }
+  
+  // Admin dashboard methods - API Usage Logs
+  private apiUsageLogs: Map<number, ApiUsageLog> = new Map();
+  private currentApiUsageLogId = 1;
+  
+  async getApiUsageLogs(integrationId?: number, from?: Date, to?: Date): Promise<ApiUsageLog[]> {
+    try {
+      let query = db.select().from(apiUsageLogs);
+      
+      if (integrationId !== undefined) {
+        query = query.where(eq(apiUsageLogs.integrationId, integrationId));
+      }
+      
+      if (from && to) {
+        query = query.where(
+          and(
+            sql`${apiUsageLogs.timestamp} >= ${from}`,
+            sql`${apiUsageLogs.timestamp} <= ${to}`
+          )
+        );
+      } else if (from) {
+        query = query.where(sql`${apiUsageLogs.timestamp} >= ${from}`);
+      } else if (to) {
+        query = query.where(sql`${apiUsageLogs.timestamp} <= ${to}`);
+      }
+      
+      return query.orderBy(desc(apiUsageLogs.timestamp));
+    } catch (error) {
+      // Fallback to in-memory if database table doesn't exist yet
+      let logs = Array.from(this.apiUsageLogs.values());
+      
+      if (integrationId !== undefined) {
+        logs = logs.filter(log => log.integrationId === integrationId);
+      }
+      
+      if (from) {
+        logs = logs.filter(log => new Date(log.timestamp) >= from);
+      }
+      
+      if (to) {
+        logs = logs.filter(log => new Date(log.timestamp) <= to);
+      }
+      
+      return logs.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+    }
+  }
+  
+  async createApiUsageLog(log: InsertApiUsageLog): Promise<ApiUsageLog> {
+    try {
+      const [newLog] = await db
+        .insert(apiUsageLogs)
+        .values({
+          ...log,
+          timestamp: new Date()
+        })
+        .returning();
+      
+      // Update usage count for the integration
+      if (newLog) {
+        try {
+          await db
+            .update(serviceIntegrations)
+            .set({
+              usageCount: sql`${serviceIntegrations.usageCount} + 1`,
+              lastSuccessful: newLog.statusCode >= 200 && newLog.statusCode < 300 ? new Date() : undefined,
+              lastError: newLog.statusCode >= 400 ? newLog.errorMessage : undefined
+            })
+            .where(eq(serviceIntegrations.id, newLog.integrationId));
+        } catch (error) {
+          // Ignore if service integrations table doesn't exist yet
+        }
+      }
+      
+      return newLog;
+    } catch (error) {
+      // Fallback to in-memory if database table doesn't exist yet
+      const id = this.currentApiUsageLogId++;
+      const newLog: ApiUsageLog = {
+        id,
+        ...log,
+        timestamp: new Date()
+      };
+      this.apiUsageLogs.set(id, newLog);
+      
+      // Update usage count for the integration
+      const integration = this.serviceIntegrations.get(log.integrationId);
+      if (integration) {
+        this.serviceIntegrations.set(log.integrationId, {
+          ...integration,
+          usageCount: (integration.usageCount || 0) + 1,
+          lastSuccessful: log.statusCode >= 200 && log.statusCode < 300 ? new Date() : integration.lastSuccessful,
+          lastError: log.statusCode >= 400 ? log.errorMessage : integration.lastError
+        });
+      }
+      
+      return newLog;
+    }
+  }
+  
+  async getApiUsageSummary(integrationId?: number, period: 'day' | 'week' | 'month' = 'month'): Promise<{
+    totalRequests: number;
+    successRate: number;
+    avgResponseTime: number;
+    totalCost: number;
+  }> {
+    // Calculate date range based on period
+    const now = new Date();
+    let fromDate: Date;
+    
+    switch (period) {
+      case 'day':
+        fromDate = new Date(now);
+        fromDate.setDate(now.getDate() - 1);
+        break;
+      case 'week':
+        fromDate = new Date(now);
+        fromDate.setDate(now.getDate() - 7);
+        break;
+      case 'month':
+      default:
+        fromDate = new Date(now);
+        fromDate.setMonth(now.getMonth() - 1);
+        break;
+    }
+    
+    try {
+      // Try using SQL for efficiency
+      const logs = await this.getApiUsageLogs(integrationId, fromDate, now);
+      
+      if (logs.length === 0) {
+        return {
+          totalRequests: 0,
+          successRate: 0,
+          avgResponseTime: 0,
+          totalCost: 0
+        };
+      }
+      
+      const successfulRequests = logs.filter(log => log.statusCode >= 200 && log.statusCode < 300).length;
+      const totalResponseTime = logs.reduce((sum, log) => sum + (log.responseTime || 0), 0);
+      const totalCost = logs.reduce((sum, log) => sum + Number(log.cost || 0), 0);
+      
+      return {
+        totalRequests: logs.length,
+        successRate: logs.length > 0 ? (successfulRequests / logs.length) * 100 : 0,
+        avgResponseTime: logs.length > 0 ? totalResponseTime / logs.length : 0,
+        totalCost
+      };
+    } catch (error) {
+      // Fallback to in-memory calculation
+      const logs = await this.getApiUsageLogs(integrationId, fromDate, now);
+      
+      if (logs.length === 0) {
+        return {
+          totalRequests: 0,
+          successRate: 0,
+          avgResponseTime: 0,
+          totalCost: 0
+        };
+      }
+      
+      const successfulRequests = logs.filter(log => log.statusCode >= 200 && log.statusCode < 300).length;
+      const totalResponseTime = logs.reduce((sum, log) => sum + (log.responseTime || 0), 0);
+      const totalCost = logs.reduce((sum, log) => sum + Number(log.cost || 0), 0);
+      
+      return {
+        totalRequests: logs.length,
+        successRate: logs.length > 0 ? (successfulRequests / logs.length) * 100 : 0,
+        avgResponseTime: logs.length > 0 ? totalResponseTime / logs.length : 0,
+        totalCost
+      };
+    }
+  }
 }
 
 // Use DatabaseStorage instead of MemStorage

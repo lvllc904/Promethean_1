@@ -8,7 +8,13 @@ import {
   insertTaskSchema,
   insertVoteSchema,
   insertPromVestingScheduleSchema,
-  insertPromTokenPriceSchema
+  insertPromTokenPriceSchema,
+  insertServiceCategorySchema,
+  insertServiceProviderSchema,
+  insertApiCredentialSchema,
+  insertServiceIntegrationSchema,
+  insertWhitelabelSettingSchema,
+  insertApiUsageLogSchema
 } from "@shared/schema";
 import { generatePropertyValuation, generatePropertyDescription } from "./services/ai";
 import * as web3Service from "./services/web3";
@@ -450,6 +456,489 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
     } catch (error) {
       res.status(500).json({ message: "Failed to claim vested tokens" });
+    }
+  });
+
+  // ======================================================================
+  // Admin Dashboard API Routes
+  // ======================================================================
+  
+  // Service Categories
+  app.get(`${apiPrefix}/admin/service-categories`, async (req, res) => {
+    try {
+      const active = req.query.active === 'true' ? true : 
+                    req.query.active === 'false' ? false : undefined;
+      const categories = await storage.getServiceCategories(active);
+      res.json(categories);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch service categories" });
+    }
+  });
+  
+  app.get(`${apiPrefix}/admin/service-categories/:id`, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const category = await storage.getServiceCategory(id);
+      
+      if (!category) {
+        return res.status(404).json({ message: "Service category not found" });
+      }
+      
+      res.json(category);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch service category" });
+    }
+  });
+  
+  app.post(`${apiPrefix}/admin/service-categories`, async (req, res) => {
+    try {
+      const categoryData = insertServiceCategorySchema.parse(req.body);
+      const newCategory = await storage.createServiceCategory(categoryData);
+      res.status(201).json(newCategory);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid category data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to create service category" });
+    }
+  });
+  
+  app.patch(`${apiPrefix}/admin/service-categories/:id`, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const categoryData = req.body; // We'll do partial validation manually
+      
+      // Attempt to validate the fields that are present
+      const validationSchema = z.object({
+        name: z.string().optional(),
+        description: z.string().optional(),
+        icon: z.string().optional(),
+        displayOrder: z.number().optional(),
+      });
+      
+      const validatedData = validationSchema.parse(categoryData);
+      
+      const updatedCategory = await storage.updateServiceCategory(id, validatedData);
+      res.json(updatedCategory);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid category data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to update service category" });
+    }
+  });
+  
+  app.delete(`${apiPrefix}/admin/service-categories/:id`, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const success = await storage.deleteServiceCategory(id);
+      
+      if (!success) {
+        return res.status(404).json({ message: "Service category not found" });
+      }
+      
+      res.status(204).end();
+    } catch (error) {
+      res.status(500).json({ message: "Failed to delete service category" });
+    }
+  });
+  
+  // Service Providers
+  app.get(`${apiPrefix}/admin/service-providers`, async (req, res) => {
+    try {
+      const categoryId = req.query.categoryId ? parseInt(req.query.categoryId as string) : undefined;
+      const active = req.query.active === 'true' ? true : 
+                    req.query.active === 'false' ? false : undefined;
+      
+      const providers = await storage.getServiceProviders(categoryId, active);
+      res.json(providers);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch service providers" });
+    }
+  });
+  
+  app.get(`${apiPrefix}/admin/service-providers/:id`, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const provider = await storage.getServiceProvider(id);
+      
+      if (!provider) {
+        return res.status(404).json({ message: "Service provider not found" });
+      }
+      
+      res.json(provider);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch service provider" });
+    }
+  });
+  
+  app.post(`${apiPrefix}/admin/service-providers`, async (req, res) => {
+    try {
+      const providerData = insertServiceProviderSchema.parse(req.body);
+      const newProvider = await storage.createServiceProvider(providerData);
+      res.status(201).json(newProvider);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid provider data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to create service provider" });
+    }
+  });
+  
+  app.patch(`${apiPrefix}/admin/service-providers/:id`, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      
+      // Validate partial update data
+      const validationSchema = z.object({
+        name: z.string().optional(),
+        description: z.string().optional(),
+        categoryId: z.number().optional(),
+        logoUrl: z.string().optional().nullable(),
+        website: z.string().optional().nullable(),
+        documentationUrl: z.string().optional().nullable(),
+        apiBaseUrl: z.string().optional().nullable(),
+        isRapidApi: z.boolean().optional(),
+        authType: z.string().optional(),
+        requiredFields: z.any().optional(),
+      });
+      
+      const validatedData = validationSchema.parse(req.body);
+      const updatedProvider = await storage.updateServiceProvider(id, validatedData);
+      res.json(updatedProvider);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid provider data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to update service provider" });
+    }
+  });
+  
+  app.delete(`${apiPrefix}/admin/service-providers/:id`, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const success = await storage.deleteServiceProvider(id);
+      
+      if (!success) {
+        return res.status(404).json({ message: "Service provider not found" });
+      }
+      
+      res.status(204).end();
+    } catch (error) {
+      res.status(500).json({ message: "Failed to delete service provider" });
+    }
+  });
+  
+  // API Credentials
+  app.get(`${apiPrefix}/admin/api-credentials`, async (req, res) => {
+    try {
+      let credentials = [];
+      
+      if (req.query.providerId) {
+        const providerId = parseInt(req.query.providerId as string);
+        credentials = await storage.getApiCredentialsByProvider(providerId);
+      } else {
+        // Fetch by provider and combine
+        const providers = await storage.getServiceProviders();
+        for (const provider of providers) {
+          const providerCredentials = await storage.getApiCredentialsByProvider(provider.id);
+          credentials = [...credentials, ...providerCredentials];
+        }
+      }
+      
+      // Filter out sensitive information
+      const sanitizedCredentials = credentials.map(cred => {
+        const { apiKey, apiSecret, accessToken, refreshToken, ...safeData } = cred;
+        return {
+          ...safeData,
+          hasApiKey: !!apiKey,
+          hasApiSecret: !!apiSecret,
+          hasAccessToken: !!accessToken,
+          hasRefreshToken: !!refreshToken,
+        };
+      });
+      
+      res.json(sanitizedCredentials);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch API credentials" });
+    }
+  });
+  
+  app.get(`${apiPrefix}/admin/api-credentials/:id`, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const credential = await storage.getApiCredential(id);
+      
+      if (!credential) {
+        return res.status(404).json({ message: "API credential not found" });
+      }
+      
+      // Filter out sensitive information
+      const { apiKey, apiSecret, accessToken, refreshToken, ...safeData } = credential;
+      const sanitizedCredential = {
+        ...safeData,
+        hasApiKey: !!apiKey,
+        hasApiSecret: !!apiSecret,
+        hasAccessToken: !!accessToken,
+        hasRefreshToken: !!refreshToken,
+      };
+      
+      res.json(sanitizedCredential);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch API credential" });
+    }
+  });
+  
+  app.post(`${apiPrefix}/admin/api-credentials`, async (req, res) => {
+    try {
+      const credentialData = insertApiCredentialSchema.parse(req.body);
+      const newCredential = await storage.createApiCredential(credentialData);
+      
+      // Filter out sensitive information
+      const { apiKey, apiSecret, accessToken, refreshToken, ...safeData } = newCredential;
+      const sanitizedCredential = {
+        ...safeData,
+        hasApiKey: !!apiKey,
+        hasApiSecret: !!apiSecret,
+        hasAccessToken: !!accessToken,
+        hasRefreshToken: !!refreshToken,
+      };
+      
+      res.status(201).json(sanitizedCredential);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid credential data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to create API credential" });
+    }
+  });
+  
+  app.patch(`${apiPrefix}/admin/api-credentials/:id`, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      
+      // Validate partial update data
+      const validationSchema = z.object({
+        name: z.string().optional(),
+        providerId: z.number().optional(),
+        apiKey: z.string().optional().nullable(),
+        apiSecret: z.string().optional().nullable(),
+        accessToken: z.string().optional().nullable(),
+        refreshToken: z.string().optional().nullable(),
+        additionalSettings: z.any().optional(),
+      });
+      
+      const validatedData = validationSchema.parse(req.body);
+      const updatedCredential = await storage.updateApiCredential(id, validatedData);
+      
+      // Filter out sensitive information
+      const { apiKey, apiSecret, accessToken, refreshToken, ...safeData } = updatedCredential;
+      const sanitizedCredential = {
+        ...safeData,
+        hasApiKey: !!apiKey,
+        hasApiSecret: !!apiSecret,
+        hasAccessToken: !!accessToken,
+        hasRefreshToken: !!refreshToken,
+      };
+      
+      res.json(sanitizedCredential);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid credential data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to update API credential" });
+    }
+  });
+  
+  app.delete(`${apiPrefix}/admin/api-credentials/:id`, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const success = await storage.deleteApiCredential(id);
+      
+      if (!success) {
+        return res.status(404).json({ message: "API credential not found" });
+      }
+      
+      res.status(204).end();
+    } catch (error) {
+      res.status(500).json({ message: "Failed to delete API credential" });
+    }
+  });
+  
+  app.post(`${apiPrefix}/admin/api-credentials/:id/test`, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const success = await storage.testApiCredential(id);
+      
+      res.json({ success, message: success ? "Test successful" : "Test failed" });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to test API credential" });
+    }
+  });
+  
+  // Service Integrations
+  app.get(`${apiPrefix}/admin/service-integrations`, async (req, res) => {
+    try {
+      const providerId = req.query.providerId ? parseInt(req.query.providerId as string) : undefined;
+      const active = req.query.active === 'true' ? true : 
+                    req.query.active === 'false' ? false : undefined;
+      
+      const integrations = await storage.getServiceIntegrations(providerId, active);
+      res.json(integrations);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch service integrations" });
+    }
+  });
+  
+  app.get(`${apiPrefix}/admin/service-integrations/:id`, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const integration = await storage.getServiceIntegration(id);
+      
+      if (!integration) {
+        return res.status(404).json({ message: "Service integration not found" });
+      }
+      
+      res.json(integration);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch service integration" });
+    }
+  });
+  
+  app.post(`${apiPrefix}/admin/service-integrations`, async (req, res) => {
+    try {
+      const integrationData = insertServiceIntegrationSchema.parse(req.body);
+      const newIntegration = await storage.createServiceIntegration(integrationData);
+      res.status(201).json(newIntegration);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid integration data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to create service integration" });
+    }
+  });
+  
+  app.patch(`${apiPrefix}/admin/service-integrations/:id`, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      
+      // Validate partial update data
+      const validationSchema = z.object({
+        name: z.string().optional(),
+        providerId: z.number().optional(),
+        credentialId: z.number().optional(),
+        settings: z.any().optional(),
+        webhookUrl: z.string().optional().nullable(),
+        callbackUrl: z.string().optional().nullable(),
+        usageQuota: z.number().optional().nullable(),
+        isActive: z.boolean().optional(),
+      });
+      
+      const validatedData = validationSchema.parse(req.body);
+      const updatedIntegration = await storage.updateServiceIntegration(id, validatedData);
+      res.json(updatedIntegration);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid integration data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to update service integration" });
+    }
+  });
+  
+  app.delete(`${apiPrefix}/admin/service-integrations/:id`, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const success = await storage.deleteServiceIntegration(id);
+      
+      if (!success) {
+        return res.status(404).json({ message: "Service integration not found" });
+      }
+      
+      res.status(204).end();
+    } catch (error) {
+      res.status(500).json({ message: "Failed to delete service integration" });
+    }
+  });
+  
+  // Whitelabel Settings
+  app.get(`${apiPrefix}/admin/whitelabel-settings`, async (req, res) => {
+    try {
+      const settings = await storage.getWhitelabelSettings();
+      res.json(settings || {});
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch whitelabel settings" });
+    }
+  });
+  
+  app.patch(`${apiPrefix}/admin/whitelabel-settings`, async (req, res) => {
+    try {
+      // Validate partial update data
+      const validationSchema = z.object({
+        companyName: z.string().optional(),
+        logoUrl: z.string().optional().nullable(),
+        faviconUrl: z.string().optional().nullable(),
+        primaryColor: z.string().optional(),
+        secondaryColor: z.string().optional(),
+        accentColor: z.string().optional(),
+        fontPrimary: z.string().optional(),
+        fontSecondary: z.string().optional(),
+        customCss: z.string().optional().nullable(),
+        customJs: z.string().optional().nullable(),
+        contactEmail: z.string().optional().nullable(),
+        supportUrl: z.string().optional().nullable(),
+        privacyPolicyUrl: z.string().optional().nullable(),
+        termsOfServiceUrl: z.string().optional().nullable(),
+        socialLinks: z.any().optional().nullable(),
+        customDomain: z.string().optional().nullable(),
+      });
+      
+      const validatedData = validationSchema.parse(req.body);
+      const updatedSettings = await storage.updateWhitelabelSettings(validatedData);
+      res.json(updatedSettings);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid whitelabel settings", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to update whitelabel settings" });
+    }
+  });
+  
+  // API Usage Logs
+  app.get(`${apiPrefix}/admin/api-usage-logs`, async (req, res) => {
+    try {
+      const integrationId = req.query.integrationId ? parseInt(req.query.integrationId as string) : undefined;
+      const from = req.query.from ? new Date(req.query.from as string) : undefined;
+      const to = req.query.to ? new Date(req.query.to as string) : undefined;
+      
+      const logs = await storage.getApiUsageLogs(integrationId, from, to);
+      res.json(logs);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch API usage logs" });
+    }
+  });
+  
+  app.get(`${apiPrefix}/admin/api-usage-summary`, async (req, res) => {
+    try {
+      const integrationId = req.query.integrationId ? parseInt(req.query.integrationId as string) : undefined;
+      const period = (req.query.period as 'day' | 'week' | 'month') || 'month';
+      
+      const summary = await storage.getApiUsageSummary(integrationId, period);
+      res.json(summary);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch API usage summary" });
+    }
+  });
+  
+  app.post(`${apiPrefix}/admin/api-usage-logs`, async (req, res) => {
+    try {
+      const logData = insertApiUsageLogSchema.parse(req.body);
+      const newLog = await storage.createApiUsageLog(logData);
+      res.status(201).json(newLog);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid log data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to create API usage log" });
     }
   });
 
