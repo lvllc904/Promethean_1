@@ -20,6 +20,7 @@ import {
 } from "@shared/schema";
 import { aiConcierge } from "./services/ai-concierge";
 import { scheduler } from "./services/scheduler";
+import { testRunner } from "./services/test-runner";
 import { generatePropertyValuation, generatePropertyDescription } from "./services/ai";
 import * as web3Service from "./services/web3";
 
@@ -1179,6 +1180,62 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Invalid log data", errors: error.errors });
       }
       res.status(500).json({ message: "Failed to create API usage log" });
+    }
+  });
+
+  // ======================================================================
+  // Test Runner API Routes
+  // ======================================================================
+  
+  app.post(`${apiPrefix}/tests/run-unit`, async (_req, res) => {
+    try {
+      const results = await testRunner.runUnitTests();
+      await testRunner.saveResults('unit', results);
+      res.json(results);
+    } catch (error) {
+      res.status(500).json({ 
+        success: false, 
+        error: error.message
+      });
+    }
+  });
+
+  app.post(`${apiPrefix}/tests/run-integration`, async (_req, res) => {
+    try {
+      const results = await testRunner.runIntegrationTests();
+      await testRunner.saveResults('integration', results);
+      res.json(results);
+    } catch (error) {
+      res.status(500).json({ 
+        success: false, 
+        error: error.message
+      });
+    }
+  });
+
+  app.post(`${apiPrefix}/tests/run-load`, async (_req, res) => {
+    try {
+      const results = await testRunner.runLoadTests();
+      await testRunner.saveResults('load', results);
+      res.json(results);
+    } catch (error) {
+      res.status(500).json({ 
+        success: false, 
+        error: error.message
+      });
+    }
+  });
+
+  app.post(`${apiPrefix}/tests/run-e2e`, async (_req, res) => {
+    try {
+      const results = await testRunner.runE2ETests();
+      await testRunner.saveResults('e2e', results);
+      res.json(results);
+    } catch (error) {
+      res.status(500).json({ 
+        success: false, 
+        error: error.message
+      });
     }
   });
 
