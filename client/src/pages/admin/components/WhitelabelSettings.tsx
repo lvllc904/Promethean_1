@@ -4,7 +4,7 @@ import { apiRequest, queryClient } from '@/lib/queryClient';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { insertWhitelabelSettingSchema } from '../../../../shared/schema';
+import { insertWhitelabelSettingSchema } from '@shared/schema';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -702,15 +702,3 @@ const WhitelabelSettings = () => {
 };
 
 export default WhitelabelSettings;
-
-const ColorPicker = ({ value, onChange }: { value: string, onChange: (color: string) => void }) => {
-  // Simple color picker component
-  return (
-    <Input
-      type="color"
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      className="h-10 w-10 p-0 rounded"
-    />
-  );
-};
