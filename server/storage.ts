@@ -150,22 +150,22 @@ export interface IStorage {
     totalCost: number;
   }>;
   
-  // Review methods for AI-driven review analysis
+  // AI-driven Review Analysis methods
   getReview(id: number): Promise<Review | undefined>;
   getReviews(processed?: boolean, userId?: number): Promise<Review[]>;
   getUnprocessedReviews(): Promise<Review[]>;
   createReview(review: InsertReview): Promise<Review>;
   updateReview(id: number, updates: Partial<Review>): Promise<Review>;
   markReviewAsProcessed(id: number, category: string, sentiment: string, summary: string): Promise<Review>;
+  linkReviewToProposal(reviewId: number, proposalId: number): Promise<Review>;
   
-  // Governance Proposal methods for AI-generated proposals
+  // AI-Generated Governance Proposal methods
   getGovernanceProposal(id: number): Promise<GovernanceProposal | undefined>;
   getGovernanceProposals(status?: string): Promise<GovernanceProposal[]>;
   createGovernanceProposal(proposal: InsertGovernanceProposal): Promise<GovernanceProposal>;
   updateGovernanceProposal(id: number, updates: Partial<GovernanceProposal>): Promise<GovernanceProposal>;
   updateGovernanceProposalStatus(id: number, status: string): Promise<GovernanceProposal>;
   updateGovernanceProposalVotes(id: number, voteType: string, votePower: number): Promise<GovernanceProposal>;
-  linkReviewToProposal(reviewId: number, proposalId: number): Promise<Review>;
 }
 
 export class MemStorage implements IStorage {
