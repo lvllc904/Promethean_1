@@ -14,6 +14,7 @@ import CreateTask from "@/pages/marketplace/create";
 import Memberships from "@/pages/memberships";
 import Community from "@/pages/community";
 import Wallet from "@/pages/wallet";
+import AdminDashboard from "@/pages/admin";
 import { WalletProvider } from "@/components/wallet/wallet-provider";
 import { AppLayout } from "@/components/layout/app-layout";
 
@@ -31,6 +32,7 @@ function Router() {
       <Route path="/memberships" component={Memberships} />
       <Route path="/community" component={Community} />
       <Route path="/wallet" component={Wallet} />
+      <Route path="/admin" component={AdminDashboard} />
       <Route component={NotFound} />
     </Switch>
   );
