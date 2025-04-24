@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import SchedulerSettings from '../../client/src/pages/admin/components/SchedulerSettings';
 import userEvent from '@testing-library/user-event';
+import React from 'react';
 
 // Mock useToast
 vi.mock('@/hooks/use-toast', () => ({

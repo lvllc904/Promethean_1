@@ -19,8 +19,10 @@ describe('API Integration Tests', () => {
     request = supertest(app);
   });
 
-  afterAll((done) => {
-    server.close(done);
+  afterAll(() => {
+    return new Promise<void>((resolve) => {
+      server.close(() => resolve());
+    });
   });
 
   describe('Properties API', () => {
