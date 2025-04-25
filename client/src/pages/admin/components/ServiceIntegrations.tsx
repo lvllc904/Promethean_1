@@ -42,13 +42,13 @@ const ServiceIntegrations = () => {
   
   // Fetch all service integrations
   const { data: integrations, isLoading: isLoadingIntegrations, error: integrationsError } = useQuery({
-    queryKey: ['/api/admin/integrations'],
+    queryKey: ['/api/admin/service-integrations'],
     retry: 1,
   });
   
   // Fetch all providers for dropdown
   const { data: providers, isLoading: isLoadingProviders } = useQuery({
-    queryKey: ['/api/admin/providers'],
+    queryKey: ['/api/admin/service-providers'],
     retry: 1,
   });
   
