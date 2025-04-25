@@ -25,7 +25,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 const serviceIntegrationSchema = insertServiceIntegrationSchema.extend({
   name: z.string().min(3, "Name must be at least 3 characters"),
   providerId: z.number().min(1, "Please select a provider"),
-  credentialId: z.number().min(1, "Please select a credential"),
+  // Allow credentialId to be a number or null
+  // This will be handled in the onSubmit function
+  credentialId: z.number().min(0).nullable(),
   settings: z.any().optional(),
   webhookUrl: z.string().url("Please enter a valid URL").optional().or(z.literal('')),
   callbackUrl: z.string().url("Please enter a valid URL").optional().or(z.literal('')),
@@ -233,7 +235,7 @@ const ServiceIntegrations = () => {
     
     // Filter credentials by the selected provider
     const providerCredentials = credentials && Array.isArray(credentials) ? 
-      credentials.filter((cred: any) => cred.providerId === providerId) : [];
+      credentials.filter((cred) => cred.providerId === providerId) : [];
     
     // If there's only one credential, select it
     if (providerCredentials.length === 1) {
@@ -270,7 +272,7 @@ const ServiceIntegrations = () => {
   
   // Filter available credentials based on selected provider
   const filteredCredentials = form.watch('providerId') && credentials && Array.isArray(credentials) 
-    ? credentials.filter((cred: any) => cred.providerId === form.watch('providerId'))
+    ? credentials.filter((cred) => cred.providerId === form.watch('providerId'))
     : [];
   
   if (isLoadingIntegrations || isLoadingProviders || isLoadingCredentials) {
@@ -316,8 +318,8 @@ const ServiceIntegrations = () => {
     activeTab === 'all' 
       ? integrations
       : activeTab === 'active'
-        ? integrations.filter((i: any) => i.isActive)
-        : integrations.filter((i: any) => !i.isActive)
+        ? integrations.filter((i) => i.isActive)
+        : integrations.filter((i) => !i.isActive)
   ) : [];
   
   return (
@@ -362,12 +364,12 @@ const ServiceIntegrations = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {filteredIntegrations && filteredIntegrations.map((integration: any) => {
+            {filteredIntegrations && filteredIntegrations.map((integration) => {
               const provider = providers && Array.isArray(providers) ? 
-                providers.find((p: any) => p.id === integration.providerId) : 
+                providers.find((p) => p.id === integration.providerId) : 
                 undefined;
               const credential = credentials && Array.isArray(credentials) ? 
-                credentials.find((c: any) => c.id === integration.credentialId) : 
+                credentials.find((c) => c.id === integration.credentialId) : 
                 undefined;
               
               return (
@@ -535,7 +537,7 @@ const ServiceIntegrations = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {providers && Array.isArray(providers) && providers.map((provider: any) => (
+                          {providers && Array.isArray(providers) && providers.map((provider) => (
                             <SelectItem key={provider.id} value={provider.id.toString()}>
                               {provider.name}
                             </SelectItem>
@@ -573,7 +575,7 @@ const ServiceIntegrations = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {filteredCredentials.map((credential: any) => (
+                          {filteredCredentials.map((credential) => (
                             <SelectItem key={credential.id} value={credential.id.toString()}>
                               {credential.name}
                             </SelectItem>
