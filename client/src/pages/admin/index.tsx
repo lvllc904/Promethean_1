@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
 import { 
   Settings, 
   Users, 
@@ -34,18 +35,45 @@ import ApiUsage from './components/ApiUsage';
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
+  const [loading, setLoading] = useState(true);
   
   // Admin overview stats - in a real app these would come from an API
-  const stats = {
-    users: 1205,
-    properties: 342,
-    transactions: 156,
-    revenue: '$125,450.00',
-    activeIntegrations: 8,
-    successRate: '99.2%',
-    pendingReviews: 14,
-    activeProposals: 3
-  };
+  const [stats, setStats] = useState({
+    users: 0,
+    properties: 0,
+    transactions: 0,
+    revenue: '$0.00',
+    activeIntegrations: 0,
+    successRate: '0%',
+    pendingReviews: 0,
+    activeProposals: 0
+  });
+  
+  // Simulate API data loading
+  useEffect(() => {
+    const loadDashboardData = async () => {
+      setLoading(true);
+      
+      // Simulate network delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // In a real app, this would be an API call
+      setStats({
+        users: 1205,
+        properties: 342,
+        transactions: 156,
+        revenue: '$125,450.00',
+        activeIntegrations: 8,
+        successRate: '99.2%',
+        pendingReviews: 14,
+        activeProposals: 3
+      });
+      
+      setLoading(false);
+    };
+    
+    loadDashboardData();
+  }, []);
   
   return (
     <div className="container mx-auto py-4 px-4 sm:px-6 md:py-6 space-y-4 sm:space-y-6">
@@ -111,204 +139,300 @@ const AdminDashboard = () => {
           {/* Overview Tab */}
           <TabsContent value="overview" className="space-y-4 sm:space-y-6">
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-              <Card className="overflow-hidden">
-                <CardHeader className="pb-1 p-3 sm:p-4 sm:pb-2">
-                  <CardTitle className="text-xs sm:text-sm font-medium">Total Users</CardTitle>
-                </CardHeader>
-                <CardContent className="p-3 sm:p-4 pt-0">
-                  <div className="flex items-center justify-between">
-                    <div className="text-xl sm:text-2xl font-bold">{stats.users}</div>
-                    <Users className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
-                  </div>
-                </CardContent>
-              </Card>
-              
-              <Card className="overflow-hidden">
-                <CardHeader className="pb-1 p-3 sm:p-4 sm:pb-2">
-                  <CardTitle className="text-xs sm:text-sm font-medium">Properties</CardTitle>
-                </CardHeader>
-                <CardContent className="p-3 sm:p-4 pt-0">
-                  <div className="flex items-center justify-between">
-                    <div className="text-xl sm:text-2xl font-bold">{stats.properties}</div>
-                    <Building className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
-                  </div>
-                </CardContent>
-              </Card>
-              
-              <Card className="overflow-hidden">
-                <CardHeader className="pb-1 p-3 sm:p-4 sm:pb-2">
-                  <CardTitle className="text-xs sm:text-sm font-medium">Transactions</CardTitle>
-                </CardHeader>
-                <CardContent className="p-3 sm:p-4 pt-0">
-                  <div className="flex items-center justify-between">
-                    <div className="text-xl sm:text-2xl font-bold">{stats.transactions}</div>
-                    <FileText className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
-                  </div>
-                </CardContent>
-              </Card>
-              
-              <Card className="overflow-hidden">
-                <CardHeader className="pb-1 p-3 sm:p-4 sm:pb-2">
-                  <CardTitle className="text-xs sm:text-sm font-medium">Revenue</CardTitle>
-                </CardHeader>
-                <CardContent className="p-3 sm:p-4 pt-0">
-                  <div className="flex items-center justify-between">
-                    <div className="text-xl sm:text-2xl font-bold">{stats.revenue}</div>
-                    <CreditCard className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
-                  </div>
-                </CardContent>
-              </Card>
+              {loading ? (
+                <>
+                  {[...Array(4)].map((_, i) => (
+                    <Card key={i} className="overflow-hidden">
+                      <CardHeader className="pb-1 p-3 sm:p-4 sm:pb-2">
+                        <Skeleton className="h-3 sm:h-4 w-24 sm:w-28" />
+                      </CardHeader>
+                      <CardContent className="p-3 sm:p-4 pt-0">
+                        <div className="flex items-center justify-between">
+                          <Skeleton className="h-6 sm:h-8 w-16 sm:w-20" />
+                          <Skeleton className="h-4 w-4 rounded-full" />
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </>
+              ) : (
+                <>
+                  <Card className="overflow-hidden">
+                    <CardHeader className="pb-1 p-3 sm:p-4 sm:pb-2">
+                      <CardTitle className="text-xs sm:text-sm font-medium">Total Users</CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-3 sm:p-4 pt-0">
+                      <div className="flex items-center justify-between">
+                        <div className="text-xl sm:text-2xl font-bold">{stats.users}</div>
+                        <Users className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="overflow-hidden">
+                    <CardHeader className="pb-1 p-3 sm:p-4 sm:pb-2">
+                      <CardTitle className="text-xs sm:text-sm font-medium">Properties</CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-3 sm:p-4 pt-0">
+                      <div className="flex items-center justify-between">
+                        <div className="text-xl sm:text-2xl font-bold">{stats.properties}</div>
+                        <Building className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="overflow-hidden">
+                    <CardHeader className="pb-1 p-3 sm:p-4 sm:pb-2">
+                      <CardTitle className="text-xs sm:text-sm font-medium">Transactions</CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-3 sm:p-4 pt-0">
+                      <div className="flex items-center justify-between">
+                        <div className="text-xl sm:text-2xl font-bold">{stats.transactions}</div>
+                        <FileText className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="overflow-hidden">
+                    <CardHeader className="pb-1 p-3 sm:p-4 sm:pb-2">
+                      <CardTitle className="text-xs sm:text-sm font-medium">Revenue</CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-3 sm:p-4 pt-0">
+                      <div className="flex items-center justify-between">
+                        <div className="text-xl sm:text-2xl font-bold">{stats.revenue}</div>
+                        <CreditCard className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                </>
+              )}
             </div>
             
             <h2 className="text-lg sm:text-xl font-semibold mt-3 sm:mt-5 px-1">API Integrations</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
-              <Card className="overflow-hidden">
-                <CardHeader className="pb-1 p-3 sm:p-4 sm:pb-2">
-                  <CardTitle className="text-xs sm:text-sm font-medium">Active Integrations</CardTitle>
-                </CardHeader>
-                <CardContent className="p-3 sm:p-4 pt-0">
-                  <div className="flex items-center justify-between">
-                    <div className="text-xl sm:text-2xl font-bold">{stats.activeIntegrations}</div>
-                    <Puzzle className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
-                  </div>
-                </CardContent>
-              </Card>
-              
-              <Card className="overflow-hidden">
-                <CardHeader className="pb-1 p-3 sm:p-4 sm:pb-2">
-                  <CardTitle className="text-xs sm:text-sm font-medium">Success Rate</CardTitle>
-                </CardHeader>
-                <CardContent className="p-3 sm:p-4 pt-0">
-                  <div className="flex items-center justify-between">
-                    <div className="text-xl sm:text-2xl font-bold">{stats.successRate}</div>
-                    <Badge variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200">
-                      Healthy
-                    </Badge>
-                  </div>
-                </CardContent>
-              </Card>
-              
-              <Card className="overflow-hidden">
-                <CardHeader className="pb-1 p-3 sm:p-4 sm:pb-2">
-                  <CardTitle className="text-xs sm:text-sm font-medium">AI System</CardTitle>
-                </CardHeader>
-                <CardContent className="p-3 sm:p-4 pt-0">
-                  <div className="flex items-center justify-between">
-                    <div className="text-xl sm:text-2xl font-bold">
-                      <Badge variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200">
-                        Running
-                      </Badge>
-                    </div>
-                    <Cpu className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
-                  </div>
-                </CardContent>
-              </Card>
+              {loading ? (
+                <>
+                  {[...Array(3)].map((_, i) => (
+                    <Card key={i} className="overflow-hidden">
+                      <CardHeader className="pb-1 p-3 sm:p-4 sm:pb-2">
+                        <Skeleton className="h-3 sm:h-4 w-24 sm:w-32" />
+                      </CardHeader>
+                      <CardContent className="p-3 sm:p-4 pt-0">
+                        <div className="flex items-center justify-between">
+                          <Skeleton className="h-6 sm:h-8 w-16 sm:w-20" />
+                          <Skeleton className="h-4 w-4 rounded-full" />
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </>
+              ) : (
+                <>
+                  <Card className="overflow-hidden">
+                    <CardHeader className="pb-1 p-3 sm:p-4 sm:pb-2">
+                      <CardTitle className="text-xs sm:text-sm font-medium">Active Integrations</CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-3 sm:p-4 pt-0">
+                      <div className="flex items-center justify-between">
+                        <div className="text-xl sm:text-2xl font-bold">{stats.activeIntegrations}</div>
+                        <Puzzle className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="overflow-hidden">
+                    <CardHeader className="pb-1 p-3 sm:p-4 sm:pb-2">
+                      <CardTitle className="text-xs sm:text-sm font-medium">Success Rate</CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-3 sm:p-4 pt-0">
+                      <div className="flex items-center justify-between">
+                        <div className="text-xl sm:text-2xl font-bold">{stats.successRate}</div>
+                        <Badge variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200">
+                          Healthy
+                        </Badge>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="overflow-hidden">
+                    <CardHeader className="pb-1 p-3 sm:p-4 sm:pb-2">
+                      <CardTitle className="text-xs sm:text-sm font-medium">AI System</CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-3 sm:p-4 pt-0">
+                      <div className="flex items-center justify-between">
+                        <div className="text-xl sm:text-2xl font-bold">
+                          <Badge variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200">
+                            Running
+                          </Badge>
+                        </div>
+                        <Cpu className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                </>
+              )}
             </div>
             
             <h2 className="text-lg sm:text-xl font-semibold mt-3 sm:mt-5 px-1">DAO Management</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-              <Card className="overflow-hidden">
-                <CardHeader className="pb-1 p-3 sm:p-4 sm:pb-2">
-                  <CardTitle className="text-xs sm:text-sm font-medium">Unprocessed Reviews</CardTitle>
-                </CardHeader>
-                <CardContent className="p-3 sm:p-4 pt-0">
-                  <div className="flex items-center justify-between">
-                    <div className="text-xl sm:text-2xl font-bold">{stats.pendingReviews}</div>
-                    <MessageCircle className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
-                  </div>
-                </CardContent>
-              </Card>
-              
-              <Card className="overflow-hidden">
-                <CardHeader className="pb-1 p-3 sm:p-4 sm:pb-2">
-                  <CardTitle className="text-xs sm:text-sm font-medium">Active Proposals</CardTitle>
-                </CardHeader>
-                <CardContent className="p-3 sm:p-4 pt-0">
-                  <div className="flex items-center justify-between">
-                    <div className="text-xl sm:text-2xl font-bold">{stats.activeProposals}</div>
-                    <VoteIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
-                  </div>
-                </CardContent>
-              </Card>
+              {loading ? (
+                <>
+                  {[...Array(2)].map((_, i) => (
+                    <Card key={i} className="overflow-hidden">
+                      <CardHeader className="pb-1 p-3 sm:p-4 sm:pb-2">
+                        <Skeleton className="h-3 sm:h-4 w-28 sm:w-36" />
+                      </CardHeader>
+                      <CardContent className="p-3 sm:p-4 pt-0">
+                        <div className="flex items-center justify-between">
+                          <Skeleton className="h-6 sm:h-8 w-8 sm:w-12" />
+                          <Skeleton className="h-4 w-4 rounded-full" />
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </>
+              ) : (
+                <>
+                  <Card className="overflow-hidden">
+                    <CardHeader className="pb-1 p-3 sm:p-4 sm:pb-2">
+                      <CardTitle className="text-xs sm:text-sm font-medium">Unprocessed Reviews</CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-3 sm:p-4 pt-0">
+                      <div className="flex items-center justify-between">
+                        <div className="text-xl sm:text-2xl font-bold">{stats.pendingReviews}</div>
+                        <MessageCircle className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="overflow-hidden">
+                    <CardHeader className="pb-1 p-3 sm:p-4 sm:pb-2">
+                      <CardTitle className="text-xs sm:text-sm font-medium">Active Proposals</CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-3 sm:p-4 pt-0">
+                      <div className="flex items-center justify-between">
+                        <div className="text-xl sm:text-2xl font-bold">{stats.activeProposals}</div>
+                        <VoteIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                </>
+              )}
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6 mt-3 sm:mt-5">
-              <Card className="overflow-hidden">
-                <CardHeader className="p-3 sm:p-5">
-                  <CardTitle className="text-base sm:text-lg">Quick Actions</CardTitle>
-                  <CardDescription className="text-xs sm:text-sm">Common tasks and operations</CardDescription>
-                </CardHeader>
-                <CardContent className="grid grid-cols-2 gap-2 sm:gap-4 p-3 sm:p-5 pt-0 sm:pt-0">
-                  <Button variant="outline" className="h-16 sm:h-20 flex flex-col text-xs sm:text-sm">
-                    <Users className="h-5 w-5 sm:h-6 sm:w-6 mb-1 sm:mb-2" />
-                    <span>Manage Users</span>
-                  </Button>
-                  <Button variant="outline" className="h-16 sm:h-20 flex flex-col text-xs sm:text-sm">
-                    <Building className="h-5 w-5 sm:h-6 sm:w-6 mb-1 sm:mb-2" />
-                    <span>Properties</span>
-                  </Button>
-                  <Button variant="outline" className="h-16 sm:h-20 flex flex-col text-xs sm:text-sm">
-                    <Bot className="h-5 w-5 sm:h-6 sm:w-6 mb-1 sm:mb-2" />
-                    <span>AI Settings</span>
-                  </Button>
-                  <Button variant="outline" className="h-16 sm:h-20 flex flex-col text-xs sm:text-sm">
-                    <Settings className="h-5 w-5 sm:h-6 sm:w-6 mb-1 sm:mb-2" />
-                    <span>System Config</span>
-                  </Button>
-                </CardContent>
-              </Card>
-              
-              <Card className="overflow-hidden">
-                <CardHeader className="p-3 sm:p-5">
-                  <CardTitle className="text-base sm:text-lg">System Status</CardTitle>
-                  <CardDescription className="text-xs sm:text-sm">Service health and performance</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-2 p-3 sm:p-5 pt-0 sm:pt-0">
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center">
-                      <div className="w-2 h-2 rounded-full bg-green-500 mr-2" />
-                      <span className="text-xs sm:text-sm">Web Server</span>
-                    </div>
-                    <Badge variant="outline" className="text-xs">Operational</Badge>
-                  </div>
-                  <Separator />
+              {loading ? (
+                <>
+                  <Card className="overflow-hidden">
+                    <CardHeader className="p-3 sm:p-5">
+                      <Skeleton className="h-5 sm:h-6 w-28 sm:w-36 mb-2" />
+                      <Skeleton className="h-3 sm:h-4 w-48 sm:w-56" />
+                    </CardHeader>
+                    <CardContent className="grid grid-cols-2 gap-2 sm:gap-4 p-3 sm:p-5 pt-0 sm:pt-0">
+                      {[...Array(4)].map((_, i) => (
+                        <Skeleton key={i} className="h-16 sm:h-20 rounded-md" />
+                      ))}
+                    </CardContent>
+                  </Card>
                   
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center">
-                      <div className="w-2 h-2 rounded-full bg-green-500 mr-2" />
-                      <span className="text-xs sm:text-sm">Database</span>
-                    </div>
-                    <Badge variant="outline" className="text-xs">Operational</Badge>
-                  </div>
-                  <Separator />
+                  <Card className="overflow-hidden">
+                    <CardHeader className="p-3 sm:p-5">
+                      <Skeleton className="h-5 sm:h-6 w-28 sm:w-36 mb-2" />
+                      <Skeleton className="h-3 sm:h-4 w-48 sm:w-56" />
+                    </CardHeader>
+                    <CardContent className="space-y-2 p-3 sm:p-5 pt-0 sm:pt-0">
+                      {[...Array(5)].map((_, i) => (
+                        <div key={i}>
+                          <div className="flex justify-between items-center py-1">
+                            <Skeleton className="h-4 w-24 sm:w-28" />
+                            <Skeleton className="h-4 w-16 sm:w-20" />
+                          </div>
+                          {i < 4 && <Separator />}
+                        </div>
+                      ))}
+                    </CardContent>
+                  </Card>
+                </>
+              ) : (
+                <>
+                  <Card className="overflow-hidden">
+                    <CardHeader className="p-3 sm:p-5">
+                      <CardTitle className="text-base sm:text-lg">Quick Actions</CardTitle>
+                      <CardDescription className="text-xs sm:text-sm">Common tasks and operations</CardDescription>
+                    </CardHeader>
+                    <CardContent className="grid grid-cols-2 gap-2 sm:gap-4 p-3 sm:p-5 pt-0 sm:pt-0">
+                      <Button variant="outline" className="h-16 sm:h-20 flex flex-col text-xs sm:text-sm">
+                        <Users className="h-5 w-5 sm:h-6 sm:w-6 mb-1 sm:mb-2" />
+                        <span>Manage Users</span>
+                      </Button>
+                      <Button variant="outline" className="h-16 sm:h-20 flex flex-col text-xs sm:text-sm">
+                        <Building className="h-5 w-5 sm:h-6 sm:w-6 mb-1 sm:mb-2" />
+                        <span>Properties</span>
+                      </Button>
+                      <Button variant="outline" className="h-16 sm:h-20 flex flex-col text-xs sm:text-sm">
+                        <Bot className="h-5 w-5 sm:h-6 sm:w-6 mb-1 sm:mb-2" />
+                        <span>AI Settings</span>
+                      </Button>
+                      <Button variant="outline" className="h-16 sm:h-20 flex flex-col text-xs sm:text-sm">
+                        <Settings className="h-5 w-5 sm:h-6 sm:w-6 mb-1 sm:mb-2" />
+                        <span>System Config</span>
+                      </Button>
+                    </CardContent>
+                  </Card>
                   
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center">
-                      <div className="w-2 h-2 rounded-full bg-green-500 mr-2" />
-                      <span className="text-xs sm:text-sm">Smart Contracts</span>
-                    </div>
-                    <Badge variant="outline" className="text-xs">Operational</Badge>
-                  </div>
-                  <Separator />
-                  
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center">
-                      <div className="w-2 h-2 rounded-full bg-green-500 mr-2" />
-                      <span className="text-xs sm:text-sm">AI Services</span>
-                    </div>
-                    <Badge variant="outline" className="text-xs">Operational</Badge>
-                  </div>
-                  <Separator />
-                  
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center">
-                      <div className="w-2 h-2 rounded-full bg-green-500 mr-2" />
-                      <span className="text-xs sm:text-sm">Scheduler</span>
-                    </div>
-                    <Badge variant="outline" className="text-xs">Operational</Badge>
-                  </div>
-                </CardContent>
-              </Card>
+                  <Card className="overflow-hidden">
+                    <CardHeader className="p-3 sm:p-5">
+                      <CardTitle className="text-base sm:text-lg">System Status</CardTitle>
+                      <CardDescription className="text-xs sm:text-sm">Service health and performance</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-2 p-3 sm:p-5 pt-0 sm:pt-0">
+                      <div className="flex justify-between items-center">
+                        <div className="flex items-center">
+                          <div className="w-2 h-2 rounded-full bg-green-500 mr-2" />
+                          <span className="text-xs sm:text-sm">Web Server</span>
+                        </div>
+                        <Badge variant="outline" className="text-xs">Operational</Badge>
+                      </div>
+                      <Separator />
+                      
+                      <div className="flex justify-between items-center">
+                        <div className="flex items-center">
+                          <div className="w-2 h-2 rounded-full bg-green-500 mr-2" />
+                          <span className="text-xs sm:text-sm">Database</span>
+                        </div>
+                        <Badge variant="outline" className="text-xs">Operational</Badge>
+                      </div>
+                      <Separator />
+                      
+                      <div className="flex justify-between items-center">
+                        <div className="flex items-center">
+                          <div className="w-2 h-2 rounded-full bg-green-500 mr-2" />
+                          <span className="text-xs sm:text-sm">Smart Contracts</span>
+                        </div>
+                        <Badge variant="outline" className="text-xs">Operational</Badge>
+                      </div>
+                      <Separator />
+                      
+                      <div className="flex justify-between items-center">
+                        <div className="flex items-center">
+                          <div className="w-2 h-2 rounded-full bg-green-500 mr-2" />
+                          <span className="text-xs sm:text-sm">AI Services</span>
+                        </div>
+                        <Badge variant="outline" className="text-xs">Operational</Badge>
+                      </div>
+                      <Separator />
+                      
+                      <div className="flex justify-between items-center">
+                        <div className="flex items-center">
+                          <div className="w-2 h-2 rounded-full bg-green-500 mr-2" />
+                          <span className="text-xs sm:text-sm">Scheduler</span>
+                        </div>
+                        <Badge variant="outline" className="text-xs">Operational</Badge>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </>
+              )}
             </div>
           </TabsContent>
           
