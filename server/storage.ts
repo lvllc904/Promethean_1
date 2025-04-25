@@ -3520,6 +3520,256 @@ export class DatabaseStorage implements IStorage {
     
     return await query;
   }
+
+  // Legal Agent Network methods
+  async getLegalAgent(id: number): Promise<LegalAgent | undefined> {
+    const [agent] = await db
+      .select()
+      .from(schema.legalAgents)
+      .where(eq(schema.legalAgents.id, id));
+    return agent;
+  }
+  
+  async getLegalAgents(options?: { expertise?: string; jurisdiction?: string; language?: string }): Promise<LegalAgent[]> {
+    let query = db.select().from(schema.legalAgents).where(eq(schema.legalAgents.active, true));
+    
+    if (options?.expertise) {
+      query = query.where(sql`${schema.legalAgents.expertise} @> ARRAY[${options.expertise}]::text[]`);
+    }
+    
+    if (options?.jurisdiction) {
+      query = query.where(sql`${schema.legalAgents.jurisdictions} @> ARRAY[${options.jurisdiction}]::text[]`);
+    }
+    
+    if (options?.language) {
+      query = query.where(sql`${schema.legalAgents.languages} @> ARRAY[${options.language}]::text[]`);
+    }
+    
+    return await query;
+  }
+  
+  async createLegalAgent(agent: InsertLegalAgent): Promise<LegalAgent> {
+    const [createdAgent] = await db.insert(schema.legalAgents).values(agent).returning();
+    return createdAgent;
+  }
+  
+  async updateLegalAgent(id: number, updates: Partial<InsertLegalAgent>): Promise<LegalAgent> {
+    const [updatedAgent] = await db
+      .update(schema.legalAgents)
+      .set(updates)
+      .where(eq(schema.legalAgents.id, id))
+      .returning();
+    return updatedAgent;
+  }
+  
+  // Legal Consultation methods
+  async getLegalConsultation(id: number): Promise<LegalConsultation | undefined> {
+    const [consultation] = await db
+      .select()
+      .from(schema.legalConsultations)
+      .where(eq(schema.legalConsultations.id, id));
+    return consultation;
+  }
+  
+  async getLegalConsultationsByUser(userId: number): Promise<LegalConsultation[]> {
+    return await db
+      .select()
+      .from(schema.legalConsultations)
+      .where(eq(schema.legalConsultations.userId, userId))
+      .orderBy(desc(schema.legalConsultations.createdAt));
+  }
+  
+  async createLegalConsultation(consultation: InsertLegalConsultation): Promise<LegalConsultation> {
+    const [createdConsultation] = await db
+      .insert(schema.legalConsultations)
+      .values({
+        ...consultation,
+        conversation: [],
+        status: 'active',
+        legalAdvice: null,
+        summary: null
+      })
+      .returning();
+    return createdConsultation;
+  }
+  
+  async updateLegalConsultation(id: number, updates: Partial<LegalConsultation>): Promise<LegalConsultation> {
+    const [updatedConsultation] = await db
+      .update(schema.legalConsultations)
+      .set(updates)
+      .where(eq(schema.legalConsultations.id, id))
+      .returning();
+    return updatedConsultation;
+  }
+  
+  async addMessageToConsultation(id: number, message: { role: string; content: string; }): Promise<LegalConsultation> {
+    // First get the current consultation
+    const consultation = await this.getLegalConsultation(id);
+    if (!consultation) {
+      throw new Error(`Consultation with ID ${id} not found`);
+    }
+    
+    // Add the message to the conversation array
+    const conversation = [...(consultation.conversation || []), message];
+    
+    // Update the consultation
+    const [updatedConsultation] = await db
+      .update(schema.legalConsultations)
+      .set({ 
+        conversation,
+        updatedAt: new Date()
+      })
+      .where(eq(schema.legalConsultations.id, id))
+      .returning();
+    
+    return updatedConsultation;
+  }
+  
+  async completeConsultation(id: number, summary: string, legalAdvice: string): Promise<LegalConsultation> {
+    const [completedConsultation] = await db
+      .update(schema.legalConsultations)
+      .set({ 
+        status: 'completed',
+        summary,
+        legalAdvice,
+        completedAt: new Date(),
+        updatedAt: new Date()
+      })
+      .where(eq(schema.legalConsultations.id, id))
+      .returning();
+    
+    return completedConsultation;
+  }
+  
+  // Legal Document Template methods
+  async getLegalDocumentTemplate(id: number): Promise<LegalDocumentTemplate | undefined> {
+    const [template] = await db
+      .select()
+      .from(schema.legalDocumentTemplates)
+      .where(eq(schema.legalDocumentTemplates.id, id));
+    return template;
+  }
+  
+  async getLegalDocumentTemplates(options?: { documentType?: string; jurisdiction?: string }): Promise<LegalDocumentTemplate[]> {
+    let query = db
+      .select()
+      .from(schema.legalDocumentTemplates)
+      .where(eq(schema.legalDocumentTemplates.active, true));
+    
+    if (options?.documentType) {
+      query = query.where(eq(schema.legalDocumentTemplates.documentType, options.documentType));
+    }
+    
+    if (options?.jurisdiction) {
+      query = query.where(sql`${schema.legalDocumentTemplates.jurisdictions} @> ARRAY[${options.jurisdiction}]::text[]`);
+    }
+    
+    return await query.orderBy(asc(schema.legalDocumentTemplates.title));
+  }
+  
+  async createLegalDocumentTemplate(template: InsertLegalDocumentTemplate): Promise<LegalDocumentTemplate> {
+    const [createdTemplate] = await db
+      .insert(schema.legalDocumentTemplates)
+      .values({
+        ...template,
+        active: true,
+        version: '1.0'
+      })
+      .returning();
+    return createdTemplate;
+  }
+  
+  async updateLegalDocumentTemplate(id: number, updates: Partial<InsertLegalDocumentTemplate>): Promise<LegalDocumentTemplate> {
+    // If updating content, increment the version
+    let versionUpdate = {};
+    if (updates.templateContent) {
+      const template = await this.getLegalDocumentTemplate(id);
+      if (template) {
+        const currentVersion = parseFloat(template.version || '1.0');
+        versionUpdate = { version: (currentVersion + 0.1).toFixed(1) };
+      }
+    }
+    
+    const [updatedTemplate] = await db
+      .update(schema.legalDocumentTemplates)
+      .set({
+        ...updates,
+        ...versionUpdate,
+        updatedAt: new Date()
+      })
+      .where(eq(schema.legalDocumentTemplates.id, id))
+      .returning();
+    
+    return updatedTemplate;
+  }
+  
+  // Legal Compliance Check methods
+  async getLegalComplianceCheck(id: number): Promise<LegalComplianceCheck | undefined> {
+    const [check] = await db
+      .select()
+      .from(schema.legalComplianceChecks)
+      .where(eq(schema.legalComplianceChecks.id, id));
+    return check;
+  }
+  
+  async getLegalComplianceChecksByUser(userId: number): Promise<LegalComplianceCheck[]> {
+    return await db
+      .select()
+      .from(schema.legalComplianceChecks)
+      .where(eq(schema.legalComplianceChecks.userId, userId))
+      .orderBy(desc(schema.legalComplianceChecks.createdAt));
+  }
+  
+  async getLegalComplianceChecksByProperty(propertyId: number): Promise<LegalComplianceCheck[]> {
+    return await db
+      .select()
+      .from(schema.legalComplianceChecks)
+      .where(eq(schema.legalComplianceChecks.propertyId, propertyId))
+      .orderBy(desc(schema.legalComplianceChecks.createdAt));
+  }
+  
+  async createLegalComplianceCheck(check: InsertLegalComplianceCheck): Promise<LegalComplianceCheck> {
+    const [createdCheck] = await db
+      .insert(schema.legalComplianceChecks)
+      .values({
+        ...check,
+        status: 'pending',
+        complianceReport: null,
+        issues: [],
+        recommendations: [],
+        completedAt: null
+      })
+      .returning();
+    return createdCheck;
+  }
+  
+  async updateLegalComplianceCheck(id: number, updates: Partial<LegalComplianceCheck>): Promise<LegalComplianceCheck> {
+    const [updatedCheck] = await db
+      .update(schema.legalComplianceChecks)
+      .set({
+        ...updates,
+        updatedAt: new Date()
+      })
+      .where(eq(schema.legalComplianceChecks.id, id))
+      .returning();
+    return updatedCheck;
+  }
+  
+  async completeComplianceCheck(id: number, status: string, report: any, issues: any[], recommendations: any[]): Promise<LegalComplianceCheck> {
+    const [completedCheck] = await db
+      .update(schema.legalComplianceChecks)
+      .set({
+        status,
+        complianceReport: report,
+        issues,
+        recommendations,
+        completedAt: new Date(),
+        updatedAt: new Date()
+      })
+      .where(eq(schema.legalComplianceChecks.id, id))
+      .returning();
+    return completedCheck;
+  }
 }
 
 // Use DatabaseStorage instead of MemStorage
