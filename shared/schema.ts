@@ -435,3 +435,86 @@ export type Review = typeof reviews.$inferSelect;
 
 export type InsertGovernanceProposal = z.infer<typeof insertGovernanceProposalSchema>;
 export type GovernanceProposal = typeof governanceProposals.$inferSelect;
+
+// Worker Ratings schema
+export const workerRatings = pgTable("worker_ratings", {
+  id: serial("id").primaryKey(),
+  taskId: integer("task_id").notNull(), // Reference to the task that was completed
+  raterId: integer("rater_id").notNull(), // User who provided the rating
+  workerId: integer("worker_id").notNull(), // User who performed the work
+  rating: integer("rating").notNull(), // 1-5 scale
+  review: text("review"), // Text review/feedback
+  criteria: jsonb("criteria"), // Optional detailed criteria ratings (communication: 5, timeliness: 4, etc.)
+  anonymous: boolean("anonymous").default(false), // Whether the review is anonymous
+  verified: boolean("verified").default(false), // Whether this is a verified review (client actually paid)
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+}, (table) => {
+  return {
+    // Ensure a user can only rate a worker once per task
+    uniqueRating: uniqueIndex("unique_worker_rating_idx").on(table.taskId, table.raterId, table.workerId),
+  };
+});
+
+export const insertWorkerRatingSchema = createInsertSchema(workerRatings).omit({
+  id: true,
+  verified: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// Worker Reputation schema to store aggregated metrics
+export const workerReputations = pgTable("worker_reputations", {
+  id: serial("id").primaryKey(),
+  workerId: integer("worker_id").notNull().unique(), // User who is the worker
+  overallRating: numeric("overall_rating").default("0"), // Average overall rating (1-5)
+  ratingsCount: integer("ratings_count").default(0), // Number of ratings received
+  responseRate: numeric("response_rate").default("0"), // % of task inquiries responded to
+  completionRate: numeric("completion_rate").default("0"), // % of accepted tasks completed
+  onTimeRate: numeric("on_time_rate").default("0"), // % of tasks completed on time
+  ratingsByCategory: jsonb("ratings_by_category"), // Detailed ratings by category/skill
+  badgeIds: integer("badge_ids").array(), // Earned badges/achievements
+  experiencePoints: integer("experience_points").default(0), // XP for leveling up
+  level: integer("level").default(1), // Worker level based on XP
+  lastUpdated: timestamp("last_updated").defaultNow(),
+});
+
+export const insertWorkerReputationSchema = createInsertSchema(workerReputations).omit({
+  id: true,
+  overallRating: true,
+  ratingsCount: true,
+  responseRate: true,
+  completionRate: true,
+  onTimeRate: true,
+  lastUpdated: true,
+});
+
+// Worker Badges schema
+export const workerBadges = pgTable("worker_badges", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull().unique(),
+  description: text("description").notNull(),
+  category: text("category").notNull(), // 'skill', 'achievement', 'milestone'
+  iconUrl: text("icon_url"),
+  criteria: jsonb("criteria").notNull(), // Requirements to earn this badge
+  rarityLevel: text("rarity_level").default("common"), // 'common', 'uncommon', 'rare', 'epic', 'legendary'
+  pointsValue: integer("points_value").default(0), // XP points earned for this badge
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const insertWorkerBadgeSchema = createInsertSchema(workerBadges).omit({
+  id: true,
+  isActive: true,
+  createdAt: true,
+});
+
+// Types for worker ratings and reputation
+export type InsertWorkerRating = z.infer<typeof insertWorkerRatingSchema>;
+export type WorkerRating = typeof workerRatings.$inferSelect;
+
+export type InsertWorkerReputation = z.infer<typeof insertWorkerReputationSchema>;
+export type WorkerReputation = typeof workerReputations.$inferSelect;
+
+export type InsertWorkerBadge = z.infer<typeof insertWorkerBadgeSchema>;
+export type WorkerBadge = typeof workerBadges.$inferSelect;

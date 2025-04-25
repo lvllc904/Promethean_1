@@ -16,7 +16,10 @@ import {
   insertWhitelabelSettingSchema,
   insertApiUsageLogSchema,
   insertReviewSchema,
-  insertGovernanceProposalSchema
+  insertGovernanceProposalSchema,
+  insertWorkerRatingSchema,
+  insertWorkerReputationSchema,
+  insertWorkerBadgeSchema
 } from "@shared/schema";
 import { aiConcierge } from "./services/ai-concierge";
 import { scheduler } from "./services/scheduler";
