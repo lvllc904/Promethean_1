@@ -54,7 +54,7 @@ const ApiCredentials = () => {
   // Create new API credential
   const addCredentialMutation = useMutation({
     mutationFn: (newCredential: ApiCredentialFormValues) => 
-      apiRequest('/api/admin/credentials', { method: 'POST', data: newCredential }),
+      apiRequest<{id: number}>('POST', '/api/admin/credentials', newCredential),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/credentials'] });
       setAddDialogOpen(false);
@@ -75,7 +75,7 @@ const ApiCredentials = () => {
   // Update API credential
   const updateCredentialMutation = useMutation({
     mutationFn: ({ id, data }: { id: number, data: Partial<ApiCredentialFormValues> }) => 
-      apiRequest(`/api/admin/credentials/${id}`, { method: 'PATCH', data }),
+      apiRequest<{success: boolean}>('PATCH', `/api/admin/credentials/${id}`, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/credentials'] });
       setEditMode(null);
@@ -96,7 +96,7 @@ const ApiCredentials = () => {
   // Delete API credential
   const deleteCredentialMutation = useMutation({
     mutationFn: (id: number) => 
-      apiRequest(`/api/admin/credentials/${id}`, { method: 'DELETE' }),
+      apiRequest<{success: boolean}>('DELETE', `/api/admin/credentials/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/credentials'] });
       toast({
