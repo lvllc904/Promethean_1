@@ -63,7 +63,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     queryKey: ["/api/auth/user"],
     queryFn: async () => {
       try {
-        const res = await apiRequest("GET", "/api/auth/user");
+        // Direct fetch implementation instead of using apiRequest
+        const res = await fetch("/api/auth/user", {
+          method: "GET",
+          credentials: "include"
+        });
         
         // If unauthorized, return null (not logged in)
         if (res.status === 401) {
@@ -75,12 +79,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           throw new Error(`Error fetching user: ${res.statusText}`);
         }
         
-        // Try to parse the JSON response
+        // Parse the successful response
+        const text = await res.text();
+        if (!text) {
+          // Empty response, user not logged in
+          return null;
+        }
+        
         try {
-          return await res.json();
-        } catch (parseError) {
-          console.error("Failed to parse user data response:", parseError);
-          throw new Error("Failed to parse user data");
+          return JSON.parse(text);
+        } catch (e) {
+          console.error("Failed to parse JSON response:", text);
+          return null;
         }
       } catch (error) {
         console.error("Error fetching user:", error);
@@ -106,25 +116,39 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const loginMutation = useMutation({
     mutationFn: async (credentials: LoginData) => {
       try {
-        const res = await apiRequest("POST", "/api/auth/login", credentials);
+        // Direct fetch implementation instead of using apiRequest
+        const res = await fetch("/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(credentials),
+          credentials: "include"
+        });
         
         // Check if response is OK
         if (!res.ok) {
-          // Try to parse error message if available
+          const text = await res.text();
+          
+          // Try to parse as JSON if possible
           try {
-            const errorData = await res.json();
-            throw new Error(errorData.message || "Login failed");
-          } catch (parseError) {
-            // If we can't parse JSON, use status text
-            throw new Error(res.statusText || "Login failed");
+            const data = JSON.parse(text);
+            throw new Error(data.message || "Login failed");
+          } catch (e) {
+            // Otherwise use the text directly
+            throw new Error(text || res.statusText || "Login failed");
           }
         }
         
-        // Try to parse the successful response
+        // Parse the successful response
+        const text = await res.text();
+        if (!text) {
+          throw new Error("Empty response from server");
+        }
+        
         try {
-          return await res.json();
-        } catch (parseError) {
-          throw new Error("Failed to parse server response");
+          return JSON.parse(text);
+        } catch (e) {
+          console.error("Failed to parse JSON response:", text);
+          throw new Error("Invalid response format from server");
         }
       } catch (error) {
         console.error("Login error:", error);
@@ -155,25 +179,39 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const registerMutation = useMutation({
     mutationFn: async (userData: RegisterData) => {
       try {
-        const res = await apiRequest("POST", "/api/auth/register", userData);
+        // Direct fetch implementation instead of using apiRequest
+        const res = await fetch("/api/auth/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(userData),
+          credentials: "include"
+        });
         
         // Check if response is OK
         if (!res.ok) {
-          // Try to parse error message if available
+          const text = await res.text();
+          
+          // Try to parse as JSON if possible
           try {
-            const errorData = await res.json();
-            throw new Error(errorData.message || "Registration failed");
-          } catch (parseError) {
-            // If we can't parse JSON, use status text
-            throw new Error(res.statusText || "Registration failed");
+            const data = JSON.parse(text);
+            throw new Error(data.message || "Registration failed");
+          } catch (e) {
+            // Otherwise use the text directly
+            throw new Error(text || res.statusText || "Registration failed");
           }
         }
         
-        // Try to parse the successful response
+        // Parse the successful response
+        const text = await res.text();
+        if (!text) {
+          throw new Error("Empty response from server");
+        }
+        
         try {
-          return await res.json();
-        } catch (parseError) {
-          throw new Error("Failed to parse server response");
+          return JSON.parse(text);
+        } catch (e) {
+          console.error("Failed to parse JSON response:", text);
+          throw new Error("Invalid response format from server");
         }
       } catch (error) {
         console.error("Registration error:", error);
@@ -200,17 +238,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logoutMutation = useMutation({
     mutationFn: async () => {
       try {
-        const res = await apiRequest("POST", "/api/auth/logout");
+        // Direct fetch implementation instead of using apiRequest
+        const res = await fetch("/api/auth/logout", {
+          method: "POST",
+          credentials: "include"
+        });
         
         // Check if response is OK
         if (!res.ok) {
-          // Try to parse error message if available
+          const text = await res.text();
+          
+          // Try to parse as JSON if possible
           try {
-            const errorData = await res.json();
-            throw new Error(errorData.message || "Logout failed");
-          } catch (parseError) {
-            // If we can't parse JSON, use status text
-            throw new Error(res.statusText || "Logout failed");
+            const data = JSON.parse(text);
+            throw new Error(data.message || "Logout failed");
+          } catch (e) {
+            // Otherwise use the text directly
+            throw new Error(text || res.statusText || "Logout failed");
           }
         }
         
