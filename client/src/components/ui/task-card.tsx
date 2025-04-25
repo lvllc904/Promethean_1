@@ -6,9 +6,10 @@ import { Task } from "@shared/schema";
 interface TaskCardProps {
   task: Task;
   onApply: (taskId: number) => void;
+  readOnly?: boolean;
 }
 
-export function TaskCard({ task, onApply }: TaskCardProps) {
+export function TaskCard({ task, onApply, readOnly = false }: TaskCardProps) {
   const formatCurrency = (amount: number, currency = 'USD') => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -77,12 +78,19 @@ export function TaskCard({ task, onApply }: TaskCardProps) {
             {formatCurrency(Number(task.price), task.currency)}
             {task.category === 'AI Development' && ' / hour'}
           </span>
-          <Button 
-            size="sm"
-            onClick={() => onApply(task.id)}
-          >
-            Apply
-          </Button>
+          {!readOnly && (
+            <Button 
+              size="sm"
+              onClick={() => onApply(task.id)}
+            >
+              Apply
+            </Button>
+          )}
+          {readOnly && task.status === 'completed' && (
+            <Badge variant="outline" className="bg-green-50 text-green-700">
+              Completed
+            </Badge>
+          )}
         </div>
       </CardContent>
     </Card>
