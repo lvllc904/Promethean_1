@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import { ConnectWalletModal } from './connect-wallet-modal';
 import { WalletFallback } from './wallet-fallback';
+import { WalletSuccessAnimation } from './wallet-success-animation';
 import { useToast } from '@/hooks/use-toast';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 
@@ -64,6 +65,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [user, setUser] = useState<User | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isFallbackOpen, setIsFallbackOpen] = useState(false);
+  const [isSuccessAnimationOpen, setIsSuccessAnimationOpen] = useState(false);
   const [balance, setBalance] = useState('0');
   
   const { toast } = useToast();
@@ -238,8 +240,11 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         description: `Connected to ${address.substring(0, 8)}...${address.substring(36)}`,
       });
       
-      // Close the modal if open
+      // Close the connect modal if open
       closeModal();
+      
+      // Show success animation
+      setIsSuccessAnimationOpen(true);
     } catch (error) {
       console.error("Failed to connect wallet:", error);
       
@@ -307,6 +312,21 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
             <DialogTitle>Wallet Connection Required</DialogTitle>
           </div>
           <WalletFallback onClose={closeFallback} />
+        </DialogContent>
+      </Dialog>
+      
+      {/* Success Animation Dialog */}
+      <Dialog open={isSuccessAnimationOpen} onOpenChange={setIsSuccessAnimationOpen}>
+        <DialogContent className="sm:max-w-md p-6">
+          <div style={{ display: 'none' }}>
+            <DialogTitle>Wallet Connected</DialogTitle>
+          </div>
+          {address && (
+            <WalletSuccessAnimation 
+              address={address}
+              onAnimationComplete={() => setIsSuccessAnimationOpen(false)} 
+            />
+          )}
         </DialogContent>
       </Dialog>
     </WalletContext.Provider>
