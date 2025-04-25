@@ -100,6 +100,84 @@ export const insertVoteSchema = createInsertSchema(votes).omit({
   createdAt: true,
 });
 
+// Escrow schema for secure property transactions
+export const escrows = pgTable("escrows", {
+  id: serial("id").primaryKey(),
+  propertyId: integer("property_id").notNull(),
+  sellerId: integer("seller_id").notNull(),
+  buyerId: integer("buyer_id").notNull(),
+  amount: numeric("amount").notNull(),
+  currency: text("currency").default("USD"),
+  status: text("status").default("pending"), // 'pending', 'funded', 'released', 'refunded', 'disputed', 'completed'
+  escrowAddress: text("escrow_address"), // Smart contract address for this escrow
+  transactionHash: text("transaction_hash"), // Hash of the blockchain transaction
+  disputeReason: text("dispute_reason"),
+  completionDate: timestamp("completion_date"),
+  titleTransferId: integer("title_transfer_id"),
+  terms: text("terms"),
+  documents: text("documents").array(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const insertEscrowSchema = createInsertSchema(escrows).omit({
+  id: true,
+  status: true,
+  titleTransferId: true,
+  completionDate: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// Title transfers for property ownership records
+export const titleTransfers = pgTable("title_transfers", {
+  id: serial("id").primaryKey(),
+  propertyId: integer("property_id").notNull(),
+  fromUserId: integer("from_user_id").notNull(),
+  toUserId: integer("to_user_id").notNull(),
+  transactionHash: text("transaction_hash"), // Blockchain transaction hash
+  tokenId: text("token_id"), // NFT token ID representing the title
+  transferDate: timestamp("transfer_date").defaultNow(),
+  verificationStatus: text("verification_status").default("pending"), // 'pending', 'verified', 'rejected'
+  legalDocuments: text("legal_documents").array(),
+  metadata: jsonb("metadata"), // Additional property metadata stored on-chain
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const insertTitleTransferSchema = createInsertSchema(titleTransfers).omit({
+  id: true,
+  transferDate: true,
+  verificationStatus: true,
+  createdAt: true,
+});
+
+// Third-party escrow arbitrators
+export const arbitrators = pgTable("arbitrators", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull(),
+  companyName: text("company_name"),
+  licenseNumber: text("license_number"),
+  walletAddress: text("wallet_address").notNull().unique(),
+  specialties: text("specialties").array(),
+  rating: numeric("rating").default("0"),
+  totalCases: integer("total_cases").default(0),
+  successfulResolutions: integer("successful_resolutions").default(0),
+  verificationDocuments: text("verification_documents").array(),
+  isVerified: boolean("is_verified").default(false),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const insertArbitratorSchema = createInsertSchema(arbitrators).omit({
+  id: true,
+  rating: true,
+  totalCases: true,
+  successfulResolutions: true,
+  isVerified: true,
+  createdAt: true,
+});
+
+// Types will be defined at the end of the file
+
 // Task schema for gig marketplace
 export const tasks = pgTable("tasks", {
   id: serial("id").primaryKey(),
@@ -203,6 +281,8 @@ export type PromVestingSchedule = typeof promVestingSchedules.$inferSelect;
 
 export type InsertPromTokenPrice = z.infer<typeof insertPromTokenPriceSchema>;
 export type PromTokenPrice = typeof promTokenPrices.$inferSelect;
+
+
 
 // External Service Configuration schemas for white-label admin dashboard
 export const serviceCategories = pgTable("service_categories", {
