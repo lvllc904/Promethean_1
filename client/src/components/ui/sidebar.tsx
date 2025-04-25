@@ -10,7 +10,7 @@ import {
   ChevronDown,
   Wallet2,
   Settings,
-  ArrowLeftRight
+  ArrowLeftRight 
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
