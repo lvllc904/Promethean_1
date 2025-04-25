@@ -11,6 +11,7 @@ import Governance from "@/pages/dao/governance";
 import Proposals from "@/pages/dao/proposals";
 import MarketplaceIndex from "@/pages/marketplace/index";
 import CreateTask from "@/pages/marketplace/create";
+import MyTasks from "@/pages/marketplace/my";
 import Memberships from "@/pages/memberships";
 import Community from "@/pages/community";
 import Wallet from "@/pages/wallet";
