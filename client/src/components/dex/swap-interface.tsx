@@ -59,7 +59,7 @@ export const SwapInterface: React.FC<SwapInterfaceProps> = ({ className }) => {
     availableTokens
   } = useDex();
   
-  const { isConnected, signer, provider, address } = useWallet();
+  const { isConnected, openModal } = useWallet();
   
   const [showSettings, setShowSettings] = useState(false);
   const [showTransactionDetails, setShowTransactionDetails] = useState(false);
@@ -85,9 +85,6 @@ export const SwapInterface: React.FC<SwapInterfaceProps> = ({ className }) => {
     const checkApproval = async () => {
       if (
         !isConnected || 
-        !provider || 
-        !signer || 
-        !address || 
         !selectedTokens.tokenIn || 
         !swapAmount || 
         parseFloat(swapAmount) <= 0
@@ -99,11 +96,6 @@ export const SwapInterface: React.FC<SwapInterfaceProps> = ({ className }) => {
       setIsCheckingAllowance(true);
       
       try {
-        // Call the dexService to check allowance
-        // This is a simplified placeholder - in a real app you would import a function from the dex service
-        // const allowance = await checkAllowance(selectedTokens.tokenIn.address, address, routerAddress);
-        // setNeedsApproval(parseFloat(allowance.formatted) < parseFloat(swapAmount));
-        
         // For demo purposes, assume approval is needed
         setNeedsApproval(true);
       } catch (error) {
@@ -114,7 +106,7 @@ export const SwapInterface: React.FC<SwapInterfaceProps> = ({ className }) => {
     };
     
     checkApproval();
-  }, [isConnected, provider, signer, address, selectedTokens.tokenIn, swapAmount]);
+  }, [isConnected, selectedTokens.tokenIn, swapAmount]);
   
   // Auto-update quote when parameters change
   useEffect(() => {
@@ -191,7 +183,7 @@ export const SwapInterface: React.FC<SwapInterfaceProps> = ({ className }) => {
   // Handle swap button click
   const handleSwapClick = async () => {
     if (!isConnected) {
-      // Connect wallet (handled by the wallet provider)
+      openModal();
       return;
     }
     
@@ -207,6 +199,8 @@ export const SwapInterface: React.FC<SwapInterfaceProps> = ({ className }) => {
   
   // Price impact warning
   const getPriceImpactWarning = () => {
+    if (!swapQuote) return null;
+    
     // Calculate price impact (simplified example)
     // In a real app, you would get this from the DEX service
     const priceImpact = 0.5; // 0.5%
@@ -451,23 +445,39 @@ export const SwapInterface: React.FC<SwapInterfaceProps> = ({ className }) => {
                     </span>
                   </div>
                   
-                  {getPriceImpactWarning()}
+                  <div className="flex justify-between">
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger className="flex items-center text-neutral-500">
+                          <span>Slippage Tolerance</span>
+                          <Info className="h-3 w-3 ml-1" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Your transaction will revert if the price changes unfavorably by more than this percentage.</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                    <span>{slippageTolerance}%</span>
+                  </div>
                 </div>
               </AccordionContent>
             </AccordionItem>
           </Accordion>
         )}
-      </CardContent>
-      
-      <CardFooter>
+        
+        {/* Price impact warning */}
+        {getPriceImpactWarning()}
+        
+        {/* Swap button */}
         <Button
-          className="w-full"
+          className="w-full h-12"
+          size="lg"
           disabled={isSwapButtonDisabled()}
           onClick={handleSwapClick}
         >
           {getSwapButtonText()}
         </Button>
-      </CardFooter>
+      </CardContent>
     </Card>
   );
 };

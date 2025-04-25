@@ -25,8 +25,8 @@ export default function AdminDexPage() {
     <div className="container max-w-6xl mx-auto px-4 py-6">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold">DAC Decentralized Exchange</h1>
-          <p className="text-neutral-500 mt-1">Swap tokens and provide liquidity directly on the DAC platform</p>
+          <h1 className="text-3xl font-bold">DEX Administration</h1>
+          <p className="text-neutral-500 mt-1">Manage decentralized exchange settings and monitor performance</p>
         </div>
         <Link href="/admin">
           <Button variant="outline" size="sm">
@@ -69,113 +69,90 @@ export default function AdminDexPage() {
                     <CardHeader>
                       <CardTitle className="flex items-center">
                         <Shield className="h-5 w-5 mr-2" />
-                        Security Features
+                        Security Controls
                       </CardTitle>
                       <CardDescription>
-                        Built-in protections for your trades
+                        Manage DEX security settings
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      <div className="flex items-start">
-                        <div className="h-8 w-8 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0 mr-3">
-                          <Lock className="h-4 w-4 text-emerald-600" />
-                        </div>
-                        <div>
-                          <h3 className="font-medium">Slippage Protection</h3>
-                          <p className="text-sm text-neutral-500">
-                            Set custom slippage tolerance to protect your trades from price movements
-                          </p>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-start">
-                        <div className="h-8 w-8 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0 mr-3">
-                          <BarChart3 className="h-4 w-4 text-emerald-600" />
-                        </div>
-                        <div>
-                          <h3 className="font-medium">Price Impact Warning</h3>
-                          <p className="text-sm text-neutral-500">
-                            Automatically warns you when your trade might significantly impact the market price
-                          </p>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-start">
-                        <div className="h-8 w-8 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0 mr-3">
-                          <Zap className="h-4 w-4 text-emerald-600" />
-                        </div>
-                        <div>
-                          <h3 className="font-medium">MEV Protection</h3>
-                          <p className="text-sm text-neutral-500">
-                            Built-in protection against front-running and sandwich attacks
-                          </p>
-                        </div>
-                      </div>
+                      <Button className="w-full" variant="outline">Emergency Pause</Button>
+                      <Button className="w-full" variant="outline">Fee Controls</Button>
+                      <Button className="w-full" variant="outline">Risk Parameters</Button>
                     </CardContent>
                   </Card>
                   
-                  {!isConnected && (
-                    <Card className="bg-primary-50 border-primary-100">
-                      <CardHeader>
-                        <CardTitle>
-                          Connect to Start Trading
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="mb-4 text-neutral-600">
-                          Connect your wallet to start swapping tokens and providing liquidity to earn rewards
-                        </p>
-                        <Button onClick={openModal}>
-                          Connect Wallet
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  )}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center">
+                        <BarChart3 className="h-5 w-5 mr-2" />
+                        Analytics
+                      </CardTitle>
+                      <CardDescription>
+                        View detailed exchange statistics
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <Button className="w-full">Trading Activity</Button>
+                      <Button className="w-full" variant="outline">Liquidity Reports</Button>
+                      <Button className="w-full" variant="outline">User Analysis</Button>
+                    </CardContent>
+                  </Card>
                 </div>
               </div>
             </TabsContent>
             
-            <TabsContent value="info" className="space-y-8">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <Card>
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-lg flex items-center">
-                      <DollarSign className="h-5 w-5 mr-2" />
-                      Total Value Locked
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-3xl font-bold">$28.4M</div>
-                    <p className="text-sm text-emerald-600 mt-1">+5.2% (24h)</p>
-                  </CardContent>
-                </Card>
-                
-                <Card>
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-lg flex items-center">
-                      <ArrowLeftRight className="h-5 w-5 mr-2" />
-                      24h Volume
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-3xl font-bold">$4.7M</div>
-                    <p className="text-sm text-emerald-600 mt-1">+12.3% (24h)</p>
-                  </CardContent>
-                </Card>
-                
-                <Card>
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-lg flex items-center">
-                      <Coins className="h-5 w-5 mr-2" />
-                      Active Pairs
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-3xl font-bold">128</div>
-                    <p className="text-sm text-neutral-500 mt-1">Across multiple chains</p>
-                  </CardContent>
-                </Card>
-              </div>
+            <TabsContent value="info" className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>DEX Performance</CardTitle>
+                  <CardDescription>
+                    Key metrics for the DAC decentralized exchange
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <Card>
+                      <CardHeader className="pb-2">
+                        <CardTitle className="text-lg flex items-center">
+                          <DollarSign className="h-5 w-5 mr-2" />
+                          TVL
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="text-3xl font-bold">$24.2M</div>
+                        <p className="text-sm text-emerald-600 mt-1">+5.8% (24h)</p>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card>
+                      <CardHeader className="pb-2">
+                        <CardTitle className="text-lg flex items-center">
+                          <ArrowLeftRight className="h-5 w-5 mr-2" />
+                          24h Volume
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="text-3xl font-bold">$4.7M</div>
+                        <p className="text-sm text-emerald-600 mt-1">+12.3% (24h)</p>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card>
+                      <CardHeader className="pb-2">
+                        <CardTitle className="text-lg flex items-center">
+                          <Coins className="h-5 w-5 mr-2" />
+                          Active Pairs
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="text-3xl font-bold">128</div>
+                        <p className="text-sm text-neutral-500 mt-1">Across multiple chains</p>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </CardContent>
+              </Card>
             </TabsContent>
           </Tabs>
         </div>
@@ -198,50 +175,42 @@ export default function AdminDexPage() {
           
           <Card>
             <CardHeader>
-              <CardTitle>Getting Started</CardTitle>
+              <CardTitle>Network Status</CardTitle>
               <CardDescription>
-                How to use the DEX platform
+                Current blockchain network status
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex items-start">
-                <div className="h-6 w-6 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center flex-shrink-0 mr-3 font-medium text-sm">1</div>
-                <div>
-                  <h3 className="font-medium">Connect your wallet</h3>
-                  <p className="text-sm text-neutral-500">
-                    Connect your Web3 wallet (MetaMask, WalletConnect, etc.) to get started
-                  </p>
+              <div className="flex justify-between items-center py-2">
+                <div className="flex items-center">
+                  <div className="h-3 w-3 rounded-full bg-emerald-500 mr-2"></div>
+                  <span>Ethereum Mainnet</span>
                 </div>
+                <span className="text-sm text-neutral-500">Active</span>
               </div>
               
-              <div className="flex items-start">
-                <div className="h-6 w-6 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center flex-shrink-0 mr-3 font-medium text-sm">2</div>
-                <div>
-                  <h3 className="font-medium">Select tokens to swap</h3>
-                  <p className="text-sm text-neutral-500">
-                    Choose which token you want to swap from and which you want to receive
-                  </p>
+              <div className="flex justify-between items-center py-2">
+                <div className="flex items-center">
+                  <div className="h-3 w-3 rounded-full bg-emerald-500 mr-2"></div>
+                  <span>Polygon</span>
                 </div>
+                <span className="text-sm text-neutral-500">Active</span>
               </div>
               
-              <div className="flex items-start">
-                <div className="h-6 w-6 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center flex-shrink-0 mr-3 font-medium text-sm">3</div>
-                <div>
-                  <h3 className="font-medium">Enter amount and review</h3>
-                  <p className="text-sm text-neutral-500">
-                    Enter how much you want to swap and check the quoted price and details
-                  </p>
+              <div className="flex justify-between items-center py-2">
+                <div className="flex items-center">
+                  <div className="h-3 w-3 rounded-full bg-yellow-500 mr-2"></div>
+                  <span>Arbitrum</span>
                 </div>
+                <span className="text-sm text-neutral-500">Slow</span>
               </div>
               
-              <div className="flex items-start">
-                <div className="h-6 w-6 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center flex-shrink-0 mr-3 font-medium text-sm">4</div>
-                <div>
-                  <h3 className="font-medium">Confirm the swap</h3>
-                  <p className="text-sm text-neutral-500">
-                    Click "Swap" and confirm the transaction in your wallet
-                  </p>
+              <div className="flex justify-between items-center py-2">
+                <div className="flex items-center">
+                  <div className="h-3 w-3 rounded-full bg-emerald-500 mr-2"></div>
+                  <span>Optimism</span>
                 </div>
+                <span className="text-sm text-neutral-500">Active</span>
               </div>
             </CardContent>
           </Card>
@@ -249,4 +218,4 @@ export default function AdminDexPage() {
       </div>
     </div>
   );
-}
+};

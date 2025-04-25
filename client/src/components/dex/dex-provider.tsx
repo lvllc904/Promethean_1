@@ -1,10 +1,8 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect, ReactNode } from 'react';
 import { ethers } from 'ethers';
 import { useWallet } from '@/components/wallet/wallet-provider';
 import { useToast } from '@/hooks/use-toast';
-import * as dexService from '@/services/dex';
 
-// Define types for the DEX context
 export interface Token {
   address: string;
   name: string;
@@ -37,152 +35,6 @@ export interface LiquidityPosition {
   shareOfPool: string;
 }
 
-// Default token lists by chain ID
-const DEFAULT_TOKENS_BY_CHAIN: Record<number, Token[]> = {
-  // Ethereum Mainnet
-  1: [
-    {
-      address: dexService.TOKENS.ETHEREUM.WETH,
-      name: 'Wrapped Ether',
-      symbol: 'WETH',
-      decimals: 18,
-      logoUrl: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png'
-    },
-    {
-      address: dexService.TOKENS.ETHEREUM.USDC,
-      name: 'USD Coin',
-      symbol: 'USDC',
-      decimals: 6,
-      logoUrl: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png'
-    },
-    {
-      address: dexService.TOKENS.ETHEREUM.DAI,
-      name: 'Dai Stablecoin',
-      symbol: 'DAI',
-      decimals: 18,
-      logoUrl: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png'
-    },
-    {
-      address: dexService.TOKENS.ETHEREUM.USDT,
-      name: 'Tether USD',
-      symbol: 'USDT',
-      decimals: 6,
-      logoUrl: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png'
-    },
-    // DAC token - custom project token
-    {
-      address: '0x123456789abcdef123456789abcdef123456789a', // Placeholder address
-      name: 'DAC Token',
-      symbol: 'DAC',
-      decimals: 18,
-      logoUrl: '/images/dac-token-logo.png'
-    }
-  ],
-  // Polygon Mainnet
-  137: [
-    {
-      address: dexService.TOKENS.POLYGON.WMATIC,
-      name: 'Wrapped Matic',
-      symbol: 'WMATIC',
-      decimals: 18,
-      logoUrl: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/polygon/assets/0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270/logo.png'
-    },
-    {
-      address: dexService.TOKENS.POLYGON.USDC,
-      name: 'USD Coin',
-      symbol: 'USDC',
-      decimals: 6,
-      logoUrl: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/polygon/assets/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/logo.png'
-    },
-    {
-      address: dexService.TOKENS.POLYGON.DAI,
-      name: 'Dai Stablecoin',
-      symbol: 'DAI',
-      decimals: 18,
-      logoUrl: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/polygon/assets/0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063/logo.png'
-    },
-    {
-      address: dexService.TOKENS.POLYGON.USDT,
-      name: 'Tether USD',
-      symbol: 'USDT',
-      decimals: 6,
-      logoUrl: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/polygon/assets/0xc2132D05D31c914a87C6611C10748AEb04B58e8F/logo.png'
-    },
-    // DAC token - project token on Polygon
-    {
-      address: '0x123456789abcdef123456789abcdef123456789a', // Placeholder address
-      name: 'DAC Token',
-      symbol: 'DAC',
-      decimals: 18,
-      logoUrl: '/images/dac-token-logo.png'
-    }
-  ],
-  // BSC Mainnet
-  56: [
-    {
-      address: dexService.TOKENS.BSC.WBNB,
-      name: 'Wrapped BNB',
-      symbol: 'WBNB',
-      decimals: 18,
-      logoUrl: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/binance/assets/WBNB/logo.png'
-    },
-    {
-      address: dexService.TOKENS.BSC.BUSD,
-      name: 'Binance USD',
-      symbol: 'BUSD',
-      decimals: 18,
-      logoUrl: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/binance/assets/BUSD/logo.png'
-    },
-    {
-      address: dexService.TOKENS.BSC.USDC,
-      name: 'USD Coin',
-      symbol: 'USDC',
-      decimals: 18,
-      logoUrl: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/binance/assets/USDC/logo.png'
-    },
-    {
-      address: dexService.TOKENS.BSC.USDT,
-      name: 'Tether USD',
-      symbol: 'USDT',
-      decimals: 18,
-      logoUrl: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/binance/assets/USDT/logo.png'
-    },
-    // DAC token - project token on BSC
-    {
-      address: '0x123456789abcdef123456789abcdef123456789a', // Placeholder address
-      name: 'DAC Token',
-      symbol: 'DAC',
-      decimals: 18,
-      logoUrl: '/images/dac-token-logo.png'
-    }
-  ],
-  // Default for local development/testing
-  1337: [
-    {
-      address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
-      name: 'Wrapped Ether',
-      symbol: 'WETH',
-      decimals: 18,
-      logoUrl: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png'
-    },
-    {
-      address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
-      name: 'USD Coin',
-      symbol: 'USDC',
-      decimals: 6,
-      logoUrl: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png'
-    },
-    {
-      address: '0x123456789abcdef123456789abcdef123456789a',
-      name: 'DAC Token',
-      symbol: 'DAC',
-      decimals: 18,
-      logoUrl: '/images/dac-token-logo.png'
-    }
-  ]
-};
-
-// Define the DEX context type
 interface DexContextType {
   availableTokens: Token[];
   popularTokens: Token[];
@@ -223,10 +75,89 @@ interface DexContextType {
   };
 }
 
-// Create the DEX context
+// Mock token data
+const mockTokens: Token[] = [
+  {
+    address: '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
+    name: 'Ethereum',
+    symbol: 'ETH',
+    decimals: 18,
+    logoUrl: 'https://cryptologos.cc/logos/ethereum-eth-logo.png',
+  },
+  {
+    address: '0xB8c77482e45F1F44dE1745F52C74426C631bDD52',
+    name: 'BNB',
+    symbol: 'BNB',
+    decimals: 18,
+    logoUrl: 'https://cryptologos.cc/logos/bnb-bnb-logo.png',
+  },
+  {
+    address: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+    name: 'Tether USD',
+    symbol: 'USDT',
+    decimals: 6,
+    logoUrl: 'https://cryptologos.cc/logos/tether-usdt-logo.png',
+  },
+  {
+    address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+    name: 'USD Coin',
+    symbol: 'USDC',
+    decimals: 6,
+    logoUrl: 'https://cryptologos.cc/logos/usd-coin-usdc-logo.png',
+  },
+  {
+    address: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
+    name: 'Uniswap',
+    symbol: 'UNI',
+    decimals: 18,
+    logoUrl: 'https://cryptologos.cc/logos/uniswap-uni-logo.png',
+  },
+  {
+    address: '0x514910771AF9Ca656af840dff83E8264EcF986CA',
+    name: 'ChainLink Token',
+    symbol: 'LINK',
+    decimals: 18,
+    logoUrl: 'https://cryptologos.cc/logos/chainlink-link-logo.png',
+  },
+  {
+    address: '0x2b591e99afE9f32eAA6214f7B7629768c40Eeb39',
+    name: 'HEX',
+    symbol: 'HEX',
+    decimals: 8,
+    logoUrl: 'https://cryptologos.cc/logos/hex-hex-logo.png',
+  },
+  {
+    address: '0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0',
+    name: 'Polygon',
+    symbol: 'MATIC',
+    decimals: 18,
+    logoUrl: 'https://cryptologos.cc/logos/polygon-matic-logo.png',
+  },
+  {
+    address: '0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F',
+    name: 'Synthetix Network Token',
+    symbol: 'SNX',
+    decimals: 18,
+    logoUrl: 'https://cryptologos.cc/logos/synthetix-network-token-snx-logo.png',
+  },
+  {
+    address: '0xc0fFee0000000000000000000000000000000001',
+    name: 'DAC Token',
+    symbol: 'DAC',
+    decimals: 18,
+    logoUrl: 'https://img.icons8.com/external-vitaliy-gorbachev-lineal-color-vitaly-gorbachev/60/000000/external-real-estate-business-vitaliy-gorbachev-lineal-color-vitaly-gorbachev.png',
+  },
+  {
+    address: '0xc0fFee0000000000000000000000000000000002',
+    name: 'Prom Token',
+    symbol: 'PROM',
+    decimals: 18,
+    logoUrl: 'https://img.icons8.com/external-vitaliy-gorbachev-flat-vitaly-gorbachev/58/000000/external-token-cryptocurrency-vitaliy-gorbachev-flat-vitaly-gorbachev.png',
+  },
+];
+
 const DexContext = createContext<DexContextType | null>(null);
 
-// Create the hook for using the DEX context
 export const useDex = () => {
   const context = useContext(DexContext);
   if (!context) {
@@ -235,592 +166,452 @@ export const useDex = () => {
   return context;
 };
 
-// DEX provider component
-export const DexProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { provider, signer, address, isConnected } = useWallet();
+export const DexProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const { provider, address, isConnected } = useWallet();
   const { toast } = useToast();
   
-  // State for the DEX context
-  const [availableTokens, setAvailableTokens] = useState<Token[]>([]);
-  const [popularTokens, setPopularTokens] = useState<Token[]>([]);
-  const [selectedTokens, setSelectedTokensState] = useState<{
-    tokenIn: Token | null;
-    tokenOut: Token | null;
-  }>({
-    tokenIn: null,
-    tokenOut: null
+  // State
+  const [availableTokens, setAvailableTokens] = useState<Token[]>(mockTokens);
+  const [popularTokens, setPopularTokens] = useState<Token[]>(mockTokens.slice(0, 5));
+  const [selectedTokens, setSelectedTokens] = useState<{ tokenIn: Token | null; tokenOut: Token | null }>({
+    tokenIn: mockTokens[0], // Default to ETH
+    tokenOut: mockTokens[2], // Default to USDT
   });
   const [swapAmount, setSwapAmount] = useState<string>('');
   const [swapQuote, setSwapQuote] = useState<SwapQuote | null>(null);
-  const [slippageTolerance, setSlippageTolerance] = useState<number>(0.5); // 0.5% default slippage
+  const [slippageTolerance, setSlippageTolerance] = useState<number>(0.5); // 0.5%
   const [liquidityPositions, setLiquidityPositions] = useState<LiquidityPosition[]>([]);
-  const [isLoadingQuote, setIsLoadingQuote] = useState<boolean>(false);
-  const [isSwapping, setIsSwapping] = useState<boolean>(false);
-  const [isApprovingToken, setIsApprovingToken] = useState<boolean>(false);
-  const [currentDex, setCurrentDex] = useState<{
-    name: string;
-    routerAddress: string;
-  }>({
-    name: 'Uniswap V2',
-    routerAddress: dexService.DEX_ROUTERS.UNISWAP_V2.ETHEREUM
-  });
   
   // Loading states
-  const [loadingStates, setLoadingStates] = useState({
-    loadingBalances: false,
-    loadingPositions: false,
-    addingLiquidity: false,
-    removingLiquidity: false
-  });
+  const [isLoadingQuote, setIsLoadingQuote] = useState(false);
+  const [isSwapping, setIsSwapping] = useState(false);
+  const [isApprovingToken, setIsApprovingToken] = useState(false);
+  const [loadingBalances, setLoadingBalances] = useState(false);
+  const [loadingPositions, setLoadingPositions] = useState(false);
+  const [addingLiquidity, setAddingLiquidity] = useState(false);
+  const [removingLiquidity, setRemovingLiquidity] = useState(false);
   
-  // Update loading state helper
-  const updateLoadingState = (key: keyof typeof loadingStates, value: boolean) => {
-    setLoadingStates(prev => ({ ...prev, [key]: value }));
+  const currentDex = {
+    name: 'DAC Swap',
+    routerAddress: '0xDeFiRouterAddress0000000000000000000000000',
   };
-  
-  // Initialize DEX when wallet is connected
-  useEffect(() => {
-    const initializeDex = async () => {
-      if (isConnected && provider) {
-        try {
-          // Get the network
-          const network = await provider.getNetwork();
-          const chainId = Number(network.chainId);
-          
-          // Set the appropriate DEX router based on the network
-          try {
-            const routerAddress = dexService.getDexRouter(chainId);
-            let dexName = 'Uniswap V2';
-            
-            if (chainId === 137) {
-              dexName = 'QuickSwap';
-            } else if (chainId === 56) {
-              dexName = 'PancakeSwap';
-            }
-            
-            setCurrentDex({
-              name: dexName,
-              routerAddress
-            });
-            
-            // Initialize popular tokens for this network
-            if (DEFAULT_TOKENS_BY_CHAIN[chainId]) {
-              setPopularTokens(DEFAULT_TOKENS_BY_CHAIN[chainId]);
-              setAvailableTokens(DEFAULT_TOKENS_BY_CHAIN[chainId]);
-              
-              // Default select first two tokens
-              if (DEFAULT_TOKENS_BY_CHAIN[chainId].length >= 2) {
-                setSelectedTokensState({
-                  tokenIn: DEFAULT_TOKENS_BY_CHAIN[chainId][0],
-                  tokenOut: DEFAULT_TOKENS_BY_CHAIN[chainId][1]
-                });
-              }
-            } else {
-              // Fallback to Ethereum if the chain is not supported
-              setPopularTokens(DEFAULT_TOKENS_BY_CHAIN[1]);
-              setAvailableTokens(DEFAULT_TOKENS_BY_CHAIN[1]);
-              
-              if (DEFAULT_TOKENS_BY_CHAIN[1].length >= 2) {
-                setSelectedTokensState({
-                  tokenIn: DEFAULT_TOKENS_BY_CHAIN[1][0],
-                  tokenOut: DEFAULT_TOKENS_BY_CHAIN[1][1]
-                });
-              }
-              
-              toast({
-                title: 'Unsupported Network',
-                description: `The current network (${chainId}) is not fully supported. Defaulting to Ethereum tokens.`,
-                variant: 'destructive'
-              });
-            }
-          } catch (error) {
-            console.error('Error initializing DEX:', error);
-            toast({
-              title: 'DEX Initialization Error',
-              description: 'Failed to initialize the DEX. Please try again or switch networks.',
-              variant: 'destructive'
-            });
-          }
-        } catch (error) {
-          console.error('Error getting network:', error);
-        }
+
+  // Update token selection
+  const updateSelectedTokens = useCallback(
+    (tokens: { tokenIn?: Token | null; tokenOut?: Token | null }) => {
+      setSelectedTokens((prev) => ({
+        tokenIn: tokens.tokenIn !== undefined ? tokens.tokenIn : prev.tokenIn,
+        tokenOut: tokens.tokenOut !== undefined ? tokens.tokenOut : prev.tokenOut,
+      }));
+      // Clear previous quote when tokens change
+      setSwapQuote(null);
+    },
+    []
+  );
+
+  // Switch tokens
+  const switchTokens = useCallback(() => {
+    setSelectedTokens((prev) => ({
+      tokenIn: prev.tokenOut,
+      tokenOut: prev.tokenIn,
+    }));
+    // Clear previous quote when tokens change
+    setSwapQuote(null);
+  }, []);
+
+  // Fetch token balance
+  const fetchTokenBalance = useCallback(
+    async (token: Token) => {
+      if (!isConnected || !provider || !address) {
+        return;
       }
-    };
-    
-    initializeDex();
-  }, [isConnected, provider, toast]);
-  
-  // Update token balances when wallet address changes or tokens are selected
-  useEffect(() => {
-    const updateBalances = async () => {
-      if (!isConnected || !provider || !address) return;
-      
-      updateLoadingState('loadingBalances', true);
-      
+
       try {
-        // Create a copy of tokens to update
-        const updatedTokens = [...availableTokens];
-        
-        // Fetch balances for all tokens
-        for (let i = 0; i < updatedTokens.length; i++) {
-          try {
-            const balance = await dexService.getTokenBalance(
-              updatedTokens[i].address,
-              address,
-              provider
-            );
-            
-            updatedTokens[i] = {
-              ...updatedTokens[i],
-              balance
-            };
-          } catch (error) {
-            console.error(`Error fetching balance for ${updatedTokens[i].symbol}:`, error);
-          }
-        }
-        
-        setAvailableTokens(updatedTokens);
-        
-        // Also update selected tokens if they exist
-        if (selectedTokens.tokenIn) {
-          const updatedTokenIn = updatedTokens.find(
-            token => token.address === selectedTokens.tokenIn?.address
-          );
+        // For ETH, get the native balance
+        if (token.address === '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE') {
+          const balance = await provider.getBalance(address);
+          const formattedBalance = ethers.utils.formatUnits(balance, token.decimals);
           
-          if (updatedTokenIn) {
-            setSelectedTokensState(prev => ({
-              ...prev,
-              tokenIn: updatedTokenIn
-            }));
-          }
-        }
-        
-        if (selectedTokens.tokenOut) {
-          const updatedTokenOut = updatedTokens.find(
-            token => token.address === selectedTokens.tokenOut?.address
+          // Update the token in availableTokens
+          setAvailableTokens((prevTokens) =>
+            prevTokens.map((t) =>
+              t.address === token.address
+                ? {
+                    ...t,
+                    balance: {
+                      raw: balance.toString(),
+                      formatted: formattedBalance,
+                    },
+                  }
+                : t
+            )
           );
-          
-          if (updatedTokenOut) {
-            setSelectedTokensState(prev => ({
-              ...prev,
-              tokenOut: updatedTokenOut
-            }));
-          }
+
+          // Also update in selected tokens if needed
+          setSelectedTokens((prev) => ({
+            tokenIn:
+              prev.tokenIn?.address === token.address
+                ? {
+                    ...prev.tokenIn,
+                    balance: {
+                      raw: balance.toString(),
+                      formatted: formattedBalance,
+                    },
+                  }
+                : prev.tokenIn,
+            tokenOut:
+              prev.tokenOut?.address === token.address
+                ? {
+                    ...prev.tokenOut,
+                    balance: {
+                      raw: balance.toString(),
+                      formatted: formattedBalance,
+                    },
+                  }
+                : prev.tokenOut,
+          }));
+        } else {
+          // For other tokens, we would use the ERC20 contract
+          // This is mocked for this example
+          const mockBalance = ethers.utils.parseUnits(
+            (Math.random() * 100).toFixed(2),
+            token.decimals
+          );
+          const formattedBalance = ethers.utils.formatUnits(mockBalance, token.decimals);
+
+          // Update the token in availableTokens
+          setAvailableTokens((prevTokens) =>
+            prevTokens.map((t) =>
+              t.address === token.address
+                ? {
+                    ...t,
+                    balance: {
+                      raw: mockBalance.toString(),
+                      formatted: formattedBalance,
+                    },
+                  }
+                : t
+            )
+          );
+
+          // Also update in selected tokens if needed
+          setSelectedTokens((prev) => ({
+            tokenIn:
+              prev.tokenIn?.address === token.address
+                ? {
+                    ...prev.tokenIn,
+                    balance: {
+                      raw: mockBalance.toString(),
+                      formatted: formattedBalance,
+                    },
+                  }
+                : prev.tokenIn,
+            tokenOut:
+              prev.tokenOut?.address === token.address
+                ? {
+                    ...prev.tokenOut,
+                    balance: {
+                      raw: mockBalance.toString(),
+                      formatted: formattedBalance,
+                    },
+                  }
+                : prev.tokenOut,
+          }));
         }
       } catch (error) {
-        console.error('Error updating token balances:', error);
+        console.error(`Error fetching balance for ${token.symbol}:`, error);
         toast({
-          title: 'Balance Update Error',
-          description: 'Failed to update token balances.',
-          variant: 'destructive'
+          title: 'Error',
+          description: `Could not fetch ${token.symbol} balance`,
+          variant: 'destructive',
         });
-      } finally {
-        updateLoadingState('loadingBalances', false);
       }
-    };
+    },
+    [isConnected, provider, address, toast]
+  );
+
+  // Fetch balances for all tokens
+  const fetchAllBalances = useCallback(async () => {
+    if (!isConnected) return;
     
-    updateBalances();
-  }, [isConnected, provider, address, toast]);
-  
-  // Function to fetch balance for a single token
-  const fetchTokenBalance = async (token: Token) => {
-    if (!isConnected || !provider || !address) {
-      toast({
-        title: 'Wallet Not Connected',
-        description: 'Please connect your wallet to fetch token balances.',
-        variant: 'destructive'
-      });
-      return;
-    }
-    
+    setLoadingBalances(true);
     try {
-      const balance = await dexService.getTokenBalance(
-        token.address,
-        address,
-        provider
-      );
-      
-      // Update the token in available tokens list
-      setAvailableTokens(prev => 
-        prev.map(t => 
-          t.address === token.address
-            ? { ...t, balance }
-            : t
-        )
-      );
-      
-      // Update selected tokens if needed
-      if (selectedTokens.tokenIn?.address === token.address) {
-        setSelectedTokensState(prev => ({
-          ...prev,
-          tokenIn: { ...prev.tokenIn!, balance }
-        }));
-      }
-      
-      if (selectedTokens.tokenOut?.address === token.address) {
-        setSelectedTokensState(prev => ({
-          ...prev,
-          tokenOut: { ...prev.tokenOut!, balance }
-        }));
-      }
+      const fetchPromises = availableTokens.map((token) => fetchTokenBalance(token));
+      await Promise.all(fetchPromises);
     } catch (error) {
-      console.error(`Error fetching balance for ${token.symbol}:`, error);
-      toast({
-        title: 'Balance Fetch Error',
-        description: `Failed to fetch ${token.symbol} balance.`,
-        variant: 'destructive'
-      });
+      console.error('Error fetching all balances:', error);
+    } finally {
+      setLoadingBalances(false);
     }
-  };
-  
-  // Function to add a custom token
+  }, [availableTokens, fetchTokenBalance, isConnected]);
+
+  // Fetch balances when wallet connects
+  useEffect(() => {
+    if (isConnected) {
+      fetchAllBalances();
+    }
+  }, [isConnected, fetchAllBalances]);
+
+  // Add a custom token
   const addCustomToken = (token: Token) => {
     // Check if token already exists
-    const exists = availableTokens.some(t => t.address.toLowerCase() === token.address.toLowerCase());
+    const tokenExists = availableTokens.some((t) => t.address.toLowerCase() === token.address.toLowerCase());
     
-    if (exists) {
+    if (tokenExists) {
       toast({
-        title: 'Token Already Added',
-        description: `${token.symbol} is already in your token list.`,
+        title: 'Token Already Exists',
+        description: `${token.symbol} is already in your token list`,
+        variant: 'default',
       });
       return;
     }
     
-    // Add the token
-    setAvailableTokens(prev => [...prev, token]);
-    
-    // Fetch its balance
-    fetchTokenBalance(token);
-    
+    setAvailableTokens((prevTokens) => [...prevTokens, token]);
     toast({
       title: 'Token Added',
-      description: `${token.symbol} has been added to your token list.`,
+      description: `${token.symbol} has been added to your token list`,
+      variant: 'default',
     });
-  };
-  
-  // Function to set selected tokens
-  const setSelectedTokens = ({ tokenIn, tokenOut }: { tokenIn?: Token | null; tokenOut?: Token | null }) => {
-    setSelectedTokensState(prev => ({
-      tokenIn: tokenIn !== undefined ? tokenIn : prev.tokenIn,
-      tokenOut: tokenOut !== undefined ? tokenOut : prev.tokenOut
-    }));
     
-    // Reset swap quote when tokens change
-    setSwapQuote(null);
+    // If connected, fetch the balance
+    if (isConnected) {
+      fetchTokenBalance(token);
+    }
   };
-  
-  // Function to switch input and output tokens
-  const switchTokens = () => {
-    setSelectedTokensState(prev => ({
-      tokenIn: prev.tokenOut,
-      tokenOut: prev.tokenIn
-    }));
-    
-    // Reset swap quote
-    setSwapQuote(null);
-  };
-  
-  // Function to get swap quote
+
+  // Get swap quote
   const getSwapQuote = async () => {
-    if (
-      !isConnected || 
-      !provider || 
-      !selectedTokens.tokenIn || 
-      !selectedTokens.tokenOut || 
-      !swapAmount || 
-      parseFloat(swapAmount) <= 0
-    ) {
+    if (!selectedTokens.tokenIn || !selectedTokens.tokenOut || !swapAmount || parseFloat(swapAmount) <= 0) {
+      setSwapQuote(null);
       return;
     }
     
     setIsLoadingQuote(true);
     
     try {
-      const path = [selectedTokens.tokenIn.address, selectedTokens.tokenOut.address];
+      // Simulate API call delay
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       
-      const quote = await dexService.getSwapQuote(
-        currentDex.routerAddress,
-        swapAmount,
-        path,
-        provider
+      // Convert input amount to Wei (or equivalent based on decimals)
+      const amountInWei = ethers.utils.parseUnits(swapAmount, selectedTokens.tokenIn.decimals);
+      
+      // Mock exchange rate calculations
+      const mockExchangeRate = Math.random() * 2000; // Random exchange rate
+      const amountOutWei = ethers.BigNumber.from(
+        (Number(ethers.utils.formatUnits(amountInWei, selectedTokens.tokenIn.decimals)) * mockExchangeRate)
+          .toFixed(0)
       );
       
-      setSwapQuote(quote);
+      // Format amount out based on output token decimals
+      const formattedAmountOut = (
+        Number(ethers.utils.formatUnits(amountInWei, selectedTokens.tokenIn.decimals)) * mockExchangeRate
+      ).toFixed(selectedTokens.tokenOut.decimals);
+      
+      const newQuote: SwapQuote = {
+        path: [selectedTokens.tokenIn.address, selectedTokens.tokenOut.address],
+        amountIn: {
+          raw: amountInWei.toString(),
+          formatted: swapAmount,
+        },
+        amountOut: {
+          raw: amountOutWei.toString(),
+          formatted: formattedAmountOut,
+        },
+      };
+      
+      setSwapQuote(newQuote);
     } catch (error) {
       console.error('Error getting swap quote:', error);
       toast({
-        title: 'Quote Error',
-        description: 'Failed to get swap quote. Please check your inputs and try again.',
-        variant: 'destructive'
+        title: 'Error',
+        description: 'Failed to get swap quote',
+        variant: 'destructive',
       });
-      setSwapQuote(null);
     } finally {
       setIsLoadingQuote(false);
     }
   };
-  
-  // Function to approve token spending
+
+  // Approve token for swap
   const approveToken = async (token: Token) => {
-    if (!isConnected || !signer || !address) {
-      toast({
-        title: 'Wallet Not Connected',
-        description: 'Please connect your wallet to approve tokens.',
-        variant: 'destructive'
-      });
+    if (!isConnected || !swapAmount || parseFloat(swapAmount) <= 0) {
       return;
     }
     
     setIsApprovingToken(true);
     
     try {
-      // Use the maxUint256 value to approve "unlimited" spending
-      // This is a common pattern but has security implications
-      const approvalAmount = ethers.MaxUint256.toString();
-      
-      const tx = await dexService.approveToken(
-        token.address,
-        currentDex.routerAddress,
-        approvalAmount,
-        signer
-      );
+      // Simulate API call delay
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       
       toast({
-        title: 'Approval Successful',
-        description: `${token.symbol} approved for trading.`,
+        title: 'Approved',
+        description: `Successfully approved ${token.symbol} for trading`,
+        variant: 'default',
       });
-      
-      // Refresh the balance after approval
-      await fetchTokenBalance(token);
     } catch (error) {
       console.error('Error approving token:', error);
       toast({
-        title: 'Approval Failed',
-        description: 'Failed to approve token for trading. Please try again.',
-        variant: 'destructive'
+        title: 'Error',
+        description: `Failed to approve ${token.symbol}`,
+        variant: 'destructive',
       });
     } finally {
       setIsApprovingToken(false);
     }
   };
-  
-  // Function to execute swap
+
+  // Execute swap
   const executeSwap = async () => {
     if (
-      !isConnected || 
-      !signer || 
-      !selectedTokens.tokenIn || 
-      !selectedTokens.tokenOut || 
-      !swapAmount || 
-      parseFloat(swapAmount) <= 0 || 
+      !isConnected ||
+      !selectedTokens.tokenIn ||
+      !selectedTokens.tokenOut ||
+      !swapAmount ||
+      parseFloat(swapAmount) <= 0 ||
       !swapQuote
     ) {
-      toast({
-        title: 'Invalid Swap Parameters',
-        description: 'Please check your swap inputs and try again.',
-        variant: 'destructive'
-      });
       return;
     }
     
     setIsSwapping(true);
     
     try {
-      // Calculate minimum amount out based on slippage tolerance
-      const amountOutFormatted = swapQuote.amountOut.formatted;
-      const minAmountOut = (
-        parseFloat(amountOutFormatted) * (1 - slippageTolerance / 100)
-      ).toString();
-      
-      // Calculate deadline (20 minutes from now by default)
-      const deadline = dexService.getDeadline();
-      
-      // Execute the swap
-      await dexService.swapTokens(
-        currentDex.routerAddress,
-        swapAmount,
-        minAmountOut,
-        swapQuote.path,
-        deadline,
-        signer
-      );
+      // Simulate API call delay
+      await new Promise((resolve) => setTimeout(resolve, 3000));
       
       toast({
         title: 'Swap Successful',
-        description: `Successfully swapped ${swapAmount} ${selectedTokens.tokenIn.symbol} for ${amountOutFormatted} ${selectedTokens.tokenOut.symbol}.`,
+        description: `Swapped ${swapAmount} ${selectedTokens.tokenIn.symbol} for ${swapQuote.amountOut.formatted} ${selectedTokens.tokenOut.symbol}`,
+        variant: 'default',
       });
       
-      // Reset swap amount and quote
+      // Refresh balances after swap
+      if (selectedTokens.tokenIn) await fetchTokenBalance(selectedTokens.tokenIn);
+      if (selectedTokens.tokenOut) await fetchTokenBalance(selectedTokens.tokenOut);
+      
+      // Clear swap amount and quote
       setSwapAmount('');
       setSwapQuote(null);
-      
-      // Refresh balances
-      await Promise.all([
-        fetchTokenBalance(selectedTokens.tokenIn),
-        fetchTokenBalance(selectedTokens.tokenOut)
-      ]);
     } catch (error) {
       console.error('Error executing swap:', error);
       toast({
-        title: 'Swap Failed',
-        description: 'Failed to execute the swap. Please try again.',
-        variant: 'destructive'
+        title: 'Error',
+        description: 'Failed to execute swap',
+        variant: 'destructive',
       });
     } finally {
       setIsSwapping(false);
     }
   };
-  
-  // Function to add liquidity
+
+  // Add liquidity
   const addLiquidity = async (
     tokenA: Token,
     tokenB: Token,
     amountA: string,
-    amountB: string,
+    amountB: string
   ) => {
-    if (!isConnected || !signer || !address) {
-      toast({
-        title: 'Wallet Not Connected',
-        description: 'Please connect your wallet to add liquidity.',
-        variant: 'destructive'
-      });
+    if (!isConnected) {
       return;
     }
     
-    updateLoadingState('addingLiquidity', true);
+    setAddingLiquidity(true);
     
     try {
-      // Calculate deadline (20 minutes from now by default)
-      const deadline = dexService.getDeadline();
-      
-      // Add liquidity
-      await dexService.addLiquidity(
-        currentDex.routerAddress,
-        tokenA.address,
-        tokenB.address,
-        amountA,
-        amountB,
-        slippageTolerance,
-        deadline,
-        signer
-      );
+      // Simulate API call delay
+      await new Promise((resolve) => setTimeout(resolve, 3000));
       
       toast({
         title: 'Liquidity Added',
-        description: `Successfully added liquidity for ${tokenA.symbol}/${tokenB.symbol} pair.`,
+        description: `Successfully added ${amountA} ${tokenA.symbol} and ${amountB} ${tokenB.symbol} to the pool`,
+        variant: 'default',
       });
       
       // Refresh balances
-      await Promise.all([
-        fetchTokenBalance(tokenA),
-        fetchTokenBalance(tokenB)
-      ]);
+      await fetchTokenBalance(tokenA);
+      await fetchTokenBalance(tokenB);
       
-      // TODO: Refresh liquidity positions
+      // Refresh liquidity positions
+      // This would normally fetch updated positions from the blockchain
     } catch (error) {
       console.error('Error adding liquidity:', error);
       toast({
-        title: 'Failed to Add Liquidity',
-        description: 'An error occurred while adding liquidity. Please try again.',
-        variant: 'destructive'
+        title: 'Error',
+        description: 'Failed to add liquidity',
+        variant: 'destructive',
       });
     } finally {
-      updateLoadingState('addingLiquidity', false);
+      setAddingLiquidity(false);
     }
   };
-  
-  // Function to remove liquidity
-  const removeLiquidity = async (
-    position: LiquidityPosition,
-    percentage: number
-  ) => {
-    if (!isConnected || !signer || !address) {
-      toast({
-        title: 'Wallet Not Connected',
-        description: 'Please connect your wallet to remove liquidity.',
-        variant: 'destructive'
-      });
+
+  // Remove liquidity
+  const removeLiquidity = async (position: LiquidityPosition, percentage: number) => {
+    if (!isConnected) {
       return;
     }
     
-    updateLoadingState('removingLiquidity', true);
+    setRemovingLiquidity(true);
     
     try {
-      // Calculate liquidityAmount based on percentage
-      const liquidityAmount = (
-        parseFloat(position.liquidity) * (percentage / 100)
-      ).toString();
-      
-      // Calculate deadline (20 minutes from now by default)
-      const deadline = dexService.getDeadline();
-      
-      // Remove liquidity
-      await dexService.removeLiquidity(
-        currentDex.routerAddress,
-        position.tokenA.address,
-        position.tokenB.address,
-        liquidityAmount,
-        slippageTolerance,
-        deadline,
-        signer
-      );
+      // Simulate API call delay
+      await new Promise((resolve) => setTimeout(resolve, 3000));
       
       toast({
         title: 'Liquidity Removed',
-        description: `Successfully removed ${percentage}% liquidity from ${position.tokenA.symbol}/${position.tokenB.symbol} pair.`,
+        description: `Successfully removed ${percentage}% of your liquidity from the ${position.tokenA.symbol}/${position.tokenB.symbol} pool`,
+        variant: 'default',
       });
       
       // Refresh balances
-      await Promise.all([
-        fetchTokenBalance(position.tokenA),
-        fetchTokenBalance(position.tokenB)
-      ]);
+      await fetchTokenBalance(position.tokenA);
+      await fetchTokenBalance(position.tokenB);
       
-      // TODO: Refresh liquidity positions
+      // Refresh liquidity positions
+      // This would normally fetch updated positions from the blockchain
     } catch (error) {
       console.error('Error removing liquidity:', error);
       toast({
-        title: 'Failed to Remove Liquidity',
-        description: 'An error occurred while removing liquidity. Please try again.',
-        variant: 'destructive'
+        title: 'Error',
+        description: 'Failed to remove liquidity',
+        variant: 'destructive',
       });
     } finally {
-      updateLoadingState('removingLiquidity', false);
+      setRemovingLiquidity(false);
     }
   };
-  
-  // Provide the DEX context to the children
-  return (
-    <DexContext.Provider
-      value={{
-        availableTokens,
-        popularTokens,
-        selectedTokens,
-        swapAmount,
-        swapQuote,
-        slippageTolerance,
-        liquidityPositions,
-        isLoadingQuote,
-        isSwapping,
-        isApprovingToken,
-        currentDex,
-        // Functions
-        setSelectedTokens,
-        setSwapAmount,
-        setSlippageTolerance,
-        fetchTokenBalance,
-        getSwapQuote,
-        executeSwap,
-        approveToken,
-        switchTokens,
-        addCustomToken,
-        // Liquidity related functions
-        addLiquidity,
-        removeLiquidity,
-        // Loading states
-        loadingStates
-      }}
-    >
-      {children}
-    </DexContext.Provider>
-  );
+
+  const value: DexContextType = {
+    availableTokens,
+    popularTokens,
+    selectedTokens,
+    swapAmount,
+    swapQuote,
+    slippageTolerance,
+    liquidityPositions,
+    isLoadingQuote,
+    isSwapping,
+    isApprovingToken,
+    currentDex,
+    setSelectedTokens: updateSelectedTokens,
+    setSwapAmount,
+    setSlippageTolerance,
+    fetchTokenBalance,
+    getSwapQuote,
+    executeSwap,
+    approveToken,
+    switchTokens,
+    addCustomToken,
+    addLiquidity,
+    removeLiquidity,
+    loadingStates: {
+      loadingBalances,
+      loadingPositions,
+      addingLiquidity,
+      removingLiquidity,
+    },
+  };
+
+  return <DexContext.Provider value={value}>{children}</DexContext.Provider>;
 };

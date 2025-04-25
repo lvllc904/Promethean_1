@@ -153,13 +153,15 @@ export const TokenSelect: React.FC<TokenSelectProps> = ({
           </DialogHeader>
           
           <div className="p-1">
-            <Input
-              placeholder="Search name or paste address"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="mb-4"
-              prefix={<Search className="h-4 w-4 mr-2 text-neutral-500" />}
-            />
+            <div className="relative mb-4">
+              <Search className="h-4 w-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-500" />
+              <Input
+                placeholder="Search name or paste address"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-9"
+              />
+            </div>
             
             <Tabs value={activeTab} onValueChange={setActiveTab}>
               <TabsList className="grid grid-cols-3 mb-4">
