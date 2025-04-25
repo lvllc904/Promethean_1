@@ -48,264 +48,264 @@ const AdminDashboard = () => {
   };
   
   return (
-    <div className="container py-6 space-y-6">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div className="container mx-auto py-4 px-4 sm:px-6 md:py-6 space-y-4 sm:space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Admin Dashboard</h1>
+          <p className="text-sm sm:text-base text-muted-foreground">
             Manage platform settings, integrations, and monitor usage
           </p>
         </div>
         
-        <div className="flex items-center gap-2">
-          <Button variant="outline">
-            <Calendar className="mr-2 h-4 w-4" />
+        <div className="flex items-center gap-2 w-full sm:w-auto mt-3 sm:mt-0">
+          <Button variant="outline" className="flex-1 sm:flex-auto text-xs sm:text-sm h-9 sm:h-10">
+            <Calendar className="mr-1.5 sm:mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4" />
             Schedule Tasks
           </Button>
-          <Button>
-            <Play className="mr-2 h-4 w-4" />
+          <Button className="flex-1 sm:flex-auto text-xs sm:text-sm h-9 sm:h-10">
+            <Play className="mr-1.5 sm:mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4" />
             Run Tests
           </Button>
         </div>
       </div>
       
       <Tabs defaultValue="overview" value={activeTab} onValueChange={setActiveTab}>
-        <div className="flex justify-between items-center">
-          <TabsList className="grid grid-cols-2 md:grid-cols-8 w-full md:w-auto">
-            <TabsTrigger value="overview" className="px-3">
-              <BarChart2 className="h-4 w-4 mr-2" />
-              <span className="hidden md:inline">Overview</span>
+        <div className="mb-4 overflow-x-auto pb-2 scrollbar-hide">
+          <TabsList className="flex rounded-lg h-auto p-1 min-w-max">
+            <TabsTrigger value="overview" className="px-2 sm:px-3 py-2 h-auto flex items-center">
+              <BarChart2 className="h-4 w-4 mr-1 sm:mr-2 flex-shrink-0" />
+              <span className="text-xs sm:text-sm whitespace-nowrap">Overview</span>
             </TabsTrigger>
-            <TabsTrigger value="apis" className="px-3">
-              <Key className="h-4 w-4 mr-2" />
-              <span className="hidden md:inline">API Keys</span>
+            <TabsTrigger value="apis" className="px-2 sm:px-3 py-2 h-auto flex items-center">
+              <Key className="h-4 w-4 mr-1 sm:mr-2 flex-shrink-0" />
+              <span className="text-xs sm:text-sm whitespace-nowrap">API Keys</span>
             </TabsTrigger>
-            <TabsTrigger value="categories" className="px-3">
-              <Layers className="h-4 w-4 mr-2" />
-              <span className="hidden md:inline">Categories</span>
+            <TabsTrigger value="categories" className="px-2 sm:px-3 py-2 h-auto flex items-center">
+              <Layers className="h-4 w-4 mr-1 sm:mr-2 flex-shrink-0" />
+              <span className="text-xs sm:text-sm whitespace-nowrap">Categories</span>
             </TabsTrigger>
-            <TabsTrigger value="providers" className="px-3">
-              <Server className="h-4 w-4 mr-2" />
-              <span className="hidden md:inline">Providers</span>
+            <TabsTrigger value="providers" className="px-2 sm:px-3 py-2 h-auto flex items-center">
+              <Server className="h-4 w-4 mr-1 sm:mr-2 flex-shrink-0" />
+              <span className="text-xs sm:text-sm whitespace-nowrap">Providers</span>
             </TabsTrigger>
-            <TabsTrigger value="integrations" className="px-3">
-              <Puzzle className="h-4 w-4 mr-2" />
-              <span className="hidden md:inline">Integrations</span>
+            <TabsTrigger value="integrations" className="px-2 sm:px-3 py-2 h-auto flex items-center">
+              <Puzzle className="h-4 w-4 mr-1 sm:mr-2 flex-shrink-0" />
+              <span className="text-xs sm:text-sm whitespace-nowrap">Integrations</span>
             </TabsTrigger>
-            <TabsTrigger value="whitelabel" className="px-3">
-              <Palette className="h-4 w-4 mr-2" />
-              <span className="hidden md:inline">Whitelabel</span>
+            <TabsTrigger value="whitelabel" className="px-2 sm:px-3 py-2 h-auto flex items-center">
+              <Palette className="h-4 w-4 mr-1 sm:mr-2 flex-shrink-0" />
+              <span className="text-xs sm:text-sm whitespace-nowrap">Whitelabel</span>
             </TabsTrigger>
-            <TabsTrigger value="usage" className="px-3">
-              <BarChart2 className="h-4 w-4 mr-2" />
-              <span className="hidden md:inline">Usage</span>
+            <TabsTrigger value="usage" className="px-2 sm:px-3 py-2 h-auto flex items-center">
+              <BarChart2 className="h-4 w-4 mr-1 sm:mr-2 flex-shrink-0" />
+              <span className="text-xs sm:text-sm whitespace-nowrap">Usage</span>
             </TabsTrigger>
-            <TabsTrigger value="ai" className="px-3">
-              <Bot className="h-4 w-4 mr-2" />
-              <span className="hidden md:inline">AI</span>
+            <TabsTrigger value="ai" className="px-2 sm:px-3 py-2 h-auto flex items-center">
+              <Bot className="h-4 w-4 mr-1 sm:mr-2 flex-shrink-0" />
+              <span className="text-xs sm:text-sm whitespace-nowrap">AI</span>
             </TabsTrigger>
           </TabsList>
         </div>
         
         <div className="mt-6">
           {/* Overview Tab */}
-          <TabsContent value="overview" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <Card>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+          <TabsContent value="overview" className="space-y-4 sm:space-y-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+              <Card className="overflow-hidden">
+                <CardHeader className="pb-1 p-3 sm:p-4 sm:pb-2">
+                  <CardTitle className="text-xs sm:text-sm font-medium">Total Users</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="p-3 sm:p-4 pt-0">
                   <div className="flex items-center justify-between">
-                    <div className="text-2xl font-bold">{stats.users}</div>
-                    <Users className="h-4 w-4 text-muted-foreground" />
+                    <div className="text-xl sm:text-2xl font-bold">{stats.users}</div>
+                    <Users className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
                   </div>
                 </CardContent>
               </Card>
               
-              <Card>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium">Properties</CardTitle>
+              <Card className="overflow-hidden">
+                <CardHeader className="pb-1 p-3 sm:p-4 sm:pb-2">
+                  <CardTitle className="text-xs sm:text-sm font-medium">Properties</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="p-3 sm:p-4 pt-0">
                   <div className="flex items-center justify-between">
-                    <div className="text-2xl font-bold">{stats.properties}</div>
-                    <Building className="h-4 w-4 text-muted-foreground" />
+                    <div className="text-xl sm:text-2xl font-bold">{stats.properties}</div>
+                    <Building className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
                   </div>
                 </CardContent>
               </Card>
               
-              <Card>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium">Transactions</CardTitle>
+              <Card className="overflow-hidden">
+                <CardHeader className="pb-1 p-3 sm:p-4 sm:pb-2">
+                  <CardTitle className="text-xs sm:text-sm font-medium">Transactions</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="p-3 sm:p-4 pt-0">
                   <div className="flex items-center justify-between">
-                    <div className="text-2xl font-bold">{stats.transactions}</div>
-                    <FileText className="h-4 w-4 text-muted-foreground" />
+                    <div className="text-xl sm:text-2xl font-bold">{stats.transactions}</div>
+                    <FileText className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
                   </div>
                 </CardContent>
               </Card>
               
-              <Card>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium">Revenue</CardTitle>
+              <Card className="overflow-hidden">
+                <CardHeader className="pb-1 p-3 sm:p-4 sm:pb-2">
+                  <CardTitle className="text-xs sm:text-sm font-medium">Revenue</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="p-3 sm:p-4 pt-0">
                   <div className="flex items-center justify-between">
-                    <div className="text-2xl font-bold">{stats.revenue}</div>
-                    <CreditCard className="h-4 w-4 text-muted-foreground" />
+                    <div className="text-xl sm:text-2xl font-bold">{stats.revenue}</div>
+                    <CreditCard className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
                   </div>
                 </CardContent>
               </Card>
             </div>
             
-            <h2 className="text-xl font-semibold mt-6">API Integrations</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Card>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium">Active Integrations</CardTitle>
+            <h2 className="text-lg sm:text-xl font-semibold mt-3 sm:mt-5 px-1">API Integrations</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
+              <Card className="overflow-hidden">
+                <CardHeader className="pb-1 p-3 sm:p-4 sm:pb-2">
+                  <CardTitle className="text-xs sm:text-sm font-medium">Active Integrations</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="p-3 sm:p-4 pt-0">
                   <div className="flex items-center justify-between">
-                    <div className="text-2xl font-bold">{stats.activeIntegrations}</div>
-                    <Puzzle className="h-4 w-4 text-muted-foreground" />
+                    <div className="text-xl sm:text-2xl font-bold">{stats.activeIntegrations}</div>
+                    <Puzzle className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
                   </div>
                 </CardContent>
               </Card>
               
-              <Card>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium">Success Rate</CardTitle>
+              <Card className="overflow-hidden">
+                <CardHeader className="pb-1 p-3 sm:p-4 sm:pb-2">
+                  <CardTitle className="text-xs sm:text-sm font-medium">Success Rate</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="p-3 sm:p-4 pt-0">
                   <div className="flex items-center justify-between">
-                    <div className="text-2xl font-bold">{stats.successRate}</div>
-                    <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
+                    <div className="text-xl sm:text-2xl font-bold">{stats.successRate}</div>
+                    <Badge variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200">
                       Healthy
                     </Badge>
                   </div>
                 </CardContent>
               </Card>
               
-              <Card>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium">AI System</CardTitle>
+              <Card className="overflow-hidden">
+                <CardHeader className="pb-1 p-3 sm:p-4 sm:pb-2">
+                  <CardTitle className="text-xs sm:text-sm font-medium">AI System</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="p-3 sm:p-4 pt-0">
                   <div className="flex items-center justify-between">
-                    <div className="text-2xl font-bold">
-                      <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
+                    <div className="text-xl sm:text-2xl font-bold">
+                      <Badge variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200">
                         Running
                       </Badge>
                     </div>
-                    <Cpu className="h-4 w-4 text-muted-foreground" />
+                    <Cpu className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
                   </div>
                 </CardContent>
               </Card>
             </div>
             
-            <h2 className="text-xl font-semibold mt-6">DAO Management</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Card>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium">Unprocessed Reviews</CardTitle>
+            <h2 className="text-lg sm:text-xl font-semibold mt-3 sm:mt-5 px-1">DAO Management</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+              <Card className="overflow-hidden">
+                <CardHeader className="pb-1 p-3 sm:p-4 sm:pb-2">
+                  <CardTitle className="text-xs sm:text-sm font-medium">Unprocessed Reviews</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="p-3 sm:p-4 pt-0">
                   <div className="flex items-center justify-between">
-                    <div className="text-2xl font-bold">{stats.pendingReviews}</div>
-                    <MessageCircle className="h-4 w-4 text-muted-foreground" />
+                    <div className="text-xl sm:text-2xl font-bold">{stats.pendingReviews}</div>
+                    <MessageCircle className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
                   </div>
                 </CardContent>
               </Card>
               
-              <Card>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium">Active Proposals</CardTitle>
+              <Card className="overflow-hidden">
+                <CardHeader className="pb-1 p-3 sm:p-4 sm:pb-2">
+                  <CardTitle className="text-xs sm:text-sm font-medium">Active Proposals</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="p-3 sm:p-4 pt-0">
                   <div className="flex items-center justify-between">
-                    <div className="text-2xl font-bold">{stats.activeProposals}</div>
-                    <VoteIcon className="h-4 w-4 text-muted-foreground" />
+                    <div className="text-xl sm:text-2xl font-bold">{stats.activeProposals}</div>
+                    <VoteIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground" />
                   </div>
                 </CardContent>
               </Card>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Quick Actions</CardTitle>
-                  <CardDescription>Common tasks and operations</CardDescription>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6 mt-3 sm:mt-5">
+              <Card className="overflow-hidden">
+                <CardHeader className="p-3 sm:p-5">
+                  <CardTitle className="text-base sm:text-lg">Quick Actions</CardTitle>
+                  <CardDescription className="text-xs sm:text-sm">Common tasks and operations</CardDescription>
                 </CardHeader>
-                <CardContent className="grid grid-cols-2 gap-4">
-                  <Button variant="outline" className="h-20 flex flex-col">
-                    <Users className="h-6 w-6 mb-2" />
+                <CardContent className="grid grid-cols-2 gap-2 sm:gap-4 p-3 sm:p-5 pt-0 sm:pt-0">
+                  <Button variant="outline" className="h-16 sm:h-20 flex flex-col text-xs sm:text-sm">
+                    <Users className="h-5 w-5 sm:h-6 sm:w-6 mb-1 sm:mb-2" />
                     <span>Manage Users</span>
                   </Button>
-                  <Button variant="outline" className="h-20 flex flex-col">
-                    <Building className="h-6 w-6 mb-2" />
+                  <Button variant="outline" className="h-16 sm:h-20 flex flex-col text-xs sm:text-sm">
+                    <Building className="h-5 w-5 sm:h-6 sm:w-6 mb-1 sm:mb-2" />
                     <span>Properties</span>
                   </Button>
-                  <Button variant="outline" className="h-20 flex flex-col">
-                    <Bot className="h-6 w-6 mb-2" />
+                  <Button variant="outline" className="h-16 sm:h-20 flex flex-col text-xs sm:text-sm">
+                    <Bot className="h-5 w-5 sm:h-6 sm:w-6 mb-1 sm:mb-2" />
                     <span>AI Settings</span>
                   </Button>
-                  <Button variant="outline" className="h-20 flex flex-col">
-                    <Settings className="h-6 w-6 mb-2" />
+                  <Button variant="outline" className="h-16 sm:h-20 flex flex-col text-xs sm:text-sm">
+                    <Settings className="h-5 w-5 sm:h-6 sm:w-6 mb-1 sm:mb-2" />
                     <span>System Config</span>
                   </Button>
                 </CardContent>
               </Card>
               
-              <Card>
-                <CardHeader>
-                  <CardTitle>System Status</CardTitle>
-                  <CardDescription>Service health and performance</CardDescription>
+              <Card className="overflow-hidden">
+                <CardHeader className="p-3 sm:p-5">
+                  <CardTitle className="text-base sm:text-lg">System Status</CardTitle>
+                  <CardDescription className="text-xs sm:text-sm">Service health and performance</CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-2">
+                <CardContent className="space-y-2 p-3 sm:p-5 pt-0 sm:pt-0">
                   <div className="flex justify-between items-center">
                     <div className="flex items-center">
                       <div className="w-2 h-2 rounded-full bg-green-500 mr-2" />
-                      <span>Web Server</span>
+                      <span className="text-xs sm:text-sm">Web Server</span>
                     </div>
-                    <Badge variant="outline">Operational</Badge>
+                    <Badge variant="outline" className="text-xs">Operational</Badge>
                   </div>
                   <Separator />
                   
                   <div className="flex justify-between items-center">
                     <div className="flex items-center">
                       <div className="w-2 h-2 rounded-full bg-green-500 mr-2" />
-                      <span>Database</span>
+                      <span className="text-xs sm:text-sm">Database</span>
                     </div>
-                    <Badge variant="outline">Operational</Badge>
+                    <Badge variant="outline" className="text-xs">Operational</Badge>
                   </div>
                   <Separator />
                   
                   <div className="flex justify-between items-center">
                     <div className="flex items-center">
                       <div className="w-2 h-2 rounded-full bg-green-500 mr-2" />
-                      <span>Smart Contracts</span>
+                      <span className="text-xs sm:text-sm">Smart Contracts</span>
                     </div>
-                    <Badge variant="outline">Operational</Badge>
+                    <Badge variant="outline" className="text-xs">Operational</Badge>
                   </div>
                   <Separator />
                   
                   <div className="flex justify-between items-center">
                     <div className="flex items-center">
                       <div className="w-2 h-2 rounded-full bg-green-500 mr-2" />
-                      <span>AI Services</span>
+                      <span className="text-xs sm:text-sm">AI Services</span>
                     </div>
-                    <Badge variant="outline">Operational</Badge>
+                    <Badge variant="outline" className="text-xs">Operational</Badge>
                   </div>
                   <Separator />
                   
                   <div className="flex justify-between items-center">
                     <div className="flex items-center">
                       <div className="w-2 h-2 rounded-full bg-green-500 mr-2" />
-                      <span>Scheduler</span>
+                      <span className="text-xs sm:text-sm">Scheduler</span>
                     </div>
-                    <Badge variant="outline">Operational</Badge>
+                    <Badge variant="outline" className="text-xs">Operational</Badge>
                   </div>
                 </CardContent>
               </Card>
