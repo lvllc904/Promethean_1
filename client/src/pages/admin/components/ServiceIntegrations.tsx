@@ -61,7 +61,7 @@ const ServiceIntegrations = () => {
   // Create new service integration
   const addIntegrationMutation = useMutation({
     mutationFn: (newIntegration: ServiceIntegrationFormValues) => 
-      apiRequest('/api/admin/integrations', { method: 'POST', data: newIntegration }),
+      apiRequest<{id: number}>('POST', '/api/admin/integrations', newIntegration),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/integrations'] });
       setAddDialogOpen(false);
@@ -82,7 +82,7 @@ const ServiceIntegrations = () => {
   // Update service integration
   const updateIntegrationMutation = useMutation({
     mutationFn: ({ id, data }: { id: number, data: Partial<ServiceIntegrationFormValues> }) => 
-      apiRequest(`/api/admin/integrations/${id}`, { method: 'PATCH', data }),
+      apiRequest<{success: boolean}>('PATCH', `/api/admin/integrations/${id}`, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/integrations'] });
       setEditingIntegration(null);
@@ -104,7 +104,7 @@ const ServiceIntegrations = () => {
   // Delete service integration
   const deleteIntegrationMutation = useMutation({
     mutationFn: (id: number) => 
-      apiRequest(`/api/admin/integrations/${id}`, { method: 'DELETE' }),
+      apiRequest<{success: boolean}>('DELETE', `/api/admin/integrations/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/integrations'] });
       toast({
@@ -124,10 +124,7 @@ const ServiceIntegrations = () => {
   // Toggle integration active status
   const toggleIntegrationStatusMutation = useMutation({
     mutationFn: ({ id, isActive }: { id: number, isActive: boolean }) => 
-      apiRequest(`/api/admin/integrations/${id}/status`, { 
-        method: 'PATCH', 
-        data: { isActive } 
-      }),
+      apiRequest<{success: boolean}>('PATCH', `/api/admin/integrations/${id}/status`, { isActive }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/integrations'] });
       toast({

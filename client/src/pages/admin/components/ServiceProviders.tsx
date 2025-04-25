@@ -74,7 +74,7 @@ const ServiceProviders = () => {
   // Create new service provider
   const addProviderMutation = useMutation({
     mutationFn: (newProvider: ServiceProviderFormValues) => 
-      apiRequest('/api/admin/providers', { method: 'POST', data: newProvider }),
+      apiRequest<{id: number}>('POST', '/api/admin/providers', newProvider),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/providers'] });
       setAddDialogOpen(false);
@@ -95,7 +95,7 @@ const ServiceProviders = () => {
   // Update service provider
   const updateProviderMutation = useMutation({
     mutationFn: ({ id, data }: { id: number, data: Partial<ServiceProviderFormValues> }) => 
-      apiRequest(`/api/admin/providers/${id}`, { method: 'PATCH', data }),
+      apiRequest<{success: boolean}>('PATCH', `/api/admin/providers/${id}`, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/providers'] });
       setEditingProvider(null);
@@ -117,7 +117,7 @@ const ServiceProviders = () => {
   // Delete service provider
   const deleteProviderMutation = useMutation({
     mutationFn: (id: number) => 
-      apiRequest(`/api/admin/providers/${id}`, { method: 'DELETE' }),
+      apiRequest<{success: boolean}>('DELETE', `/api/admin/providers/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/providers'] });
       toast({
@@ -137,10 +137,7 @@ const ServiceProviders = () => {
   // Toggle provider active status
   const toggleProviderStatusMutation = useMutation({
     mutationFn: ({ id, isActive }: { id: number, isActive: boolean }) => 
-      apiRequest(`/api/admin/providers/${id}/status`, { 
-        method: 'PATCH', 
-        data: { isActive } 
-      }),
+      apiRequest<{success: boolean}>('PATCH', `/api/admin/providers/${id}/status`, { isActive }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/providers'] });
       toast({
