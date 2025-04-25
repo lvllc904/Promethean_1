@@ -113,6 +113,15 @@ export interface IStorage {
   getVotesByUser(userId: number, proposalId?: number): Promise<Vote[]>;
   calculateQuadraticVotePower(baseVotes: number): Promise<number>;
   
+  // Advanced governance methods
+  calculateUserVotingPower(userId: number, proposalId?: number, categoryId?: number): Promise<number>;
+  getUserDelegatedVotingPower(userId: number, proposalId?: number, categoryId?: number): Promise<number>;
+  getTotalUserVotingPower(userId: number, proposalId?: number): Promise<{ base: number, quadratic: number, withDelegations: number }>;
+  getUserDelegationChain(userId: number, proposalId?: number, maxDepth?: number): Promise<number[]>;
+  getDelegationGraph(proposalId?: number): Promise<{ [delegateId: number]: number[] }>;
+  getGovernanceStats(): Promise<{ totalProposals: number, activeProposals: number, uniqueVoters: number, delegationRate: number }>;
+  updateUserGovernanceSettings(userId: number, settings: Partial<User>): Promise<User>;
+  
   // Vote delegation methods
   getVoteDelegation(id: number): Promise<VoteDelegation | undefined>;
   getVoteDelegationsByDelegator(delegatorId: number): Promise<VoteDelegation[]>;
@@ -120,6 +129,7 @@ export interface IStorage {
   getActiveVoteDelegationsForProposal(proposalId: number): Promise<VoteDelegation[]>;
   createVoteDelegation(delegation: InsertVoteDelegation): Promise<VoteDelegation>;
   updateVoteDelegation(id: number, active: boolean): Promise<VoteDelegation>;
+  createMultilevelDelegation(delegatorId: number, delegateId: number, scope: string, categoryId?: number, proposalId?: number, transferable?: boolean, expiresAt?: Date): Promise<VoteDelegation>;
   
   // Escrow methods
   getEscrow(id: number): Promise<Escrow | undefined>;
@@ -415,8 +425,55 @@ export class MemStorage implements IStorage {
       ...delegation,
       active: true,
       createdAt: now,
+      updatedAt: now,
+      delegationLevel: 1,
+      delegationChain: []
+    };
+    this.voteDelegations.set(id, newDelegation);
+    return newDelegation;
+  }
+  
+  async createMultilevelDelegation(
+    delegatorId: number,
+    delegateId: number,
+    scope: string,
+    categoryId?: number,
+    proposalId?: number,
+    transferable: boolean = true,
+    expiresAt?: Date
+  ): Promise<VoteDelegation> {
+    // Get current delegations to check for loops
+    const delegationChain = await this.getUserDelegationChain(delegateId);
+    
+    // Prevent delegation loops
+    if (delegationChain.includes(delegatorId)) {
+      throw new Error("Circular delegation detected. This would create a loop in the delegation chain.");
+    }
+    
+    // Create the delegation chain
+    const fullChain = [delegateId, ...delegationChain];
+    const delegationLevel = delegationChain.length + 1;
+    
+    const id = this.currentVoteDelegationId++;
+    const now = new Date();
+    
+    const newDelegation: VoteDelegation = {
+      id,
+      delegatorId,
+      delegateId,
+      scope: scope || 'global',
+      categoryId: categoryId || null,
+      proposalId: proposalId || null,
+      active: true,
+      transferable,
+      delegationPower: "1",
+      delegationLevel,
+      delegationChain: fullChain,
+      expiresAt: expiresAt || null,
+      createdAt: now,
       updatedAt: now
     };
+    
     this.voteDelegations.set(id, newDelegation);
     return newDelegation;
   }
@@ -427,13 +484,256 @@ export class MemStorage implements IStorage {
       throw new Error(`Vote delegation with id ${id} not found`);
     }
     
-    const updatedDelegation: VoteDelegation = {
+    const updatedDelegation = {
       ...delegation,
       active,
       updatedAt: new Date()
     };
     this.voteDelegations.set(id, updatedDelegation);
     return updatedDelegation;
+  }
+  
+  // Advanced governance methods
+  async calculateUserVotingPower(userId: number, proposalId?: number, categoryId?: number): Promise<number> {
+    const user = await this.getUser(userId);
+    if (!user) return 0;
+    
+    // Base voting power from token balance
+    let baseVotingPower = parseFloat(user.dacTokenBalance || "0");
+    
+    // Apply governance weight multiplier
+    const governanceWeight = parseFloat(user.governanceWeight || "1");
+    
+    return baseVotingPower * governanceWeight;
+  }
+  
+  async getUserDelegatedVotingPower(userId: number, proposalId?: number, categoryId?: number): Promise<number> {
+    let totalDelegatedPower = 0;
+    
+    // Get all delegations to this user
+    const delegations = await this.getVoteDelegationsByDelegate(userId);
+    
+    // Filter delegations based on proposalId or categoryId if provided
+    const filteredDelegations = delegations.filter(d => {
+      if (!d.active) return false;
+      
+      if (proposalId && d.scope === 'proposal' && d.proposalId === proposalId) return true;
+      if (categoryId && d.scope === 'category' && d.categoryId === categoryId) return true;
+      if (d.scope === 'global') return true;
+      
+      return false;
+    });
+    
+    // Calculate delegated power from each delegation
+    for (const delegation of filteredDelegations) {
+      const delegator = await this.getUser(delegation.delegatorId);
+      if (!delegator) continue;
+      
+      // Get the base voting power of the delegator
+      let delegatorPower = parseFloat(delegator.dacTokenBalance || "0");
+      
+      // Apply the delegation power multiplier
+      const delegationPowerMultiplier = parseFloat(delegation.delegationPower || "1");
+      delegatorPower *= delegationPowerMultiplier;
+      
+      totalDelegatedPower += delegatorPower;
+    }
+    
+    return totalDelegatedPower;
+  }
+  
+  async getTotalUserVotingPower(userId: number, proposalId?: number): Promise<{ base: number, quadratic: number, withDelegations: number }> {
+    // Get direct voting power
+    const basePower = await this.calculateUserVotingPower(userId, proposalId);
+    
+    // Get delegated voting power
+    const delegatedPower = await this.getUserDelegatedVotingPower(userId, proposalId);
+    
+    // Total raw voting power
+    const totalRawPower = basePower + delegatedPower;
+    
+    // Calculate quadratic voting power if enabled for this user
+    const user = await this.getUser(userId);
+    const useQuadratic = user?.useQuadraticVoting !== false; // Default to true
+    
+    let quadraticPower = totalRawPower;
+    if (useQuadratic) {
+      quadraticPower = await this.calculateQuadraticVotePower(totalRawPower);
+    }
+    
+    return {
+      base: basePower,
+      quadratic: quadraticPower,
+      withDelegations: totalRawPower
+    };
+  }
+  
+  async getUserDelegationChain(userId: number, proposalId?: number, maxDepth: number = 10): Promise<number[]> {
+    const delegationChain: number[] = [];
+    let currentUserId = userId;
+    let depth = 0;
+    
+    // Prevent infinite loops by setting a max depth
+    while (depth < maxDepth) {
+      // Find delegations from this user
+      const delegations = await this.getVoteDelegationsByDelegator(currentUserId);
+      
+      // Filter for active delegations
+      const activeDelegations = delegations.filter(d => d.active);
+      
+      if (activeDelegations.length === 0) {
+        // End of the chain
+        break;
+      }
+      
+      // Find the most specific applicable delegation
+      let nextDelegation: VoteDelegation | undefined;
+      
+      if (proposalId) {
+        // First try to find a proposal-specific delegation
+        nextDelegation = activeDelegations.find(d => d.scope === 'proposal' && d.proposalId === proposalId);
+        
+        if (!nextDelegation) {
+          // Then try to find a category delegation for this proposal
+          const proposal = await this.getProposal(proposalId);
+          if (proposal && proposal.categoryId) {
+            nextDelegation = activeDelegations.find(d => 
+              d.scope === 'category' && d.categoryId === proposal.categoryId
+            );
+          }
+        }
+      }
+      
+      // If no specific delegation was found, use a global one
+      if (!nextDelegation) {
+        nextDelegation = activeDelegations.find(d => d.scope === 'global');
+      }
+      
+      if (!nextDelegation) {
+        // No applicable delegation found
+        break;
+      }
+      
+      // Check if this delegation is transferable
+      if (!nextDelegation.transferable) {
+        // Add the delegate to the chain but don't continue beyond this point
+        delegationChain.push(nextDelegation.delegateId);
+        break;
+      }
+      
+      // Add to chain and continue
+      delegationChain.push(nextDelegation.delegateId);
+      currentUserId = nextDelegation.delegateId;
+      depth++;
+    }
+    
+    return delegationChain;
+  }
+  
+  async getDelegationGraph(proposalId?: number): Promise<{ [delegateId: number]: number[] }> {
+    // Get all active delegations
+    let delegations = Array.from(this.voteDelegations.values()).filter(d => d.active);
+    
+    // Filter by proposal if needed
+    if (proposalId) {
+      const proposal = await this.getProposal(proposalId);
+      if (proposal) {
+        delegations = delegations.filter(d => {
+          return (
+            d.proposalId === proposalId || 
+            d.scope === 'global' || 
+            (d.scope === 'category' && d.categoryId === proposal.categoryId)
+          );
+        });
+      }
+    }
+    
+    // Build the delegation graph
+    const graph: { [delegateId: number]: number[] } = {};
+    
+    // Initialize all delegateIds as keys with empty arrays
+    for (const delegation of delegations) {
+      if (!graph[delegation.delegateId]) {
+        graph[delegation.delegateId] = [];
+      }
+    }
+    
+    // Populate the graph with delegators
+    for (const delegation of delegations) {
+      if (graph[delegation.delegateId]) {
+        graph[delegation.delegateId].push(delegation.delegatorId);
+      } else {
+        graph[delegation.delegateId] = [delegation.delegatorId];
+      }
+    }
+    
+    return graph;
+  }
+  
+  async getGovernanceStats(): Promise<{ 
+    totalProposals: number, 
+    activeProposals: number, 
+    uniqueVoters: number, 
+    delegationRate: number 
+  }> {
+    // Count total proposals
+    const totalProposals = this.proposals.size;
+    
+    // Count active proposals
+    const activeProposals = Array.from(this.proposals.values()).filter(p => p.status === 'active').length;
+    
+    // Count unique voters
+    const uniqueVoterIds = new Set<number>();
+    Array.from(this.votes.values()).forEach(vote => {
+      uniqueVoterIds.add(vote.userId);
+    });
+    const uniqueVoters = uniqueVoterIds.size;
+    
+    // Calculate delegation rate
+    const totalUsers = this.users.size;
+    const uniqueDelegatorIds = new Set<number>();
+    Array.from(this.voteDelegations.values())
+      .filter(d => d.active)
+      .forEach(delegation => {
+        uniqueDelegatorIds.add(delegation.delegatorId);
+      });
+    const activeDelegators = uniqueDelegatorIds.size;
+    
+    const delegationRate = totalUsers > 0 ? (activeDelegators / totalUsers) * 100 : 0;
+    
+    return {
+      totalProposals,
+      activeProposals,
+      uniqueVoters,
+      delegationRate
+    };
+  }
+  
+  async updateUserGovernanceSettings(userId: number, settings: Partial<User>): Promise<User> {
+    const user = this.users.get(userId);
+    if (!user) {
+      throw new Error(`User with id ${userId} not found`);
+    }
+    
+    // Filter to only allow updating governance-related settings
+    const allowedFields: (keyof User)[] = [
+      'governanceWeight',
+      'useQuadraticVoting',
+      'role',
+      'delegationPreference'
+    ];
+    
+    // Update the allowed fields
+    for (const field of allowedFields) {
+      if (field in settings) {
+        user[field] = settings[field];
+      }
+    }
+    
+    user.updatedAt = new Date();
+    this.users.set(userId, user);
+    
+    return user;
   }
   
   // Enhanced vote methods for quadratic voting
@@ -1905,6 +2205,305 @@ export class DatabaseStorage implements IStorage {
       .where(eq(schema.voteDelegations.id, id))
       .returning();
     return updatedDelegation;
+  }
+
+  async createMultilevelDelegation(
+    delegatorId: number, 
+    delegateId: number, 
+    scope: string, 
+    categoryId?: number, 
+    proposalId?: number,
+    transferable: boolean = true,
+    expiresAt?: Date
+  ): Promise<VoteDelegation> {
+    // Get current delegations to check for loops
+    const delegationChain = await this.getUserDelegationChain(delegateId);
+    
+    // Prevent delegation loops - if delegator is already in delegate's chain
+    if (delegationChain.includes(delegatorId)) {
+      throw new Error("Circular delegation detected. This would create a loop in the delegation chain.");
+    }
+    
+    // Create the delegation chain - should include all the previous delegations in the chain
+    const fullChain = [delegateId, ...delegationChain];
+    const delegationLevel = delegationChain.length + 1;
+    
+    // Create the delegation
+    const delegation: InsertVoteDelegation = {
+      delegatorId,
+      delegateId,
+      scope,
+      categoryId,
+      proposalId,
+      transferable,
+      delegationPower: "1", // Default weighting
+      expiresAt
+    };
+    
+    const [createdDelegation] = await db
+      .insert(schema.voteDelegations)
+      .values({
+        ...delegation,
+        delegationLevel,
+        delegationChain: fullChain
+      })
+      .returning();
+    
+    return createdDelegation;
+  }
+  
+  // Advanced governance methods
+  async calculateUserVotingPower(userId: number, proposalId?: number, categoryId?: number): Promise<number> {
+    const user = await this.getUser(userId);
+    if (!user) return 0;
+    
+    // Base voting power is from the user's token balance
+    let baseVotingPower = parseFloat(user.dacTokenBalance || "0");
+    
+    // Governance weight is a multiplier from the user settings
+    const governanceWeight = parseFloat(user.governanceWeight || "1");
+    
+    return baseVotingPower * governanceWeight;
+  }
+  
+  async getUserDelegatedVotingPower(userId: number, proposalId?: number, categoryId?: number): Promise<number> {
+    let totalDelegatedPower = 0;
+    
+    // Get all delegations to this user
+    const delegations = await this.getVoteDelegationsByDelegate(userId);
+    
+    // Filter delegations based on proposalId or categoryId if provided
+    const filteredDelegations = delegations.filter(d => {
+      if (!d.active) return false;
+      
+      if (proposalId && d.scope === 'proposal' && d.proposalId === proposalId) return true;
+      if (categoryId && d.scope === 'category' && d.categoryId === categoryId) return true;
+      if (d.scope === 'global') return true;
+      
+      return false;
+    });
+    
+    // Calculate delegated power from each delegation
+    for (const delegation of filteredDelegations) {
+      const delegator = await this.getUser(delegation.delegatorId);
+      if (!delegator) continue;
+      
+      // Get the base voting power of the delegator
+      let delegatorPower = parseFloat(delegator.dacTokenBalance || "0");
+      
+      // Apply the delegation power multiplier
+      const delegationPowerMultiplier = parseFloat(delegation.delegationPower || "1");
+      delegatorPower *= delegationPowerMultiplier;
+      
+      totalDelegatedPower += delegatorPower;
+    }
+    
+    return totalDelegatedPower;
+  }
+  
+  async getTotalUserVotingPower(userId: number, proposalId?: number): Promise<{ base: number, quadratic: number, withDelegations: number }> {
+    // Get the user's direct voting power
+    const basePower = await this.calculateUserVotingPower(userId, proposalId);
+    
+    // Get delegated voting power
+    const delegatedPower = await this.getUserDelegatedVotingPower(userId, proposalId);
+    
+    // Total raw voting power
+    const totalRawPower = basePower + delegatedPower;
+    
+    // Calculate quadratic voting power if enabled for this user
+    const user = await this.getUser(userId);
+    const useQuadratic = user?.useQuadraticVoting !== false; // Default to true
+    
+    let quadraticPower = totalRawPower;
+    if (useQuadratic) {
+      quadraticPower = await this.calculateQuadraticVotePower(totalRawPower);
+    }
+    
+    return {
+      base: basePower,
+      quadratic: quadraticPower,
+      withDelegations: totalRawPower
+    };
+  }
+  
+  async getUserDelegationChain(userId: number, proposalId?: number, maxDepth: number = 10): Promise<number[]> {
+    const delegationChain: number[] = [];
+    let currentUserId = userId;
+    let depth = 0;
+    
+    // Prevent infinite loops by setting a max depth
+    while (depth < maxDepth) {
+      // Find delegations from this user
+      const delegations = await this.getVoteDelegationsByDelegator(currentUserId);
+      
+      // Filter for active delegations
+      const activeDelegations = delegations.filter(d => d.active);
+      
+      if (activeDelegations.length === 0) {
+        // End of the chain
+        break;
+      }
+      
+      // Find the most specific applicable delegation
+      let nextDelegation: VoteDelegation | undefined;
+      
+      if (proposalId) {
+        // First try to find a proposal-specific delegation
+        nextDelegation = activeDelegations.find(d => d.scope === 'proposal' && d.proposalId === proposalId);
+        
+        if (!nextDelegation) {
+          // Then try to find a category delegation for this proposal
+          const proposal = await this.getProposal(proposalId);
+          if (proposal && proposal.categoryId) {
+            nextDelegation = activeDelegations.find(d => 
+              d.scope === 'category' && d.categoryId === proposal.categoryId
+            );
+          }
+        }
+      }
+      
+      // If no specific delegation was found, use a global one
+      if (!nextDelegation) {
+        nextDelegation = activeDelegations.find(d => d.scope === 'global');
+      }
+      
+      if (!nextDelegation) {
+        // No applicable delegation found
+        break;
+      }
+      
+      // Check if this delegation is transferable
+      if (!nextDelegation.transferable) {
+        // Add the delegate to the chain but don't continue beyond this point
+        delegationChain.push(nextDelegation.delegateId);
+        break;
+      }
+      
+      // Add to chain and continue
+      delegationChain.push(nextDelegation.delegateId);
+      currentUserId = nextDelegation.delegateId;
+      depth++;
+    }
+    
+    return delegationChain;
+  }
+  
+  async getDelegationGraph(proposalId?: number): Promise<{ [delegateId: number]: number[] }> {
+    // Get all active delegations
+    let delegations = await db
+      .select()
+      .from(schema.voteDelegations)
+      .where(eq(schema.voteDelegations.active, true));
+    
+    // Filter by proposal if needed
+    if (proposalId) {
+      const proposal = await this.getProposal(proposalId);
+      if (proposal) {
+        delegations = delegations.filter(d => {
+          return (
+            d.proposalId === proposalId || 
+            d.scope === 'global' || 
+            (d.scope === 'category' && d.categoryId === proposal.categoryId)
+          );
+        });
+      }
+    }
+    
+    // Build the delegation graph
+    const graph: { [delegateId: number]: number[] } = {};
+    
+    // Initialize all delegateIds as keys with empty arrays
+    for (const delegation of delegations) {
+      if (!graph[delegation.delegateId]) {
+        graph[delegation.delegateId] = [];
+      }
+    }
+    
+    // Populate the graph with delegators
+    for (const delegation of delegations) {
+      if (graph[delegation.delegateId]) {
+        graph[delegation.delegateId].push(delegation.delegatorId);
+      } else {
+        graph[delegation.delegateId] = [delegation.delegatorId];
+      }
+    }
+    
+    return graph;
+  }
+  
+  async getGovernanceStats(): Promise<{ 
+    totalProposals: number, 
+    activeProposals: number, 
+    uniqueVoters: number, 
+    delegationRate: number 
+  }> {
+    // Count total proposals
+    const totalProposalsResult = await db
+      .select({ count: sql`count(*)` })
+      .from(schema.proposals);
+    const totalProposals = Number(totalProposalsResult[0].count);
+    
+    // Count active proposals
+    const activeProposalsResult = await db
+      .select({ count: sql`count(*)` })
+      .from(schema.proposals)
+      .where(eq(schema.proposals.status, 'active'));
+    const activeProposals = Number(activeProposalsResult[0].count);
+    
+    // Count unique voters
+    const uniqueVotersResult = await db
+      .select({ count: sql`count(distinct "user_id")` })
+      .from(schema.votes);
+    const uniqueVoters = Number(uniqueVotersResult[0].count);
+    
+    // Calculate delegation rate (percentage of users who have delegated their vote)
+    const totalUsersResult = await db
+      .select({ count: sql`count(*)` })
+      .from(schema.users);
+    const totalUsers = Number(totalUsersResult[0].count);
+    
+    const activeDelegatorsResult = await db
+      .select({ count: sql`count(distinct "delegator_id")` })
+      .from(schema.voteDelegations)
+      .where(eq(schema.voteDelegations.active, true));
+    const activeDelegators = Number(activeDelegatorsResult[0].count);
+    
+    const delegationRate = totalUsers > 0 ? (activeDelegators / totalUsers) * 100 : 0;
+    
+    return {
+      totalProposals,
+      activeProposals,
+      uniqueVoters,
+      delegationRate
+    };
+  }
+  
+  async updateUserGovernanceSettings(userId: number, settings: Partial<User>): Promise<User> {
+    // Filter to only allow updating governance-related settings
+    const allowedFields: (keyof User)[] = [
+      'governanceWeight',
+      'useQuadraticVoting',
+      'role',
+      'delegationPreference'
+    ];
+    
+    const filteredSettings: Partial<User> = {};
+    
+    for (const field of allowedFields) {
+      if (field in settings) {
+        filteredSettings[field] = settings[field];
+      }
+    }
+    
+    // Update the user
+    const [updatedUser] = await db
+      .update(schema.users)
+      .set(filteredSettings)
+      .where(eq(schema.users.id, userId))
+      .returning();
+    
+    return updatedUser;
   }
   
   // Enhanced vote methods for quadratic voting
