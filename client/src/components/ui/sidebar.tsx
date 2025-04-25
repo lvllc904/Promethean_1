@@ -13,7 +13,10 @@ import {
   Settings,
   Trophy,
   Zap,
-  ArrowLeftRight 
+  ArrowLeftRight,
+  Lock,
+  FileText,
+  UserCheck
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -62,6 +65,7 @@ export function Sidebar() {
   const [daoOpen, setDaoOpen] = useState(false);
   const [marketplaceOpen, setMarketplaceOpen] = useState(false);
   const [communityOpen, setCommunityOpen] = useState(false);
+  const [escrowOpen, setEscrowOpen] = useState(false);
   const [adminOpen, setAdminOpen] = useState(false);
   
   // This would be replaced with actual data from API in a real implementation
@@ -194,6 +198,37 @@ export function Sidebar() {
               <NavGroupItem href="/social/messages" isActive={isActive("/social/messages")}>Messages {unreadMessages > 0 && <span className="inline-flex items-center justify-center w-5 h-5 ml-2 text-xs font-medium text-white bg-red-500 rounded-full">{unreadMessages}</span>}</NavGroupItem>
               <NavGroupItem href="/profile" isActive={isActive("/profile")}>Community Talent</NavGroupItem>
               <NavGroupItem href="/social/profile" isActive={isActive("/social/profile")}>My Social Profile</NavGroupItem>
+            </div>
+          )}
+        </div>
+        
+        {/* Escrow System */}
+        <div>
+          <button 
+            onClick={() => setEscrowOpen(!escrowOpen)} 
+            className={cn(
+              "w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-md transition-colors",
+              isActiveGroup(["/escrow"]) 
+                ? "bg-primary-50 text-primary-500" 
+                : "text-neutral-700 hover:bg-neutral-100"
+            )}
+          >
+            <div className="flex items-center">
+              <Lock className="h-5 w-5 mr-3" />
+              Escrow System
+            </div>
+            <ChevronDown 
+              className={cn("h-5 w-5 transition-transform duration-200", escrowOpen && "transform rotate-180")} 
+            />
+          </button>
+          
+          {escrowOpen && (
+            <div className="ml-7 pl-3 border-l border-neutral-200 space-y-1 mt-1">
+              <NavGroupItem href="/escrow/dashboard" isActive={isActive("/escrow/dashboard")}>Dashboard</NavGroupItem>
+              <NavGroupItem href="/escrow/create" isActive={isActive("/escrow/create")}>Create New Escrow</NavGroupItem>
+              <NavGroupItem href="/escrow/manage" isActive={isActive("/escrow/manage")}>Manage Escrows</NavGroupItem>
+              <NavGroupItem href="/escrow/transfers" isActive={isActive("/escrow/transfers")}>Title Transfers</NavGroupItem>
+              <NavGroupItem href="/escrow/arbitrators" isActive={isActive("/escrow/arbitrators")}>Arbitrators</NavGroupItem>
             </div>
           )}
         </div>

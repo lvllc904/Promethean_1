@@ -33,6 +33,13 @@ import SocialFeed from "@/pages/social/feed";
 import SocialMessages from "@/pages/social/messages";
 import SocialProfile from "@/pages/social/profile";
 
+// Import lazy loaded escrow components
+const EscrowDashboard = lazy(() => import('@/pages/escrow/dashboard'));
+const CreateEscrow = lazy(() => import('@/pages/escrow/create'));
+const ManageEscrows = lazy(() => import('@/pages/escrow/manage'));
+const TitleTransfers = lazy(() => import('@/pages/escrow/transfers'));
+const Arbitrators = lazy(() => import('@/pages/escrow/arbitrators'));
+
 function Router() {
   return (
     <Switch>
@@ -130,6 +137,47 @@ function Router() {
               const AdminCommunityRewards = lazy(() => import('@/pages/admin/community/rewards'));
               return <AdminCommunityRewards />;
             })()}
+          </Suspense>
+        )}
+      </Route>
+      
+      {/* Escrow System Routes */}
+      <Route path="/escrow/dashboard">
+        {() => (
+          <Suspense fallback={<div className="p-8 text-center">Loading Escrow Dashboard...</div>}>
+            <EscrowDashboard />
+          </Suspense>
+        )}
+      </Route>
+      
+      <Route path="/escrow/create">
+        {() => (
+          <Suspense fallback={<div className="p-8 text-center">Loading Create Escrow...</div>}>
+            <CreateEscrow />
+          </Suspense>
+        )}
+      </Route>
+      
+      <Route path="/escrow/manage">
+        {() => (
+          <Suspense fallback={<div className="p-8 text-center">Loading Manage Escrows...</div>}>
+            <ManageEscrows />
+          </Suspense>
+        )}
+      </Route>
+      
+      <Route path="/escrow/transfers">
+        {() => (
+          <Suspense fallback={<div className="p-8 text-center">Loading Title Transfers...</div>}>
+            <TitleTransfers />
+          </Suspense>
+        )}
+      </Route>
+      
+      <Route path="/escrow/arbitrators">
+        {() => (
+          <Suspense fallback={<div className="p-8 text-center">Loading Arbitrators...</div>}>
+            <Arbitrators />
           </Suspense>
         )}
       </Route>
