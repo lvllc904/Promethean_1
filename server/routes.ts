@@ -334,6 +334,98 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
+  // Advanced Delegation - Multilevel Delegation
+  app.post(`${apiPrefix}/dao/multilevel-delegations`, async (req, res) => {
+    try {
+      const { delegatorId, delegateId, scope, categoryId, proposalId, transferable, expiresAt } = req.body;
+      
+      if (!delegatorId || !delegateId || !scope) {
+        return res.status(400).json({ 
+          message: "Required fields missing. delegatorId, delegateId, and scope are required" 
+        });
+      }
+      
+      // Create multilevel delegation with chain tracking and loop prevention
+      const newDelegation = await storage.createMultilevelDelegation(
+        delegatorId,
+        delegateId,
+        scope,
+        categoryId,
+        proposalId,
+        transferable,
+        expiresAt
+      );
+      
+      res.status(201).json(newDelegation);
+    } catch (error) {
+      if (error instanceof Error && error.message.includes("Circular delegation")) {
+        return res.status(400).json({ message: error.message });
+      }
+      res.status(500).json({ message: "Failed to create multilevel delegation" });
+    }
+  });
+  
+  // Get delegation chain for a user
+  app.get(`${apiPrefix}/dao/delegation-chain/:userId`, async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const proposalId = req.query.proposalId ? parseInt(req.query.proposalId as string) : undefined;
+      
+      const chain = await storage.getUserDelegationChain(userId, proposalId);
+      res.json(chain);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch delegation chain" });
+    }
+  });
+  
+  // Get delegation graph (network visualization)
+  app.get(`${apiPrefix}/dao/delegation-graph`, async (req, res) => {
+    try {
+      const proposalId = req.query.proposalId ? parseInt(req.query.proposalId as string) : undefined;
+      
+      const graph = await storage.getDelegationGraph(proposalId);
+      res.json(graph);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch delegation graph" });
+    }
+  });
+  
+  // Get detailed governance statistics
+  app.get(`${apiPrefix}/dao/governance-stats`, async (req, res) => {
+    try {
+      const stats = await storage.getGovernanceStats();
+      res.json(stats);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch governance statistics" });
+    }
+  });
+  
+  // Get user's voting power (with optional quadratic calculation)
+  app.get(`${apiPrefix}/dao/voting-power/:userId`, async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const proposalId = req.query.proposalId ? parseInt(req.query.proposalId as string) : undefined;
+      
+      const votingPower = await storage.getTotalUserVotingPower(userId, proposalId);
+      res.json(votingPower);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to calculate voting power" });
+    }
+  });
+  
+  // Update user governance settings (quadratic voting preference, etc.)
+  app.patch(`${apiPrefix}/dao/governance-settings/:userId`, async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const settings = req.body;
+      
+      const updatedUser = await storage.updateUserGovernanceSettings(userId, settings);
+      res.json(updatedUser);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to update governance settings" });
+    }
+  });
+  
   // Proposal execution
   app.post(`${apiPrefix}/dao/proposals/:id/execute`, async (req, res) => {
     try {
