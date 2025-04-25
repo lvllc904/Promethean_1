@@ -19,15 +19,24 @@ import AdminDashboard from "@/pages/admin";
 import { WalletProvider } from "@/components/wallet/wallet-provider";
 import { AppLayout } from "@/components/layout/app-layout";
 
+// Import the new page components
+import CreateProposal from "@/pages/dao/proposals/create";
+import MyProperties from "@/pages/properties/my";
+import PropertyValuation from "@/pages/properties/valuation";
+
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Dashboard} />
       <Route path="/properties" component={PropertiesIndex} />
       <Route path="/properties/create" component={CreateProperty} />
+      <Route path="/properties/my" component={MyProperties} />
+      <Route path="/properties/valuation" component={PropertyValuation} />
+      <Route path="/properties/valuation/:id" component={PropertyValuation} />
       <Route path="/properties/:id/tokenize" component={TokenizeProperty} />
       <Route path="/dao/governance" component={Governance} />
       <Route path="/dao/proposals" component={Proposals} />
+      <Route path="/dao/proposals/create" component={CreateProposal} />
       <Route path="/marketplace" component={MarketplaceIndex} />
       <Route path="/marketplace/create" component={CreateTask} />
       <Route path="/memberships" component={Memberships} />

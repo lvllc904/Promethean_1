@@ -1,7 +1,9 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import { ConnectWalletModal } from './connect-wallet-modal';
+import { WalletFallback } from './wallet-fallback';
 import { useToast } from '@/hooks/use-toast';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 
 // Define window.ethereum interface for TypeScript
 declare global {
@@ -61,6 +63,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [signer, setSigner] = useState<ethers.JsonRpcSigner | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isFallbackOpen, setIsFallbackOpen] = useState(false);
   const [balance, setBalance] = useState('0');
   
   const { toast } = useToast();
@@ -156,13 +159,18 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
   };
   
+  // Check for wallet availability on load
+  useEffect(() => {
+    // Only show fallback on browser environment
+    if (typeof window !== 'undefined' && !window.ethereum) {
+      setIsFallbackOpen(true);
+    }
+  }, []);
+  
   const connect = async (providerId?: string) => {
     if (typeof window === 'undefined' || !window.ethereum) {
-      toast({
-        title: "Wallet Error",
-        description: "No Ethereum wallet detected. Please install MetaMask or another compatible wallet.",
-        variant: "destructive",
-      });
+      // Show the fallback dialog instead of just a toast
+      setIsFallbackOpen(true);
       return;
     }
     
@@ -219,6 +227,10 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
   
+  const closeFallback = () => {
+    setIsFallbackOpen(false);
+  };
+
   return (
     <WalletContext.Provider
       value={{
@@ -237,6 +249,13 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     >
       {children}
       <ConnectWalletModal />
+      
+      {/* Wallet Fallback Dialog */}
+      <Dialog open={isFallbackOpen} onOpenChange={setIsFallbackOpen}>
+        <DialogContent className="sm:max-w-md p-0">
+          <WalletFallback onClose={closeFallback} />
+        </DialogContent>
+      </Dialog>
     </WalletContext.Provider>
   );
 };
