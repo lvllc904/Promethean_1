@@ -161,16 +161,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const voteData = insertVoteSchema.parse(req.body);
       
-      // Update the proposal vote count
-      await storage.updateProposalVotes(
-        voteData.proposalId, 
-        voteData.voteType, 
-        Number(voteData.votePower)
-      );
-      
-      // Record the vote
+      // Record the vote - note that createVote handles vote power calculation
+      // and automatically applies delegation votes if applicable
       const newVote = await storage.createVote(voteData);
-      res.status(201).json(newVote);
+      
+      // Get the updated proposal after voting
+      const updatedProposal = await storage.getProposal(voteData.proposalId);
+      
+      res.status(201).json({
+        vote: newVote,
+        proposal: updatedProposal
+      });
     } catch (error) {
       if (error instanceof z.ZodError) {
         return res.status(400).json({ message: "Invalid vote data", errors: error.errors });
@@ -184,15 +185,181 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const members = await storage.countDaoMembers();
       const proposals = await storage.getProposals();
       const activeProposals = await storage.getProposals("active");
+      const categories = await storage.getGovernanceCategories();
+      
+      // Calculate votes and total delegations
+      let totalVotes = 0;
+      let executedProposals = 0;
+      let activeVoteDelegations = 0;
+      
+      for (const proposal of proposals) {
+        // Sum up all votes (for, against, abstain)
+        const proposalVotes = (proposal.votesFor || 0) + (proposal.votesAgainst || 0) + (proposal.votesAbstain || 0);
+        totalVotes += proposalVotes;
+        
+        if (proposal.status === 'executed') {
+          executedProposals++;
+        }
+      }
+      
+      // Get all active delegations (this is specific to the current user if authenticated)
+      if (req.isAuthenticated() && req.user) {
+        const userId = req.user.id;
+        // Count both delegations created by this user and delegated to this user
+        const delegatedByUser = await storage.getVoteDelegationsByDelegator(userId);
+        const delegatedToUser = await storage.getVoteDelegationsByDelegate(userId);
+        
+        // Filter to only active delegations
+        const activeDelegatedByUser = delegatedByUser.filter(d => d.active);
+        const activeDelegatedToUser = delegatedToUser.filter(d => d.active);
+        
+        activeVoteDelegations = activeDelegatedByUser.length + activeDelegatedToUser.length;
+      }
       
       res.json({
         members,
         totalProposals: proposals.length,
         activeProposals: activeProposals.length,
+        executedProposals,
+        totalVotes,
+        categoryCount: categories.length,
+        activeVoteDelegations,
         tokenPrice: 0.853, // This would come from a price feed in a real app
       });
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch DAO statistics" });
+    }
+  });
+  
+  // Governance Categories
+  app.get(`${apiPrefix}/dao/governance-categories`, async (req, res) => {
+    try {
+      const categories = await storage.getGovernanceCategories();
+      res.json(categories);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch governance categories" });
+    }
+  });
+  
+  app.get(`${apiPrefix}/dao/governance-categories/:id`, async (req, res) => {
+    try {
+      const categoryId = parseInt(req.params.id);
+      const category = await storage.getGovernanceCategory(categoryId);
+      
+      if (!category) {
+        return res.status(404).json({ message: "Governance category not found" });
+      }
+      
+      res.json(category);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch governance category" });
+    }
+  });
+  
+  app.post(`${apiPrefix}/dao/governance-categories`, async (req, res) => {
+    try {
+      const categoryData = insertGovernanceCategorySchema.parse(req.body);
+      const newCategory = await storage.createGovernanceCategory(categoryData);
+      res.status(201).json(newCategory);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid category data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to create governance category" });
+    }
+  });
+  
+  app.patch(`${apiPrefix}/dao/governance-categories/:id`, async (req, res) => {
+    try {
+      const categoryId = parseInt(req.params.id);
+      const updates = req.body;
+      const updatedCategory = await storage.updateGovernanceCategory(categoryId, updates);
+      res.json(updatedCategory);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to update governance category" });
+    }
+  });
+  
+  // Vote Delegations
+  app.get(`${apiPrefix}/dao/vote-delegations`, async (req, res) => {
+    try {
+      const delegatorId = req.query.delegatorId ? parseInt(req.query.delegatorId as string) : undefined;
+      const delegateId = req.query.delegateId ? parseInt(req.query.delegateId as string) : undefined;
+      
+      if (delegatorId) {
+        const delegations = await storage.getVoteDelegationsByDelegator(delegatorId);
+        return res.json(delegations);
+      }
+      
+      if (delegateId) {
+        const delegations = await storage.getVoteDelegationsByDelegate(delegateId);
+        return res.json(delegations);
+      }
+      
+      // Default to getting all active delegations
+      const delegations = await storage.getVoteDelegationsByDelegator(parseInt(req.user?.id.toString() || "0"));
+      res.json(delegations);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch vote delegations" });
+    }
+  });
+  
+  app.post(`${apiPrefix}/dao/vote-delegations`, async (req, res) => {
+    try {
+      const delegationData = insertVoteDelegationSchema.parse(req.body);
+      const newDelegation = await storage.createVoteDelegation(delegationData);
+      res.status(201).json(newDelegation);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid delegation data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to create vote delegation" });
+    }
+  });
+  
+  app.patch(`${apiPrefix}/dao/vote-delegations/:id/toggle`, async (req, res) => {
+    try {
+      const delegationId = parseInt(req.params.id);
+      const { active } = req.body;
+      
+      if (active === undefined || typeof active !== 'boolean') {
+        return res.status(400).json({ message: "Active status must be a boolean value" });
+      }
+      
+      const updatedDelegation = await storage.updateVoteDelegation(delegationId, active);
+      res.json(updatedDelegation);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to update vote delegation" });
+    }
+  });
+  
+  // Proposal execution
+  app.post(`${apiPrefix}/dao/proposals/:id/execute`, async (req, res) => {
+    try {
+      const proposalId = parseInt(req.params.id);
+      const proposal = await storage.getProposal(proposalId);
+      
+      if (!proposal) {
+        return res.status(404).json({ message: "Proposal not found" });
+      }
+      
+      // Check if proposal has passed voting
+      if (proposal.status !== 'active') {
+        return res.status(400).json({ message: "Only active proposals can be executed" });
+      }
+      
+      // Check if the proposal has passed (more votes for than against)
+      if ((proposal.votesFor || 0) <= (proposal.votesAgainst || 0)) {
+        return res.status(400).json({ 
+          message: "Proposal cannot be executed because it has not passed the vote threshold"
+        });
+      }
+      
+      // Execute the proposal
+      const executedProposal = await storage.executeProposal(proposalId);
+      res.json(executedProposal);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to execute proposal" });
     }
   });
 

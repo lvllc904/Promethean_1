@@ -764,6 +764,31 @@ export const insertWorkerBadgeSchema = createInsertSchema(workerBadges).omit({
   createdAt: true,
 });
 
+// Worker Skill Endorsements schema
+export const workerSkillEndorsements = pgTable("worker_skill_endorsements", {
+  id: serial("id").primaryKey(),
+  workerId: integer("worker_id").notNull(), // Worker receiving the endorsement
+  endorserId: integer("endorser_id").notNull(), // User giving the endorsement
+  skill: text("skill").notNull(), // The endorsed skill name
+  level: integer("level").default(1), // Endorsement level (1-5)
+  details: text("details"), // Optional additional details about the endorsement
+  isVerified: boolean("is_verified").default(false), // Whether this is a verified endorsement
+  createdAt: timestamp("created_at").defaultNow(),
+}, (table) => {
+  return {
+    // Ensure a user can only endorse a worker for a particular skill once
+    uniqueEndorsement: uniqueIndex("unique_worker_skill_endorsement_idx").on(
+      table.workerId, table.endorserId, table.skill
+    ),
+  };
+});
+
+export const insertWorkerSkillEndorsementSchema = createInsertSchema(workerSkillEndorsements).omit({
+  id: true,
+  isVerified: true,
+  createdAt: true,
+});
+
 // Types for worker ratings and reputation
 export type InsertWorkerRating = z.infer<typeof insertWorkerRatingSchema>;
 export type WorkerRating = typeof workerRatings.$inferSelect;
@@ -773,6 +798,9 @@ export type WorkerReputation = typeof workerReputations.$inferSelect;
 
 export type InsertWorkerBadge = z.infer<typeof insertWorkerBadgeSchema>;
 export type WorkerBadge = typeof workerBadges.$inferSelect;
+
+export type InsertWorkerSkillEndorsement = z.infer<typeof insertWorkerSkillEndorsementSchema>;
+export type WorkerSkillEndorsement = typeof workerSkillEndorsements.$inferSelect;
 
 // Types for escrow and title transfer
 export type InsertEscrow = z.infer<typeof insertEscrowSchema>;

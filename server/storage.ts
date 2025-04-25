@@ -3516,47 +3516,104 @@ export class DatabaseStorage implements IStorage {
       return await this.getWorkerReputation(workerId);
     }
     
-    // Calculate overall score (average of all ratings)
-    const overallScore = ratings.reduce((sum, r) => sum + r.rating, 0) / ratings.length;
+    // Calculate overall rating (average of all ratings)
+    const overallRating = parseFloat((ratings.reduce((sum, r) => sum + r.rating, 0) / ratings.length).toFixed(2));
     
-    // Calculate skill scores
-    const skillScores = {};
-    const skillRatings = {};
+    // Calculate ratings by category and skills
+    const ratingsByCategory: Record<string, number> = {};
+    const criteriaRatings: Record<string, { sum: number, count: number }> = {
+      communication: { sum: 0, count: 0 },
+      quality: { sum: 0, count: 0 },
+      timeliness: { sum: 0, count: 0 },
+      professionalism: { sum: 0, count: 0 },
+      value: { sum: 0, count: 0 }
+    };
     
+    // Process detailed criteria from ratings
     ratings.forEach(rating => {
-      if (rating.skills && rating.skills.length > 0) {
-        rating.skills.forEach(skill => {
-          if (!skillScores[skill]) {
-            skillScores[skill] = 0;
-            skillRatings[skill] = 0;
+      if (rating.criteria) {
+        const criteria = rating.criteria as Record<string, number>;
+        
+        // Process each criteria field if present
+        Object.entries(criteria).forEach(([key, value]) => {
+          if (criteriaRatings[key]) {
+            criteriaRatings[key].sum += value;
+            criteriaRatings[key].count++;
           }
-          skillScores[skill] += rating.rating;
-          skillRatings[skill]++;
         });
+        
+        // Also add task-specific categories based on metadata
+        const task = this.getTask(rating.taskId);
+        if (task && task.category) {
+          if (!ratingsByCategory[task.category]) {
+            ratingsByCategory[task.category] = 0;
+            ratingsByCategory[`${task.category}_count`] = 0;
+          }
+          ratingsByCategory[task.category] += rating.rating;
+          ratingsByCategory[`${task.category}_count`]++;
+        }
       }
     });
     
-    // Calculate average for each skill
-    Object.keys(skillScores).forEach(skill => {
-      skillScores[skill] = skillScores[skill] / skillRatings[skill];
+    // Calculate average for each criteria
+    Object.keys(criteriaRatings).forEach(key => {
+      if (criteriaRatings[key].count > 0) {
+        ratingsByCategory[key] = parseFloat((criteriaRatings[key].sum / criteriaRatings[key].count).toFixed(2));
+      }
     });
     
-    // Calculate other scores based on completed tasks
-    const completedTasks = await db
+    // Calculate category averages
+    Object.keys(ratingsByCategory).forEach(category => {
+      if (category.endsWith('_count')) return;
+      const countKey = `${category}_count`;
+      if (ratingsByCategory[countKey] > 0) {
+        ratingsByCategory[category] = parseFloat((ratingsByCategory[category] / ratingsByCategory[countKey]).toFixed(2));
+      }
+    });
+    
+    // Get all worker's tasks (for various metrics)
+    const allTasks = await db
       .select()
       .from(schema.tasks)
-      .where(and(
-        eq(schema.tasks.assigneeId, workerId),
-        eq(schema.tasks.status, "completed")
-      ));
+      .where(eq(schema.tasks.assigneeId, workerId));
     
-    // Reliability: percentage of tasks completed on time
-    const reliability = completedTasks.length > 0 
-      ? completedTasks.filter(task => !task.dueDate || task.dueDate >= task.updatedAt).length / completedTasks.length
+    const completedTasks = allTasks.filter(task => task.status === "completed");
+    const acceptedTasks = allTasks.filter(task => ["assigned", "in_progress", "completed"].includes(task.status || ""));
+    
+    // Calculate rates
+    const completionRate = acceptedTasks.length > 0 
+      ? parseFloat((completedTasks.length / acceptedTasks.length * 100).toFixed(2))
+      : 0;
+      
+    const onTimeRate = completedTasks.length > 0 
+      ? parseFloat((completedTasks.filter(task => 
+          !task.dueDate || 
+          (task.completedAt && new Date(task.completedAt) <= new Date(task.dueDate))
+        ).length / completedTasks.length * 100).toFixed(2))
       : 0;
     
-    // Calculate level based on number of completed tasks and average rating
-    const level = Math.min(10, Math.floor(1 + (completedTasks.length / 5) + (overallScore / 2)));
+    // Calculate response rate based on task inquiries (simplified version)
+    // In a real app, we'd track when a worker was contacted about a task
+    const responseRate = parseFloat((Math.min(95, 70 + (completionRate / 10))).toFixed(2));
+    
+    // Calculate experience points based on various factors
+    let experiencePoints = 0;
+    
+    // Base XP from completed tasks (10 XP per task)
+    experiencePoints += completedTasks.length * 10;
+    
+    // XP from ratings (2 XP per 5-star, 1 XP per 4-star)
+    ratings.forEach(rating => {
+      if (rating.rating === 5) experiencePoints += 2;
+      if (rating.rating === 4) experiencePoints += 1;
+    });
+    
+    // Bonus XP for high on-time rate (up to 20 XP)
+    experiencePoints += Math.floor(onTimeRate / 5);
+    
+    // Calculate level based on XP
+    // Level formula: 1 + floor(sqrt(XP / 10))
+    const level = Math.max(1, Math.floor(1 + Math.sqrt(experiencePoints / 10)));
     
     // Get existing reputation or create new one
     let reputation = await this.getWorkerReputation(workerId);
@@ -3564,28 +3621,32 @@ export class DatabaseStorage implements IStorage {
       return undefined;
     }
     
-    // Assign badges based on achievements
-    const badges = await this.assignWorkerBadges(workerId, {
-      ...reputation,
-      overallScore,
-      skillScores,
+    // Get badges (badge IDs are stored in badgeIds field)
+    const badgeIds = await this.calculateWorkerBadges(workerId, {
+      experiencePoints,
       level,
-      totalRatings: ratings.length
+      completedTaskCount: completedTasks.length,
+      overallRating,
+      onTimeRate,
+      completionRate,
+      ratingCount: ratings.length,
+      categoryRatings: ratingsByCategory
     });
     
     // Update reputation
     const [updatedReputation] = await db
       .update(schema.workerReputations)
       .set({
-        overallScore,
-        totalRatings: ratings.length,
-        skillScores,
-        reliability,
-        qualityScore: overallScore, // Simplified for now
-        communicationScore: overallScore, // Simplified for now
+        overallRating,
+        ratingsCount: ratings.length,
+        responseRate,
+        completionRate,
+        onTimeRate,
+        ratingsByCategory: ratingsByCategory,
+        badgeIds,
+        experiencePoints,
         level,
-        badges,
-        updatedAt: new Date()
+        lastUpdated: new Date()
       })
       .where(eq(schema.workerReputations.workerId, workerId))
       .returning();
@@ -3593,30 +3654,122 @@ export class DatabaseStorage implements IStorage {
     return updatedReputation;
   }
   
-  private async assignWorkerBadges(workerId: number, reputation: Partial<WorkerReputation>): Promise<string[]> {
-    const assignedBadges = [];
-    
-    // Assign level badges
-    if (reputation.level >= 5) {
-      assignedBadges.push("Experienced");
+  private async calculateWorkerBadges(
+    workerId: number, 
+    stats: {
+      experiencePoints: number,
+      level: number,
+      completedTaskCount: number,
+      overallRating: number,
+      onTimeRate: number,
+      completionRate: number,
+      ratingCount: number,
+      categoryRatings: Record<string, number>
     }
-    if (reputation.level >= 8) {
-      assignedBadges.push("Expert");
-    }
+  ): Promise<number[]> {
+    // Get all available badges from the database
+    const allBadges = await this.getWorkerBadges();
     
-    // Assign rating badges
-    if (reputation.overallScore >= 4.5 && reputation.totalRatings >= 5) {
-      assignedBadges.push("Top Rated");
-    }
+    // Get worker's current badges
+    const reputation = await this.getWorkerReputation(workerId);
+    const currentBadgeIds = reputation?.badgeIds || [];
     
-    // Assign skill badges based on skill scores
-    Object.entries(reputation.skillScores || {}).forEach(([skill, score]) => {
-      if (score >= 4.5) {
-        assignedBadges.push(`${skill} Specialist`);
+    // Create a set of badges to assign
+    const badgesToAssign = new Set<number>(currentBadgeIds);
+    
+    // Helper function to check if badge is already assigned
+    const isBadgeAssigned = (badgeId: number) => badgesToAssign.has(badgeId);
+    
+    // Process each badge to see if the worker qualifies
+    for (const badge of allBadges) {
+      // Skip if badge is already assigned
+      if (isBadgeAssigned(badge.id)) {
+        continue;
       }
-    });
+      
+      // Check badge criteria
+      const criteria = badge.criteria as Record<string, any>;
+      let qualified = true;
+      
+      // Validate against each criteria type
+      if (criteria.minLevel && stats.level < criteria.minLevel) {
+        qualified = false;
+      }
+      
+      if (criteria.minExperiencePoints && stats.experiencePoints < criteria.minExperiencePoints) {
+        qualified = false;
+      }
+      
+      if (criteria.minCompletedTasks && stats.completedTaskCount < criteria.minCompletedTasks) {
+        qualified = false;
+      }
+      
+      if (criteria.minOverallRating && stats.overallRating < criteria.minOverallRating) {
+        qualified = false;
+      }
+      
+      if (criteria.minRatingCount && stats.ratingCount < criteria.minRatingCount) {
+        qualified = false;
+      }
+      
+      if (criteria.minOnTimeRate && stats.onTimeRate < criteria.minOnTimeRate) {
+        qualified = false;
+      }
+      
+      if (criteria.minCompletionRate && stats.completionRate < criteria.minCompletionRate) {
+        qualified = false;
+      }
+      
+      // Category-specific ratings criteria
+      if (criteria.categoryRating) {
+        for (const [category, minRating] of Object.entries(criteria.categoryRating)) {
+          const workerRating = stats.categoryRatings[category];
+          if (!workerRating || workerRating < minRating) {
+            qualified = false;
+            break;
+          }
+        }
+      }
+      
+      // If worker qualifies, add the badge
+      if (qualified) {
+        badgesToAssign.add(badge.id);
+      }
+    }
     
-    return assignedBadges;
+    // Check for special verification badges (these would be assigned by admin)
+    const verifiedBadgeIds = [5, 10, 15]; // Example IDs for verification badges
+    for (const badgeId of verifiedBadgeIds) {
+      if (currentBadgeIds.includes(badgeId)) {
+        badgesToAssign.add(badgeId);
+      }
+    }
+    
+    return Array.from(badgesToAssign);
+  }
+  
+  // Backward compatibility method
+  private async assignWorkerBadges(workerId: number, reputation: Partial<any>): Promise<string[]> {
+    // Map old field names to new ones
+    const stats = {
+      experiencePoints: reputation.experiencePoints || 0,
+      level: reputation.level || 1,
+      completedTaskCount: 0, // Would need to be computed in the old system
+      overallRating: Number(reputation.overallScore) || 0,
+      onTimeRate: 0, // Not available in old system
+      completionRate: 0, // Not available in old system
+      ratingCount: reputation.totalRatings || 0,
+      categoryRatings: reputation.skillScores || {}
+    };
+    
+    // Get badge IDs
+    const badgeIds = await this.calculateWorkerBadges(workerId, stats);
+    
+    // For backward compatibility, return string badge names
+    const badges = await this.getWorkerBadges();
+    return badgeIds
+      .map(id => badges.find(b => b.id === id)?.name || "")
+      .filter(name => name !== "");
   }
   
   async getWorkerBadges(): Promise<WorkerBadge[]> {
@@ -3645,36 +3798,245 @@ export class DatabaseStorage implements IStorage {
     return newBadge;
   }
   
-  async getWorkerLeaderboard(category?: string, limit = 10): Promise<WorkerReputation[]> {
-    if (category) {
-      // For categories, we need a more complex query to filter by skills
-      // This is a simplified approach. For a real app, we'd need a more sophisticated query
-      const allReputations = await db
-        .select()
-        .from(schema.workerReputations)
-        .orderBy(desc(schema.workerReputations.overallScore))
-        .limit(100); // Get a larger set to filter from
+  // Worker Skill Endorsement methods
+  async getWorkerSkillEndorsement(id: number): Promise<WorkerSkillEndorsement | undefined> {
+    const [endorsement] = await db
+      .select()
+      .from(schema.workerSkillEndorsements)
+      .where(eq(schema.workerSkillEndorsements.id, id));
+    return endorsement;
+  }
+  
+  async getWorkerSkillEndorsements(workerId: number): Promise<WorkerSkillEndorsement[]> {
+    return await db
+      .select()
+      .from(schema.workerSkillEndorsements)
+      .where(eq(schema.workerSkillEndorsements.workerId, workerId));
+  }
+  
+  async getWorkerSkillEndorsementsByEndorser(endorserId: number): Promise<WorkerSkillEndorsement[]> {
+    return await db
+      .select()
+      .from(schema.workerSkillEndorsements)
+      .where(eq(schema.workerSkillEndorsements.endorserId, endorserId));
+  }
+  
+  async createWorkerSkillEndorsement(endorsement: InsertWorkerSkillEndorsement): Promise<WorkerSkillEndorsement> {
+    // Check for existing endorsement from this user for this skill
+    const [existingEndorsement] = await db
+      .select()
+      .from(schema.workerSkillEndorsements)
+      .where(and(
+        eq(schema.workerSkillEndorsements.workerId, endorsement.workerId),
+        eq(schema.workerSkillEndorsements.endorserId, endorsement.endorserId),
+        eq(schema.workerSkillEndorsements.skill, endorsement.skill)
+      ));
       
-      // Filter and sort by the specific skill
-      const filteredReputations = allReputations
-        .filter(rep => 
-          rep.skillScores && 
-          Object.keys(rep.skillScores).includes(category)
-        )
-        .sort((a, b) => 
-          (b.skillScores[category] || 0) - (a.skillScores[category] || 0)
-        )
-        .slice(0, limit);
-      
-      return filteredReputations;
-    } else {
-      // Simple overall score leaderboard
-      return await db
-        .select()
-        .from(schema.workerReputations)
-        .orderBy(desc(schema.workerReputations.overallScore))
-        .limit(limit);
+    if (existingEndorsement) {
+      // Update the existing endorsement instead of creating a new one
+      const [updatedEndorsement] = await db
+        .update(schema.workerSkillEndorsements)
+        .set({
+          level: endorsement.level,
+          details: endorsement.details,
+          createdAt: new Date() // Update the timestamp
+        })
+        .where(eq(schema.workerSkillEndorsements.id, existingEndorsement.id))
+        .returning();
+        
+      return updatedEndorsement;
     }
+    
+    // Create a new endorsement
+    const [newEndorsement] = await db
+      .insert(schema.workerSkillEndorsements)
+      .values({
+        ...endorsement,
+        createdAt: new Date()
+      })
+      .returning();
+      
+    // After adding/updating an endorsement, update the worker's reputation
+    await this.updateWorkerReputation(endorsement.workerId);
+      
+    return newEndorsement;
+  }
+  
+  async verifyWorkerSkillEndorsement(endorsementId: number, isVerified: boolean): Promise<WorkerSkillEndorsement> {
+    const [updatedEndorsement] = await db
+      .update(schema.workerSkillEndorsements)
+      .set({ isVerified })
+      .where(eq(schema.workerSkillEndorsements.id, endorsementId))
+      .returning();
+      
+    // After verifying an endorsement, update the worker's reputation
+    await this.updateWorkerReputation(updatedEndorsement.workerId);
+      
+    return updatedEndorsement;
+  }
+  
+  async deleteWorkerSkillEndorsement(endorsementId: number): Promise<void> {
+    // Get the endorsement first to know which worker to update later
+    const [endorsement] = await db
+      .select()
+      .from(schema.workerSkillEndorsements)
+      .where(eq(schema.workerSkillEndorsements.id, endorsementId));
+      
+    if (!endorsement) {
+      throw new Error("Endorsement not found");
+    }
+    
+    // Delete the endorsement
+    await db
+      .delete(schema.workerSkillEndorsements)
+      .where(eq(schema.workerSkillEndorsements.id, endorsementId));
+      
+    // Update the worker's reputation
+    await this.updateWorkerReputation(endorsement.workerId);
+  }
+  
+  async getWorkerSkillsByEndorsements(workerId: number): Promise<Array<{
+    skill: string;
+    endorsementCount: number;
+    averageLevel: number;
+    verifiedCount: number;
+  }>> {
+    const endorsements = await this.getWorkerSkillEndorsements(workerId);
+    
+    // Group endorsements by skill
+    const skillMap: Record<string, {
+      count: number;
+      totalLevel: number;
+      verified: number;
+    }> = {};
+    
+    endorsements.forEach(e => {
+      if (!skillMap[e.skill]) {
+        skillMap[e.skill] = { count: 0, totalLevel: 0, verified: 0 };
+      }
+      
+      skillMap[e.skill].count++;
+      skillMap[e.skill].totalLevel += e.level;
+      
+      if (e.isVerified) {
+        skillMap[e.skill].verified++;
+      }
+    });
+    
+    // Convert to array and calculate averages
+    return Object.entries(skillMap).map(([skill, data]) => ({
+      skill,
+      endorsementCount: data.count,
+      averageLevel: parseFloat((data.totalLevel / data.count).toFixed(1)),
+      verifiedCount: data.verified
+    })).sort((a, b) => b.endorsementCount - a.endorsementCount);
+  }
+  
+  async getWorkerLeaderboard(category?: string, limit = 10): Promise<WorkerReputation[]> {
+    // Get all worker reputations
+    const allReputations = await db
+      .select()
+      .from(schema.workerReputations)
+      .orderBy(desc(schema.workerReputations.overallRating))
+      .limit(100); // Get a larger set to filter from
+      
+    if (category) {
+      // For category-specific leaderboards, filter by skills/criteria
+      let filteredReputations = allReputations;
+      
+      // Filter based on whether this is a skill or a metric
+      const metricCategories = ['responsiveness', 'completion', 'quality', 'timeliness', 'ontime', 'experience'];
+      
+      if (metricCategories.includes(category.toLowerCase())) {
+        // This is a metric-based leaderboard
+        switch (category.toLowerCase()) {
+          case 'responsiveness':
+            filteredReputations = allReputations
+              .sort((a, b) => Number(b.responseRate) - Number(a.responseRate));
+            break;
+          case 'completion':
+            filteredReputations = allReputations
+              .sort((a, b) => Number(b.completionRate) - Number(a.completionRate));
+            break;
+          case 'ontime':
+          case 'timeliness':
+            filteredReputations = allReputations
+              .sort((a, b) => Number(b.onTimeRate) - Number(a.onTimeRate));
+            break;
+          case 'experience':
+            filteredReputations = allReputations
+              .sort((a, b) => b.experiencePoints - a.experiencePoints);
+            break;
+          default:
+            // Default to overall rating
+            filteredReputations = allReputations
+              .sort((a, b) => Number(b.overallRating) - Number(a.overallRating));
+        }
+      } else {
+        // This is a skill/category-based leaderboard
+        filteredReputations = allReputations
+          .filter(rep => {
+            // Check if the reputation has rating data for this category
+            const ratings = rep.ratingsByCategory as Record<string, any>;
+            return ratings && 
+              Object.keys(ratings).some(key => key.toLowerCase() === category.toLowerCase());
+          })
+          .sort((a, b) => {
+            const aRatings = a.ratingsByCategory as Record<string, any>;
+            const bRatings = b.ratingsByCategory as Record<string, any>;
+            
+            // Find the matching category (case-insensitive)
+            const aKey = Object.keys(aRatings || {}).find(k => k.toLowerCase() === category.toLowerCase());
+            const bKey = Object.keys(bRatings || {}).find(k => k.toLowerCase() === category.toLowerCase());
+            
+            const aRating = aKey ? aRatings[aKey] : 0;
+            const bRating = bKey ? bRatings[bKey] : 0;
+            
+            return bRating - aRating;
+          });
+      }
+      
+      return filteredReputations.slice(0, limit);
+    } else {
+      // Overall rating leaderboard
+      return allReputations.slice(0, limit);
+    }
+  }
+  
+  async getTopBadgeHolders(badgeId: number, limit = 10): Promise<{user: User, reputation: WorkerReputation}[]> {
+    // Get all workers who have this badge
+    const reputations = await db
+      .select()
+      .from(schema.workerReputations)
+      .where(sql`${schema.workerReputations.badgeIds} @> array[${badgeId}]::integer[]`);
+      
+    if (reputations.length === 0) {
+      return [];
+    }
+    
+    // Get the users associated with these reputations
+    const userIds = reputations.map(rep => rep.workerId);
+    const users = await db
+      .select()
+      .from(schema.users)
+      .where(inArray(schema.users.id, userIds));
+      
+    // Join the data together
+    const result = [];
+    for (const reputation of reputations) {
+      const user = users.find(u => u.id === reputation.workerId);
+      if (user) {
+        result.push({
+          user,
+          reputation
+        });
+      }
+    }
+    
+    // Sort by experience points and limit
+    return result
+      .sort((a, b) => b.reputation.experiencePoints - a.reputation.experiencePoints)
+      .slice(0, limit);
   }
   
   // Worker Profile methods
