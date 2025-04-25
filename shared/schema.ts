@@ -60,19 +60,47 @@ export const insertPropertySchema = createInsertSchema(properties).omit({
   updatedAt: true,
 });
 
-// Proposal schema for DAO governance
+// Governance categories for organizing proposals
+export const governanceCategories = pgTable("governance_categories", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull().unique(),
+  description: text("description").notNull(),
+  colorHex: text("color_hex").default("#3B82F6"),
+  icon: text("icon"),
+  parentCategoryId: integer("parent_category_id"),
+  displayOrder: integer("display_order").default(0),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const insertGovernanceCategorySchema = createInsertSchema(governanceCategories).omit({
+  id: true,
+  isActive: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// Proposal schema for DAO governance with enhanced features
 export const proposals = pgTable("proposals", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
   description: text("description").notNull(),
   creatorId: integer("creator_id").notNull(),
+  categoryId: integer("category_id"), // Link to governance category
   status: text("status").default("active"), // 'active', 'passed', 'rejected', 'executed'
   startDate: timestamp("start_date").defaultNow(),
   endDate: timestamp("end_date").notNull(),
   votesFor: integer("votes_for").default(0),
   votesAgainst: integer("votes_against").default(0),
   votesAbstain: integer("votes_abstain").default(0),
+  quorum: integer("quorum"), // Minimum participation required
+  supermajority: boolean("supermajority").default(false), // Whether 2/3 majority is required instead of simple majority
+  votingSystem: text("voting_system").default("quadratic"), // 'standard', 'quadratic', 'holographic'
   executionPayload: jsonb("execution_payload"), // Smart contract interaction details
+  snapshotBlockNumber: integer("snapshot_block_number"), // Block number for token balance snapshot
+  discussionUrl: text("discussion_url"), // Link to forum discussion
+  tags: text("tags").array(),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -85,19 +113,46 @@ export const insertProposalSchema = createInsertSchema(proposals).omit({
   createdAt: true,
 });
 
-// Vote schema for recording user votes
+// Vote schema for recording user votes with quadratic voting
 export const votes = pgTable("votes", {
   id: serial("id").primaryKey(),
   proposalId: integer("proposal_id").notNull(),
   userId: integer("user_id").notNull(),
   voteType: text("vote_type").notNull(), // 'for', 'against', 'abstain'
   votePower: numeric("vote_power").notNull(),
+  baseVotes: numeric("base_votes").notNull(), // Raw token count used for voting
+  isQuadratic: boolean("is_quadratic").default(true), // Whether quadratic formula was applied
+  isDelegated: boolean("is_delegated").default(false), // Whether this vote came from delegation
+  delegatedFrom: integer("delegated_from"), // User ID this vote was delegated from (if applicable)
   createdAt: timestamp("created_at").defaultNow(),
 });
 
 export const insertVoteSchema = createInsertSchema(votes).omit({
   id: true,
+  isQuadratic: true,
+  isDelegated: true,
+  delegatedFrom: true,
   createdAt: true,
+});
+
+// Vote delegation schema
+export const voteDelegations = pgTable("vote_delegations", {
+  id: serial("id").primaryKey(),
+  delegatorId: integer("delegator_id").notNull(), // User who is delegating their votes
+  delegateId: integer("delegate_id").notNull(), // User who receives the voting power
+  scope: text("scope").default("global"), // 'global', 'category', or specific proposal ID as string
+  categoryId: integer("category_id"), // For category-specific delegations
+  proposalId: integer("proposal_id"), // For proposal-specific delegations
+  active: boolean("active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const insertVoteDelegationSchema = createInsertSchema(voteDelegations).omit({
+  id: true,
+  active: true,
+  createdAt: true,
+  updatedAt: true,
 });
 
 // Escrow schema for secure property transactions
@@ -264,11 +319,17 @@ export type User = typeof users.$inferSelect;
 export type InsertProperty = z.infer<typeof insertPropertySchema>;
 export type Property = typeof properties.$inferSelect;
 
+export type InsertGovernanceCategory = z.infer<typeof insertGovernanceCategorySchema>;
+export type GovernanceCategory = typeof governanceCategories.$inferSelect;
+
 export type InsertProposal = z.infer<typeof insertProposalSchema>;
 export type Proposal = typeof proposals.$inferSelect;
 
 export type InsertVote = z.infer<typeof insertVoteSchema>;
 export type Vote = typeof votes.$inferSelect;
+
+export type InsertVoteDelegation = z.infer<typeof insertVoteDelegationSchema>;
+export type VoteDelegation = typeof voteDelegations.$inferSelect;
 
 export type InsertTask = z.infer<typeof insertTaskSchema>;
 export type Task = typeof tasks.$inferSelect;
