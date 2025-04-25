@@ -77,8 +77,11 @@ export interface IStorage {
   // User methods
   getUser(id: number): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
+  getUserByEmail(email: string): Promise<User | undefined>;
+  getUserByWalletAddress(walletAddress: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
   updateUserMembership(id: number, membershipTier: string): Promise<User>;
+  updateUserWallet(id: number, walletAddress: string): Promise<User>;
   countDaoMembers(): Promise<number>;
   
   // Property methods
