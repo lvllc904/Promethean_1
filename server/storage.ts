@@ -15,7 +15,10 @@ import {
   governanceProposals, type GovernanceProposal, type InsertGovernanceProposal,
   workerRatings, type WorkerRating, type InsertWorkerRating,
   workerReputations, type WorkerReputation, type InsertWorkerReputation,
-  workerBadges, type WorkerBadge, type InsertWorkerBadge
+  workerBadges, type WorkerBadge, type InsertWorkerBadge,
+  escrows, type Escrow, type InsertEscrow,
+  titleTransfers, type TitleTransfer, type InsertTitleTransfer,
+  arbitrators, type Arbitrator, type InsertArbitrator
 } from "@shared/schema";
 import * as schema from "@shared/schema";
 import { db } from "./db";
@@ -89,6 +92,27 @@ export interface IStorage {
   getProposals(status?: string): Promise<Proposal[]>;
   createProposal(proposal: InsertProposal): Promise<Proposal>;
   updateProposalVotes(proposalId: number, voteType: string, votePower: number): Promise<void>;
+  
+  // Escrow methods
+  getEscrow(id: number): Promise<Escrow | undefined>;
+  getEscrowsByProperty(propertyId: number): Promise<Escrow[]>;
+  getEscrowsBySeller(sellerId: number): Promise<Escrow[]>;
+  getEscrowsByBuyer(buyerId: number): Promise<Escrow[]>;
+  createEscrow(escrow: InsertEscrow): Promise<Escrow>;
+  updateEscrowStatus(id: number, status: string, transactionHash?: string): Promise<Escrow>;
+  
+  // Title Transfer methods
+  getTitleTransfer(id: number): Promise<TitleTransfer | undefined>;
+  getTitleTransfersByProperty(propertyId: number): Promise<TitleTransfer[]>;
+  createTitleTransfer(titleTransfer: InsertTitleTransfer): Promise<TitleTransfer>;
+  updateTitleTransferStatus(id: number, status: string): Promise<TitleTransfer>;
+  
+  // Arbitrator methods
+  getArbitrator(id: number): Promise<Arbitrator | undefined>;
+  getArbitratorByWallet(walletAddress: string): Promise<Arbitrator | undefined>;
+  getArbitrators(): Promise<Arbitrator[]>;
+  createArbitrator(arbitrator: InsertArbitrator): Promise<Arbitrator>;
+  updateArbitratorRating(id: number, successfulResolution: boolean): Promise<Arbitrator>;
   
   // Vote methods
   getVote(id: number): Promise<Vote | undefined>;
@@ -215,6 +239,144 @@ export interface IStorage {
 }
 
 export class MemStorage implements IStorage {
+  // Escrow methods
+  async getEscrow(id: number): Promise<Escrow | undefined> {
+    return this.escrows.get(id);
+  }
+
+  async getEscrowsByProperty(propertyId: number): Promise<Escrow[]> {
+    return Array.from(this.escrows.values()).filter(escrow => escrow.propertyId === propertyId);
+  }
+
+  async getEscrowsBySeller(sellerId: number): Promise<Escrow[]> {
+    return Array.from(this.escrows.values()).filter(escrow => escrow.sellerId === sellerId);
+  }
+
+  async getEscrowsByBuyer(buyerId: number): Promise<Escrow[]> {
+    return Array.from(this.escrows.values()).filter(escrow => escrow.buyerId === buyerId);
+  }
+
+  async createEscrow(escrow: InsertEscrow): Promise<Escrow> {
+    const id = this.currentEscrowId++;
+    const now = new Date();
+    const newEscrow: Escrow = {
+      id,
+      ...escrow,
+      status: "pending",
+      transactionHash: null,
+      createdAt: now,
+      updatedAt: now
+    };
+    this.escrows.set(id, newEscrow);
+    return newEscrow;
+  }
+
+  async updateEscrowStatus(id: number, status: string, transactionHash?: string): Promise<Escrow> {
+    const escrow = this.escrows.get(id);
+    if (!escrow) {
+      throw new Error(`Escrow with id ${id} not found`);
+    }
+    
+    const updatedEscrow: Escrow = {
+      ...escrow,
+      status,
+      transactionHash: transactionHash || escrow.transactionHash,
+      updatedAt: new Date()
+    };
+    this.escrows.set(id, updatedEscrow);
+    return updatedEscrow;
+  }
+
+  // Title Transfer methods
+  async getTitleTransfer(id: number): Promise<TitleTransfer | undefined> {
+    return this.titleTransfers.get(id);
+  }
+
+  async getTitleTransfersByProperty(propertyId: number): Promise<TitleTransfer[]> {
+    return Array.from(this.titleTransfers.values()).filter(
+      transfer => transfer.propertyId === propertyId
+    );
+  }
+
+  async createTitleTransfer(titleTransfer: InsertTitleTransfer): Promise<TitleTransfer> {
+    const id = this.currentTitleTransferId++;
+    const now = new Date();
+    const newTitleTransfer: TitleTransfer = {
+      id,
+      ...titleTransfer,
+      status: "pending",
+      createdAt: now,
+      updatedAt: now
+    };
+    this.titleTransfers.set(id, newTitleTransfer);
+    return newTitleTransfer;
+  }
+
+  async updateTitleTransferStatus(id: number, status: string): Promise<TitleTransfer> {
+    const titleTransfer = this.titleTransfers.get(id);
+    if (!titleTransfer) {
+      throw new Error(`Title transfer with id ${id} not found`);
+    }
+    
+    const updatedTitleTransfer: TitleTransfer = {
+      ...titleTransfer,
+      status,
+      updatedAt: new Date()
+    };
+    this.titleTransfers.set(id, updatedTitleTransfer);
+    return updatedTitleTransfer;
+  }
+
+  // Arbitrator methods
+  async getArbitrator(id: number): Promise<Arbitrator | undefined> {
+    return this.arbitrators.get(id);
+  }
+
+  async getArbitratorByWallet(walletAddress: string): Promise<Arbitrator | undefined> {
+    return Array.from(this.arbitrators.values()).find(
+      arbitrator => arbitrator.walletAddress === walletAddress
+    );
+  }
+
+  async getArbitrators(): Promise<Arbitrator[]> {
+    return Array.from(this.arbitrators.values());
+  }
+
+  async createArbitrator(arbitrator: InsertArbitrator): Promise<Arbitrator> {
+    const id = this.currentArbitratorId++;
+    const now = new Date();
+    const newArbitrator: Arbitrator = {
+      id,
+      ...arbitrator,
+      casesResolved: 0,
+      successRate: 0,
+      createdAt: now,
+      updatedAt: now
+    };
+    this.arbitrators.set(id, newArbitrator);
+    return newArbitrator;
+  }
+
+  async updateArbitratorRating(id: number, successfulResolution: boolean): Promise<Arbitrator> {
+    const arbitrator = this.arbitrators.get(id);
+    if (!arbitrator) {
+      throw new Error(`Arbitrator with id ${id} not found`);
+    }
+    
+    const newCasesResolved = arbitrator.casesResolved + 1;
+    const successfulCases = successfulResolution 
+      ? (arbitrator.successRate * arbitrator.casesResolved) + 1 
+      : (arbitrator.successRate * arbitrator.casesResolved);
+      
+    const updatedArbitrator: Arbitrator = {
+      ...arbitrator,
+      casesResolved: newCasesResolved,
+      successRate: successfulCases / newCasesResolved,
+      updatedAt: new Date()
+    };
+    this.arbitrators.set(id, updatedArbitrator);
+    return updatedArbitrator;
+  }
   private users: Map<number, User>;
   private properties: Map<number, Property>;
   private proposals: Map<number, Proposal>;
@@ -228,6 +390,9 @@ export class MemStorage implements IStorage {
   private workerRatings: Map<number, WorkerRating>;
   private workerReputations: Map<number, WorkerReputation>;
   private workerBadges: Map<number, WorkerBadge>;
+  private escrows: Map<number, Escrow>;
+  private titleTransfers: Map<number, TitleTransfer>;
+  private arbitrators: Map<number, Arbitrator>;
   
   private currentUserId: number;
   private currentPropertyId: number;
@@ -242,6 +407,9 @@ export class MemStorage implements IStorage {
   private currentRatingId: number;
   private currentReputationId: number;
   private currentBadgeId: number;
+  private currentEscrowId: number;
+  private currentTitleTransferId: number;
+  private currentArbitratorId: number;
 
   constructor() {
     this.users = new Map();
@@ -257,6 +425,9 @@ export class MemStorage implements IStorage {
     this.workerRatings = new Map();
     this.workerReputations = new Map();
     this.workerBadges = new Map();
+    this.escrows = new Map();
+    this.titleTransfers = new Map();
+    this.arbitrators = new Map();
     
     this.currentUserId = 1;
     this.currentPropertyId = 1;
@@ -271,6 +442,9 @@ export class MemStorage implements IStorage {
     this.currentRatingId = 1;
     this.currentReputationId = 1;
     this.currentBadgeId = 1;
+    this.currentEscrowId = 1;
+    this.currentTitleTransferId = 1;
+    this.currentArbitratorId = 1;
     
     // Initialize with sample data
     this.initializeData();

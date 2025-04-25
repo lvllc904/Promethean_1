@@ -712,3 +712,13 @@ export type WorkerReputation = typeof workerReputations.$inferSelect;
 
 export type InsertWorkerBadge = z.infer<typeof insertWorkerBadgeSchema>;
 export type WorkerBadge = typeof workerBadges.$inferSelect;
+
+// Types for escrow and title transfer
+export type InsertEscrow = z.infer<typeof insertEscrowSchema>;
+export type Escrow = typeof escrows.$inferSelect;
+
+export type InsertTitleTransfer = z.infer<typeof insertTitleTransferSchema>;
+export type TitleTransfer = typeof titleTransfers.$inferSelect;
+
+export type InsertArbitrator = z.infer<typeof insertArbitratorSchema>;
+export type Arbitrator = typeof arbitrators.$inferSelect;
