@@ -26,6 +26,7 @@ import { scheduler } from "./services/scheduler";
 import { testRunner } from "./services/test-runner";
 import { generatePropertyValuation, generatePropertyDescription } from "./services/ai";
 import * as web3Service from "./services/web3";
+import Stripe from "stripe";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Base API prefix

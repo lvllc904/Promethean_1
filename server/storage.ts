@@ -2415,6 +2415,273 @@ export class DatabaseStorage implements IStorage {
         .limit(limit);
     }
   }
+  
+  // Worker Profile methods
+  async getWorkers(options: { search?: string, skill?: string, sort?: string, limit?: number }): Promise<Array<{
+    id: number;
+    username: string;
+    name: string;
+    skills: string[];
+    avatarUrl: string;
+    reputation: WorkerReputation;
+  }>> {
+    const { search, skill, sort = 'rating', limit = 20 } = options;
+    
+    // Start with a query for all users
+    let query = db
+      .select({
+        user: schema.users,
+      })
+      .from(schema.users);
+    
+    // Apply search filter if provided
+    if (search) {
+      query = query.where(
+        or(
+          like(schema.users.username, `%${search}%`),
+          like(schema.users.name, `%${search}%`)
+        )
+      );
+    }
+    
+    // Get users
+    const usersResult = await query.limit(limit || 20);
+    
+    // Now fetch reputations and construct the complete worker profiles
+    const workers = await Promise.all(
+      usersResult.map(async ({ user }) => {
+        // Get the worker's reputation
+        const [reputation] = await db
+          .select()
+          .from(schema.workerReputations)
+          .where(eq(schema.workerReputations.workerId, user.id));
+        
+        // Get worker's tasks to extract skills
+        const tasks = await this.getWorkerTasks(user.id);
+        const taskCategories = tasks.map(t => t.category);
+        const skills = Array.from(new Set(taskCategories));
+        
+        // If no reputation exists, create a default one
+        const workerReputation = reputation || {
+          id: 0,
+          workerId: user.id,
+          overallRating: "0",
+          ratingsCount: 0,
+          responseRate: "0",
+          completionRate: "0",
+          onTimeRate: "0",
+          ratingsByCategory: {},
+          badgeIds: [],
+          experiencePoints: 0,
+          level: 1,
+          lastUpdated: new Date(),
+        };
+        
+        return {
+          id: user.id,
+          username: user.username,
+          name: user.name || "",
+          skills: skills.length > 0 ? skills : ["Smart Contracts", "Web Development", "UI/UX Design"],
+          avatarUrl: user.avatarUrl || "",
+          reputation: workerReputation
+        };
+      })
+    );
+    
+    // Sort workers based on the sort parameter
+    let sortedWorkers = [...workers];
+    switch (sort) {
+      case 'rating':
+        sortedWorkers.sort((a, b) => 
+          Number(b.reputation.overallRating) - Number(a.reputation.overallRating)
+        );
+        break;
+      case 'tasks':
+        sortedWorkers.sort((a, b) => 
+          b.reputation.ratingsCount - a.reputation.ratingsCount
+        );
+        break;
+      case 'level':
+        sortedWorkers.sort((a, b) => 
+          b.reputation.level - a.reputation.level
+        );
+        break;
+      case 'recent':
+        sortedWorkers.sort((a, b) => 
+          new Date(b.reputation.lastUpdated).getTime() - 
+          new Date(a.reputation.lastUpdated).getTime()
+        );
+        break;
+      default:
+        break;
+    }
+    
+    // Filter by skill if provided
+    if (skill) {
+      sortedWorkers = sortedWorkers.filter(worker => 
+        worker.skills.some(s => s.toLowerCase() === skill.toLowerCase())
+      );
+    }
+    
+    return sortedWorkers;
+  }
+  
+  async getWorkerProfile(workerId: number): Promise<{
+    id: number;
+    username: string;
+    name: string;
+    bio: string;
+    skills: string[];
+    avatarUrl: string;
+    location: string;
+    joinedDate: string;
+  } | undefined> {
+    // Get the user
+    const [user] = await db
+      .select()
+      .from(schema.users)
+      .where(eq(schema.users.id, workerId));
+    
+    if (!user) {
+      return undefined;
+    }
+    
+    // Get tasks performed by this worker to determine skills
+    const tasks = await this.getWorkerTasks(workerId);
+    const taskCategories = tasks.map(t => t.category);
+    const skills = Array.from(new Set(taskCategories));
+    
+    // In a real app, we would have a separate table for worker profiles
+    // with additional fields like bio, location, etc.
+    return {
+      id: user.id,
+      username: user.username,
+      name: user.name || user.username,
+      bio: "Experienced blockchain specialist with a passion for decentralized applications. I specialize in smart contract development and web3 integration, with a focus on creating efficient and secure solutions for the DAC Marketplace.", // Demo bio
+      skills: skills.length > 0 ? skills : ["Smart Contracts", "Web Development", "UI/UX Design"],
+      avatarUrl: user.avatarUrl || "",
+      location: "San Francisco, CA", // Demo location
+      joinedDate: user.createdAt ? user.createdAt.toISOString() : new Date().toISOString(),
+    };
+  }
+  
+  async getWorkerTasks(workerId: number): Promise<Task[]> {
+    return await db
+      .select()
+      .from(schema.tasks)
+      .where(eq(schema.tasks.assigneeId, workerId))
+      .orderBy(desc(schema.tasks.createdAt));
+  }
+  
+  async getPopularSkills(): Promise<Array<{ name: string; count: number; }>> {
+    // Get all tasks to analyze popular categories/skills
+    const tasks = await db.select().from(schema.tasks);
+    
+    // Count occurrences of each category
+    const categoryCount: Record<string, number> = {};
+    tasks.forEach(task => {
+      if (!categoryCount[task.category]) {
+        categoryCount[task.category] = 0;
+      }
+      categoryCount[task.category]++;
+    });
+    
+    // Convert to array and sort by count descending
+    const popularSkills = Object.entries(categoryCount)
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => b.count - a.count);
+    
+    // If no tasks exist yet, provide some sample skills
+    if (popularSkills.length === 0) {
+      return [
+        { name: "Smart Contracts", count: 32 },
+        { name: "Web Development", count: 28 },
+        { name: "UI/UX Design", count: 24 },
+        { name: "Data Analysis", count: 19 },
+        { name: "Photography", count: 17 },
+        { name: "Legal Review", count: 14 },
+      ];
+    }
+    
+    return popularSkills;
+  }
+  
+  async getTasksAdvanced(filters: {
+    status?: string,
+    category?: string,
+    search?: string,
+    sort?: string,
+    minPrice?: number,
+    maxPrice?: number,
+    location?: string,
+    skill?: string
+  }): Promise<Task[]> {
+    const { status, category, search, sort, minPrice, maxPrice, location, skill } = filters;
+    
+    // Build the base query
+    let query = db.select().from(schema.tasks);
+    
+    // Apply filters
+    if (status) {
+      query = query.where(eq(schema.tasks.status, status));
+    }
+    
+    if (category) {
+      query = query.where(eq(schema.tasks.category, category));
+    }
+    
+    // Skill is an alias for category in our data model
+    if (skill && !category) {
+      query = query.where(eq(schema.tasks.category, skill));
+    }
+    
+    if (search) {
+      query = query.where(
+        or(
+          like(schema.tasks.title, `%${search}%`),
+          like(schema.tasks.description, `%${search}%`)
+        )
+      );
+    }
+    
+    if (minPrice !== undefined) {
+      query = query.where(sql`CAST(${schema.tasks.price} AS DECIMAL) >= ${minPrice}`);
+    }
+    
+    if (maxPrice !== undefined) {
+      query = query.where(sql`CAST(${schema.tasks.price} AS DECIMAL) <= ${maxPrice}`);
+    }
+    
+    if (location) {
+      query = query.where(like(schema.tasks.location, `%${location}%`));
+    }
+    
+    // Apply sorting
+    if (sort) {
+      switch (sort) {
+        case 'newest':
+          query = query.orderBy(desc(schema.tasks.createdAt));
+          break;
+        case 'oldest':
+          query = query.orderBy(asc(schema.tasks.createdAt));
+          break;
+        case 'price-high':
+          query = query.orderBy(desc(sql`CAST(${schema.tasks.price} AS DECIMAL)`));
+          break;
+        case 'price-low':
+          query = query.orderBy(asc(sql`CAST(${schema.tasks.price} AS DECIMAL)`));
+          break;
+        default:
+          query = query.orderBy(desc(schema.tasks.createdAt));
+          break;
+      }
+    } else {
+      // Default sorting by newest
+      query = query.orderBy(desc(schema.tasks.createdAt));
+    }
+    
+    return await query;
+  }
 }
 
 // Use DatabaseStorage instead of MemStorage
