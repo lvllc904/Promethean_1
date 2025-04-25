@@ -3490,16 +3490,18 @@ export class DatabaseStorage implements IStorage {
         .insert(schema.workerReputations)
         .values({
           workerId,
-          overallScore: 0,
-          totalRatings: 0,
-          skillScores: {},
-          reliability: 0,
-          qualityScore: 0,
-          communicationScore: 0,
-          badges: [],
+          overallRating: 0,
+          ratingsCount: 0,
+          responseRate: 0, 
+          completionRate: 0,
+          onTimeRate: 0,
+          ratingsByCategory: {},
+          badgeIds: [],
+          experiencePoints: 0,
           level: 1,
-          createdAt: new Date(),
-          updatedAt: new Date()
+          endorsementCount: 0,
+          verifiedEndorsementCount: 0,
+          lastUpdated: new Date()
         })
         .returning();
       return newReputation;
@@ -3512,12 +3514,18 @@ export class DatabaseStorage implements IStorage {
   async updateWorkerReputation(workerId: number): Promise<WorkerReputation | undefined> {
     // Get all ratings for this worker
     const ratings = await this.getWorkerRatings(workerId);
-    if (ratings.length === 0) {
-      return await this.getWorkerReputation(workerId);
-    }
     
-    // Calculate overall rating (average of all ratings)
-    const overallRating = parseFloat((ratings.reduce((sum, r) => sum + r.rating, 0) / ratings.length).toFixed(2));
+    // Get all skill endorsements for this worker
+    const endorsements = await this.getWorkerSkillEndorsements(workerId);
+    const verifiedEndorsements = endorsements.filter(e => e.isVerified);
+    
+    // Initialize overall rating
+    let overallRating = 0;
+    
+    if (ratings.length > 0) {
+      // Calculate overall rating (average of all ratings)
+      overallRating = parseFloat((ratings.reduce((sum, r) => sum + r.rating, 0) / ratings.length).toFixed(2));
+    }
     
     // Calculate ratings by category and skills
     const ratingsByCategory: Record<string, number> = {};
@@ -3571,6 +3579,76 @@ export class DatabaseStorage implements IStorage {
       }
     });
     
+    // Process skill endorsements into ratings
+    if (endorsements.length > 0) {
+      // Group endorsements by skill
+      const skillMap: Record<string, {
+        sum: number;
+        count: number;
+        verifiedSum: number;
+        verifiedCount: number;
+      }> = {};
+      
+      // Process each endorsement
+      endorsements.forEach(e => {
+        if (!skillMap[e.skill]) {
+          skillMap[e.skill] = {
+            sum: 0,
+            count: 0,
+            verifiedSum: 0,
+            verifiedCount: 0
+          };
+        }
+        
+        // Add to totals
+        skillMap[e.skill].sum += e.level;
+        skillMap[e.skill].count++;
+        
+        // Add to verified totals if applicable
+        if (e.isVerified) {
+          skillMap[e.skill].verifiedSum += e.level;
+          skillMap[e.skill].verifiedCount++;
+        }
+      });
+      
+      // Calculate weighted averages for each skill
+      Object.entries(skillMap).forEach(([skill, data]) => {
+        const skillKey = `skill:${skill}`;
+        
+        // Weighted calculation (verified endorsements count more)
+        if (data.verifiedCount > 0) {
+          const verifiedAvg = data.verifiedSum / data.verifiedCount;
+          const unverifiedSum = data.sum - data.verifiedSum;
+          const unverifiedCount = data.count - data.verifiedCount;
+          const unverifiedAvg = unverifiedCount > 0 ? unverifiedSum / unverifiedCount : 0;
+          
+          // Weight: 70% verified, 30% unverified if both exist
+          const weightedAvg = data.verifiedCount === data.count
+            ? verifiedAvg  // All verified
+            : (verifiedAvg * 0.7) + (unverifiedAvg * 0.3);
+            
+          ratingsByCategory[skillKey] = parseFloat(weightedAvg.toFixed(2));
+        } else {
+          // Simple average for unverified endorsements
+          ratingsByCategory[skillKey] = parseFloat((data.sum / data.count).toFixed(2));
+        }
+      });
+      
+      // Incorporate endorsements into overall rating if needed
+      if (ratings.length === 0 && endorsements.length > 0) {
+        // If no ratings exist, derive overall rating from endorsements
+        const totalEndorsementLevel = endorsements.reduce((sum, e) => sum + e.level, 0);
+        overallRating = parseFloat(((totalEndorsementLevel / endorsements.length) / 5 * 5).toFixed(2));
+      } else if (ratings.length > 0 && endorsements.length > 0) {
+        // Blend ratings and endorsements (70% ratings, 30% endorsements)
+        const totalEndorsementLevel = endorsements.reduce((sum, e) => sum + e.level, 0);
+        const endorsementRating = parseFloat(((totalEndorsementLevel / endorsements.length) / 5 * 5).toFixed(2));
+        
+        // Weighted average
+        overallRating = parseFloat((overallRating * 0.7 + endorsementRating * 0.3).toFixed(2));
+      }
+    }
+    
     // Get all worker's tasks (for various metrics)
     const allTasks = await db
       .select()
@@ -3611,6 +3689,18 @@ export class DatabaseStorage implements IStorage {
     // Bonus XP for high on-time rate (up to 20 XP)
     experiencePoints += Math.floor(onTimeRate / 5);
     
+    // Add endorsement points
+    const endorsementPoints = endorsements.reduce((sum, e) => {
+      // Base points for each endorsement level
+      const basePoints = e.level * 2;
+      // Bonus points for verified endorsements
+      const verifiedBonus = e.isVerified ? 5 : 0;
+      return sum + basePoints + verifiedBonus;
+    }, 0);
+    
+    // Add endorsement points to total
+    experiencePoints += endorsementPoints;
+    
     // Calculate level based on XP
     // Level formula: 1 + floor(sqrt(XP / 10))
     const level = Math.max(1, Math.floor(1 + Math.sqrt(experiencePoints / 10)));
@@ -3630,7 +3720,9 @@ export class DatabaseStorage implements IStorage {
       onTimeRate,
       completionRate,
       ratingCount: ratings.length,
-      categoryRatings: ratingsByCategory
+      categoryRatings: ratingsByCategory,
+      endorsementCount: endorsements.length,
+      verifiedEndorsementCount: verifiedEndorsements.length
     });
     
     // Update reputation
@@ -3646,6 +3738,8 @@ export class DatabaseStorage implements IStorage {
         badgeIds,
         experiencePoints,
         level,
+        endorsementCount: endorsements.length,
+        verifiedEndorsementCount: verifiedEndorsements.length,
         lastUpdated: new Date()
       })
       .where(eq(schema.workerReputations.workerId, workerId))
@@ -3664,7 +3758,9 @@ export class DatabaseStorage implements IStorage {
       onTimeRate: number,
       completionRate: number,
       ratingCount: number,
-      categoryRatings: Record<string, number>
+      categoryRatings: Record<string, number>,
+      endorsementCount?: number,
+      verifiedEndorsementCount?: number
     }
   ): Promise<number[]> {
     // Get all available badges from the database
@@ -3673,6 +3769,17 @@ export class DatabaseStorage implements IStorage {
     // Get worker's current badges
     const reputation = await this.getWorkerReputation(workerId);
     const currentBadgeIds = reputation?.badgeIds || [];
+    
+    // Get endorsement data if not provided
+    let endorsementCount = stats.endorsementCount;
+    let verifiedEndorsementCount = stats.verifiedEndorsementCount;
+    
+    if (endorsementCount === undefined || verifiedEndorsementCount === undefined) {
+      // Fetch endorsements if not provided in stats
+      const endorsements = await this.getWorkerSkillEndorsements(workerId);
+      endorsementCount = endorsements.length;
+      verifiedEndorsementCount = endorsements.filter(e => e.isVerified).length;
+    }
     
     // Create a set of badges to assign
     const badgesToAssign = new Set<number>(currentBadgeIds);
@@ -3720,6 +3827,39 @@ export class DatabaseStorage implements IStorage {
         qualified = false;
       }
       
+      // Endorsement-specific criteria
+      if (criteria.minEndorsementCount && endorsementCount < criteria.minEndorsementCount) {
+        qualified = false;
+      }
+      
+      if (criteria.minVerifiedEndorsementCount && verifiedEndorsementCount < criteria.minVerifiedEndorsementCount) {
+        qualified = false;
+      }
+      
+      // Skill-specific criteria
+      if (criteria.minSkillLevel) {
+        for (const [skill, level] of Object.entries(criteria.minSkillLevel)) {
+          const skillKey = `skill:${skill}`;
+          const workerSkillLevel = stats.categoryRatings[skillKey];
+          
+          if (!workerSkillLevel || workerSkillLevel < level) {
+            qualified = false;
+            break;
+          }
+        }
+      }
+      
+      // Minimum number of high-rated skills
+      if (criteria.minHighRatedSkillCount) {
+        const skillCount = Object.entries(stats.categoryRatings)
+          .filter(([key, value]) => key.startsWith('skill:') && value >= (criteria.highRatedSkillThreshold || 4))
+          .length;
+          
+        if (skillCount < criteria.minHighRatedSkillCount) {
+          qualified = false;
+        }
+      }
+      
       // Category-specific ratings criteria
       if (criteria.categoryRating) {
         for (const [category, minRating] of Object.entries(criteria.categoryRating)) {
@@ -3743,6 +3883,38 @@ export class DatabaseStorage implements IStorage {
       if (currentBadgeIds.includes(badgeId)) {
         badgesToAssign.add(badgeId);
       }
+    }
+    
+    // Add endorsement-specific badges
+    if (endorsementCount >= 5) {
+      badgesToAssign.add(7); // Skill Recognized badge
+    }
+    
+    if (endorsementCount >= 20) {
+      badgesToAssign.add(8); // Highly Skilled badge
+    }
+    
+    // Add verified endorsement badges
+    if (verifiedEndorsementCount >= 3) {
+      badgesToAssign.add(9); // Verified Skills badge
+    }
+    
+    if (verifiedEndorsementCount >= 10) {
+      badgesToAssign.add(10); // Endorsed Expert badge
+    }
+    
+    // Get multi-skill badge
+    // Count skills with high ratings (average of 4+)
+    const highRatedSkills = Object.entries(stats.categoryRatings)
+      .filter(([key, value]) => key.startsWith('skill:') && value >= 4)
+      .length;
+      
+    if (highRatedSkills >= 3) {
+      badgesToAssign.add(11); // Multiskilled badge
+    }
+    
+    if (highRatedSkills >= 5) {
+      badgesToAssign.add(12); // Renaissance badge
     }
     
     return Array.from(badgesToAssign);

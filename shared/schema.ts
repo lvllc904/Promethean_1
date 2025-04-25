@@ -15,6 +15,14 @@ export const users = pgTable("users", {
   dacTokenBalance: numeric("dac_token_balance").default("0"),
   promTokenBalance: numeric("prom_token_balance").default("0"),
   receivedInitialProm: boolean("received_initial_prom").default(false),
+  // Governance fields
+  role: text("role").default("member"), // 'member', 'moderator', 'admin'
+  reputationScore: numeric("reputation_score").default("0"), // Reputation in the DAO
+  governanceWeight: numeric("governance_weight").default("1"), // Special weighting factor for quadratic voting
+  useQuadraticVoting: boolean("use_quadratic_voting").default(true), // Whether user opts into quadratic voting
+  totalVotingPowerUsed: numeric("total_voting_power_used").default("0"), // Track cumulative voting power used
+  lastVoteTimestamp: timestamp("last_vote_timestamp"), // When user last voted
+  delegationPreference: text("delegation_preference").default("active"), // 'active', 'passive', 'none'
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -144,6 +152,12 @@ export const voteDelegations = pgTable("vote_delegations", {
   categoryId: integer("category_id"), // For category-specific delegations
   proposalId: integer("proposal_id"), // For proposal-specific delegations
   active: boolean("active").default(true),
+  // Enhanced delegation fields
+  delegationLevel: integer("delegation_level").default(1), // Tracks the delegation chain level (1 = direct, 2 = via one other user, etc.)
+  transferable: boolean("transferable").default(true), // Whether this delegation can be passed along (mult-level delegation)
+  delegationChain: integer("delegation_chain").array(), // Chain of user IDs in the delegation path
+  delegationPower: numeric("delegation_power").default("1"), // Weight multiplier for this delegation
+  expiresAt: timestamp("expires_at"), // Optional expiration date
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -151,6 +165,8 @@ export const voteDelegations = pgTable("vote_delegations", {
 export const insertVoteDelegationSchema = createInsertSchema(voteDelegations).omit({
   id: true,
   active: true,
+  delegationLevel: true, // Will be calculated by the system
+  delegationChain: true, // Will be calculated by the system
   createdAt: true,
   updatedAt: true,
 });
