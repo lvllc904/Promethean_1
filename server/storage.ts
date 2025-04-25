@@ -12,7 +12,10 @@ import {
   whitelabelSettings, type WhitelabelSetting, type InsertWhitelabelSetting,
   apiUsageLogs, type ApiUsageLog, type InsertApiUsageLog,
   reviews, type Review, type InsertReview,
-  governanceProposals, type GovernanceProposal, type InsertGovernanceProposal
+  governanceProposals, type GovernanceProposal, type InsertGovernanceProposal,
+  workerRatings, type WorkerRating, type InsertWorkerRating,
+  workerReputations, type WorkerReputation, type InsertWorkerReputation,
+  workerBadges, type WorkerBadge, type InsertWorkerBadge
 } from "@shared/schema";
 import * as schema from "@shared/schema";
 import { db } from "./db";
@@ -166,6 +169,17 @@ export interface IStorage {
   updateGovernanceProposal(id: number, updates: Partial<GovernanceProposal>): Promise<GovernanceProposal>;
   updateGovernanceProposalStatus(id: number, status: string): Promise<GovernanceProposal>;
   updateGovernanceProposalVotes(id: number, voteType: string, votePower: number): Promise<GovernanceProposal>;
+  
+  // Worker Ratings & Reputation methods
+  getWorkerRating(id: number): Promise<WorkerRating | undefined>;
+  getWorkerRatings(workerId: number): Promise<WorkerRating[]>;
+  createWorkerRating(rating: InsertWorkerRating): Promise<WorkerRating>;
+  getWorkerReputation(workerId: number): Promise<WorkerReputation | undefined>;
+  updateWorkerReputation(workerId: number): Promise<WorkerReputation>;
+  getWorkerBadges(): Promise<WorkerBadge[]>;
+  getWorkerBadge(id: number): Promise<WorkerBadge | undefined>;
+  createWorkerBadge(badge: InsertWorkerBadge): Promise<WorkerBadge>;
+  getWorkerLeaderboard(category?: string, limit?: number): Promise<WorkerReputation[]>;
 }
 
 export class MemStorage implements IStorage {
@@ -179,6 +193,9 @@ export class MemStorage implements IStorage {
   private communityEvents: Map<number, CommunityEvent>;
   private communityResources: Map<number, CommunityResource>;
   private communityMembers: Map<number, CommunityMember>;
+  private workerRatings: Map<number, WorkerRating>;
+  private workerReputations: Map<number, WorkerReputation>;
+  private workerBadges: Map<number, WorkerBadge>;
   
   private currentUserId: number;
   private currentPropertyId: number;
@@ -190,6 +207,9 @@ export class MemStorage implements IStorage {
   private currentEventId: number;
   private currentResourceId: number;
   private currentMemberId: number;
+  private currentRatingId: number;
+  private currentReputationId: number;
+  private currentBadgeId: number;
 
   constructor() {
     this.users = new Map();
@@ -202,6 +222,9 @@ export class MemStorage implements IStorage {
     this.communityEvents = new Map();
     this.communityResources = new Map();
     this.communityMembers = new Map();
+    this.workerRatings = new Map();
+    this.workerReputations = new Map();
+    this.workerBadges = new Map();
     
     this.currentUserId = 1;
     this.currentPropertyId = 1;
@@ -213,6 +236,9 @@ export class MemStorage implements IStorage {
     this.currentEventId = 1;
     this.currentResourceId = 1;
     this.currentMemberId = 1;
+    this.currentRatingId = 1;
+    this.currentReputationId = 1;
+    this.currentBadgeId = 1;
     
     // Initialize with sample data
     this.initializeData();

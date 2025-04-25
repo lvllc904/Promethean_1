@@ -238,6 +238,104 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Failed to fetch task statistics" });
     }
   });
+  
+  // Gig Worker Ratings & Reputation Endpoints
+  app.post(`${apiPrefix}/worker/ratings`, async (req, res) => {
+    try {
+      const ratingData = insertWorkerRatingSchema.parse(req.body);
+      
+      // Validate that the task exists and is completed
+      const task = await storage.getTask(ratingData.taskId);
+      if (!task) {
+        return res.status(404).json({ message: "Task not found" });
+      }
+      
+      if (task.status !== "completed") {
+        return res.status(400).json({ message: "Can only rate completed tasks" });
+      }
+      
+      // Validate that the rater is the task creator
+      if (task.creatorId !== ratingData.raterId) {
+        return res.status(403).json({ message: "Only the task creator can provide ratings" });
+      }
+      
+      // Validate that the worker is the task assignee
+      if (task.assigneeId !== ratingData.workerId) {
+        return res.status(400).json({ message: "Worker must be the task assignee" });
+      }
+      
+      const newRating = await storage.createWorkerRating(ratingData);
+      
+      // Update the worker's reputation
+      await storage.updateWorkerReputation(ratingData.workerId);
+      
+      res.status(201).json(newRating);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid rating data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to save worker rating" });
+    }
+  });
+  
+  app.get(`${apiPrefix}/worker/ratings/:workerId`, async (req, res) => {
+    try {
+      const workerId = parseInt(req.params.workerId);
+      const ratings = await storage.getWorkerRatings(workerId);
+      res.json(ratings);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch worker ratings" });
+    }
+  });
+  
+  app.get(`${apiPrefix}/worker/reputation/:workerId`, async (req, res) => {
+    try {
+      const workerId = parseInt(req.params.workerId);
+      const reputation = await storage.getWorkerReputation(workerId);
+      
+      if (!reputation) {
+        return res.status(404).json({ message: "Worker reputation not found" });
+      }
+      
+      res.json(reputation);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch worker reputation" });
+    }
+  });
+  
+  app.get(`${apiPrefix}/worker/badges`, async (req, res) => {
+    try {
+      const badges = await storage.getWorkerBadges();
+      res.json(badges);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch worker badges" });
+    }
+  });
+  
+  app.post(`${apiPrefix}/worker/badges`, async (req, res) => {
+    try {
+      const badgeData = insertWorkerBadgeSchema.parse(req.body);
+      const newBadge = await storage.createWorkerBadge(badgeData);
+      res.status(201).json(newBadge);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid badge data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to create worker badge" });
+    }
+  });
+  
+  app.get(`${apiPrefix}/worker/leaderboard`, async (req, res) => {
+    try {
+      const category = req.query.category as string;
+      const limit = parseInt(req.query.limit as string || "10");
+      
+      const leaderboard = await storage.getWorkerLeaderboard(category, limit);
+      res.json(leaderboard);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch worker leaderboard" });
+    }
+  });
 
   // Membership Tiers
   app.get(`${apiPrefix}/membership-tiers`, async (req, res) => {
