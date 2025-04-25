@@ -64,8 +64,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     queryFn: async () => {
       try {
         const res = await apiRequest("GET", "/api/auth/user");
-        if (res.status === 401) return null;
-        return await res.json();
+        
+        // If unauthorized, return null (not logged in)
+        if (res.status === 401) {
+          return null;
+        }
+        
+        // If not OK, throw error
+        if (!res.ok) {
+          throw new Error(`Error fetching user: ${res.statusText}`);
+        }
+        
+        // Try to parse the JSON response
+        try {
+          return await res.json();
+        } catch (parseError) {
+          console.error("Failed to parse user data response:", parseError);
+          throw new Error("Failed to parse user data");
+        }
       } catch (error) {
         console.error("Error fetching user:", error);
         return null;
@@ -89,12 +105,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // Login mutation
   const loginMutation = useMutation({
     mutationFn: async (credentials: LoginData) => {
-      const res = await apiRequest("POST", "/api/auth/login", credentials);
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.message || "Login failed");
+      try {
+        const res = await apiRequest("POST", "/api/auth/login", credentials);
+        
+        // Check if response is OK
+        if (!res.ok) {
+          // Try to parse error message if available
+          try {
+            const errorData = await res.json();
+            throw new Error(errorData.message || "Login failed");
+          } catch (parseError) {
+            // If we can't parse JSON, use status text
+            throw new Error(res.statusText || "Login failed");
+          }
+        }
+        
+        // Try to parse the successful response
+        try {
+          return await res.json();
+        } catch (parseError) {
+          throw new Error("Failed to parse server response");
+        }
+      } catch (error) {
+        console.error("Login error:", error);
+        throw error;
       }
-      return await res.json();
     },
     onSuccess: (user: User) => {
       queryClient.setQueryData(["/api/auth/user"], user);
@@ -119,12 +154,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // Registration mutation
   const registerMutation = useMutation({
     mutationFn: async (userData: RegisterData) => {
-      const res = await apiRequest("POST", "/api/auth/register", userData);
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.message || "Registration failed");
+      try {
+        const res = await apiRequest("POST", "/api/auth/register", userData);
+        
+        // Check if response is OK
+        if (!res.ok) {
+          // Try to parse error message if available
+          try {
+            const errorData = await res.json();
+            throw new Error(errorData.message || "Registration failed");
+          } catch (parseError) {
+            // If we can't parse JSON, use status text
+            throw new Error(res.statusText || "Registration failed");
+          }
+        }
+        
+        // Try to parse the successful response
+        try {
+          return await res.json();
+        } catch (parseError) {
+          throw new Error("Failed to parse server response");
+        }
+      } catch (error) {
+        console.error("Registration error:", error);
+        throw error;
       }
-      return await res.json();
     },
     onSuccess: (user: User) => {
       queryClient.setQueryData(["/api/auth/user"], user);
@@ -145,7 +199,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // Logout mutation
   const logoutMutation = useMutation({
     mutationFn: async () => {
-      await apiRequest("POST", "/api/auth/logout");
+      try {
+        const res = await apiRequest("POST", "/api/auth/logout");
+        
+        // Check if response is OK
+        if (!res.ok) {
+          // Try to parse error message if available
+          try {
+            const errorData = await res.json();
+            throw new Error(errorData.message || "Logout failed");
+          } catch (parseError) {
+            // If we can't parse JSON, use status text
+            throw new Error(res.statusText || "Logout failed");
+          }
+        }
+        
+        return;
+      } catch (error) {
+        console.error("Logout error:", error);
+        throw error;
+      }
     },
     onSuccess: () => {
       queryClient.setQueryData(["/api/auth/user"], null);
