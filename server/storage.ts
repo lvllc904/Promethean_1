@@ -1175,6 +1175,106 @@ export class MemStorage implements IStorage {
       author: "Data Science Team",
       publishedAt: "2023-04-22"
     });
+    
+    // Initialize legal agent network data
+    
+    // Create sample legal agents
+    this.createLegalAgent({
+      name: "PropertyLaw GPT",
+      description: "Specialized in real estate laws and property transactions across the United States",
+      expertise: ["Real Estate Transactions", "Property Law", "Title Transfers", "Zoning Regulations"],
+      jurisdictions: ["USA", "California", "New York", "Texas", "Florida"],
+      languages: ["English", "Spanish"],
+      modelProvider: "OpenAI",
+      modelName: "gpt-4o",
+      promptTemplate: "You are PropertyLaw GPT, an AI legal assistant specializing in real estate law in the United States. Please analyze the following property transaction case and provide legal guidance: {{query}}",
+      avatarUrl: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&h=256&q=80"
+    });
+    
+    this.createLegalAgent({
+      name: "International Property Counsel",
+      description: "Expert in international property laws, cross-border transactions, and global real estate investments",
+      expertise: ["International Property Law", "Cross-border Transactions", "Foreign Investment", "Tax Implications"],
+      jurisdictions: ["Global", "EU", "UK", "China", "UAE", "Singapore"],
+      languages: ["English", "French", "Mandarin", "Arabic"],
+      modelProvider: "Anthropic",
+      modelName: "claude-3-sonnet-20240229",
+      promptTemplate: "You are International Property Counsel, an AI legal assistant specializing in international real estate law. Please analyze the following global property transaction and provide legal guidance: {{query}}",
+      avatarUrl: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&h=256&q=80"
+    });
+    
+    this.createLegalAgent({
+      name: "Commercial RE Advisor",
+      description: "Specialized in commercial real estate contracts, leases, and development projects",
+      expertise: ["Commercial Real Estate", "Leasing", "Development Contracts", "Financing"],
+      jurisdictions: ["USA", "Canada", "UK"],
+      languages: ["English"],
+      modelProvider: "OpenAI",
+      modelName: "gpt-4o",
+      promptTemplate: "You are Commercial RE Advisor, an AI legal assistant specializing in commercial real estate. Please analyze the following commercial property matter and provide legal guidance: {{query}}",
+      avatarUrl: "https://images.unsplash.com/photo-1563237023-b1e970526dcb?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&h=256&q=80"
+    });
+    
+    // Create sample document templates
+    this.createLegalDocumentTemplate({
+      title: "Standard Residential Purchase Agreement",
+      description: "A comprehensive purchase agreement template for residential real estate transactions",
+      jurisdictions: ["USA"],
+      documentType: "Purchase Agreement",
+      templateContent: "REAL ESTATE PURCHASE AGREEMENT\n\nThis Real Estate Purchase Agreement (\"Agreement\") is made and entered into as of {{date}} by and between {{seller_name}} (\"Seller\") and {{buyer_name}} (\"Buyer\").\n\n1. PROPERTY: Seller agrees to sell and Buyer agrees to buy the real property located at {{property_address}}, legally described as {{legal_description}} (\"Property\").\n\n2. PURCHASE PRICE: The purchase price for the Property is ${{purchase_price}} (\"Purchase Price\").\n\n3. PAYMENT TERMS: Buyer shall pay the Purchase Price as follows:\n   a. ${{earnest_money}} as earnest money deposit upon execution of this Agreement.\n   b. ${{down_payment}} as down payment at closing.\n   c. ${{mortgage_amount}} through a mortgage loan to be obtained by Buyer.\n\n...",
+      variables: {
+        date: { type: "date", description: "Date of agreement" },
+        seller_name: { type: "string", description: "Legal name of the seller" },
+        buyer_name: { type: "string", description: "Legal name of the buyer" },
+        property_address: { type: "string", description: "Complete property address" },
+        legal_description: { type: "string", description: "Legal property description from title" },
+        purchase_price: { type: "number", description: "Total purchase price in USD" },
+        earnest_money: { type: "number", description: "Earnest money deposit amount" },
+        down_payment: { type: "number", description: "Down payment amount" },
+        mortgage_amount: { type: "number", description: "Mortgage loan amount" }
+      },
+      createdBy: 1
+    });
+    
+    this.createLegalDocumentTemplate({
+      title: "Commercial Property Lease Agreement",
+      description: "A comprehensive lease agreement template for commercial properties",
+      jurisdictions: ["USA"],
+      documentType: "Lease Agreement",
+      templateContent: "COMMERCIAL PROPERTY LEASE AGREEMENT\n\nThis Commercial Property Lease Agreement (\"Lease\") is made and entered into as of {{date}} by and between {{lessor_name}} (\"Lessor\") and {{lessee_name}} (\"Lessee\").\n\n1. PREMISES: Lessor hereby leases to Lessee and Lessee hereby leases from Lessor the commercial property located at {{property_address}} (\"Premises\"), consisting of approximately {{square_footage}} square feet.\n\n2. TERM: The term of this Lease shall be for {{lease_term}} months, commencing on {{start_date}} and ending on {{end_date}} (\"Lease Term\").\n\n3. RENT: Lessee shall pay to Lessor as rent for the Premises the sum of ${{monthly_rent}} per month (\"Base Rent\").\n\n...",
+      variables: {
+        date: { type: "date", description: "Date of agreement" },
+        lessor_name: { type: "string", description: "Legal name of the property owner" },
+        lessee_name: { type: "string", description: "Legal name of the tenant" },
+        property_address: { type: "string", description: "Complete property address" },
+        square_footage: { type: "number", description: "Square footage of the premises" },
+        lease_term: { type: "number", description: "Length of lease in months" },
+        start_date: { type: "date", description: "Lease start date" },
+        end_date: { type: "date", description: "Lease end date" },
+        monthly_rent: { type: "number", description: "Monthly rent amount" }
+      },
+      createdBy: 1
+    });
+    
+    // Create a sample consultation
+    const userId = 1;
+    const agentId = 1;
+    
+    this.createLegalConsultation({
+      userId,
+      agentId,
+      query: "I'm planning to purchase a property in California that has an existing tenant on a month-to-month lease. What are my legal rights and responsibilities regarding the tenant after I purchase the property?",
+      jurisdiction: "California",
+      propertyId: 1
+    });
+    
+    // Create a sample compliance check
+    this.createLegalComplianceCheck({
+      userId,
+      checkType: "Property Purchase",
+      jurisdiction: "California",
+      propertyId: 1
+    });
 
     // Sample members
     this.addCommunityMember({

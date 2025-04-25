@@ -22,7 +22,11 @@ import {
   insertWorkerBadgeSchema,
   insertEscrowSchema,
   insertTitleTransferSchema,
-  insertArbitratorSchema
+  insertArbitratorSchema,
+  insertLegalAgentSchema,
+  insertLegalConsultationSchema,
+  insertLegalDocumentTemplateSchema,
+  insertLegalComplianceCheckSchema
 } from "@shared/schema";
 import { aiConcierge } from "./services/ai-concierge";
 import { scheduler } from "./services/scheduler";
@@ -2383,6 +2387,342 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(updatedArbitrator);
     } catch (error) {
       res.status(500).json({ message: "Failed to update arbitrator rating", error: error.message });
+    }
+  });
+
+  // Legal Agent Network API Routes
+  
+  // Legal Agent Routes
+  app.get(`${apiPrefix}/legal/agents`, async (req, res) => {
+    try {
+      const expertise = req.query.expertise as string;
+      const jurisdiction = req.query.jurisdiction as string;
+      const language = req.query.language as string;
+      
+      const agents = await storage.getLegalAgents({
+        expertise,
+        jurisdiction,
+        language
+      });
+      
+      res.json(agents);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch legal agents", error: error.message });
+    }
+  });
+  
+  app.get(`${apiPrefix}/legal/agents/:id`, async (req, res) => {
+    try {
+      const agentId = parseInt(req.params.id);
+      const agent = await storage.getLegalAgent(agentId);
+      
+      if (!agent) {
+        return res.status(404).json({ message: "Legal agent not found" });
+      }
+      
+      res.json(agent);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch legal agent", error: error.message });
+    }
+  });
+  
+  app.post(`${apiPrefix}/legal/agents`, async (req, res) => {
+    try {
+      const agentData = insertLegalAgentSchema.parse(req.body);
+      const newAgent = await storage.createLegalAgent(agentData);
+      res.status(201).json(newAgent);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid legal agent data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to create legal agent", error: error.message });
+    }
+  });
+  
+  app.patch(`${apiPrefix}/legal/agents/:id`, async (req, res) => {
+    try {
+      const agentId = parseInt(req.params.id);
+      const updates = req.body;
+      
+      // Ensure the agent exists
+      const agent = await storage.getLegalAgent(agentId);
+      if (!agent) {
+        return res.status(404).json({ message: "Legal agent not found" });
+      }
+      
+      const updatedAgent = await storage.updateLegalAgent(agentId, updates);
+      res.json(updatedAgent);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to update legal agent", error: error.message });
+    }
+  });
+  
+  // Legal Consultation Routes
+  app.get(`${apiPrefix}/legal/consultations`, async (req, res) => {
+    try {
+      const userId = req.session?.userId || parseInt(req.query.userId as string);
+      
+      if (!userId) {
+        return res.status(400).json({ message: "User ID is required" });
+      }
+      
+      const consultations = await storage.getLegalConsultationsByUser(userId);
+      res.json(consultations);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch consultations", error: error.message });
+    }
+  });
+  
+  app.get(`${apiPrefix}/legal/consultations/:id`, async (req, res) => {
+    try {
+      const consultationId = parseInt(req.params.id);
+      const consultation = await storage.getLegalConsultation(consultationId);
+      
+      if (!consultation) {
+        return res.status(404).json({ message: "Consultation not found" });
+      }
+      
+      res.json(consultation);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch consultation", error: error.message });
+    }
+  });
+  
+  app.post(`${apiPrefix}/legal/consultations`, async (req, res) => {
+    try {
+      const consultationData = insertLegalConsultationSchema.parse(req.body);
+      
+      // Validate that the user exists
+      const user = await storage.getUser(consultationData.userId);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      
+      // Validate that the legal agent exists
+      const agent = await storage.getLegalAgent(consultationData.agentId);
+      if (!agent) {
+        return res.status(404).json({ message: "Legal agent not found" });
+      }
+      
+      const newConsultation = await storage.createLegalConsultation(consultationData);
+      res.status(201).json(newConsultation);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid consultation data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to create consultation", error: error.message });
+    }
+  });
+  
+  app.post(`${apiPrefix}/legal/consultations/:id/messages`, async (req, res) => {
+    try {
+      const consultationId = parseInt(req.params.id);
+      const { role, content } = req.body;
+      
+      if (!role || !content) {
+        return res.status(400).json({ message: "Role and content are required" });
+      }
+      
+      // Ensure the consultation exists
+      const consultation = await storage.getLegalConsultation(consultationId);
+      if (!consultation) {
+        return res.status(404).json({ message: "Consultation not found" });
+      }
+      
+      // Add the message to the conversation
+      const updatedConsultation = await storage.addMessageToConsultation(
+        consultationId,
+        { role, content }
+      );
+      
+      res.json(updatedConsultation);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to add message to consultation", error: error.message });
+    }
+  });
+  
+  app.patch(`${apiPrefix}/legal/consultations/:id/complete`, async (req, res) => {
+    try {
+      const consultationId = parseInt(req.params.id);
+      const { summary, legalAdvice } = req.body;
+      
+      if (!summary || !legalAdvice) {
+        return res.status(400).json({ message: "Summary and legal advice are required" });
+      }
+      
+      // Ensure the consultation exists
+      const consultation = await storage.getLegalConsultation(consultationId);
+      if (!consultation) {
+        return res.status(404).json({ message: "Consultation not found" });
+      }
+      
+      // Complete the consultation
+      const completedConsultation = await storage.completeConsultation(
+        consultationId,
+        summary,
+        legalAdvice
+      );
+      
+      res.json(completedConsultation);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to complete consultation", error: error.message });
+    }
+  });
+  
+  // Legal Document Template Routes
+  app.get(`${apiPrefix}/legal/templates`, async (req, res) => {
+    try {
+      const documentType = req.query.documentType as string;
+      const jurisdiction = req.query.jurisdiction as string;
+      
+      const templates = await storage.getLegalDocumentTemplates({
+        documentType,
+        jurisdiction
+      });
+      
+      res.json(templates);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch document templates", error: error.message });
+    }
+  });
+  
+  app.get(`${apiPrefix}/legal/templates/:id`, async (req, res) => {
+    try {
+      const templateId = parseInt(req.params.id);
+      const template = await storage.getLegalDocumentTemplate(templateId);
+      
+      if (!template) {
+        return res.status(404).json({ message: "Document template not found" });
+      }
+      
+      res.json(template);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch document template", error: error.message });
+    }
+  });
+  
+  app.post(`${apiPrefix}/legal/templates`, async (req, res) => {
+    try {
+      const templateData = insertLegalDocumentTemplateSchema.parse(req.body);
+      const newTemplate = await storage.createLegalDocumentTemplate(templateData);
+      res.status(201).json(newTemplate);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid document template data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to create document template", error: error.message });
+    }
+  });
+  
+  app.patch(`${apiPrefix}/legal/templates/:id`, async (req, res) => {
+    try {
+      const templateId = parseInt(req.params.id);
+      const updates = req.body;
+      
+      // Ensure the template exists
+      const template = await storage.getLegalDocumentTemplate(templateId);
+      if (!template) {
+        return res.status(404).json({ message: "Document template not found" });
+      }
+      
+      const updatedTemplate = await storage.updateLegalDocumentTemplate(templateId, updates);
+      res.json(updatedTemplate);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to update document template", error: error.message });
+    }
+  });
+  
+  // Legal Compliance Check Routes
+  app.get(`${apiPrefix}/legal/compliance/user/:userId`, async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const checks = await storage.getLegalComplianceChecksByUser(userId);
+      res.json(checks);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch compliance checks", error: error.message });
+    }
+  });
+  
+  app.get(`${apiPrefix}/legal/compliance/property/:propertyId`, async (req, res) => {
+    try {
+      const propertyId = parseInt(req.params.propertyId);
+      const checks = await storage.getLegalComplianceChecksByProperty(propertyId);
+      res.json(checks);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch compliance checks", error: error.message });
+    }
+  });
+  
+  app.get(`${apiPrefix}/legal/compliance/:id`, async (req, res) => {
+    try {
+      const checkId = parseInt(req.params.id);
+      const check = await storage.getLegalComplianceCheck(checkId);
+      
+      if (!check) {
+        return res.status(404).json({ message: "Compliance check not found" });
+      }
+      
+      res.json(check);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch compliance check", error: error.message });
+    }
+  });
+  
+  app.post(`${apiPrefix}/legal/compliance`, async (req, res) => {
+    try {
+      const checkData = insertLegalComplianceCheckSchema.parse(req.body);
+      
+      // Validate that the user exists
+      const user = await storage.getUser(checkData.userId);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      
+      // Validate property if provided
+      if (checkData.propertyId) {
+        const property = await storage.getProperty(checkData.propertyId);
+        if (!property) {
+          return res.status(404).json({ message: "Property not found" });
+        }
+      }
+      
+      const newCheck = await storage.createLegalComplianceCheck(checkData);
+      res.status(201).json(newCheck);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid compliance check data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to create compliance check", error: error.message });
+    }
+  });
+  
+  app.patch(`${apiPrefix}/legal/compliance/:id/complete`, async (req, res) => {
+    try {
+      const checkId = parseInt(req.params.id);
+      const { status, report, issues, recommendations } = req.body;
+      
+      if (!status || !report) {
+        return res.status(400).json({ message: "Status and report are required" });
+      }
+      
+      // Ensure the compliance check exists
+      const check = await storage.getLegalComplianceCheck(checkId);
+      if (!check) {
+        return res.status(404).json({ message: "Compliance check not found" });
+      }
+      
+      // Complete the compliance check
+      const completedCheck = await storage.completeComplianceCheck(
+        checkId,
+        status,
+        report,
+        issues || [],
+        recommendations || []
+      );
+      
+      res.json(completedCheck);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to complete compliance check", error: error.message });
     }
   });
 
