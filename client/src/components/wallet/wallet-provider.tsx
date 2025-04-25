@@ -3,7 +3,7 @@ import { ethers } from 'ethers';
 import { ConnectWalletModal } from './connect-wallet-modal';
 import { WalletFallback } from './wallet-fallback';
 import { useToast } from '@/hooks/use-toast';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 
 // Define window.ethereum interface for TypeScript
 declare global {
@@ -168,18 +168,50 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   }, []);
   
   const connect = async (providerId?: string) => {
-    if (typeof window === 'undefined' || !window.ethereum) {
-      // Show the fallback dialog instead of just a toast
+    if (typeof window === 'undefined') {
+      return;
+    }
+    
+    // Check if wallet is available
+    if (!window.ethereum) {
       setIsFallbackOpen(true);
+      toast({
+        title: "No Wallet Detected",
+        description: "Please install MetaMask or another Web3 wallet to connect.",
+        variant: "destructive",
+      });
       return;
     }
     
     try {
-      // Request account access
-      const accounts = await window.ethereum.request({ 
-        method: 'eth_requestAccounts',
-        params: []
-      });
+      // Handle different wallet providers
+      let accounts;
+      
+      // MetaMask and most injected providers
+      if (providerId === 'metamask' || !providerId) {
+        accounts = await window.ethereum.request({ 
+          method: 'eth_requestAccounts',
+          params: []
+        });
+      } 
+      // For WalletConnect or other providers, we would add implementation here
+      // but for now, let's just open their website
+      else if (providerId === 'walletconnect') {
+        window.open('https://walletconnect.com/', '_blank');
+        return;
+      }
+      // Coinbase Wallet
+      else if (providerId === 'coinbase') {
+        window.open('https://www.coinbase.com/wallet/downloads', '_blank');
+        return;
+      } 
+      else {
+        // Default to standard connection
+        accounts = await window.ethereum.request({ 
+          method: 'eth_requestAccounts',
+          params: []
+        });
+      }
       
       if (!accounts || accounts.length === 0) {
         throw new Error("No accounts returned from wallet");
@@ -205,11 +237,28 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         title: "Wallet Connected",
         description: `Connected to ${address.substring(0, 8)}...${address.substring(36)}`,
       });
+      
+      // Close the modal if open
+      closeModal();
     } catch (error) {
       console.error("Failed to connect wallet:", error);
+      
+      // More descriptive error messages based on the error type
+      let errorMessage = "Failed to connect to your wallet. Please try again.";
+      
+      if (error instanceof Error) {
+        if (error.message.includes("User rejected the request")) {
+          errorMessage = "Connection rejected. Please approve the connection request in your wallet.";
+        } else if (error.message.includes("already pending")) {
+          errorMessage = "Connection request already pending. Please check your wallet.";
+        } else if (error.message.includes("Chain ID")) {
+          errorMessage = "Network mismatch. Please switch to the supported network in your wallet.";
+        }
+      }
+      
       toast({
         title: "Connection Failed",
-        description: "Failed to connect to your wallet. Please try again.",
+        description: errorMessage,
         variant: "destructive",
       });
     }
@@ -252,10 +301,14 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       
       {/* Wallet Fallback Dialog */}
       <Dialog open={isFallbackOpen} onOpenChange={setIsFallbackOpen}>
-        <DialogContent className="sm:max-w-md p-0" aria-describedby="wallet-fallback-desc">
-          {/* Hidden but accessible title for screen readers */}
-          <div className="sr-only" id="wallet-fallback-title">Wallet Connection Required</div>
-          <div className="sr-only" id="wallet-fallback-desc">No Ethereum wallet detected. You need to install a wallet to use all features.</div>
+        <DialogContent className="sm:max-w-md p-0" aria-describedby="wallet-fallback-description">
+          {/* Hidden but accessible title and description for screen readers */}
+          <div className="sr-only">
+            Wallet Connection Required
+          </div>
+          <div id="wallet-fallback-description" className="sr-only">
+            No Ethereum wallet detected. You need to install a wallet to use all features.
+          </div>
           <WalletFallback onClose={closeFallback} />
         </DialogContent>
       </Dialog>
