@@ -19,11 +19,17 @@ export interface AuthUser {
   walletAddress?: string;
 }
 
-// Extend Express Request type to include user
+// Extend Express Session and Request types
 declare global {
   namespace Express {
     interface Request {
       user?: AuthUser;
+    }
+  }
+  
+  namespace Express.Session {
+    interface SessionData {
+      userId?: number;
     }
   }
 }
@@ -135,7 +141,6 @@ export function setupAuth(app: Express) {
         email,
         name,
         membershipTier: "basic", // Default tier
-        dacTokenBalance: 10, // Initial governance tokens
       });
       
       // Set session

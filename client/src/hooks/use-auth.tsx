@@ -15,8 +15,10 @@ export interface User {
   name?: string;
   email?: string;
   membershipTier?: string;
-  dacTokenBalance?: number;
-  profilePictureUrl?: string;
+  walletAddress?: string;
+  dacTokenBalance?: string;
+  promTokenBalance?: string;
+  avatarUrl?: string;
 }
 
 // Login data interface

@@ -242,6 +242,99 @@ export interface IStorage {
 }
 
 export class MemStorage implements IStorage {
+  private usersByUsername = new Map<string, number>();
+  private usersByEmail = new Map<string, number>();
+  private usersByWalletAddress = new Map<string, number>();
+
+  // User methods
+  async getUser(id: number): Promise<User | undefined> {
+    return this.users.get(id);
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    const userId = this.usersByUsername.get(username);
+    if (!userId) return undefined;
+    return this.users.get(userId);
+  }
+
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    const userId = this.usersByEmail.get(email);
+    if (!userId) return undefined;
+    return this.users.get(userId);
+  }
+
+  async getUserByWalletAddress(walletAddress: string): Promise<User | undefined> {
+    const userId = this.usersByWalletAddress.get(walletAddress);
+    if (!userId) return undefined;
+    return this.users.get(userId);
+  }
+
+  async createUser(user: InsertUser): Promise<User> {
+    const id = this.currentUserId++;
+    const now = new Date();
+    
+    const newUser: User = {
+      id,
+      ...user,
+      email: user.email || null,
+      name: user.name || null,
+      walletAddress: user.walletAddress || null,
+      avatarUrl: user.avatarUrl || null,
+      membershipTier: user.membershipTier || "free",
+      dacTokenBalance: "10", // Initial governance tokens
+      promTokenBalance: "0",
+      receivedInitialProm: false,
+      createdAt: now,
+    };
+    
+    this.users.set(id, newUser);
+    this.usersByUsername.set(user.username, id);
+    if (user.email) this.usersByEmail.set(user.email, id);
+    if (user.walletAddress) this.usersByWalletAddress.set(user.walletAddress, id);
+    
+    return newUser;
+  }
+
+  async updateUserMembership(id: number, membershipTier: string): Promise<User> {
+    const user = this.users.get(id);
+    if (!user) {
+      throw new Error(`User with id ${id} not found`);
+    }
+    
+    const updatedUser: User = {
+      ...user,
+      membershipTier,
+    };
+    
+    this.users.set(id, updatedUser);
+    return updatedUser;
+  }
+
+  async updateUserWallet(id: number, walletAddress: string): Promise<User> {
+    const user = this.users.get(id);
+    if (!user) {
+      throw new Error(`User with id ${id} not found`);
+    }
+    
+    // If user already had a wallet, remove the old mapping
+    if (user.walletAddress) {
+      this.usersByWalletAddress.delete(user.walletAddress);
+    }
+    
+    const updatedUser: User = {
+      ...user,
+      walletAddress,
+    };
+    
+    this.users.set(id, updatedUser);
+    this.usersByWalletAddress.set(walletAddress, id);
+    return updatedUser;
+  }
+
+  async countDaoMembers(): Promise<number> {
+    return this.users.size;
+  }
+
   // Escrow methods
   async getEscrow(id: number): Promise<Escrow | undefined> {
     return this.escrows.get(id);
@@ -1078,6 +1171,18 @@ export class DatabaseStorage implements IStorage {
     return users.length > 0 ? users[0] : undefined;
   }
 
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    if (!email) return undefined;
+    const users = await db.select().from(schema.users).where(eq(schema.users.email, email));
+    return users.length > 0 ? users[0] : undefined;
+  }
+
+  async getUserByWalletAddress(walletAddress: string): Promise<User | undefined> {
+    if (!walletAddress) return undefined;
+    const users = await db.select().from(schema.users).where(eq(schema.users.walletAddress, walletAddress));
+    return users.length > 0 ? users[0] : undefined;
+  }
+
   async createUser(user: InsertUser): Promise<User> {
     const [createdUser] = await db.insert(schema.users).values(user).returning();
     return createdUser;
@@ -1087,6 +1192,15 @@ export class DatabaseStorage implements IStorage {
     const [updatedUser] = await db
       .update(schema.users)
       .set({ membershipTier })
+      .where(eq(schema.users.id, id))
+      .returning();
+    return updatedUser;
+  }
+
+  async updateUserWallet(id: number, walletAddress: string): Promise<User> {
+    const [updatedUser] = await db
+      .update(schema.users)
+      .set({ walletAddress })
       .where(eq(schema.users.id, id))
       .returning();
     return updatedUser;
