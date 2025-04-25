@@ -1,0 +1,95 @@
+You are the Replit Core Agent, tasked with implementing a new secure social media feature for an existing decentralized platform. The primary goal is to create a safe and protected space for users, including vulnerable individuals like citizen whistleblowers, refugees, press, military, and law enforcement, to connect and share information securely. Security and user privacy are paramount.
+Platform Context: The platform is decentralized (but not a DAO) and currently exists. The new social functionality should integrate seamlessly and leverage the platform's existing decentralized architecture. Assume the platform uses a PostgreSQL database (accessed via a library like pg-promise or node-postgres, which you should choose and use) and a Node.js/Express.js backend.  The platform has a basic user authentication system already in place, but you'll need to extend it for social feature access with mandatory MFA.
+Goal: Implement a functional and secure version of the social media feature, encompassing user profiles, following, posting, basic feed display, direct messaging with end-to-end encryption, and foundational security measures.  Aim for the most complete, runnable code possible in this single pass.
+Constraints and Requirements:
+ * Security First: All aspects of the implementation must prioritize security and user privacy. Implement end-to-end encryption by default for direct messages.  For posts, implement E2EE if feasible within this pass without compromising other security or core functionality. If E2EE for posts is too complex for this pass, implement robust access control (visibility levels) as a fallback.
+ * Pseudonymity: User profiles should primarily utilize pseudonyms.
+ * MFA: Mandatory Multi-Factor Authentication (MFA) must be implemented for all users accessing the social features. Use speakeasy for TOTP and qrcode to generate QR codes.
+ * Basic Posting: Users should be able to create and share text-based posts.
+ * Basic Feed: Display a chronological feed of posts from followed users.
+ * Direct Messaging: Implement secure, end-to-end encrypted direct messaging using libsodium-wrappers.
+ * Following: Users should be able to follow other users.
+ * Basic User Profiles: Allow users to create profiles with a pseudonym, avatar, and optional bio, with basic privacy settings.
+ * Minimize External Integration (Initial Pass): For this initial implementation, focus on building the core native social features. Do NOT attempt to integrate external social media feeds in this pass due to security complexities.
+ * User Education (Stubs): Create placeholder functions or components for displaying basic security and privacy tips to users (the actual content will be added later).
+ * Decentralized Principles: Leverage the platform's decentralized nature where appropriate for data storage and user identity (without requiring a full DAO governance model in this initial pass).  Assume the existing platform has some form of decentralized identity management, but you'll need to adapt it for the social profiles.
+ * Code Quality: Write clean, well-documented, and maintainable code.  Use TypeScript for both backend and frontend.
+ * Error Handling: Implement robust error handling and logging.
+ * Dependencies: Use these specific libraries:
+   * express for the backend framework
+   * pg-promise for PostgreSQL interaction
+   * speakeasy for MFA (TOTP)
+   * qrcode for generating MFA QR codes
+   * libsodium-wrappers for end-to-end encryption
+   * react for the frontend framework
+   * react-hook-form and zod for form handling
+   * @tanstack/react-query for data fetching
+   * @radix-ui/react- components for UI components (assume these are available)
+Implementation Steps:
+ * Database Setup (PostgreSQL):
+   * Provide a complete PostgreSQL schema (using pg-promise's query generation) for the following tables: social_profiles, social_posts, social_follows, and social_messages. Include appropriate data types, constraints, and indexes.  Assume an existing users table for basic platform user authentication.  The social_profiles table should link to this users table.
+   * Provide the necessary SQL queries (using pg-promise) to create these tables.
+ * Backend Development (Node.js/Express.js):
+   * Set up an Express.js server and connect it to the PostgreSQL database using pg-promise.
+   * Implement API endpoints for the following:
+     * MFA Setup (/api/social/mfa/setup): Generate a TOTP secret using speakeasy, store it in the social_profiles table, and return the secret and a QR code (generated with qrcode) for the user to scan.  This endpoint requires the user to be authenticated with the platform's existing authentication system.
+     * MFA Verification (/api/social/mfa/verify): Verify the user-provided TOTP token using speakeasy, update the social_profiles table to mark MFA as enabled, and return a success response.  This endpoint requires the user to be authenticated.
+     * MFA Validation (/api/social/mfa/validate): This endpoint is called after a user has logged in with their regular platform credentials, but before they are allowed to access social features.  It verifies the TOTP token.  If the token is valid, it should generate a separate JWT token specifically for accessing social features (with a different claim, e.g., socialAccess: true).  This token should have a shorter lifespan than the main platform token.
+     * Profile Creation/Update (/api/social/profile): Create or update a user's social profile (pseudonym, avatar, bio, public key, privacy settings).  This endpoint requires a valid social access token.
+     * Get Profile (/api/social/profile/:id): Retrieve a social profile by its ID.  This endpoint requires a valid social access token.  Ensure that sensitive information (like the MFA secret) is not returned.
+     * Create Post (/api/social/posts): Create a new post.  This endpoint requires a valid social access token.  Implement E2EE for posts if you can do so efficiently within this pass (using libsodium-wrappers).  If not, implement visibility levels ('public', 'followers', 'private') and robust access control.
+     * Get Feed (/api/social/feed): Retrieve posts from users the current user follows.  This endpoint requires a valid social access token.  Apply the appropriate visibility filtering.
+     * Follow User (/api/social/follow/:id): Create a follow relationship between the current user and another user.  This endpoint requires a valid social access token.
+     * Unfollow User (/api/social/unfollow/:id): Delete a follow relationship.  This endpoint requires a valid social access token.
+     * Send Message (/api/social/messages): Send a direct message.  This endpoint requires a valid social access token.  Use libsodium-wrappers to implement end-to-end encryption.
+     * Get Conversation (/api/social/messages/:recipientId): Retrieve the conversation between the current user and another user.  This endpoint requires a valid social access token.  Use libsodium-wrappers to decrypt messages.
+     * Mark Messages as Read (/api/social/messages/read/:senderId): Mark messages from a given sender as read by the current user.
+   * Implement middleware for:
+     * Social Access Authentication: Create middleware (requireSocialAuth) that checks for the presence of a valid social access token (the one generated by the /api/social/mfa/validate endpoint).  This middleware should be applied to all social feature endpoints except the MFA setup and verification endpoints.
+   * Implement error handling for all API endpoints.
+ * Frontend Development (React):
+   * Create React components for the following:
+     * MFA Setup Page (/social/profile/setup-mfa): Display the QR code (generated by the backend) and allow the user to enter their TOTP token.  Use react-hook-form and zod for form validation.
+     * Profile Creation/Edit Page (/social/profile/edit): Allow users to create or edit their social profile (pseudonym, avatar, bio, privacy settings).  Use react-hook-form and zod for form validation.  Include a field for the user's public key (generated client-side using libsodium-wrappers).
+     * Profile View Page (/social/profile/:id): Display a user's social profile.
+     * Social Feed Page (/social/index): Display the feed of posts from followed users.
+     * Direct Messaging List (/social/messages): Display a list of users the current user has conversations with.
+     * Conversation View (/social/messages/:id): Display the conversation between the current user and another user.  Use libsodium-wrappers to encrypt and decrypt messages.  Implement auto-scrolling to the bottom of the message list.
+     * Security Center (/social/security-center): A placeholder page to display security tips and settings (the actual content will be added later).
+   * Use @tanstack/react-query for fetching data from the backend API.
+   * Use @radix-ui/react- components for UI components.
+   * Implement client-side routing using wouter or a similar library.
+   * Implement a CryptoService class (as shown in the previous response) using libsodium-wrappers for key generation, encryption, and decryption.  This class should handle storing the user's key pair (securely, if possible within the browser context - localStorage is acceptable for this exercise, but note its limitations in a real application).
+ * Security Implementation (Client-Side & Server-Side):
+   * Client-Side:
+     * Generate a key pair (public and private key) using libsodium-wrappers when the user creates their social profile.  Store the keys securely (localStorage is acceptable for this exercise, but a real application would need a more robust solution).
+     * Use the CryptoService to encrypt messages before sending them to the backend and decrypt messages received from the backend.
+     * Implement the MFA setup flow, displaying the QR code and allowing the user to enter the verification code.
+     * Implement appropriate UI indicators to show when messages are end-to-end encrypted.
+   * Server-Side:
+     * Enforce mandatory MFA for accessing social features using the speakeasy and qrcode libraries.
+     * Use JWTs (with a separate token for social access) for authentication and authorization.
+     * Protect API endpoints with the requireSocialAuth middleware.
+     * Implement robust input validation and sanitization on all API endpoints.
+     * Securely store user data in the PostgreSQL database.
+     * Implement rate limiting to prevent abuse.
+Output:
+Provide a complete, runnable application, including:
+ * Complete PostgreSQL schema (using pg-promise query generation) and SQL queries for table creation.
+ * Complete Node.js/Express.js backend code with all necessary API endpoints, middleware, and error handling.
+ * Complete React frontend code with all necessary components, routing, and data fetching.
+ * Instructions on how to set up the database and run the application.
+Evaluation Criteria:
+ * Functionality of user profiles, following, posting, basic feed, and direct messaging.
+ * Implementation of mandatory MFA using speakeasy and qrcode.
+ * Implementation of end-to-end encryption for direct messages (and posts, if feasible) using libsodium-wrappers.
+ * Security considerations in the design and implementation (client-side and server-side).
+ * Code quality, clarity, and adherence to TypeScript.
+ * Adherence to the constraints and requirements.
+ * Completeness and runnability of the generated code.
+Important Notes:
+ * This is a complex task, and the generated code may require further testing, refinement, and security audits.
+ * Assume the existence of a basic decentralized platform structure, but you are responsible for implementing the social-specific components and extending the existing authentication.
+ * Focus on creating a functional and secure initial implementation. Performance optimization and advanced features can be addressed in subsequent iterations.
+ * Pay close attention to security best practices, especially when handling encryption keys and user data.
+ * Use the specified libraries.

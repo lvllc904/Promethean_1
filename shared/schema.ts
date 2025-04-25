@@ -436,6 +436,117 @@ export type Review = typeof reviews.$inferSelect;
 export type InsertGovernanceProposal = z.infer<typeof insertGovernanceProposalSchema>;
 export type GovernanceProposal = typeof governanceProposals.$inferSelect;
 
+// Secure Social Media Feature Schema
+
+// Social User Profiles
+export const socialProfiles = pgTable('social_profiles', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id').references(() => users.id).notNull(),
+  pseudonym: text('pseudonym').notNull(),
+  avatarUrl: text('avatar_url'),
+  bio: text('bio'),
+  publicKey: text('public_key').notNull(), // For E2EE
+  privacySettings: jsonb('privacy_settings').notNull().default({}),
+  mfaEnabled: boolean('mfa_enabled').notNull().default(false),
+  mfaSecret: text('mfa_secret'),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+}, (table) => {
+  return {
+    userIdIdx: uniqueIndex('social_profiles_user_id_idx').on(table.userId),
+    pseudonymIdx: uniqueIndex('social_profiles_pseudonym_idx').on(table.pseudonym),
+  };
+});
+
+export const insertSocialProfileSchema = createInsertSchema(socialProfiles).omit({
+  id: true,
+  mfaEnabled: true,
+  mfaSecret: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// Social Posts
+export const socialPosts = pgTable('social_posts', {
+  id: serial('id').primaryKey(),
+  authorId: integer('author_id').references(() => socialProfiles.id).notNull(),
+  content: text('content').notNull(),
+  encryptionMetadata: jsonb('encryption_metadata'), // For E2EE posts (optional)
+  visibilityLevel: text('visibility_level').notNull().default('followers'), // public, followers, private
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+});
+
+export const insertSocialPostSchema = createInsertSchema(socialPosts).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// Follower Relationships
+export const socialFollows = pgTable('social_follows', {
+  id: serial('id').primaryKey(),
+  followerId: integer('follower_id').references(() => socialProfiles.id).notNull(),
+  followedId: integer('followed_id').references(() => socialProfiles.id).notNull(),
+  createdAt: timestamp('created_at').defaultNow(),
+}, (table) => {
+  return {
+    uniqueFollow: uniqueIndex('social_follows_unique_idx').on(table.followerId, table.followedId),
+  };
+});
+
+export const insertSocialFollowSchema = createInsertSchema(socialFollows).omit({
+  id: true,
+  createdAt: true,
+});
+
+// Direct Messages
+export const socialMessages = pgTable('social_messages', {
+  id: serial('id').primaryKey(),
+  senderId: integer('sender_id').references(() => socialProfiles.id).notNull(),
+  recipientId: integer('recipient_id').references(() => socialProfiles.id).notNull(),
+  encryptedContent: text('encrypted_content').notNull(),
+  encryptionMetadata: jsonb('encryption_metadata').notNull(),
+  readAt: timestamp('read_at'),
+  createdAt: timestamp('created_at').defaultNow(),
+});
+
+export const insertSocialMessageSchema = createInsertSchema(socialMessages).omit({
+  id: true,
+  readAt: true,
+  createdAt: true,
+});
+
+// Session tokens for social features with MFA
+export const socialSessions = pgTable('social_sessions', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id').references(() => users.id).notNull(),
+  token: text('token').notNull().unique(),
+  expiresAt: timestamp('expires_at').notNull(),
+  createdAt: timestamp('created_at').defaultNow(),
+});
+
+export const insertSocialSessionSchema = createInsertSchema(socialSessions).omit({
+  id: true,
+  createdAt: true,
+});
+
+// Types for social media features
+export type InsertSocialProfile = z.infer<typeof insertSocialProfileSchema>;
+export type SocialProfile = typeof socialProfiles.$inferSelect;
+
+export type InsertSocialPost = z.infer<typeof insertSocialPostSchema>;
+export type SocialPost = typeof socialPosts.$inferSelect;
+
+export type InsertSocialFollow = z.infer<typeof insertSocialFollowSchema>;
+export type SocialFollow = typeof socialFollows.$inferSelect;
+
+export type InsertSocialMessage = z.infer<typeof insertSocialMessageSchema>;
+export type SocialMessage = typeof socialMessages.$inferSelect;
+
+export type InsertSocialSession = z.infer<typeof insertSocialSessionSchema>;
+export type SocialSession = typeof socialSessions.$inferSelect;
+
 // Worker Ratings schema
 export const workerRatings = pgTable("worker_ratings", {
   id: serial("id").primaryKey(),

@@ -1,0 +1,56 @@
+You are the Replit Core Agent, tasked with implementing a new secure social media feature for an existing decentralized platform. The primary goal is to create a safe and protected space for users, including vulnerable individuals like citizen whistleblowers, refugees, press, military, and law enforcement, to connect and share information securely. Security and user privacy are paramount.
+
+**Platform Context:** The platform is decentralized (but not a DAO) and currently exists. The new social functionality should integrate seamlessly and leverage the platform's existing decentralized architecture.
+
+**Goal:** Implement a functional and secure version of the social media feature, encompassing user profiles, following, posting, basic feed display, direct messaging with end-to-end encryption, and foundational security measures.
+
+**Constraints and Requirements:**
+
+* **Security First:** All aspects of the implementation must prioritize security and user privacy. Implement end-to-end encryption by default for direct messages and user-generated content (if feasible in this pass).
+* **Pseudonymity:** User profiles should primarily utilize pseudonyms.
+* **MFA:** Mandatory Multi-Factor Authentication (MFA) must be implemented for all users accessing the social features.
+* **Basic Posting:** Users should be able to create and share text-based posts.
+* **Basic Feed:** Display a chronological feed of posts from followed users.
+* **Direct Messaging:** Implement secure, end-to-end encrypted direct messaging.
+* **Following:** Users should be able to follow other users.
+* **Basic User Profiles:** Allow users to create profiles with a pseudonym, avatar, and optional bio, with basic privacy settings.
+* **Minimize External Integration (Initial Pass):** For this initial implementation, focus on building the core native social features. Do NOT attempt to integrate external social media feeds in this pass due to security complexities.
+* **User Education (Stubs):** Create placeholder functions or components for displaying basic security and privacy tips to users (the actual content will be added later).
+* **Decentralized Principles:** Leverage the platform's decentralized nature where appropriate for data storage and user identity (without requiring a full DAO governance model in this initial pass).
+* **Code Quality:** Write clean, well-documented, and maintainable code.
+* **Error Handling:** Implement robust error handling and logging.
+
+**Implementation Steps:**
+
+1.  **Backend Development:**
+    * Define the data models for users, profiles, posts, follows, and messages, considering security and privacy.
+    * Develop API endpoints for user registration/login (with MFA), profile creation/management, following/unfollowing users, creating/retrieving posts, and sending/receiving direct messages (with E2EE).
+    * Implement the logic for generating and displaying the basic chronological feed.
+    * Implement end-to-end encryption for direct messages (using a library like libsodium or a similar secure protocol). If feasible within the constraints of this pass and without significant performance impact, also implement E2EE for posts.
+    * Implement mandatory MFA using a standard method (e.g., TOTP).
+    * Implement basic rate limiting and input validation on all API endpoints to prevent abuse.
+
+2.  **Frontend Development:**
+    * Create UI components for user registration/login (with MFA flow), profile creation/editing, user search/discovery (by pseudonym), following/unfollowing, creating posts, displaying the feed, and sending/receiving direct messages (with E2EE).
+    * Integrate with the backend API endpoints.
+    * Implement basic display of security and privacy tips (placeholders for content).
+    * Ensure a user-friendly interface that clearly indicates secure communication (e.g., visual indicators for encrypted messages).
+
+3.  **Security Implementation (Integrated Throughout):**
+    * Securely handle user credentials and session management.
+    * Implement appropriate authorization mechanisms to control access to data and functionality.
+    * Prevent common web vulnerabilities (e.g., XSS, CSRF).
+    * Adhere to the principle of least privilege.
+
+**Output:** Provide the complete code implementation for the backend and frontend components of this new secure social media feature, along with any necessary configuration files and setup instructions. Assume the existence of a basic decentralized platform structure that this feature will integrate into.
+
+**Evaluation Criteria:**
+
+* Functionality of user profiles, following, posting, basic feed, and direct messaging.
+* Implementation of mandatory MFA.
+* Implementation of end-to-end encryption for direct messages (and posts, if feasible).
+* Security considerations in the design and implementation.
+* Code quality and clarity.
+* Adherence to the constraints and requirements.
+
+**Important Note:** Due to the complexity of this task, the generated code may require further testing, refinement, and security audits. This prompt aims for a functional initial implementation rather than a production-ready solution in a single pass. Focus on the core security and communication aspects.
