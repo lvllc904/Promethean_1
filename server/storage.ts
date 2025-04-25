@@ -18,7 +18,11 @@ import {
   workerBadges, type WorkerBadge, type InsertWorkerBadge,
   escrows, type Escrow, type InsertEscrow,
   titleTransfers, type TitleTransfer, type InsertTitleTransfer,
-  arbitrators, type Arbitrator, type InsertArbitrator
+  arbitrators, type Arbitrator, type InsertArbitrator,
+  legalAgents, type LegalAgent, type InsertLegalAgent,
+  legalConsultations, type LegalConsultation, type InsertLegalConsultation,
+  legalDocumentTemplates, type LegalDocumentTemplate, type InsertLegalDocumentTemplate,
+  legalComplianceChecks, type LegalComplianceCheck, type InsertLegalComplianceCheck
 } from "@shared/schema";
 import * as schema from "@shared/schema";
 import { db } from "./db";
@@ -239,6 +243,34 @@ export interface IStorage {
   } | undefined>;
   getWorkerTasks(workerId: number): Promise<Task[]>;
   getPopularSkills(): Promise<Array<{ name: string; count: number; }>>;
+  
+  // Legal Agent Network methods
+  getLegalAgent(id: number): Promise<LegalAgent | undefined>;
+  getLegalAgents(options?: { expertise?: string; jurisdiction?: string; language?: string }): Promise<LegalAgent[]>;
+  createLegalAgent(agent: InsertLegalAgent): Promise<LegalAgent>;
+  updateLegalAgent(id: number, updates: Partial<InsertLegalAgent>): Promise<LegalAgent>;
+  
+  // Legal Consultation methods
+  getLegalConsultation(id: number): Promise<LegalConsultation | undefined>;
+  getLegalConsultationsByUser(userId: number): Promise<LegalConsultation[]>;
+  createLegalConsultation(consultation: InsertLegalConsultation): Promise<LegalConsultation>;
+  updateLegalConsultation(id: number, updates: Partial<LegalConsultation>): Promise<LegalConsultation>;
+  addMessageToConsultation(id: number, message: { role: string; content: string; }): Promise<LegalConsultation>;
+  completeConsultation(id: number, summary: string, legalAdvice: string): Promise<LegalConsultation>;
+  
+  // Legal Document Template methods
+  getLegalDocumentTemplate(id: number): Promise<LegalDocumentTemplate | undefined>;
+  getLegalDocumentTemplates(options?: { documentType?: string; jurisdiction?: string }): Promise<LegalDocumentTemplate[]>;
+  createLegalDocumentTemplate(template: InsertLegalDocumentTemplate): Promise<LegalDocumentTemplate>;
+  updateLegalDocumentTemplate(id: number, updates: Partial<InsertLegalDocumentTemplate>): Promise<LegalDocumentTemplate>;
+  
+  // Legal Compliance Check methods
+  getLegalComplianceCheck(id: number): Promise<LegalComplianceCheck | undefined>;
+  getLegalComplianceChecksByUser(userId: number): Promise<LegalComplianceCheck[]>;
+  getLegalComplianceChecksByProperty(propertyId: number): Promise<LegalComplianceCheck[]>;
+  createLegalComplianceCheck(check: InsertLegalComplianceCheck): Promise<LegalComplianceCheck>;
+  updateLegalComplianceCheck(id: number, updates: Partial<LegalComplianceCheck>): Promise<LegalComplianceCheck>;
+  completeComplianceCheck(id: number, status: string, report: any, issues: any[], recommendations: any[]): Promise<LegalComplianceCheck>;
 }
 
 export class MemStorage implements IStorage {
@@ -489,6 +521,10 @@ export class MemStorage implements IStorage {
   private escrows: Map<number, Escrow>;
   private titleTransfers: Map<number, TitleTransfer>;
   private arbitrators: Map<number, Arbitrator>;
+  private legalAgents: Map<number, LegalAgent>;
+  private legalConsultations: Map<number, LegalConsultation>;
+  private legalDocumentTemplates: Map<number, LegalDocumentTemplate>;
+  private legalComplianceChecks: Map<number, LegalComplianceCheck>;
   
   private currentUserId: number;
   private currentPropertyId: number;
@@ -506,6 +542,10 @@ export class MemStorage implements IStorage {
   private currentEscrowId: number;
   private currentTitleTransferId: number;
   private currentArbitratorId: number;
+  private currentLegalAgentId: number;
+  private currentLegalConsultationId: number;
+  private currentLegalDocumentTemplateId: number;
+  private currentLegalComplianceCheckId: number;
 
   constructor() {
     this.users = new Map();
@@ -524,6 +564,10 @@ export class MemStorage implements IStorage {
     this.escrows = new Map();
     this.titleTransfers = new Map();
     this.arbitrators = new Map();
+    this.legalAgents = new Map();
+    this.legalConsultations = new Map();
+    this.legalDocumentTemplates = new Map();
+    this.legalComplianceChecks = new Map();
     
     this.currentUserId = 1;
     this.currentPropertyId = 1;
@@ -541,9 +585,296 @@ export class MemStorage implements IStorage {
     this.currentEscrowId = 1;
     this.currentTitleTransferId = 1;
     this.currentArbitratorId = 1;
+    this.currentLegalAgentId = 1;
+    this.currentLegalConsultationId = 1;
+    this.currentLegalDocumentTemplateId = 1;
+    this.currentLegalComplianceCheckId = 1;
     
     // Initialize with sample data
     this.initializeData();
+  }
+
+  // Legal Agent Network methods
+  async getLegalAgent(id: number): Promise<LegalAgent | undefined> {
+    return this.legalAgents.get(id);
+  }
+
+  async getLegalAgents(options?: { expertise?: string; jurisdiction?: string; language?: string }): Promise<LegalAgent[]> {
+    let agents = Array.from(this.legalAgents.values()).filter(agent => agent.active);
+    
+    if (options?.expertise) {
+      agents = agents.filter(agent => agent.expertise.includes(options.expertise as string));
+    }
+    
+    if (options?.jurisdiction) {
+      agents = agents.filter(agent => agent.jurisdictions.includes(options.jurisdiction as string));
+    }
+    
+    if (options?.language) {
+      agents = agents.filter(agent => agent.languages.includes(options.language as string));
+    }
+    
+    return agents;
+  }
+
+  async createLegalAgent(agent: InsertLegalAgent): Promise<LegalAgent> {
+    const id = this.currentLegalAgentId++;
+    const now = new Date();
+    
+    const newAgent: LegalAgent = {
+      id,
+      ...agent,
+      active: true,
+      createdAt: now,
+      updatedAt: now
+    };
+    
+    this.legalAgents.set(id, newAgent);
+    return newAgent;
+  }
+
+  async updateLegalAgent(id: number, updates: Partial<InsertLegalAgent>): Promise<LegalAgent> {
+    const agent = this.legalAgents.get(id);
+    if (!agent) {
+      throw new Error(`Legal agent with id ${id} not found`);
+    }
+    
+    const updatedAgent: LegalAgent = {
+      ...agent,
+      ...updates,
+      updatedAt: new Date()
+    };
+    
+    this.legalAgents.set(id, updatedAgent);
+    return updatedAgent;
+  }
+
+  // Legal Consultation methods
+  async getLegalConsultation(id: number): Promise<LegalConsultation | undefined> {
+    return this.legalConsultations.get(id);
+  }
+
+  async getLegalConsultationsByUser(userId: number): Promise<LegalConsultation[]> {
+    return Array.from(this.legalConsultations.values()).filter(
+      consultation => consultation.userId === userId
+    );
+  }
+
+  async createLegalConsultation(consultation: InsertLegalConsultation): Promise<LegalConsultation> {
+    const id = this.currentLegalConsultationId++;
+    const now = new Date();
+    
+    const newConsultation: LegalConsultation = {
+      id,
+      ...consultation,
+      status: "active",
+      conversationHistory: [],
+      relatedDocuments: [],
+      referenceLinks: [],
+      summary: null,
+      legalAdvice: null,
+      startedAt: now,
+      completedAt: null,
+      createdAt: now,
+      updatedAt: now
+    };
+    
+    this.legalConsultations.set(id, newConsultation);
+    return newConsultation;
+  }
+
+  async updateLegalConsultation(id: number, updates: Partial<LegalConsultation>): Promise<LegalConsultation> {
+    const consultation = this.legalConsultations.get(id);
+    if (!consultation) {
+      throw new Error(`Legal consultation with id ${id} not found`);
+    }
+    
+    const updatedConsultation: LegalConsultation = {
+      ...consultation,
+      ...updates,
+      updatedAt: new Date()
+    };
+    
+    this.legalConsultations.set(id, updatedConsultation);
+    return updatedConsultation;
+  }
+
+  async addMessageToConsultation(id: number, message: { role: string; content: string; }): Promise<LegalConsultation> {
+    const consultation = this.legalConsultations.get(id);
+    if (!consultation) {
+      throw new Error(`Legal consultation with id ${id} not found`);
+    }
+    
+    const updatedHistory = [...consultation.conversationHistory, message];
+    
+    const updatedConsultation: LegalConsultation = {
+      ...consultation,
+      conversationHistory: updatedHistory,
+      updatedAt: new Date()
+    };
+    
+    this.legalConsultations.set(id, updatedConsultation);
+    return updatedConsultation;
+  }
+
+  async completeConsultation(id: number, summary: string, legalAdvice: string): Promise<LegalConsultation> {
+    const consultation = this.legalConsultations.get(id);
+    if (!consultation) {
+      throw new Error(`Legal consultation with id ${id} not found`);
+    }
+    
+    const now = new Date();
+    const updatedConsultation: LegalConsultation = {
+      ...consultation,
+      status: "completed",
+      summary,
+      legalAdvice,
+      completedAt: now,
+      updatedAt: now
+    };
+    
+    this.legalConsultations.set(id, updatedConsultation);
+    return updatedConsultation;
+  }
+
+  // Legal Document Template methods
+  async getLegalDocumentTemplate(id: number): Promise<LegalDocumentTemplate | undefined> {
+    return this.legalDocumentTemplates.get(id);
+  }
+
+  async getLegalDocumentTemplates(options?: { documentType?: string; jurisdiction?: string }): Promise<LegalDocumentTemplate[]> {
+    let templates = Array.from(this.legalDocumentTemplates.values()).filter(template => template.active);
+    
+    if (options?.documentType) {
+      templates = templates.filter(template => template.documentType === options.documentType);
+    }
+    
+    if (options?.jurisdiction) {
+      templates = templates.filter(template => template.jurisdictions.includes(options.jurisdiction as string));
+    }
+    
+    return templates;
+  }
+
+  async createLegalDocumentTemplate(template: InsertLegalDocumentTemplate): Promise<LegalDocumentTemplate> {
+    const id = this.currentLegalDocumentTemplateId++;
+    const now = new Date();
+    
+    const newTemplate: LegalDocumentTemplate = {
+      id,
+      ...template,
+      version: "1.0",
+      active: true,
+      createdAt: now,
+      updatedAt: now
+    };
+    
+    this.legalDocumentTemplates.set(id, newTemplate);
+    return newTemplate;
+  }
+
+  async updateLegalDocumentTemplate(id: number, updates: Partial<InsertLegalDocumentTemplate>): Promise<LegalDocumentTemplate> {
+    const template = this.legalDocumentTemplates.get(id);
+    if (!template) {
+      throw new Error(`Legal document template with id ${id} not found`);
+    }
+    
+    // If we're updating the template content, increment the version
+    let version = template.version;
+    if (updates.templateContent) {
+      const [major, minor] = template.version.split('.').map(Number);
+      version = `${major}.${minor + 1}`;
+    }
+    
+    const updatedTemplate: LegalDocumentTemplate = {
+      ...template,
+      ...updates,
+      version,
+      updatedAt: new Date()
+    };
+    
+    this.legalDocumentTemplates.set(id, updatedTemplate);
+    return updatedTemplate;
+  }
+
+  // Legal Compliance Check methods
+  async getLegalComplianceCheck(id: number): Promise<LegalComplianceCheck | undefined> {
+    return this.legalComplianceChecks.get(id);
+  }
+
+  async getLegalComplianceChecksByUser(userId: number): Promise<LegalComplianceCheck[]> {
+    return Array.from(this.legalComplianceChecks.values()).filter(
+      check => check.userId === userId
+    );
+  }
+
+  async getLegalComplianceChecksByProperty(propertyId: number): Promise<LegalComplianceCheck[]> {
+    return Array.from(this.legalComplianceChecks.values()).filter(
+      check => check.propertyId === propertyId
+    );
+  }
+
+  async createLegalComplianceCheck(check: InsertLegalComplianceCheck): Promise<LegalComplianceCheck> {
+    const id = this.currentLegalComplianceCheckId++;
+    const now = new Date();
+    
+    const newCheck: LegalComplianceCheck = {
+      id,
+      ...check,
+      status: "pending",
+      complianceReport: null,
+      issues: [],
+      recommendations: [],
+      completedAt: null,
+      createdAt: now,
+      updatedAt: now
+    };
+    
+    this.legalComplianceChecks.set(id, newCheck);
+    return newCheck;
+  }
+
+  async updateLegalComplianceCheck(id: number, updates: Partial<LegalComplianceCheck>): Promise<LegalComplianceCheck> {
+    const check = this.legalComplianceChecks.get(id);
+    if (!check) {
+      throw new Error(`Legal compliance check with id ${id} not found`);
+    }
+    
+    const updatedCheck: LegalComplianceCheck = {
+      ...check,
+      ...updates,
+      updatedAt: new Date()
+    };
+    
+    this.legalComplianceChecks.set(id, updatedCheck);
+    return updatedCheck;
+  }
+
+  async completeComplianceCheck(
+    id: number, 
+    status: string, 
+    report: any, 
+    issues: any[], 
+    recommendations: any[]
+  ): Promise<LegalComplianceCheck> {
+    const check = this.legalComplianceChecks.get(id);
+    if (!check) {
+      throw new Error(`Legal compliance check with id ${id} not found`);
+    }
+    
+    const now = new Date();
+    const updatedCheck: LegalComplianceCheck = {
+      ...check,
+      status,
+      complianceReport: report,
+      issues,
+      recommendations,
+      completedAt: now,
+      updatedAt: now
+    };
+    
+    this.legalComplianceChecks.set(id, updatedCheck);
+    return updatedCheck;
   }
 
   private initializeData() {

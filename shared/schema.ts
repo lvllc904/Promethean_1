@@ -722,3 +722,125 @@ export type TitleTransfer = typeof titleTransfers.$inferSelect;
 
 export type InsertArbitrator = z.infer<typeof insertArbitratorSchema>;
 export type Arbitrator = typeof arbitrators.$inferSelect;
+
+// Legal Agent schema for the AI legal agent network
+export const legalAgents = pgTable("legal_agents", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  description: text("description").notNull(),
+  expertise: text("expertise").array().notNull(), // Areas of expertise: 'real-estate', 'blockchain', 'contracts', etc.
+  jurisdictions: text("jurisdictions").array().notNull(), // Countries/regions the agent can provide legal advice for
+  languages: text("languages").array().notNull(), // Languages supported by this legal agent
+  avatarUrl: text("avatar_url"),
+  modelProvider: text("model_provider").notNull(), // 'openai', 'anthropic', 'perplexity', etc.
+  modelName: text("model_name").notNull(), // 'gpt-4o', 'claude-3-5-sonnet', etc.
+  promptTemplate: text("prompt_template").notNull(), // Base system prompt template for the agent
+  active: boolean("active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const insertLegalAgentSchema = createInsertSchema(legalAgents).omit({
+  id: true,
+  active: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// Legal Consultation schema for tracking user consultations with legal agents
+export const legalConsultations = pgTable("legal_consultations", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull(),
+  agentId: integer("agent_id").notNull(),
+  topic: text("topic").notNull(),
+  initialQuery: text("initial_query").notNull(),
+  status: text("status").default("active"), // 'active', 'completed', 'cancelled'
+  conversationHistory: jsonb("conversation_history").default([]),
+  summary: text("summary"),
+  legalAdvice: text("legal_advice"),
+  relatedDocuments: jsonb("related_documents").default([]),
+  referenceLinks: jsonb("reference_links").default([]),
+  startedAt: timestamp("started_at").defaultNow(),
+  completedAt: timestamp("completed_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const insertLegalConsultationSchema = createInsertSchema(legalConsultations).omit({
+  id: true,
+  status: true,
+  conversationHistory: true,
+  summary: true,
+  legalAdvice: true,
+  relatedDocuments: true,
+  referenceLinks: true,
+  startedAt: true,
+  completedAt: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// Legal Document Template schema for standard legal documents
+export const legalDocumentTemplates = pgTable("legal_document_templates", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  description: text("description").notNull(),
+  documentType: text("document_type").notNull(), // 'contract', 'agreement', 'disclosure', etc.
+  jurisdictions: text("jurisdictions").array().notNull(), // Countries/regions this template is valid for
+  templateContent: text("template_content").notNull(), // Template with variable placeholders
+  variables: jsonb("variables").notNull(), // Required variables that need to be filled
+  createdBy: integer("created_by"), // User ID if created by a user, null if system default
+  version: text("version").default("1.0"),
+  active: boolean("active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const insertLegalDocumentTemplateSchema = createInsertSchema(legalDocumentTemplates).omit({
+  id: true,
+  version: true,
+  active: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// Legal Compliance Check schema for property and transaction compliance verification
+export const legalComplianceChecks = pgTable("legal_compliance_checks", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull(),
+  propertyId: integer("property_id"),
+  escrowId: integer("escrow_id"),
+  checkType: text("check_type").notNull(), // 'property-listing', 'transaction', 'title-transfer', etc.
+  jurisdiction: text("jurisdiction").notNull(),
+  status: text("status").default("pending"), // 'pending', 'compliant', 'non-compliant', 'needs-review'
+  complianceReport: jsonb("compliance_report"),
+  issues: jsonb("issues").default([]),
+  recommendations: jsonb("recommendations").default([]),
+  completedAt: timestamp("completed_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const insertLegalComplianceCheckSchema = createInsertSchema(legalComplianceChecks).omit({
+  id: true,
+  status: true,
+  complianceReport: true,
+  issues: true,
+  recommendations: true,
+  completedAt: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// Type definitions for legal agent schemas
+export type InsertLegalAgent = z.infer<typeof insertLegalAgentSchema>;
+export type LegalAgent = typeof legalAgents.$inferSelect;
+
+export type InsertLegalConsultation = z.infer<typeof insertLegalConsultationSchema>;
+export type LegalConsultation = typeof legalConsultations.$inferSelect;
+
+export type InsertLegalDocumentTemplate = z.infer<typeof insertLegalDocumentTemplateSchema>;
+export type LegalDocumentTemplate = typeof legalDocumentTemplates.$inferSelect;
+
+export type InsertLegalComplianceCheck = z.infer<typeof insertLegalComplianceCheckSchema>;
+export type LegalComplianceCheck = typeof legalComplianceChecks.$inferSelect;
