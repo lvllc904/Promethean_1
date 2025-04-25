@@ -225,13 +225,15 @@ const ServiceIntegrations = () => {
     form.setValue('providerId', providerId);
     
     // Filter credentials by the selected provider
-    const providerCredentials = credentials?.filter((cred: any) => cred.providerId === providerId) || [];
+    const providerCredentials = credentials && Array.isArray(credentials) ? 
+      credentials.filter((cred: any) => cred.providerId === providerId) : [];
     
     // If there's only one credential, select it
     if (providerCredentials.length === 1) {
       form.setValue('credentialId', providerCredentials[0].id);
     } else {
-      form.setValue('credentialId', undefined);
+      // Use null instead of undefined for the form value
+      form.setValue('credentialId', null);
     }
   };
   
@@ -256,8 +258,8 @@ const ServiceIntegrations = () => {
   };
   
   // Filter available credentials based on selected provider
-  const filteredCredentials = form.watch('providerId') 
-    ? credentials?.filter((cred: any) => cred.providerId === form.watch('providerId'))
+  const filteredCredentials = form.watch('providerId') && credentials && Array.isArray(credentials) 
+    ? credentials.filter((cred: any) => cred.providerId === form.watch('providerId'))
     : [];
   
   if (isLoadingIntegrations || isLoadingProviders || isLoadingCredentials) {
@@ -299,13 +301,13 @@ const ServiceIntegrations = () => {
   }
   
   // Filter integrations based on active tab
-  const filteredIntegrations = integrations && (
+  const filteredIntegrations = integrations && Array.isArray(integrations) ? (
     activeTab === 'all' 
       ? integrations
       : activeTab === 'active'
         ? integrations.filter((i: any) => i.isActive)
         : integrations.filter((i: any) => !i.isActive)
-  );
+  ) : [];
   
   return (
     <Card>
@@ -350,8 +352,12 @@ const ServiceIntegrations = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {filteredIntegrations && filteredIntegrations.map((integration: any) => {
-              const provider = providers?.find((p: any) => p.id === integration.providerId);
-              const credential = credentials?.find((c: any) => c.id === integration.credentialId);
+              const provider = providers && Array.isArray(providers) ? 
+                providers.find((p: any) => p.id === integration.providerId) : 
+                undefined;
+              const credential = credentials && Array.isArray(credentials) ? 
+                credentials.find((c: any) => c.id === integration.credentialId) : 
+                undefined;
               
               return (
                 <Card key={integration.id} className={`${integration.isActive ? 'border-gray-200' : 'border-red-200 bg-red-50'}`}>
@@ -518,7 +524,7 @@ const ServiceIntegrations = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {providers && providers.map((provider: any) => (
+                          {providers && Array.isArray(providers) && providers.map((provider: any) => (
                             <SelectItem key={provider.id} value={provider.id.toString()}>
                               {provider.name}
                             </SelectItem>
