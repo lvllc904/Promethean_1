@@ -197,42 +197,6 @@ export function Sidebar() {
           )}
         </div>
         
-        {/* Community Rewards */}
-        <NavItem 
-          href="/community/rewards" 
-          icon={<Trophy className="h-5 w-5" />} 
-          isActive={isActive("/community/rewards")}
-        >
-          Community Rewards
-        </NavItem>
-
-        {/* Smart Contracts */}
-        <NavItem 
-          href="/contracts" 
-          icon={<Zap className="h-5 w-5" />} 
-          isActive={isActive("/contracts")}
-        >
-          Smart Contracts
-        </NavItem>
-
-        {/* Blockchain Explorer */}
-        <NavItem 
-          href="/blockchain/explorer" 
-          icon={<Database className="h-5 w-5" />} 
-          isActive={isActive("/blockchain/explorer")}
-        >
-          Blockchain Explorer
-        </NavItem>
-        
-        {/* DEX */}
-        <NavItem 
-          href="/dex" 
-          icon={<ArrowLeftRight className="h-5 w-5" />} 
-          isActive={isActive("/dex")}
-        >
-          DEX
-        </NavItem>
-        
         {/* Memberships */}
         <NavItem 
           href="/memberships" 
@@ -243,13 +207,24 @@ export function Sidebar() {
         </NavItem>
         
         {/* Admin Dashboard */}
-        <NavItem 
-          href="/admin" 
-          icon={<Settings className="h-5 w-5" />} 
-          isActive={isActive("/admin")}
-        >
-          Admin Dashboard
-        </NavItem>
+        <div>
+          <button 
+            onClick={() => {}} // No need to toggle, just navigate
+            className="w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-md text-neutral-700 hover:bg-neutral-100"
+          >
+            <Link href="/admin">
+              <div className={cn(
+                "flex items-center w-full px-3 py-2 text-sm font-medium rounded-md transition-colors cursor-pointer",
+                isActiveGroup(["/admin"]) 
+                  ? "bg-primary-50 text-primary-500" 
+                  : "text-neutral-700 hover:bg-neutral-100"
+              )}>
+                <Settings className="h-5 w-5 mr-3" />
+                Admin Dashboard
+              </div>
+            </Link>
+          </button>
+        </div>
       </nav>
       
       {/* Current User / Connect */}

@@ -432,7 +432,11 @@ const leaderboardData = [
   { rank: 10, name: 'CurrentUser', points: 350, level: 3, badges: 3 },
 ];
 
-export function ContributionRewards() {
+interface ContributionRewardsProps {
+  isAdminView?: boolean;
+}
+
+export function ContributionRewards({ isAdminView = false }: ContributionRewardsProps) {
   const { isConnected, address, user } = useWallet();
   const { toast } = useToast();
   
@@ -574,6 +578,22 @@ export function ContributionRewards() {
             </TabsTrigger>
           </TabsList>
         </div>
+        
+        {isAdminView && (
+          <div className="bg-amber-50 border-b border-amber-100 p-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <Shield className="h-5 w-5 text-amber-600 mr-2" />
+                <span className="font-medium text-amber-800">Admin Controls</span>
+              </div>
+              <div className="flex space-x-2">
+                <Button size="sm" variant="outline">Configure Rewards</Button>
+                <Button size="sm" variant="outline">Manage Badges</Button>
+                <Button size="sm" variant="outline">Activity Settings</Button>
+              </div>
+            </div>
+          </div>
+        )}
         
         {/* Overview Tab */}
         <TabsContent value="overview" className="p-6">
