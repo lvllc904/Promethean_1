@@ -185,7 +185,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const status = req.query.status as string;
       const category = req.query.category as string;
-      const tasks = await storage.getTasks(status, category);
+      const search = req.query.search as string;
+      const sort = req.query.sort as string;
+      const minPrice = req.query.minPrice ? Number(req.query.minPrice) : undefined;
+      const maxPrice = req.query.maxPrice ? Number(req.query.maxPrice) : undefined;
+      const location = req.query.location as string;
+      const skill = req.query.skill as string;
+      
+      const tasks = await storage.getTasksAdvanced({
+        status,
+        category,
+        search,
+        sort,
+        minPrice,
+        maxPrice,
+        location,
+        skill
+      });
+      
       res.json(tasks);
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch tasks" });
@@ -334,6 +351,77 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(leaderboard);
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch worker leaderboard" });
+    }
+  });
+  
+  // New Worker Profile Endpoints
+  app.get(`${apiPrefix}/workers`, async (req, res) => {
+    try {
+      const search = req.query.search as string;
+      const skill = req.query.skill as string;
+      const sort = req.query.sort as string || 'rating';
+      const limit = parseInt(req.query.limit as string || "20");
+      
+      const workers = await storage.getWorkers({ search, skill, sort, limit });
+      res.json(workers);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch workers" });
+    }
+  });
+  
+  app.get(`${apiPrefix}/workers/:id`, async (req, res) => {
+    try {
+      const workerId = parseInt(req.params.id);
+      const worker = await storage.getWorkerProfile(workerId);
+      
+      if (!worker) {
+        return res.status(404).json({ message: "Worker not found" });
+      }
+      
+      const reputation = await storage.getWorkerReputation(workerId);
+      
+      res.json({
+        profile: worker,
+        reputation: reputation || {
+          overallRating: 0,
+          ratingsCount: 0,
+          level: 1,
+          experiencePoints: 0,
+          badgeIds: [],
+          ratingsByCategory: {}
+        }
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch worker profile" });
+    }
+  });
+  
+  app.get(`${apiPrefix}/workers/:id/ratings`, async (req, res) => {
+    try {
+      const workerId = parseInt(req.params.id);
+      const ratings = await storage.getWorkerRatings(workerId);
+      res.json(ratings);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch worker ratings" });
+    }
+  });
+  
+  app.get(`${apiPrefix}/workers/:id/tasks`, async (req, res) => {
+    try {
+      const workerId = parseInt(req.params.id);
+      const tasks = await storage.getWorkerTasks(workerId);
+      res.json(tasks);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch worker tasks" });
+    }
+  });
+  
+  app.get(`${apiPrefix}/skills/popular`, async (req, res) => {
+    try {
+      const skills = await storage.getPopularSkills();
+      res.json(skills);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch popular skills" });
     }
   });
 

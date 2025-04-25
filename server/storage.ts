@@ -98,6 +98,16 @@ export interface IStorage {
   // Task methods
   getTask(id: number): Promise<Task | undefined>;
   getTasks(status?: string, category?: string): Promise<Task[]>;
+  getTasksAdvanced(filters: {
+    status?: string,
+    category?: string,
+    search?: string,
+    sort?: string,
+    minPrice?: number,
+    maxPrice?: number,
+    location?: string,
+    skill?: string
+  }): Promise<Task[]>;
   createTask(task: InsertTask): Promise<Task>;
   
   // Membership methods
@@ -180,6 +190,28 @@ export interface IStorage {
   getWorkerBadge(id: number): Promise<WorkerBadge | undefined>;
   createWorkerBadge(badge: InsertWorkerBadge): Promise<WorkerBadge>;
   getWorkerLeaderboard(category?: string, limit?: number): Promise<WorkerReputation[]>;
+  
+  // Worker Profile methods
+  getWorkers(options: { search?: string, skill?: string, sort?: string, limit?: number }): Promise<Array<{
+    id: number;
+    username: string;
+    name: string;
+    skills: string[];
+    avatarUrl: string;
+    reputation: WorkerReputation;
+  }>>;
+  getWorkerProfile(workerId: number): Promise<{
+    id: number;
+    username: string;
+    name: string;
+    bio: string;
+    skills: string[];
+    avatarUrl: string;
+    location: string;
+    joinedDate: string;
+  } | undefined>;
+  getWorkerTasks(workerId: number): Promise<Task[]>;
+  getPopularSkills(): Promise<Array<{ name: string; count: number; }>>;
 }
 
 export class MemStorage implements IStorage {

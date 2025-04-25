@@ -1,106 +1,73 @@
 import { useState } from 'react';
+import { useParams, Link } from 'wouter';
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'wouter';
 import { 
   Star, 
+  Map, 
+  Calendar, 
+  Clock, 
+  ChevronRight,
   Award,
   Briefcase,
-  Clock,
-  CheckCircle2,
   ThumbsUp,
-  Calendar,
-  ArrowUpRight,
-  BarChart3,
-  MessageSquare,
-  Users
+  MessageCircle,
+  User,
+  CheckCircle2,
+  XCircle,
+  ArrowLeft,
+  Share2
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
-import { 
-  Tabs, 
-  TabsContent, 
-  TabsList, 
-  TabsTrigger 
-} from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
-import { 
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Progress } from '@/components/ui/progress';
 import { Skeleton } from '@/components/ui/skeleton';
+import { format } from 'date-fns';
 import { TaskCard } from '@/components/ui/task-card';
-import { WorkerReputation, WorkerRating, Task } from '@shared/schema';
+import { Task, WorkerReputation } from '@shared/schema';
 
 export default function WorkerProfile() {
   const { id } = useParams();
   const workerId = parseInt(id || '0');
   const [activeTab, setActiveTab] = useState('overview');
-
-  // Fetch worker profile and reputation data
+  
+  // Fetch worker profile data
   const { 
     data: worker,
     isLoading: isLoadingWorker,
-    isError: isWorkerError 
-  } = useQuery<{
-    profile: {
-      id: number;
-      username: string;
-      name: string;
-      bio: string;
-      skills: string[];
-      avatarUrl: string;
-      location: string;
-      joinedDate: string;
-    },
-    reputation: WorkerReputation
-  }>({
-    queryKey: ['/api/workers', workerId],
-    enabled: Boolean(workerId),
+    isError: isErrorWorker,
+    refetch: refetchWorker
+  } = useQuery({
+    queryKey: [`/api/workers/${workerId}`],
+    enabled: !!workerId,
   });
-
+  
   // Fetch worker ratings
-  const {
+  const { 
     data: ratings = [],
-    isLoading: isLoadingRatings
-  } = useQuery<WorkerRating[]>({
-    queryKey: ['/api/workers', workerId, 'ratings'],
-    enabled: Boolean(workerId),
+    isLoading: isLoadingRatings,
+  } = useQuery({
+    queryKey: [`/api/workers/${workerId}/ratings`],
+    enabled: !!workerId,
   });
-
-  // Fetch worker tasks
-  const {
+  
+  // Fetch worker completed tasks
+  const { 
     data: tasks = [],
-    isLoading: isLoadingTasks
-  } = useQuery<Task[]>({
-    queryKey: ['/api/workers', workerId, 'tasks'],
-    enabled: Boolean(workerId),
+    isLoading: isLoadingTasks,
+  } = useQuery({
+    queryKey: [`/api/workers/${workerId}/tasks`],
+    enabled: !!workerId,
   });
-
-  // Format date properly
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    }).format(date);
+  
+  const formatRating = (rating: string | number | null) => {
+    if (rating === null) return 'N/A';
+    return Number(rating).toFixed(1);
   };
-
-  // Calculate experience bar percentage for display
-  const calculateExpBar = (xp: number, level: number) => {
-    // Simple formula: each level requires level*1000 XP
-    const nextLevelXp = level * 1000;
-    const currentLevelXp = (level - 1) * 1000;
-    const levelProgress = xp - currentLevelXp;
-    
-    return Math.floor((levelProgress / (nextLevelXp - currentLevelXp)) * 100);
-  };
-
+  
   // Get color based on reputation level
   const getReputationColor = (rating: number) => {
     if (rating >= 4.5) return 'text-green-600';
@@ -109,381 +76,498 @@ export default function WorkerProfile() {
     if (rating >= 3) return 'text-yellow-600';
     return 'text-red-500';
   };
-
-  // Get badge background color based on rarity
-  const getBadgeColor = (rarity: string) => {
-    switch(rarity.toLowerCase()) {
-      case 'common': return 'bg-slate-100 text-slate-800';
-      case 'uncommon': return 'bg-green-100 text-green-800';
-      case 'rare': return 'bg-blue-100 text-blue-800';
-      case 'epic': return 'bg-purple-100 text-purple-800';
-      case 'legendary': return 'bg-amber-100 text-amber-800';
-      default: return 'bg-slate-100 text-slate-800';
-    }
-  };
-
-  if (isWorkerError) {
-    return (
-      <div className="text-center py-16">
-        <h2 className="text-2xl font-bold text-red-500 mb-2">Worker Profile Not Found</h2>
-        <p className="text-neutral-500 mb-6">This worker profile does not exist or has been removed.</p>
-        <Button asChild><a href="/marketplace">Return to Marketplace</a></Button>
-      </div>
-    );
-  }
-
+  
   if (isLoadingWorker) {
     return <WorkerProfileSkeleton />;
   }
-
-  // Calculate the average rating for rendering stars
-  const averageRating = worker?.reputation.overallRating || 0;
   
-  // Sort skills by highest rating
-  const sortedSkills = Object.entries(worker?.reputation.ratingsByCategory || {})
-    .sort(([, a], [, b]) => Number(b) - Number(a))
-    .slice(0, 6);
-
+  if (isErrorWorker || !worker) {
+    return (
+      <div className="p-8 text-center">
+        <h2 className="text-xl font-medium mb-4">Error Loading Worker Profile</h2>
+        <p className="text-neutral-500 mb-4">
+          There was a problem loading this worker's profile. It may not exist or there was a server error.
+        </p>
+        <div className="flex justify-center gap-3">
+          <Button onClick={() => refetchWorker()}>Try Again</Button>
+          <Button variant="outline" asChild>
+            <Link href="/profile">Back to Workers</Link>
+          </Button>
+        </div>
+      </div>
+    );
+  }
+  
+  const { profile, reputation } = worker;
+  
   return (
-    <div className="space-y-6">
-      {/* Profile Header */}
-      <div className="flex flex-col md:flex-row gap-6 items-start">
-        {/* Avatar and basic info */}
-        <div className="w-full md:w-1/3">
+    <div>
+      <div className="mb-6">
+        <Button variant="ghost" className="pl-2 gap-1" asChild>
+          <Link href="/profile">
+            <ArrowLeft className="h-4 w-4" />
+            <span>Back to workers</span>
+          </Link>
+        </Button>
+      </div>
+      
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Profile sidebar */}
+        <div className="lg:col-span-1 space-y-6">
           <Card>
-            <CardContent className="p-6 text-center">
-              <Avatar className="h-24 w-24 mx-auto mb-4">
-                <AvatarImage src={worker?.profile.avatarUrl} alt={worker?.profile.name} />
-                <AvatarFallback className="text-xl">
-                  {worker?.profile.name?.split(' ').map(n => n[0]).join('') || 'U'}
-                </AvatarFallback>
-              </Avatar>
-              
-              <h2 className="text-xl font-bold mb-1">{worker?.profile.name}</h2>
-              <p className="text-neutral-500 text-sm mb-3">@{worker?.profile.username}</p>
-              
-              <div className="flex items-center justify-center mb-4">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <Star
-                    key={star}
-                    className={`h-5 w-5 ${star <= Math.round(Number(averageRating)) 
-                      ? 'text-yellow-400 fill-yellow-400' 
-                      : 'text-neutral-300'}`}
-                  />
-                ))}
-                <span className={`ml-2 font-medium ${getReputationColor(Number(averageRating))}`}>
-                  {Number(averageRating).toFixed(1)}
-                </span>
-                <span className="ml-1 text-neutral-500 text-sm">
-                  ({worker?.reputation.ratingsCount || 0})
-                </span>
-              </div>
-              
-              <div className="flex justify-center space-x-4 mb-4">
-                <div className="text-center">
-                  <p className="text-xl font-bold text-primary-600">{tasks.filter(t => t.status === 'completed').length}</p>
-                  <p className="text-xs text-neutral-500">Tasks Completed</p>
-                </div>
-                <Separator orientation="vertical" className="h-12" />
-                <div className="text-center">
-                  <p className="text-xl font-bold text-primary-600">{worker?.reputation.level || 1}</p>
-                  <p className="text-xs text-neutral-500">Level</p>
-                </div>
-                <Separator orientation="vertical" className="h-12" />
-                <div className="text-center">
-                  <p className="text-xl font-bold text-primary-600">{worker?.reputation.badgeIds?.length || 0}</p>
-                  <p className="text-xs text-neutral-500">Badges</p>
-                </div>
-              </div>
-              
-              <div className="text-sm text-left mb-4">
-                <div className="flex justify-between items-center mb-1">
-                  <span>Level {worker?.reputation.level || 1}</span>
-                  <span className="text-xs text-neutral-500">
-                    {worker?.reputation.experiencePoints || 0} XP
+            <CardContent className="p-6">
+              <div className="flex flex-col items-center text-center">
+                <Avatar className="h-24 w-24 mb-4">
+                  <AvatarImage src={profile.avatarUrl} alt={profile.name} />
+                  <AvatarFallback className="text-xl">
+                    {profile.name?.split(' ').map(n => n[0]).join('') || profile.username?.substring(0, 2).toUpperCase() || 'W'}
+                  </AvatarFallback>
+                </Avatar>
+                <h2 className="text-2xl font-medium">{profile.name || profile.username}</h2>
+                
+                <div className="flex items-center justify-center mt-2 mb-1">
+                  <div className="flex mr-2">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <Star
+                        key={star}
+                        className={`h-4 w-4 ${
+                          star <= Math.round(Number(reputation.overallRating))
+                            ? 'text-yellow-400 fill-yellow-400'
+                            : 'text-neutral-300'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  <span className={`text-sm font-medium ${getReputationColor(Number(reputation.overallRating))}`}>
+                    {formatRating(reputation.overallRating)}
+                  </span>
+                  <span className="text-neutral-500 text-sm ml-1">
+                    ({reputation.ratingsCount || 0} reviews)
                   </span>
                 </div>
-                <Progress 
-                  value={calculateExpBar(
-                    worker?.reputation.experiencePoints || 0, 
-                    worker?.reputation.level || 1
-                  )} 
-                  className="h-2" 
-                />
-              </div>
-              
-              <div className="flex flex-wrap gap-2 justify-center mb-6">
-                {worker?.profile.skills?.slice(0, 5).map((skill, i) => (
-                  <Badge key={i} variant="outline" className="bg-primary-50">{skill}</Badge>
-                ))}
-              </div>
-              
-              <div className="space-y-3 text-sm text-left">
-                <div className="flex items-start gap-2">
-                  <Users className="h-4 w-4 text-neutral-500 mt-0.5" />
-                  <p className="text-neutral-600">Joined {worker?.profile.joinedDate ? formatDate(worker.profile.joinedDate) : 'N/A'}</p>
+                
+                <div className="flex items-center gap-1 mt-1 text-sm text-neutral-500">
+                  <Map className="h-3.5 w-3.5" />
+                  <span>{profile.location || 'Location not specified'}</span>
                 </div>
-                {worker?.profile.location && (
-                  <div className="flex items-start gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-neutral-500 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-                      <circle cx="12" cy="10" r="3" />
-                    </svg>
-                    <p className="text-neutral-600">{worker.profile.location}</p>
+                
+                <div className="flex items-center gap-1 mt-1.5 mb-4 text-sm text-neutral-500">
+                  <Calendar className="h-3.5 w-3.5" />
+                  <span>Member since {profile.joinedDate ? format(new Date(profile.joinedDate), 'MMM yyyy') : 'N/A'}</span>
+                </div>
+                
+                <div className="grid grid-cols-3 w-full mb-2 gap-4">
+                  <div className="text-center">
+                    <div className="text-xl font-medium text-primary">{tasks.length}</div>
+                    <div className="text-xs text-neutral-500">Tasks</div>
                   </div>
+                  <div className="text-center">
+                    <div className="text-xl font-medium text-primary">{reputation.level || 1}</div>
+                    <div className="text-xs text-neutral-500">Level</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-xl font-medium text-primary">{reputation.badgeIds?.length || 0}</div>
+                    <div className="text-xs text-neutral-500">Badges</div>
+                  </div>
+                </div>
+                
+                <Separator className="my-4" />
+                
+                <div className="w-full text-left">
+                  <h3 className="font-medium mb-2.5 text-sm">Level Progress</h3>
+                  <div className="mb-1 flex justify-between text-xs">
+                    <span>Level {reputation.level || 1}</span>
+                    <span>Level {(reputation.level || 1) + 1}</span>
+                  </div>
+                  <Progress 
+                    value={
+                      reputation.experiencePoints
+                        ? (reputation.experiencePoints % 1000) / 10 
+                        : 0
+                    } 
+                    className="h-2" 
+                  />
+                  <p className="mt-1 text-xs text-neutral-500">
+                    {reputation.experiencePoints 
+                      ? `${reputation.experiencePoints % 1000} / 1000 XP` 
+                      : '0 / 1000 XP'}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          {/* Skills Card */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base">Skills</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap gap-1.5">
+                {profile.skills?.length > 0 ? (
+                  profile.skills.map((skill, i) => (
+                    <Badge key={i} variant="outline" className="bg-neutral-50">
+                      {skill}
+                    </Badge>
+                  ))
+                ) : (
+                  <p className="text-neutral-500 text-sm">No skills listed yet.</p>
                 )}
+              </div>
+            </CardContent>
+          </Card>
+          
+          {/* Badges Card */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base">Badges Earned</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {reputation.badgeIds && reputation.badgeIds.length > 0 ? (
+                <div className="grid grid-cols-3 gap-2">
+                  {reputation.badgeIds.map((badgeId, i) => (
+                    <div key={i} className="text-center p-2">
+                      <Award className="h-8 w-8 mx-auto text-amber-500 mb-1" />
+                      <span className="text-xs">Badge #{badgeId}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-neutral-500 text-sm">No badges earned yet.</p>
+              )}
+            </CardContent>
+          </Card>
+          
+          {/* Contact Card */}
+          <Card>
+            <CardContent className="p-4">
+              <div className="space-y-4">
+                <Button className="w-full" size="sm">
+                  <MessageCircle className="mr-2 h-4 w-4" />
+                  Contact Worker
+                </Button>
+                <Button variant="outline" className="w-full" size="sm">
+                  <Share2 className="mr-2 h-4 w-4" />
+                  Share Profile
+                </Button>
               </div>
             </CardContent>
           </Card>
         </div>
         
-        {/* Main profile content */}
-        <div className="w-full md:w-2/3 space-y-6">
+        {/* Main content */}
+        <div className="lg:col-span-2 space-y-6">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="w-full grid grid-cols-3">
+            <TabsList className="grid grid-cols-3 mb-6">
               <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="ratings">Reviews ({ratings.length})</TabsTrigger>
-              <TabsTrigger value="tasks">Completed Tasks</TabsTrigger>
+              <TabsTrigger value="reviews">Reviews</TabsTrigger>
+              <TabsTrigger value="work">Work History</TabsTrigger>
             </TabsList>
             
-            <TabsContent value="overview" className="space-y-6 mt-6">
-              {/* Bio */}
+            <TabsContent value="overview" className="space-y-6">
+              {/* Bio Card */}
               <Card>
-                <CardHeader className="pb-2">
+                <CardHeader>
                   <CardTitle className="text-lg">About</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-neutral-700">
-                    {worker?.profile.bio || 'This worker has not added a bio yet.'}
+                  <p className="text-neutral-600">
+                    {profile.bio || 'This worker has not added a bio yet.'}
                   </p>
                 </CardContent>
               </Card>
               
-              {/* Skills */}
+              {/* Statistics Card */}
               <Card>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-lg">Skills & Expertise</CardTitle>
+                <CardHeader>
+                  <CardTitle className="text-lg">Performance</CardTitle>
+                </CardHeader>
+                <CardContent className="pb-2">
+                  <div className="space-y-4">
+                    {/* Ratings by Category */}
+                    <div>
+                      <h3 className="font-medium mb-3 text-sm">Rating Breakdown</h3>
+                      
+                      {reputation.ratingsByCategory && Object.keys(reputation.ratingsByCategory).length > 0 ? (
+                        <div className="space-y-3">
+                          {Object.entries(reputation.ratingsByCategory).map(([category, rating], i) => (
+                            <div key={i} className="space-y-1">
+                              <div className="flex justify-between text-sm items-center">
+                                <span className="capitalize">
+                                  {category.replace(/-/g, ' ')}
+                                </span>
+                                <div className="flex items-center">
+                                  <span className={getReputationColor(Number(rating))}>
+                                    {formatRating(rating)}
+                                  </span>
+                                  <Star className={`h-3.5 w-3.5 ml-1 ${
+                                    Number(rating) >= 4 
+                                      ? 'text-yellow-400 fill-yellow-400' 
+                                      : 'text-neutral-300'
+                                  }`} />
+                                </div>
+                              </div>
+                              <Progress value={Number(rating) * 20} className="h-1.5" />
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-neutral-500 text-sm">No ratings by category yet.</p>
+                      )}
+                    </div>
+                    
+                    {/* Completion Rate */}
+                    <div>
+                      <h3 className="font-medium mb-3 text-sm">Task Completion Rate</h3>
+                      <div className="flex justify-between items-center mb-1.5">
+                        <span className="text-sm">Overall Completion</span>
+                        <span className="text-green-600 font-medium">
+                          {tasks.filter(t => t.status === 'completed').length} / {tasks.length}
+                        </span>
+                      </div>
+                      <Progress 
+                        value={tasks.length > 0 
+                          ? (tasks.filter(t => t.status === 'completed').length / tasks.length) * 100 
+                          : 0
+                        } 
+                        className="h-2" 
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              {/* Recent Work Card */}
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between">
+                  <CardTitle className="text-lg">Recent Work</CardTitle>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="text-primary text-sm gap-1"
+                    onClick={() => setActiveTab('work')}
+                  >
+                    <span>View All</span> 
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-4">
-                    {sortedSkills.length > 0 ? (
-                      sortedSkills.map(([skill, rating], i) => (
-                        <div key={i} className="space-y-1">
-                          <div className="flex items-center justify-between">
-                            <span className="font-medium text-neutral-800">{skill}</span>
+                  {isLoadingTasks ? (
+                    <div className="space-y-4">
+                      {Array(2).fill(0).map((_, i) => (
+                        <div key={i} className="border rounded-lg p-4">
+                          <Skeleton className="h-6 w-48 mb-2" />
+                          <Skeleton className="h-4 w-full mb-1.5" />
+                          <Skeleton className="h-4 w-3/4" />
+                          <div className="flex justify-between mt-3">
+                            <Skeleton className="h-4 w-20" />
+                            <Skeleton className="h-4 w-16" />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : tasks.length > 0 ? (
+                    <div className="space-y-4">
+                      {tasks.slice(0, 3).map((task) => (
+                        <TaskCard key={task.id} task={task} onApply={() => {}} readOnly={true} />
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center bg-neutral-50 py-6 rounded-lg">
+                      <Briefcase className="h-10 w-10 text-neutral-400 mx-auto mb-2" />
+                      <h3 className="text-lg font-medium mb-1">No Work History</h3>
+                      <p className="text-neutral-500 max-w-md mx-auto text-sm">
+                        This worker hasn't completed any tasks yet.
+                      </p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </TabsContent>
+            
+            <TabsContent value="reviews" className="space-y-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">Client Reviews</CardTitle>
+                  <CardDescription>
+                    Feedback from clients who have worked with {profile.name || profile.username}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {isLoadingRatings ? (
+                    <div className="space-y-6">
+                      {Array(3).fill(0).map((_, i) => (
+                        <div key={i} className="border-b pb-5 mb-5 last:border-0 last:mb-0 last:pb-0">
+                          <div className="flex gap-3 mb-3">
+                            <Skeleton className="h-10 w-10 rounded-full" />
+                            <div className="flex-1">
+                              <Skeleton className="h-4 w-32 mb-1.5" />
+                              <Skeleton className="h-3 w-24" />
+                            </div>
+                            <Skeleton className="h-4 w-16" />
+                          </div>
+                          <Skeleton className="h-4 w-full mb-1.5" />
+                          <Skeleton className="h-4 w-3/4 mb-1.5" />
+                          <Skeleton className="h-4 w-1/2" />
+                        </div>
+                      ))}
+                    </div>
+                  ) : ratings.length > 0 ? (
+                    <div className="space-y-6">
+                      {ratings.map((rating, i) => (
+                        <div key={i} className="border-b pb-5 mb-5 last:border-0 last:mb-0 last:pb-0">
+                          <div className="flex items-start justify-between mb-3">
+                            <div className="flex items-center gap-3">
+                              <Avatar className="h-10 w-10">
+                                <AvatarFallback>
+                                  {rating.raterName?.substring(0, 2).toUpperCase() || 'U'}
+                                </AvatarFallback>
+                              </Avatar>
+                              <div>
+                                <h4 className="font-medium">{rating.raterName}</h4>
+                                <p className="text-sm text-neutral-500">
+                                  {rating.createdAt 
+                                    ? format(new Date(rating.createdAt), 'MMM d, yyyy') 
+                                    : 'Recently'
+                                  }
+                                </p>
+                              </div>
+                            </div>
                             <div className="flex items-center">
-                              {[1, 2, 3, 4, 5].map((star) => (
-                                <Star
-                                  key={star}
-                                  className={`h-3.5 w-3.5 ${star <= Math.round(Number(rating)) 
-                                    ? 'text-yellow-400 fill-yellow-400' 
-                                    : 'text-neutral-300'}`}
-                                />
-                              ))}
-                              <span className="ml-2 text-sm">
-                                {Number(rating).toFixed(1)}
+                              <div className="flex mr-1">
+                                {[1, 2, 3, 4, 5].map((star) => (
+                                  <Star
+                                    key={star}
+                                    className={`h-3.5 w-3.5 ${
+                                      star <= Math.round(Number(rating.rating))
+                                        ? 'text-yellow-400 fill-yellow-400'
+                                        : 'text-neutral-300'
+                                    }`}
+                                  />
+                                ))}
+                              </div>
+                              <span className="text-sm font-medium">
+                                {formatRating(rating.rating)}
                               </span>
                             </div>
                           </div>
-                          <Progress 
-                            value={Number(rating) * 20} 
-                            className="h-1.5" 
-                          />
+                          
+                          <div className="mb-3">
+                            <p className="text-neutral-700">{rating.comments}</p>
+                          </div>
+                          
+                          <div className="text-sm text-neutral-500">
+                            <span>Task: </span>
+                            <Link href={`/marketplace/task/${rating.taskId}`} className="text-primary hover:underline">
+                              {rating.taskTitle || `Task #${rating.taskId}`}
+                            </Link>
+                          </div>
                         </div>
-                      ))
-                    ) : (
-                      <p className="text-neutral-500 py-2">No skill ratings available yet.</p>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-              
-              {/* Stats */}
-              <Card>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-lg">Performance Statistics</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                    <div className="space-y-1">
-                      <p className="text-sm text-neutral-500">Response Rate</p>
-                      <div className="flex items-center">
-                        <span className="text-xl font-bold mr-1">
-                          {worker?.reputation.responseRate 
-                            ? Math.round(Number(worker.reputation.responseRate)) + '%' 
-                            : 'N/A'}
-                        </span>
-                      </div>
-                      {worker?.reputation.responseRate && (
-                        <Progress value={Number(worker.reputation.responseRate)} className="h-1.5" />
-                      )}
-                    </div>
-                    
-                    <div className="space-y-1">
-                      <p className="text-sm text-neutral-500">Completion Rate</p>
-                      <div className="flex items-center">
-                        <span className="text-xl font-bold mr-1">
-                          {worker?.reputation.completionRate 
-                            ? Math.round(Number(worker.reputation.completionRate)) + '%' 
-                            : 'N/A'}
-                        </span>
-                      </div>
-                      {worker?.reputation.completionRate && (
-                        <Progress value={Number(worker.reputation.completionRate)} className="h-1.5" />
-                      )}
-                    </div>
-                    
-                    <div className="space-y-1">
-                      <p className="text-sm text-neutral-500">On-Time Rate</p>
-                      <div className="flex items-center">
-                        <span className="text-xl font-bold mr-1">
-                          {worker?.reputation.onTimeRate 
-                            ? Math.round(Number(worker.reputation.onTimeRate)) + '%' 
-                            : 'N/A'}
-                        </span>
-                      </div>
-                      {worker?.reputation.onTimeRate && (
-                        <Progress value={Number(worker.reputation.onTimeRate)} className="h-1.5" />
-                      )}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-              
-              {/* Badges */}
-              {worker?.reputation.badgeIds && worker.reputation.badgeIds.length > 0 && (
-                <Card>
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-lg">Earned Badges</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex flex-wrap gap-3">
-                      {worker.reputation.badgeIds.map((badgeId, i) => (
-                        <TooltipProvider key={i}>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <div className={`flex items-center px-3 py-1.5 rounded-full ${getBadgeColor('rare')}`}>
-                                <Award className="h-4 w-4 mr-1.5" />
-                                <span className="text-sm font-medium">Quality Expert</span>
-                              </div>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p className="font-medium">Quality Expert</p>
-                              <p className="text-xs">Consistently received 5-star ratings for quality</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
                       ))}
                     </div>
-                  </CardContent>
-                </Card>
-              )}
+                  ) : (
+                    <div className="text-center bg-neutral-50 py-8 rounded-lg">
+                      <MessageCircle className="h-10 w-10 text-neutral-400 mx-auto mb-2" />
+                      <h3 className="text-lg font-medium mb-1">No Reviews Yet</h3>
+                      <p className="text-neutral-500 max-w-md mx-auto text-sm">
+                        This worker hasn't received any reviews yet.
+                      </p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
             </TabsContent>
             
-            <TabsContent value="ratings" className="space-y-4 mt-6">
-              {isLoadingRatings ? (
-                Array(3).fill(0).map((_, i) => (
-                  <Card key={i}>
-                    <CardContent className="p-4">
-                      <div className="flex justify-between mb-2">
-                        <Skeleton className="h-5 w-1/4" />
-                        <Skeleton className="h-5 w-20" />
-                      </div>
-                      <Skeleton className="h-4 w-full mb-3" />
-                      <Skeleton className="h-4 w-full mb-3" />
-                      <Skeleton className="h-4 w-2/3" />
-                    </CardContent>
-                  </Card>
-                ))
-              ) : ratings.length > 0 ? (
-                ratings.map((rating, i) => (
-                  <Card key={i}>
-                    <CardContent className="p-4">
-                      <div className="flex justify-between mb-2">
-                        <div className="flex items-center">
-                          {!rating.anonymous ? (
-                            <span className="font-medium">Rater #{rating.raterId}</span>
-                          ) : (
-                            <span className="text-neutral-500">Anonymous</span>
-                          )}
-                          <span className="text-neutral-400 mx-2">•</span>
-                          <span className="text-neutral-500 text-sm">
-                            {formatDate(rating.createdAt.toString())}
-                          </span>
+            <TabsContent value="work" className="space-y-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">Task History</CardTitle>
+                  <CardDescription>
+                    A record of all tasks completed by {profile.name || profile.username}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {isLoadingTasks ? (
+                    <div className="space-y-4">
+                      {Array(4).fill(0).map((_, i) => (
+                        <div key={i} className="border rounded-lg p-4">
+                          <Skeleton className="h-6 w-48 mb-2" />
+                          <Skeleton className="h-4 w-full mb-1.5" />
+                          <Skeleton className="h-4 w-3/4" />
+                          <div className="flex justify-between mt-3">
+                            <Skeleton className="h-4 w-20" />
+                            <Skeleton className="h-4 w-16" />
+                          </div>
                         </div>
-                        <div className="flex">
-                          {[1, 2, 3, 4, 5].map((star) => (
-                            <Star
-                              key={star}
-                              className={`h-4 w-4 ${star <= rating.rating 
-                                ? 'text-yellow-400 fill-yellow-400' 
-                                : 'text-neutral-300'}`}
-                            />
-                          ))}
+                      ))}
+                    </div>
+                  ) : tasks.length > 0 ? (
+                    <div className="space-y-4">
+                      {tasks.map((task) => (
+                        <div key={task.id} className="border rounded-lg overflow-hidden">
+                          <div className="p-4">
+                            <div className="flex items-center justify-between mb-2">
+                              <h3 className="font-medium">{task.title}</h3>
+                              <Badge variant={task.status === 'completed' ? 'success' : 'default'}>
+                                {task.status}
+                              </Badge>
+                            </div>
+                            <p className="text-neutral-600 text-sm mb-3 line-clamp-2">
+                              {task.description}
+                            </p>
+                            <div className="flex items-center gap-4 text-sm text-neutral-500">
+                              <div className="flex items-center">
+                                <Clock className="h-3.5 w-3.5 mr-1" />
+                                <span>
+                                  {task.createdAt 
+                                    ? format(new Date(task.createdAt), 'MMM d, yyyy') 
+                                    : 'Recently'
+                                  }
+                                </span>
+                              </div>
+                              <div className="flex items-center">
+                                <Map className="h-3.5 w-3.5 mr-1" />
+                                <span>{task.location || 'Remote'}</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="border-t bg-neutral-50 p-3 flex items-center justify-between">
+                            <div className="font-medium">
+                              {task.currency || '$'}{parseFloat(task.price).toFixed(2)}
+                            </div>
+                            <div className="flex gap-2">
+                              {task.status === 'completed' ? (
+                                <div className="flex items-center text-sm text-green-600">
+                                  <CheckCircle2 className="h-4 w-4 mr-1" />
+                                  <span>Completed</span>
+                                </div>
+                              ) : task.status === 'cancelled' ? (
+                                <div className="flex items-center text-sm text-red-600">
+                                  <XCircle className="h-4 w-4 mr-1" />
+                                  <span>Cancelled</span>
+                                </div>
+                              ) : (
+                                <div className="flex items-center text-sm text-amber-600">
+                                  <Clock className="h-4 w-4 mr-1" />
+                                  <span>In Progress</span>
+                                </div>
+                              )}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                      <p className="text-neutral-700">{rating.review || 'No written review provided.'}</p>
-                      {rating.criteria && Object.keys(rating.criteria).length > 0 && (
-                        <div className="mt-3 flex flex-wrap gap-2">
-                          {Object.entries(rating.criteria).map(([key, value], i) => (
-                            <Badge key={i} variant="outline" className="bg-neutral-50">
-                              {key}: {value}/5
-                            </Badge>
-                          ))}
-                        </div>
-                      )}
-                    </CardContent>
-                  </Card>
-                ))
-              ) : (
-                <div className="text-center py-10 bg-neutral-50 rounded-lg">
-                  <MessageSquare className="h-12 w-12 mx-auto text-neutral-400 mb-3" />
-                  <h3 className="text-lg font-medium mb-1">No Reviews Yet</h3>
-                  <p className="text-neutral-500 max-w-md mx-auto">
-                    This worker hasn't received any reviews yet.
-                  </p>
-                </div>
-              )}
-            </TabsContent>
-            
-            <TabsContent value="tasks" className="space-y-4 mt-6">
-              {isLoadingTasks ? (
-                Array(3).fill(0).map((_, i) => (
-                  <Card key={i}>
-                    <CardContent className="p-4">
-                      <div className="flex justify-between mb-2">
-                        <Skeleton className="h-5 w-1/3" />
-                        <Skeleton className="h-5 w-16" />
-                      </div>
-                      <Skeleton className="h-4 w-1/4 mb-2" />
-                      <Skeleton className="h-12 w-full mb-3" />
-                      <div className="flex justify-between">
-                        <Skeleton className="h-5 w-16" />
-                        <Skeleton className="h-9 w-20" />
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))
-              ) : tasks.filter(t => t.status === 'completed').length > 0 ? (
-                tasks
-                  .filter(t => t.status === 'completed')
-                  .map(task => (
-                    <TaskCard 
-                      key={task.id} 
-                      task={task} 
-                      onApply={() => {}}
-                      readOnly 
-                    />
-                  ))
-              ) : (
-                <div className="text-center py-10 bg-neutral-50 rounded-lg">
-                  <Briefcase className="h-12 w-12 mx-auto text-neutral-400 mb-3" />
-                  <h3 className="text-lg font-medium mb-1">No Completed Tasks</h3>
-                  <p className="text-neutral-500 max-w-md mx-auto">
-                    This worker hasn't completed any tasks yet.
-                  </p>
-                </div>
-              )}
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center bg-neutral-50 py-8 rounded-lg">
+                      <Briefcase className="h-10 w-10 text-neutral-400 mx-auto mb-2" />
+                      <h3 className="text-lg font-medium mb-1">No Work History</h3>
+                      <p className="text-neutral-500 max-w-md mx-auto text-sm">
+                        This worker hasn't completed any tasks yet.
+                      </p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
             </TabsContent>
           </Tabs>
         </div>
@@ -492,88 +576,161 @@ export default function WorkerProfile() {
   );
 }
 
-// Skeleton loader for worker profile
 function WorkerProfileSkeleton() {
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col md:flex-row gap-6 items-start">
-        <div className="w-full md:w-1/3">
-          <Card>
-            <CardContent className="p-6 text-center">
-              <Skeleton className="h-24 w-24 rounded-full mx-auto mb-4" />
-              <Skeleton className="h-6 w-1/2 mx-auto mb-1" />
-              <Skeleton className="h-4 w-1/3 mx-auto mb-3" />
-              <Skeleton className="h-4 w-2/3 mx-auto mb-4" />
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* Profile sidebar skeleton */}
+      <div className="lg:col-span-1 space-y-6">
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex flex-col items-center text-center">
+              <Skeleton className="h-24 w-24 rounded-full mb-4" />
+              <Skeleton className="h-7 w-48 mb-2" />
+              <Skeleton className="h-4 w-32 mb-2" />
+              <Skeleton className="h-4 w-40 mb-2" />
+              <Skeleton className="h-4 w-40 mb-4" />
               
-              <div className="flex justify-center space-x-4 mb-4">
+              <div className="grid grid-cols-3 w-full mb-2 gap-4">
                 <div className="text-center">
                   <Skeleton className="h-6 w-8 mx-auto mb-1" />
-                  <Skeleton className="h-3 w-16" />
+                  <Skeleton className="h-4 w-12 mx-auto" />
                 </div>
-                <Separator orientation="vertical" className="h-12" />
                 <div className="text-center">
                   <Skeleton className="h-6 w-8 mx-auto mb-1" />
-                  <Skeleton className="h-3 w-16" />
+                  <Skeleton className="h-4 w-12 mx-auto" />
                 </div>
-                <Separator orientation="vertical" className="h-12" />
                 <div className="text-center">
                   <Skeleton className="h-6 w-8 mx-auto mb-1" />
-                  <Skeleton className="h-3 w-16" />
+                  <Skeleton className="h-4 w-12 mx-auto" />
                 </div>
               </div>
               
-              <Skeleton className="h-4 w-full mb-2" />
-              <Skeleton className="h-2 w-full mb-6" />
+              <Separator className="my-4" />
               
-              <div className="flex flex-wrap gap-2 justify-center mb-6">
-                {Array(5).fill(0).map((_, i) => (
-                  <Skeleton key={i} className="h-6 w-16 rounded-full" />
-                ))}
+              <div className="w-full text-left">
+                <Skeleton className="h-5 w-24 mb-3" />
+                <Skeleton className="h-4 w-full mb-1" />
+                <Skeleton className="h-2 w-full mb-1" />
+                <Skeleton className="h-4 w-16 mt-1" />
               </div>
-              
-              <div className="space-y-3">
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-full" />
-              </div>
-            </CardContent>
-          </Card>
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader className="pb-3">
+            <Skeleton className="h-5 w-20" />
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-wrap gap-1.5">
+              <Skeleton className="h-6 w-20 rounded-full" />
+              <Skeleton className="h-6 w-24 rounded-full" />
+              <Skeleton className="h-6 w-16 rounded-full" />
+              <Skeleton className="h-6 w-20 rounded-full" />
+              <Skeleton className="h-6 w-28 rounded-full" />
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader className="pb-3">
+            <Skeleton className="h-5 w-28" />
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-3 gap-2">
+              {Array(3).fill(0).map((_, i) => (
+                <div key={i} className="text-center p-2">
+                  <Skeleton className="h-8 w-8 mx-auto mb-1 rounded-full" />
+                  <Skeleton className="h-3 w-12 mx-auto" />
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardContent className="p-4">
+            <div className="space-y-4">
+              <Skeleton className="h-8 w-full" />
+              <Skeleton className="h-8 w-full" />
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+      
+      {/* Main content skeleton */}
+      <div className="lg:col-span-2 space-y-6">
+        <div className="grid grid-cols-3 gap-2 mb-6">
+          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-10 w-full" />
         </div>
         
-        <div className="w-full md:w-2/3 space-y-6">
-          <div className="w-full border-b pb-2">
-            <Skeleton className="h-10 w-full" />
-          </div>
-          
-          <Card>
-            <CardHeader className="pb-2">
-              <Skeleton className="h-6 w-32" />
-            </CardHeader>
-            <CardContent>
-              <Skeleton className="h-4 w-full mb-2" />
-              <Skeleton className="h-4 w-full mb-2" />
-              <Skeleton className="h-4 w-2/3" />
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardHeader className="pb-2">
-              <Skeleton className="h-6 w-32" />
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {Array(4).fill(0).map((_, i) => (
-                  <div key={i} className="space-y-1">
-                    <div className="flex justify-between">
-                      <Skeleton className="h-4 w-32" />
-                      <Skeleton className="h-4 w-24" />
+        <Card>
+          <CardHeader>
+            <Skeleton className="h-6 w-24 mb-1" />
+          </CardHeader>
+          <CardContent>
+            <Skeleton className="h-4 w-full mb-1.5" />
+            <Skeleton className="h-4 w-full mb-1.5" />
+            <Skeleton className="h-4 w-3/4" />
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader>
+            <Skeleton className="h-6 w-32 mb-1" />
+          </CardHeader>
+          <CardContent className="pb-2">
+            <div className="space-y-4">
+              <div>
+                <Skeleton className="h-5 w-28 mb-3" />
+                <div className="space-y-3">
+                  {Array(3).fill(0).map((_, i) => (
+                    <div key={i} className="space-y-1">
+                      <div className="flex justify-between">
+                        <Skeleton className="h-4 w-24" />
+                        <Skeleton className="h-4 w-16" />
+                      </div>
+                      <Skeleton className="h-2 w-full" />
                     </div>
-                    <Skeleton className="h-2 w-full" />
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </CardContent>
-          </Card>
-        </div>
+              
+              <div>
+                <Skeleton className="h-5 w-36 mb-3" />
+                <div className="flex justify-between items-center mb-1.5">
+                  <Skeleton className="h-4 w-32" />
+                  <Skeleton className="h-4 w-16" />
+                </div>
+                <Skeleton className="h-2 w-full" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <Skeleton className="h-6 w-32" />
+            <Skeleton className="h-8 w-24" />
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {Array(2).fill(0).map((_, i) => (
+                <div key={i} className="border rounded-lg p-4">
+                  <Skeleton className="h-6 w-48 mb-2" />
+                  <Skeleton className="h-4 w-full mb-1.5" />
+                  <Skeleton className="h-4 w-3/4" />
+                  <div className="flex justify-between mt-3">
+                    <Skeleton className="h-4 w-20" />
+                    <Skeleton className="h-4 w-16" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
