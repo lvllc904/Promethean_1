@@ -5,10 +5,11 @@ import { Loader2 } from "lucide-react";
 
 type ProtectedRouteProps = {
   path: string;
-  component: () => JSX.Element;
+  component?: () => JSX.Element;
+  children?: ReactNode | (() => ReactNode);
 };
 
-export function ProtectedRoute({ path, component: Component }: ProtectedRouteProps) {
+export function ProtectedRoute({ path, component: Component, children }: ProtectedRouteProps) {
   const { user, isLoading } = useAuth();
 
   if (isLoading) {
@@ -31,7 +32,8 @@ export function ProtectedRoute({ path, component: Component }: ProtectedRoutePro
 
   return (
     <Route path={path}>
-      <Component />
+      {Component && <Component />}
+      {typeof children === 'function' ? (children as () => ReactNode)() : children}
     </Route>
   );
 }
