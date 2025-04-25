@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { 
   ArrowUpRight, 
   Award, 
+  Building2,
   CheckCircle2, 
   Clock, 
   Flame, 
@@ -88,6 +89,7 @@ type RewardItem = {
   points: number;
   maxPerDay?: number;
   maxPerWeek?: number;
+  maxPerMonth?: number;
   completedCount: number;
   maxCount?: number;
   isCompleted?: boolean;
@@ -104,7 +106,7 @@ type Badge = {
   icon: React.ReactNode;
   requiredLevel?: number;
   requiredPoints?: number;
-  requiredActivity?: Record<ActivityType, number>;
+  requiredActivity?: Partial<Record<ActivityType, number>>;
   dateEarned?: Date;
   rarity: 'common' | 'uncommon' | 'rare' | 'epic' | 'legendary';
 };
@@ -1339,7 +1341,3 @@ export function ContributionRewards() {
   );
 }
 
-// Building icon component (missing from imports)
-const Building2 = (props: React.ComponentProps<typeof Award>) => {
-  return <Award {...props} />;
-};
