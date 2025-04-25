@@ -28,6 +28,11 @@ import { generatePropertyValuation, generatePropertyDescription } from "./servic
 import * as web3Service from "./services/web3";
 import Stripe from "stripe";
 
+import { requireSocialAuth, SocialAuthRequest } from './middleware/social-auth';
+import { socialSecurityService } from './services/social-security';
+import { socialProfileService } from './services/social-profile';
+import { insertSocialProfileSchema, insertSocialPostSchema } from '@shared/schema';
+
 export async function registerRoutes(app: Express): Promise<Server> {
   // Base API prefix
   const apiPrefix = "/api";
@@ -1628,6 +1633,292 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Create the HTTP server
+  // Social Media Security Endpoints
+  app.post(`${apiPrefix}/social/mfa/setup`, async (req, res) => {
+    try {
+      const { userId, pseudonym } = req.body;
+      
+      if (!userId || !pseudonym) {
+        return res.status(400).json({ error: 'Missing required fields' });
+      }
+      
+      const mfaData = await socialSecurityService.generateMfaSecret(userId, pseudonym);
+      res.json(mfaData);
+    } catch (error) {
+      console.error('Error setting up MFA:', error);
+      res.status(500).json({ error: 'Failed to set up MFA' });
+    }
+  });
+  
+  app.post(`${apiPrefix}/social/mfa/verify`, async (req, res) => {
+    try {
+      const { userId, token } = req.body;
+      
+      if (!userId || !token) {
+        return res.status(400).json({ error: 'Missing required fields' });
+      }
+      
+      const isValid = await socialSecurityService.verifyMfaToken(userId, token);
+      
+      if (!isValid) {
+        return res.status(401).json({ error: 'Invalid MFA token' });
+      }
+      
+      // Token is valid, enable MFA for the user
+      await socialSecurityService.enableMfa(userId);
+      
+      // Generate a social access token
+      const accessToken = await socialSecurityService.createSocialToken(userId);
+      
+      res.json({ success: true, accessToken });
+    } catch (error) {
+      console.error('Error verifying MFA token:', error);
+      res.status(500).json({ error: 'Failed to verify MFA token' });
+    }
+  });
+  
+  app.post(`${apiPrefix}/social/access/logout`, requireSocialAuth, async (req: SocialAuthRequest, res) => {
+    try {
+      // Extract token from Authorization header
+      const token = req.headers.authorization?.split(' ')[1];
+      
+      if (!token) {
+        return res.status(400).json({ error: 'Missing token' });
+      }
+      
+      await socialSecurityService.invalidateToken(token);
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Error during logout:', error);
+      res.status(500).json({ error: 'Failed to logout' });
+    }
+  });
+  
+  app.post(`${apiPrefix}/social/access/logout-all`, requireSocialAuth, async (req: SocialAuthRequest, res) => {
+    try {
+      if (!req.user?.userId) {
+        return res.status(401).json({ error: 'Unauthorized' });
+      }
+      
+      await socialSecurityService.invalidateAllTokens(req.user.userId);
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Error during logout-all:', error);
+      res.status(500).json({ error: 'Failed to logout from all devices' });
+    }
+  });
+  
+  // Social Profile Endpoints
+  app.post(`${apiPrefix}/social/profiles`, async (req, res) => {
+    try {
+      const profileData = insertSocialProfileSchema.parse(req.body);
+      const profile = await socialProfileService.createOrUpdateProfile(profileData.userId, profileData);
+      res.status(201).json(profile);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: 'Invalid profile data', issues: error.errors });
+      }
+      if (error instanceof Error && error.message === 'Pseudonym is already taken') {
+        return res.status(409).json({ error: error.message });
+      }
+      console.error('Error creating profile:', error);
+      res.status(500).json({ error: 'Failed to create profile' });
+    }
+  });
+  
+  app.get(`${apiPrefix}/social/profiles/:id`, requireSocialAuth, async (req, res) => {
+    try {
+      const profileId = parseInt(req.params.id);
+      const profile = await socialProfileService.getProfileById(profileId);
+      
+      if (!profile) {
+        return res.status(404).json({ error: 'Profile not found' });
+      }
+      
+      res.json(profile);
+    } catch (error) {
+      console.error('Error fetching profile:', error);
+      res.status(500).json({ error: 'Failed to fetch profile' });
+    }
+  });
+  
+  app.get(`${apiPrefix}/social/profiles/user/:userId`, requireSocialAuth, async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const profile = await socialProfileService.getProfileByUserId(userId);
+      
+      if (!profile) {
+        return res.status(404).json({ error: 'Profile not found' });
+      }
+      
+      res.json(profile);
+    } catch (error) {
+      console.error('Error fetching profile by user ID:', error);
+      res.status(500).json({ error: 'Failed to fetch profile' });
+    }
+  });
+  
+  app.get(`${apiPrefix}/social/profiles/pseudonym/:pseudonym`, requireSocialAuth, async (req, res) => {
+    try {
+      const { pseudonym } = req.params;
+      const profile = await socialProfileService.getProfileByPseudonym(pseudonym);
+      
+      if (!profile) {
+        return res.status(404).json({ error: 'Profile not found' });
+      }
+      
+      res.json(profile);
+    } catch (error) {
+      console.error('Error fetching profile by pseudonym:', error);
+      res.status(500).json({ error: 'Failed to fetch profile' });
+    }
+  });
+  
+  // Social Posts Endpoints
+  app.post(`${apiPrefix}/social/posts`, requireSocialAuth, async (req: SocialAuthRequest, res) => {
+    try {
+      if (!req.user) {
+        return res.status(401).json({ error: 'Unauthorized' });
+      }
+      
+      const postData = insertSocialPostSchema.parse(req.body);
+      const userProfile = await socialProfileService.getProfileByUserId(req.user.userId);
+      
+      if (!userProfile) {
+        return res.status(404).json({ error: 'User profile not found' });
+      }
+      
+      const post = await socialProfileService.createPost(userProfile.id, postData);
+      res.status(201).json(post);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: 'Invalid post data', issues: error.errors });
+      }
+      console.error('Error creating post:', error);
+      res.status(500).json({ error: 'Failed to create post' });
+    }
+  });
+  
+  app.get(`${apiPrefix}/social/feed`, requireSocialAuth, async (req: SocialAuthRequest, res) => {
+    try {
+      if (!req.user) {
+        return res.status(401).json({ error: 'Unauthorized' });
+      }
+      
+      const userProfile = await socialProfileService.getProfileByUserId(req.user.userId);
+      
+      if (!userProfile) {
+        return res.status(404).json({ error: 'User profile not found' });
+      }
+      
+      const limit = req.query.limit ? parseInt(req.query.limit as string) : 50;
+      const feed = await socialProfileService.getFeed(userProfile.id, limit);
+      res.json(feed);
+    } catch (error) {
+      console.error('Error fetching feed:', error);
+      res.status(500).json({ error: 'Failed to fetch feed' });
+    }
+  });
+  
+  app.get(`${apiPrefix}/social/posts/user/:profileId`, requireSocialAuth, async (req: SocialAuthRequest, res) => {
+    try {
+      if (!req.user) {
+        return res.status(401).json({ error: 'Unauthorized' });
+      }
+      
+      const profileId = parseInt(req.params.profileId);
+      const userProfile = await socialProfileService.getProfileByUserId(req.user.userId);
+      
+      if (!userProfile) {
+        return res.status(404).json({ error: 'User profile not found' });
+      }
+      
+      const limit = req.query.limit ? parseInt(req.query.limit as string) : 50;
+      const posts = await socialProfileService.getUserPosts(profileId, userProfile.id, limit);
+      res.json(posts);
+    } catch (error) {
+      console.error('Error fetching user posts:', error);
+      res.status(500).json({ error: 'Failed to fetch user posts' });
+    }
+  });
+  
+  // Social Following Endpoints
+  app.post(`${apiPrefix}/social/follow/:profileId`, requireSocialAuth, async (req, res) => {
+    try {
+      if (!req.user) {
+        return res.status(401).json({ error: 'Unauthorized' });
+      }
+      
+      const followedProfileId = parseInt(req.params.profileId);
+      const userProfile = await socialProfileService.getProfileByUserId(req.user.userId);
+      
+      if (!userProfile) {
+        return res.status(404).json({ error: 'User profile not found' });
+      }
+      
+      await socialProfileService.followUser(userProfile.id, followedProfileId);
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Error following user:', error);
+      res.status(500).json({ error: 'Failed to follow user' });
+    }
+  });
+  
+  app.delete(`${apiPrefix}/social/follow/:profileId`, requireSocialAuth, async (req, res) => {
+    try {
+      if (!req.user) {
+        return res.status(401).json({ error: 'Unauthorized' });
+      }
+      
+      const followedProfileId = parseInt(req.params.profileId);
+      const userProfile = await socialProfileService.getProfileByUserId(req.user.userId);
+      
+      if (!userProfile) {
+        return res.status(404).json({ error: 'User profile not found' });
+      }
+      
+      await socialProfileService.unfollowUser(userProfile.id, followedProfileId);
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Error unfollowing user:', error);
+      res.status(500).json({ error: 'Failed to unfollow user' });
+    }
+  });
+  
+  app.get(`${apiPrefix}/social/followers/:profileId`, requireSocialAuth, async (req, res) => {
+    try {
+      const profileId = parseInt(req.params.profileId);
+      const followers = await socialProfileService.getFollowers(profileId);
+      res.json(followers);
+    } catch (error) {
+      console.error('Error fetching followers:', error);
+      res.status(500).json({ error: 'Failed to fetch followers' });
+    }
+  });
+  
+  app.get(`${apiPrefix}/social/following/:profileId`, requireSocialAuth, async (req, res) => {
+    try {
+      const profileId = parseInt(req.params.profileId);
+      const following = await socialProfileService.getFollowing(profileId);
+      res.json(following);
+    } catch (error) {
+      console.error('Error fetching following:', error);
+      res.status(500).json({ error: 'Failed to fetch following' });
+    }
+  });
+  
+  app.get(`${apiPrefix}/social/check-following/:followerProfileId/:followedProfileId`, requireSocialAuth, async (req, res) => {
+    try {
+      const followerProfileId = parseInt(req.params.followerProfileId);
+      const followedProfileId = parseInt(req.params.followedProfileId);
+      const isFollowing = await socialProfileService.checkFollowing(followerProfileId, followedProfileId);
+      res.json({ isFollowing });
+    } catch (error) {
+      console.error('Error checking follow status:', error);
+      res.status(500).json({ error: 'Failed to check follow status' });
+    }
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;

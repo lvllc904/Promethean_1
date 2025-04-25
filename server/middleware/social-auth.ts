@@ -16,7 +16,7 @@ interface SocialTokenPayload {
 /**
  * Express request with attached user data
  */
-interface SocialAuthRequest extends Request {
+export interface SocialAuthRequest extends Request {
   user?: {
     userId: number;
     socialAccess: boolean;
