@@ -1093,6 +1093,122 @@ export class DatabaseStorage implements IStorage {
     const result = await db.select({ count: sql`count(*)` }).from(schema.users);
     return Number(result[0].count);
   }
+  
+  // Escrow methods
+  async getEscrow(id: number): Promise<Escrow | undefined> {
+    const escrows = await db.select().from(schema.escrows).where(eq(schema.escrows.id, id));
+    return escrows.length > 0 ? escrows[0] : undefined;
+  }
+
+  async getEscrowsByProperty(propertyId: number): Promise<Escrow[]> {
+    return await db.select().from(schema.escrows).where(eq(schema.escrows.propertyId, propertyId));
+  }
+
+  async getEscrowsBySeller(sellerId: number): Promise<Escrow[]> {
+    return await db.select().from(schema.escrows).where(eq(schema.escrows.sellerId, sellerId));
+  }
+
+  async getEscrowsByBuyer(buyerId: number): Promise<Escrow[]> {
+    return await db.select().from(schema.escrows).where(eq(schema.escrows.buyerId, buyerId));
+  }
+
+  async createEscrow(escrow: InsertEscrow): Promise<Escrow> {
+    const [createdEscrow] = await db.insert(schema.escrows).values(escrow).returning();
+    return createdEscrow;
+  }
+
+  async updateEscrowStatus(id: number, status: string, transactionHash?: string): Promise<Escrow> {
+    const updateData: Partial<Escrow> = { 
+      status, 
+      updatedAt: new Date() 
+    };
+    
+    if (transactionHash) {
+      updateData.transactionHash = transactionHash;
+    }
+    
+    const [updatedEscrow] = await db
+      .update(schema.escrows)
+      .set(updateData)
+      .where(eq(schema.escrows.id, id))
+      .returning();
+    
+    return updatedEscrow;
+  }
+  
+  // Title Transfer methods
+  async getTitleTransfer(id: number): Promise<TitleTransfer | undefined> {
+    const transfers = await db.select().from(schema.titleTransfers).where(eq(schema.titleTransfers.id, id));
+    return transfers.length > 0 ? transfers[0] : undefined;
+  }
+
+  async getTitleTransfersByProperty(propertyId: number): Promise<TitleTransfer[]> {
+    return await db.select().from(schema.titleTransfers).where(eq(schema.titleTransfers.propertyId, propertyId));
+  }
+
+  async createTitleTransfer(titleTransfer: InsertTitleTransfer): Promise<TitleTransfer> {
+    const [createdTransfer] = await db.insert(schema.titleTransfers).values(titleTransfer).returning();
+    return createdTransfer;
+  }
+
+  async updateTitleTransferStatus(id: number, status: string): Promise<TitleTransfer> {
+    const [updatedTransfer] = await db
+      .update(schema.titleTransfers)
+      .set({ 
+        status, 
+        updatedAt: new Date() 
+      })
+      .where(eq(schema.titleTransfers.id, id))
+      .returning();
+    
+    return updatedTransfer;
+  }
+  
+  // Arbitrator methods
+  async getArbitrator(id: number): Promise<Arbitrator | undefined> {
+    const arbitrators = await db.select().from(schema.arbitrators).where(eq(schema.arbitrators.id, id));
+    return arbitrators.length > 0 ? arbitrators[0] : undefined;
+  }
+
+  async getArbitratorByWallet(walletAddress: string): Promise<Arbitrator | undefined> {
+    const arbitrators = await db.select().from(schema.arbitrators)
+      .where(eq(schema.arbitrators.walletAddress, walletAddress));
+    return arbitrators.length > 0 ? arbitrators[0] : undefined;
+  }
+
+  async getArbitrators(): Promise<Arbitrator[]> {
+    return await db.select().from(schema.arbitrators).orderBy(desc(schema.arbitrators.successRate));
+  }
+
+  async createArbitrator(arbitrator: InsertArbitrator): Promise<Arbitrator> {
+    const [createdArbitrator] = await db.insert(schema.arbitrators).values(arbitrator).returning();
+    return createdArbitrator;
+  }
+
+  async updateArbitratorRating(id: number, successfulResolution: boolean): Promise<Arbitrator> {
+    // First get the current arbitrator data
+    const arbitrator = await this.getArbitrator(id);
+    if (!arbitrator) {
+      throw new Error(`Arbitrator with id ${id} not found`);
+    }
+    
+    const newCasesResolved = arbitrator.casesResolved + 1;
+    const successfulCases = successfulResolution 
+      ? (arbitrator.successRate * arbitrator.casesResolved) + 1 
+      : (arbitrator.successRate * arbitrator.casesResolved);
+    
+    const [updatedArbitrator] = await db
+      .update(schema.arbitrators)
+      .set({ 
+        casesResolved: newCasesResolved,
+        successRate: successfulCases / newCasesResolved,
+        updatedAt: new Date()
+      })
+      .where(eq(schema.arbitrators.id, id))
+      .returning();
+    
+    return updatedArbitrator;
+  }
 
   // Property methods
   async getProperty(id: number): Promise<Property | undefined> {

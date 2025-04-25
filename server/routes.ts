@@ -19,7 +19,10 @@ import {
   insertGovernanceProposalSchema,
   insertWorkerRatingSchema,
   insertWorkerReputationSchema,
-  insertWorkerBadgeSchema
+  insertWorkerBadgeSchema,
+  insertEscrowSchema,
+  insertTitleTransferSchema,
+  insertArbitratorSchema
 } from "@shared/schema";
 import { aiConcierge } from "./services/ai-concierge";
 import { scheduler } from "./services/scheduler";
@@ -2113,6 +2116,273 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error('Error marking messages as read:', error);
       res.status(500).json({ error: 'Failed to mark messages as read' });
+    }
+  });
+
+  // ======================================================================
+  // Escrow System API Routes
+  // ======================================================================
+  
+  app.get(`${apiPrefix}/escrows`, async (req, res) => {
+    try {
+      const propertyId = req.query.propertyId ? parseInt(req.query.propertyId as string) : undefined;
+      const sellerId = req.query.sellerId ? parseInt(req.query.sellerId as string) : undefined;
+      const buyerId = req.query.buyerId ? parseInt(req.query.buyerId as string) : undefined;
+      
+      let escrows = [];
+      
+      if (propertyId) {
+        escrows = await storage.getEscrowsByProperty(propertyId);
+      } else if (sellerId) {
+        escrows = await storage.getEscrowsBySeller(sellerId);
+      } else if (buyerId) {
+        escrows = await storage.getEscrowsByBuyer(buyerId);
+      } else {
+        return res.status(400).json({ message: "Missing query parameter. Provide propertyId, sellerId, or buyerId" });
+      }
+      
+      res.json(escrows);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch escrows", error: error.message });
+    }
+  });
+  
+  app.get(`${apiPrefix}/escrows/:id`, async (req, res) => {
+    try {
+      const escrowId = parseInt(req.params.id);
+      const escrow = await storage.getEscrow(escrowId);
+      
+      if (!escrow) {
+        return res.status(404).json({ message: "Escrow not found" });
+      }
+      
+      res.json(escrow);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch escrow", error: error.message });
+    }
+  });
+  
+  app.post(`${apiPrefix}/escrows`, async (req, res) => {
+    try {
+      const escrowData = insertEscrowSchema.parse(req.body);
+      
+      // Validate that the property exists
+      const property = await storage.getProperty(escrowData.propertyId);
+      if (!property) {
+        return res.status(404).json({ message: "Property not found" });
+      }
+      
+      // Verify seller is the property owner
+      if (property.userId !== escrowData.sellerId) {
+        return res.status(403).json({ message: "Seller must be the property owner" });
+      }
+      
+      const newEscrow = await storage.createEscrow(escrowData);
+      res.status(201).json(newEscrow);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid escrow data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to create escrow", error: error.message });
+    }
+  });
+  
+  app.patch(`${apiPrefix}/escrows/:id/status`, async (req, res) => {
+    try {
+      const escrowId = parseInt(req.params.id);
+      const { status, transactionHash } = req.body;
+      
+      if (!status) {
+        return res.status(400).json({ message: "Status is required" });
+      }
+      
+      // Validate status is one of the allowed values
+      const validStatuses = ["pending", "funded", "completed", "cancelled", "disputed"];
+      if (!validStatuses.includes(status)) {
+        return res.status(400).json({ 
+          message: "Invalid status", 
+          allowedValues: validStatuses 
+        });
+      }
+      
+      const updatedEscrow = await storage.updateEscrowStatus(escrowId, status, transactionHash);
+      res.json(updatedEscrow);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to update escrow status", error: error.message });
+    }
+  });
+  
+  // ======================================================================
+  // Title Transfer API Routes
+  // ======================================================================
+  
+  app.get(`${apiPrefix}/title-transfers`, async (req, res) => {
+    try {
+      const propertyId = req.query.propertyId ? parseInt(req.query.propertyId as string) : undefined;
+      
+      if (!propertyId) {
+        return res.status(400).json({ message: "PropertyId is required" });
+      }
+      
+      const transfers = await storage.getTitleTransfersByProperty(propertyId);
+      res.json(transfers);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch title transfers", error: error.message });
+    }
+  });
+  
+  app.get(`${apiPrefix}/title-transfers/:id`, async (req, res) => {
+    try {
+      const transferId = parseInt(req.params.id);
+      const transfer = await storage.getTitleTransfer(transferId);
+      
+      if (!transfer) {
+        return res.status(404).json({ message: "Title transfer not found" });
+      }
+      
+      res.json(transfer);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch title transfer", error: error.message });
+    }
+  });
+  
+  app.post(`${apiPrefix}/title-transfers`, async (req, res) => {
+    try {
+      const transferData = insertTitleTransferSchema.parse(req.body);
+      
+      // Validate that the property exists
+      const property = await storage.getProperty(transferData.propertyId);
+      if (!property) {
+        return res.status(404).json({ message: "Property not found" });
+      }
+      
+      // Verify current owner is correct
+      if (property.userId !== transferData.fromUserId) {
+        return res.status(403).json({ message: "From user must be the current property owner" });
+      }
+      
+      const newTransfer = await storage.createTitleTransfer(transferData);
+      res.status(201).json(newTransfer);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid title transfer data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to create title transfer", error: error.message });
+    }
+  });
+  
+  app.patch(`${apiPrefix}/title-transfers/:id/status`, async (req, res) => {
+    try {
+      const transferId = parseInt(req.params.id);
+      const { status } = req.body;
+      
+      if (!status) {
+        return res.status(400).json({ message: "Status is required" });
+      }
+      
+      // Validate status is one of the allowed values
+      const validStatuses = ["pending", "verified", "completed", "rejected"];
+      if (!validStatuses.includes(status)) {
+        return res.status(400).json({ 
+          message: "Invalid status", 
+          allowedValues: validStatuses 
+        });
+      }
+      
+      const updatedTransfer = await storage.updateTitleTransferStatus(transferId, status);
+      res.json(updatedTransfer);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to update title transfer status", error: error.message });
+    }
+  });
+  
+  // ======================================================================
+  // Arbitrator API Routes
+  // ======================================================================
+  
+  app.get(`${apiPrefix}/arbitrators`, async (req, res) => {
+    try {
+      const arbitrators = await storage.getArbitrators();
+      res.json(arbitrators);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch arbitrators", error: error.message });
+    }
+  });
+  
+  app.get(`${apiPrefix}/arbitrators/:id`, async (req, res) => {
+    try {
+      const arbitratorId = parseInt(req.params.id);
+      const arbitrator = await storage.getArbitrator(arbitratorId);
+      
+      if (!arbitrator) {
+        return res.status(404).json({ message: "Arbitrator not found" });
+      }
+      
+      res.json(arbitrator);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch arbitrator", error: error.message });
+    }
+  });
+  
+  app.get(`${apiPrefix}/arbitrators/wallet/:walletAddress`, async (req, res) => {
+    try {
+      const { walletAddress } = req.params;
+      
+      if (!walletAddress) {
+        return res.status(400).json({ message: "Wallet address is required" });
+      }
+      
+      const arbitrator = await storage.getArbitratorByWallet(walletAddress);
+      
+      if (!arbitrator) {
+        return res.status(404).json({ message: "Arbitrator not found" });
+      }
+      
+      res.json(arbitrator);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch arbitrator by wallet", error: error.message });
+    }
+  });
+  
+  app.post(`${apiPrefix}/arbitrators`, async (req, res) => {
+    try {
+      const arbitratorData = insertArbitratorSchema.parse(req.body);
+      
+      // Validate that the user exists
+      const user = await storage.getUser(arbitratorData.userId);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      
+      // Check if wallet address is already registered
+      const existingArbitrator = await storage.getArbitratorByWallet(arbitratorData.walletAddress);
+      if (existingArbitrator) {
+        return res.status(409).json({ message: "Wallet address already registered as an arbitrator" });
+      }
+      
+      const newArbitrator = await storage.createArbitrator(arbitratorData);
+      res.status(201).json(newArbitrator);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid arbitrator data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to create arbitrator", error: error.message });
+    }
+  });
+  
+  app.patch(`${apiPrefix}/arbitrators/:id/rating`, async (req, res) => {
+    try {
+      const arbitratorId = parseInt(req.params.id);
+      const { successfulResolution } = req.body;
+      
+      if (successfulResolution === undefined) {
+        return res.status(400).json({ message: "successfulResolution is required (true or false)" });
+      }
+      
+      const updatedArbitrator = await storage.updateArbitratorRating(arbitratorId, successfulResolution);
+      res.json(updatedArbitrator);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to update arbitrator rating", error: error.message });
     }
   });
 
