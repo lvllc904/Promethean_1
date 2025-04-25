@@ -211,13 +211,20 @@ const ServiceIntegrations = () => {
       }
     }
     
+    // Handle the special case where credentialId was set to 0 (our workaround for the undefined type issue)
+    const submissionValues = {
+      ...values,
+      // If credentialId is 0, it means it wasn't actually selected and should be null in the backend
+      credentialId: values.credentialId === 0 ? null : values.credentialId
+    };
+    
     if (editingIntegration) {
       updateIntegrationMutation.mutate({ 
         id: editingIntegration.id, 
-        data: values 
+        data: submissionValues 
       });
     } else {
-      addIntegrationMutation.mutate(values);
+      addIntegrationMutation.mutate(submissionValues);
     }
   };
   
@@ -232,8 +239,12 @@ const ServiceIntegrations = () => {
     if (providerCredentials.length === 1) {
       form.setValue('credentialId', providerCredentials[0].id);
     } else {
-      // Clear the credential selection
-      form.setValue('credentialId', undefined);
+      // Clear the credential selection by passing a number type
+      // This is a workaround for the type issue with undefined
+      form.setValue('credentialId', 0);
+      
+      // On form submission we'll check for this value and handle it appropriately
+      // This is safer than modifying the schema or forcing undefined/null which can cause type issues
     }
   };
   

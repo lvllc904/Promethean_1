@@ -286,7 +286,7 @@ const ServiceProviders = () => {
           >
             <TabsList className="flex flex-wrap h-auto">
               <TabsTrigger value="all" className="mb-1">All Categories</TabsTrigger>
-              {categories.map((category: any) => (
+              {categories.map((category) => (
                 <TabsTrigger 
                   key={category.id} 
                   value={category.id.toString()}
@@ -314,9 +314,9 @@ const ServiceProviders = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredProviders && filteredProviders.map((provider: any) => {
+            {filteredProviders && filteredProviders.map((provider) => {
               const category = categories && Array.isArray(categories) ? 
-                categories.find((c: any) => c.id === provider.categoryId) : 
+                categories.find((c) => c.id === provider.categoryId) : 
                 undefined;
               return (
                 <Card key={provider.id} className={`${provider.isActive ? 'border-gray-200' : 'border-red-200 bg-red-50'}`}>
@@ -483,7 +483,7 @@ const ServiceProviders = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {categories && Array.isArray(categories) && categories.map((category: any) => (
+                          {categories && Array.isArray(categories) && categories.map((category) => (
                             <SelectItem key={category.id} value={category.id.toString()}>
                               {category.name}
                             </SelectItem>
