@@ -57,6 +57,10 @@ export function Sidebar() {
   const [propertiesOpen, setPropertiesOpen] = useState(false);
   const [daoOpen, setDaoOpen] = useState(false);
   const [marketplaceOpen, setMarketplaceOpen] = useState(false);
+  const [communityOpen, setCommunityOpen] = useState(false);
+  
+  // This would be replaced with actual data from API in a real implementation
+  const [unreadMessages, setUnreadMessages] = useState(0);
   
   const isActive = (path: string) => location === path;
   const isActiveGroup = (paths: string[]) => paths.some(path => location.startsWith(path));
@@ -158,14 +162,36 @@ export function Sidebar() {
           )}
         </div>
         
-        {/* Community */}
-        <NavItem 
-          href="/community" 
-          icon={<MessageSquare className="h-5 w-5" />} 
-          isActive={isActive("/community")}
-        >
-          Community
-        </NavItem>
+        {/* Community and Social */}
+        <div>
+          <button 
+            onClick={() => setCommunityOpen(!communityOpen)} 
+            className={cn(
+              "w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-md transition-colors",
+              isActiveGroup(["/community", "/social", "/profile"]) 
+                ? "bg-primary-50 text-primary-500" 
+                : "text-neutral-700 hover:bg-neutral-100"
+            )}
+          >
+            <div className="flex items-center">
+              <MessageSquare className="h-5 w-5 mr-3" />
+              Community & Social
+            </div>
+            <ChevronDown 
+              className={cn("h-5 w-5 transition-transform duration-200", communityOpen && "transform rotate-180")} 
+            />
+          </button>
+          
+          {communityOpen && (
+            <div className="ml-7 pl-3 border-l border-neutral-200 space-y-1 mt-1">
+              <NavGroupItem href="/community" isActive={isActive("/community")}>Forum & Events</NavGroupItem>
+              <NavGroupItem href="/social/feed" isActive={isActive("/social/feed")}>Social Feed</NavGroupItem>
+              <NavGroupItem href="/social/messages" isActive={isActive("/social/messages")}>Messages {unreadMessages > 0 && <span className="inline-flex items-center justify-center w-5 h-5 ml-2 text-xs font-medium text-white bg-red-500 rounded-full">{unreadMessages}</span>}</NavGroupItem>
+              <NavGroupItem href="/profile" isActive={isActive("/profile")}>Community Talent</NavGroupItem>
+              <NavGroupItem href="/social/profile" isActive={isActive("/social/profile")}>My Social Profile</NavGroupItem>
+            </div>
+          )}
+        </div>
         
         {/* Memberships */}
         <NavItem 

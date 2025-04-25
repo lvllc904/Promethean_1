@@ -24,6 +24,11 @@ import CreateProposal from "@/pages/dao/proposals/create";
 import MyProperties from "@/pages/properties/my";
 import PropertyValuation from "@/pages/properties/valuation";
 
+// Import social media components
+import SocialFeed from "@/pages/social/feed";
+import SocialMessages from "@/pages/social/messages";
+import SocialProfile from "@/pages/social/profile";
+
 function Router() {
   return (
     <Switch>
@@ -41,6 +46,11 @@ function Router() {
       <Route path="/marketplace/create" component={CreateTask} />
       <Route path="/memberships" component={Memberships} />
       <Route path="/community" component={Community} />
+      <Route path="/social/feed" component={SocialFeed} />
+      <Route path="/social/messages" component={SocialMessages} />
+      <Route path="/social/messages/:id" component={SocialMessages} />
+      <Route path="/social/profile" component={SocialProfile} />
+      <Route path="/social/profile/:id" component={SocialProfile} />
       <Route path="/feedback" component={Feedback} />
       <Route path="/wallet" component={Wallet} />
       <Route path="/admin" component={AdminDashboard} />
