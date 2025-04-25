@@ -1,8 +1,10 @@
 import { 
   users, type User, type InsertUser,
   properties, type Property, type InsertProperty,
+  governanceCategories, type GovernanceCategory, type InsertGovernanceCategory,
   proposals, type Proposal, type InsertProposal,
   votes, type Vote, type InsertVote,
+  voteDelegations, type VoteDelegation, type InsertVoteDelegation,
   tasks, type Task, type InsertTask,
   membershipTiers, type MembershipTier, type InsertMembershipTier,
   serviceCategories, type ServiceCategory, type InsertServiceCategory,
@@ -94,11 +96,30 @@ export interface IStorage {
   getFeaturedProperties(): Promise<Property[]>;
   createProperty(property: InsertProperty): Promise<Property>;
   
+  // Governance category methods
+  getGovernanceCategory(id: number): Promise<GovernanceCategory | undefined>;
+  getGovernanceCategories(): Promise<GovernanceCategory[]>;
+  createGovernanceCategory(category: InsertGovernanceCategory): Promise<GovernanceCategory>;
+  updateGovernanceCategory(id: number, updates: Partial<GovernanceCategory>): Promise<GovernanceCategory>;
+  
   // Proposal methods
   getProposal(id: number): Promise<Proposal | undefined>;
-  getProposals(status?: string): Promise<Proposal[]>;
+  getProposals(status?: string, categoryId?: number): Promise<Proposal[]>;
   createProposal(proposal: InsertProposal): Promise<Proposal>;
   updateProposalVotes(proposalId: number, voteType: string, votePower: number): Promise<void>;
+  executeProposal(proposalId: number): Promise<Proposal>;
+  
+  // Vote delegation methods
+  getVoteDelegation(id: number): Promise<VoteDelegation | undefined>;
+  getVoteDelegationsByDelegator(delegatorId: number): Promise<VoteDelegation[]>;
+  getVoteDelegationsByDelegate(delegateId: number): Promise<VoteDelegation[]>;
+  getActiveVoteDelegationsForProposal(proposalId: number): Promise<VoteDelegation[]>;
+  createVoteDelegation(delegation: InsertVoteDelegation): Promise<VoteDelegation>;
+  updateVoteDelegation(id: number, active: boolean): Promise<VoteDelegation>;
+  
+  // Vote methods with quadratic voting
+  getVotesByUser(userId: number, proposalId?: number): Promise<Vote[]>;
+  calculateQuadraticVotePower(baseVotes: number): Promise<number>;
   
   // Escrow methods
   getEscrow(id: number): Promise<Escrow | undefined>;
@@ -277,6 +298,159 @@ export class MemStorage implements IStorage {
   private usersByUsername = new Map<string, number>();
   private usersByEmail = new Map<string, number>();
   private usersByWalletAddress = new Map<string, number>();
+  
+  // Maps and counters for advanced governance
+  private governanceCategories = new Map<number, GovernanceCategory>();
+  private voteDelegations = new Map<number, VoteDelegation>();
+  private currentGovernanceCategoryId = 1;
+  private currentVoteDelegationId = 1;
+  
+  // Governance category methods
+  async getGovernanceCategory(id: number): Promise<GovernanceCategory | undefined> {
+    return this.governanceCategories.get(id);
+  }
+  
+  async getGovernanceCategories(): Promise<GovernanceCategory[]> {
+    return Array.from(this.governanceCategories.values()).filter(category => category.isActive);
+  }
+  
+  async createGovernanceCategory(category: InsertGovernanceCategory): Promise<GovernanceCategory> {
+    const id = this.currentGovernanceCategoryId++;
+    const now = new Date();
+    const newCategory: GovernanceCategory = {
+      id,
+      ...category,
+      isActive: true,
+      createdAt: now,
+      updatedAt: now
+    };
+    this.governanceCategories.set(id, newCategory);
+    return newCategory;
+  }
+  
+  async updateGovernanceCategory(id: number, updates: Partial<GovernanceCategory>): Promise<GovernanceCategory> {
+    const category = this.governanceCategories.get(id);
+    if (!category) {
+      throw new Error(`Governance category with id ${id} not found`);
+    }
+    
+    const updatedCategory: GovernanceCategory = {
+      ...category,
+      ...updates,
+      updatedAt: new Date()
+    };
+    this.governanceCategories.set(id, updatedCategory);
+    return updatedCategory;
+  }
+  
+  // Updated proposal methods to support categories
+  async getProposals(status?: string, categoryId?: number): Promise<Proposal[]> {
+    let proposals = Array.from(this.proposals.values());
+    
+    if (status) {
+      proposals = proposals.filter(proposal => proposal.status === status);
+    }
+    
+    if (categoryId) {
+      proposals = proposals.filter(proposal => proposal.categoryId === categoryId);
+    }
+    
+    return proposals;
+  }
+  
+  // Execute a proposal, updating its status
+  async executeProposal(proposalId: number): Promise<Proposal> {
+    const proposal = this.proposals.get(proposalId);
+    if (!proposal) {
+      throw new Error(`Proposal with id ${proposalId} not found`);
+    }
+    
+    const updatedProposal: Proposal = {
+      ...proposal,
+      status: 'executed',
+      updatedAt: new Date()
+    };
+    this.proposals.set(proposalId, updatedProposal);
+    return updatedProposal;
+  }
+  
+  // Vote delegation methods
+  async getVoteDelegation(id: number): Promise<VoteDelegation | undefined> {
+    return this.voteDelegations.get(id);
+  }
+  
+  async getVoteDelegationsByDelegator(delegatorId: number): Promise<VoteDelegation[]> {
+    return Array.from(this.voteDelegations.values())
+      .filter(delegation => delegation.delegatorId === delegatorId);
+  }
+  
+  async getVoteDelegationsByDelegate(delegateId: number): Promise<VoteDelegation[]> {
+    return Array.from(this.voteDelegations.values())
+      .filter(delegation => delegation.delegateId === delegateId);
+  }
+  
+  async getActiveVoteDelegationsForProposal(proposalId: number): Promise<VoteDelegation[]> {
+    const proposal = await this.getProposal(proposalId);
+    if (!proposal) {
+      return [];
+    }
+    
+    return Array.from(this.voteDelegations.values()).filter(delegation => {
+      if (!delegation.active) return false;
+      
+      // Check if this delegation applies to this proposal
+      if (delegation.proposalId === proposalId) return true;
+      if (delegation.scope === 'global') return true;
+      if (delegation.scope === 'category' && delegation.categoryId === proposal.categoryId) return true;
+      
+      return false;
+    });
+  }
+  
+  async createVoteDelegation(delegation: InsertVoteDelegation): Promise<VoteDelegation> {
+    const id = this.currentVoteDelegationId++;
+    const now = new Date();
+    const newDelegation: VoteDelegation = {
+      id,
+      ...delegation,
+      active: true,
+      createdAt: now,
+      updatedAt: now
+    };
+    this.voteDelegations.set(id, newDelegation);
+    return newDelegation;
+  }
+  
+  async updateVoteDelegation(id: number, active: boolean): Promise<VoteDelegation> {
+    const delegation = this.voteDelegations.get(id);
+    if (!delegation) {
+      throw new Error(`Vote delegation with id ${id} not found`);
+    }
+    
+    const updatedDelegation: VoteDelegation = {
+      ...delegation,
+      active,
+      updatedAt: new Date()
+    };
+    this.voteDelegations.set(id, updatedDelegation);
+    return updatedDelegation;
+  }
+  
+  // Enhanced vote methods for quadratic voting
+  async getVotesByUser(userId: number, proposalId?: number): Promise<Vote[]> {
+    let votes = Array.from(this.votes.values()).filter(vote => vote.userId === userId);
+    
+    if (proposalId) {
+      votes = votes.filter(vote => vote.proposalId === proposalId);
+    }
+    
+    return votes;
+  }
+  
+  async calculateQuadraticVotePower(baseVotes: number): Promise<number> {
+    // Quadratic voting formula: vote power = sqrt(baseVotes)
+    return Math.floor(Math.sqrt(baseVotes) * 100) / 100; // Round to 2 decimal places
+  }
 
   // User methods
   async getUser(id: number): Promise<User | undefined> {
