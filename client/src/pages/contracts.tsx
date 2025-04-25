@@ -1,5 +1,5 @@
 import React from 'react';
-import { ContractInteractionWizard } from '@/components/contracts/contract-interaction-wizard';
+import { ContractInteractionWizard } from '@/components/contracts/contract-interaction-wizard-fixed';
 import { PageHeader } from '@/components/ui/page-header';
 import { Zap } from 'lucide-react';
 

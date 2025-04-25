@@ -631,7 +631,7 @@ export function ContractInteractionWizard() {
         
         // Type conversion based on ABI type
         if (input.type.includes('int')) {
-          return value === '' ? 0 : ethers.BigNumber.from(value);
+          return value === '' ? 0 : ethers.parseUnits(value, 0);
         }
         
         if (input.type === 'bool') {
@@ -688,7 +688,7 @@ export function ContractInteractionWizard() {
         
         // Type conversion based on ABI type
         if (input.type.includes('int')) {
-          return value === '' ? 0 : ethers.BigNumber.from(value);
+          return value === '' ? 0 : ethers.parseUnits(value, 0);
         }
         
         if (input.type === 'bool') {
@@ -709,7 +709,7 @@ export function ContractInteractionWizard() {
       // Prepare transaction options
       const options: any = {};
       if (selectedMethod.payable && parseFloat(methodValue) > 0) {
-        options.value = ethers.utils.parseEther(methodValue);
+        options.value = ethers.parseEther(methodValue);
       }
       
       // Execute transaction
@@ -825,7 +825,8 @@ export function ContractInteractionWizard() {
       return 'null';
     }
     
-    if (ethers.BigNumber.isBigNumber(result)) {
+    // Handle BigNumber objects (ethers v6 uses bigint)
+    if (typeof result === 'bigint') {
       return result.toString();
     }
     
@@ -836,7 +837,7 @@ export function ContractInteractionWizard() {
     if (typeof result === 'object') {
       try {
         return JSON.stringify(result, (key, value) => {
-          if (ethers.BigNumber.isBigNumber(value)) {
+          if (typeof value === 'bigint') {
             return value.toString();
           }
           return value;
@@ -1009,8 +1010,20 @@ export function ContractInteractionWizard() {
                                 {method.functionType}
                               </Badge>
                             </TableCell>
-                            <TableCell>{method.inputs.length}</TableCell>
-                            <TableCell>{method.outputs?.length || 0}</TableCell>
+                            <TableCell>
+                              {method.inputs.length === 0 ? (
+                                <span className="text-neutral-400">None</span>
+                              ) : (
+                                method.inputs.length
+                              )}
+                            </TableCell>
+                            <TableCell>
+                              {method.outputs?.length === 0 ? (
+                                <span className="text-neutral-400">None</span>
+                              ) : (
+                                method.outputs?.length || 0
+                              )}
+                            </TableCell>
                             <TableCell className="text-right">
                               <Button 
                                 variant="ghost" 
@@ -1032,78 +1045,57 @@ export function ContractInteractionWizard() {
               </div>
             )}
             
-            <div className="space-y-4">
-              <h4 className="font-medium">Common Contract Templates</h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {interfaceCategories.map(category => (
-                  <div key={category.name}>
-                    <h5 className="text-sm font-medium text-neutral-500 mb-2">{category.name}</h5>
-                    <div className="space-y-2">
-                      {category.interfaces.map(iface => (
-                        <Button 
-                          key={iface.name} 
-                          variant="outline" 
-                          className="w-full justify-start"
-                          onClick={() => {
-                            if (iface.abiKey) {
-                              loadAbiTemplate(iface.abiKey);
-                              setSelectedAbiTemplate(iface.abiKey);
-                              setActiveTab('abi');
-                            }
-                          }}
-                          disabled={!iface.abiKey}
-                        >
-                          <FileJson className="h-4 w-4 mr-2" />
-                          {iface.name}
-                        </Button>
-                      ))}
-                    </div>
-                  </div>
-                ))}
+            {contract.methods.length === 0 && !contract.loading && !contract.error && (
+              <div className="flex flex-col items-center justify-center py-8">
+                <FileJson className="h-12 w-12 text-neutral-300 mb-4" />
+                <h3 className="text-lg font-medium mb-2">No Contract Loaded</h3>
+                <p className="text-sm text-neutral-500 text-center max-w-md mb-6">
+                  Enter a contract address and select a network to load contract information. You can also paste an ABI directly in the "ABI Management" tab.
+                </p>
+                
+                <div className="w-full max-w-md space-y-4">
+                  <h4 className="font-medium">Common Contract Interfaces</h4>
+                  {interfaceCategories.map(category => (
+                    <Accordion type="single" collapsible key={category.name}>
+                      <AccordionItem value={category.name}>
+                        <AccordionTrigger className="hover:no-underline">
+                          {category.name}
+                        </AccordionTrigger>
+                        <AccordionContent>
+                          <div className="space-y-2 pt-2">
+                            {category.interfaces.map(interface_ => (
+                              <div key={interface_.name} className="flex justify-between items-center p-2 hover:bg-neutral-50 rounded-md">
+                                <div>
+                                  <p className="font-medium">{interface_.name}</p>
+                                  <p className="text-sm text-neutral-500">{interface_.description}</p>
+                                </div>
+                                {interface_.abiKey && (
+                                  <Button 
+                                    variant="ghost" 
+                                    size="sm"
+                                    onClick={() => loadAbiTemplate(interface_.abiKey as string)}
+                                  >
+                                    <FileJson className="h-4 w-4 mr-2" />
+                                    Load ABI
+                                  </Button>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+                    </Accordion>
+                  ))}
+                </div>
               </div>
-            </div>
-            
-            <div className="space-y-4">
-              <h4 className="font-medium">Common Interactions</h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {commonInteractions.map((interaction, idx) => (
-                  <Card key={idx} className="hover:bg-neutral-50 transition-colors cursor-pointer">
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-base">{interaction.name}</CardTitle>
-                      <CardDescription>{interaction.description}</CardDescription>
-                    </CardHeader>
-                    <CardFooter>
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        className="w-full"
-                        onClick={() => {
-                          // Load ABI template
-                          loadAbiTemplate(interaction.contract);
-                          
-                          // Auto-select method
-                          const method = contract.methods.find(m => m.name === interaction.method);
-                          if (method) {
-                            handleMethodSelect(method);
-                            setActiveTab('interact');
-                          }
-                        }}
-                      >
-                        <Zap className="h-4 w-4 mr-2" />
-                        Use Template
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                ))}
-              </div>
-            </div>
+            )}
           </TabsContent>
           
           {/* ABI Management Tab */}
           <TabsContent value="abi" className="p-6 space-y-6">
-            <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <Label htmlFor="abi-template">ABI Template</Label>
+                <Label htmlFor="abi-source">ABI Source</Label>
                 <Select 
                   value={selectedAbiTemplate} 
                   onValueChange={(value) => {
@@ -1111,7 +1103,7 @@ export function ContractInteractionWizard() {
                     loadAbiTemplate(value);
                   }}
                 >
-                  <SelectTrigger id="abi-template">
+                  <SelectTrigger id="abi-source" className="mt-2">
                     <SelectValue placeholder="Select an ABI template" />
                   </SelectTrigger>
                   <SelectContent>
@@ -1122,257 +1114,419 @@ export function ContractInteractionWizard() {
                 </Select>
               </div>
               
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <Label htmlFor="custom-abi">Custom ABI</Label>
-                  <div className="flex items-center">
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      onClick={() => copyToClipboard(customAbi)}
-                    >
-                      <Copy className="h-4 w-4 mr-2" />
-                      Copy
-                    </Button>
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      onClick={() => setCustomAbi(JSON.stringify(contract.abi, null, 2))}
-                    >
-                      <Code className="h-4 w-4 mr-2" />
-                      Current
-                    </Button>
-                  </div>
-                </div>
-                <Textarea 
-                  id="custom-abi" 
-                  className="font-mono text-xs h-64"
-                  placeholder="Paste ABI JSON here..."
-                  value={customAbi}
-                  onChange={(e) => setCustomAbi(e.target.value)}
-                />
-              </div>
-              
-              <div className="flex justify-between">
+              <div className="flex items-end">
                 <Button 
                   variant="outline" 
-                  onClick={() => setCustomAbi('')}
+                  className="mr-2"
+                  onClick={() => {
+                    const fileInput = document.createElement('input');
+                    fileInput.type = 'file';
+                    fileInput.accept = '.json';
+                    fileInput.onchange = (e: any) => {
+                      const file = e.target.files[0];
+                      if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (event) => {
+                          try {
+                            setCustomAbi(event.target?.result as string);
+                          } catch (error) {
+                            toast({
+                              title: "Error",
+                              description: "Failed to read ABI file",
+                              variant: "destructive",
+                            });
+                          }
+                        };
+                        reader.readAsText(file);
+                      }
+                    };
+                    fileInput.click();
+                  }}
                 >
-                  Clear
+                  <Upload className="h-4 w-4 mr-2" />
+                  Upload ABI
                 </Button>
-                <div className="flex gap-2">
-                  <Button 
-                    variant="outline"
-                    onClick={() => {
-                      // Save the ABI to the contract but don't parse it
-                      const fileData = new Blob([customAbi], { type: 'application/json' });
-                      const fileUrl = URL.createObjectURL(fileData);
-                      const link = document.createElement('a');
-                      link.href = fileUrl;
-                      link.download = 'contract-abi.json';
-                      link.click();
-                    }}
-                  >
-                    <Upload className="h-4 w-4 mr-2" />
-                    Export
-                  </Button>
-                  <Button onClick={loadCustomAbi}>
-                    <Zap className="h-4 w-4 mr-2" />
-                    Load ABI
-                  </Button>
-                </div>
+                <Button onClick={loadCustomAbi}>
+                  <FileJson className="h-4 w-4 mr-2" />
+                  Load Custom ABI
+                </Button>
               </div>
             </div>
+            
+            <div>
+              <Label htmlFor="custom-abi">ABI JSON</Label>
+              <Textarea 
+                id="custom-abi"
+                className="font-mono text-sm h-64 mt-2"
+                placeholder='[{ "type": "function", "name": "balanceOf", ... }]'
+                value={customAbi}
+                onChange={(e) => setCustomAbi(e.target.value)}
+              />
+            </div>
+            
+            {contract.methods.length > 0 && (
+              <div className="border rounded-lg p-4">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="font-medium">Loaded Methods ({contract.methods.length})</h3>
+                  <Button variant="outline" size="sm" onClick={() => setActiveTab('interact')}>
+                    Interact With Contract
+                  </Button>
+                </div>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+                  {contract.methods.map((method, index) => (
+                    <div 
+                      key={index} 
+                      className="border rounded-md p-2 hover:bg-neutral-50 cursor-pointer"
+                      onClick={() => {
+                        handleMethodSelect(method);
+                        setActiveTab('interact');
+                      }}
+                    >
+                      <p className="font-medium text-sm truncate">{method.name}</p>
+                      <p className="text-xs text-neutral-500 truncate">{method.signature}</p>
+                      <Badge 
+                        className={cn(
+                          "mt-1 border-0",
+                          method.functionType === 'read' ? "bg-blue-100 text-blue-800" :
+                          method.functionType === 'write' ? "bg-amber-100 text-amber-800" :
+                          method.functionType === 'event' ? "bg-purple-100 text-purple-800" :
+                          "bg-neutral-100 text-neutral-800"
+                        )}
+                      >
+                        {method.functionType}
+                      </Badge>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </TabsContent>
           
           {/* Interact Tab */}
-          <TabsContent value="interact" className="p-6 space-y-6">
-            {!selectedMethod ? (
-              <div className="text-center py-8">
-                <FileJson className="h-16 w-16 mx-auto text-neutral-300 mb-4" />
-                <h3 className="text-lg font-medium mb-2">No Method Selected</h3>
-                <p className="text-sm text-neutral-500 max-w-md mx-auto mb-6">
-                  Select a contract method from the Contract Lookup tab to interact with it.
+          <TabsContent value="interact" className="p-6">
+            {contract.methods.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-8">
+                <Code className="h-12 w-12 text-neutral-300 mb-4" />
+                <h3 className="text-lg font-medium mb-2">No Contract Loaded</h3>
+                <p className="text-sm text-neutral-500 text-center max-w-md mb-6">
+                  Load a contract or ABI first to interact with its functions.
                 </p>
-                <Button
-                  variant="outline"
-                  onClick={() => setActiveTab('lookup')}
-                >
-                  <Search className="h-4 w-4 mr-2" />
-                  Browse Methods
-                </Button>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-2xl">
+                  <Button variant="outline" onClick={() => setActiveTab('lookup')}>
+                    <Search className="h-4 w-4 mr-2" />
+                    Look Up Contract
+                  </Button>
+                  <Button variant="outline" onClick={() => setActiveTab('abi')}>
+                    <FileJson className="h-4 w-4 mr-2" />
+                    Manage ABI
+                  </Button>
+                </div>
+                
+                <div className="w-full max-w-2xl mt-8">
+                  <h4 className="font-medium mb-4">Common Interactions</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {commonInteractions.map((interaction, index) => (
+                      <Card key={index} className="cursor-pointer hover:border-primary" onClick={() => {
+                        // Load ABI template
+                        loadAbiTemplate(interaction.contract);
+                        
+                        // Auto-select method
+                        setTimeout(() => {
+                          const method = contract.methods.find(m => m.name === interaction.method);
+                          if (method) {
+                            handleMethodSelect(method);
+                            
+                            // Pre-fill addresses if needed
+                            if (interaction.inputs.some(input => input.type === 'address' && !input.value)) {
+                              const inputs = { ...methodInputs };
+                              interaction.inputs.forEach(input => {
+                                if (input.type === 'address' && !input.value && input.name.includes('account')) {
+                                  inputs[input.name] = address || '';
+                                }
+                              });
+                              setMethodInputs(inputs);
+                            }
+                          }
+                        }, 100);
+                      }}>
+                        <CardHeader className="pb-2">
+                          <CardTitle className="text-base">{interaction.name}</CardTitle>
+                          <CardDescription>{interaction.description}</CardDescription>
+                        </CardHeader>
+                        <CardFooter className="pt-2">
+                          <Badge className={interaction.contract === 'erc20' ? "bg-blue-100 text-blue-800 border-0" : "bg-purple-100 text-purple-800 border-0"}>
+                            {interaction.contract === 'erc20' ? "ERC-20" : "ERC-721"}
+                          </Badge>
+                        </CardFooter>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
               </div>
-            ) : (
+            ) : selectedMethod ? (
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="text-lg font-medium flex items-center">
-                      {selectedMethod.name}
-                      <Badge className={cn(
-                        "ml-2 border-0",
-                        selectedMethod.functionType === 'read' ? "bg-blue-100 text-blue-800" :
-                        selectedMethod.functionType === 'write' ? "bg-amber-100 text-amber-800" :
-                        "bg-neutral-100 text-neutral-800"
-                      )}>
-                        {selectedMethod.functionType}
-                      </Badge>
-                    </h3>
-                    <p className="text-sm text-neutral-500 font-mono mt-1">{selectedMethod.signature}</p>
+                    <h3 className="text-lg font-medium">{selectedMethod.name}</h3>
+                    <p className="text-sm text-neutral-500">{selectedMethod.signature}</p>
                   </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setSelectedMethod(null)}
-                  >
-                    Change Method
-                  </Button>
+                  <Badge className={cn(
+                    "border-0",
+                    selectedMethod.functionType === 'read' ? "bg-blue-100 text-blue-800" :
+                    selectedMethod.functionType === 'write' ? "bg-amber-100 text-amber-800" :
+                    selectedMethod.functionType === 'event' ? "bg-purple-100 text-purple-800" :
+                    "bg-neutral-100 text-neutral-800"
+                  )}>
+                    {selectedMethod.functionType}
+                  </Badge>
                 </div>
                 
-                <div className="space-y-4">
-                  <h4 className="text-sm font-medium">Method Parameters</h4>
-                  {selectedMethod.inputs.length === 0 ? (
-                    <p className="text-sm text-neutral-500">This method doesn't require any parameters.</p>
-                  ) : (
-                    <div className="space-y-4">
-                      {selectedMethod.inputs.map((input, idx) => (
-                        <div key={idx}>
-                          <Label htmlFor={`input-${idx}`} className="flex items-center">
-                            {input.name || `param${idx}`}
-                            <Badge variant="outline" className="ml-2 font-mono text-xs">
-                              {input.type}
-                            </Badge>
-                          </Label>
-                          <Input
-                            id={`input-${idx}`}
-                            className="font-mono mt-1"
-                            placeholder={`Enter ${input.type} value...`}
-                            value={methodInputs[input.name || ''] || ''}
-                            onChange={(e) => handleInputChange(input.name || '', e.target.value)}
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                  
-                  {selectedMethod.payable && (
-                    <div>
-                      <Label htmlFor="method-value" className="flex items-center">
-                        Value
-                        <Badge variant="outline" className="ml-2 font-mono text-xs">
-                          ETH
-                        </Badge>
-                      </Label>
-                      <Input
-                        id="method-value"
-                        className="font-mono mt-1"
-                        placeholder="0.0"
-                        value={methodValue}
-                        onChange={(e) => setMethodValue(e.target.value)}
-                        type="number"
-                        min="0"
-                        step="0.001"
-                      />
-                    </div>
-                  )}
-                </div>
-                
-                <div className="flex justify-center pt-2">
-                  <Button
-                    onClick={selectedMethod.functionType === 'read' ? executeReadMethod : executeWriteMethod}
-                    disabled={executing}
-                    className="w-full sm:w-auto"
-                  >
-                    {executing && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-                    {!executing && <Zap className="h-4 w-4 mr-2" />}
-                    {selectedMethod.functionType === 'read' ? 'Read Contract' : 'Write Contract'}
-                  </Button>
-                </div>
-                
-                {executionError && (
-                  <Alert variant="destructive">
-                    <AlertCircle className="h-4 w-4" />
-                    <AlertTitle>Execution Failed</AlertTitle>
-                    <AlertDescription>{executionError}</AlertDescription>
-                  </Alert>
-                )}
-                
-                {methodResult !== null && (
-                  <div className="space-y-2">
-                    <h4 className="text-sm font-medium">Result</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <h4 className="font-medium mb-4">Input Parameters</h4>
                     
-                    {selectedMethod.functionType === 'read' ? (
-                      <div className="bg-neutral-50 p-4 rounded-md">
-                        <div className="flex items-start justify-between">
-                          <pre className="font-mono text-sm overflow-x-auto whitespace-pre-wrap break-all max-h-60">
-                            {formatResult(methodResult)}
-                          </pre>
-                          <Button
-                            variant="ghost"
+                    {selectedMethod.inputs.length === 0 ? (
+                      <p className="text-sm text-neutral-500">This function doesn't take any parameters.</p>
+                    ) : (
+                      <div className="space-y-4">
+                        {selectedMethod.inputs.map((input, index) => (
+                          <div key={index}>
+                            <Label htmlFor={`input-${index}`}>{input.name || `param${index}`} ({input.type})</Label>
+                            <Input 
+                              id={`input-${index}`}
+                              className="mt-1"
+                              placeholder={input.type}
+                              value={methodInputs[input.name || `param${index}`] || ''}
+                              onChange={(e) => handleInputChange(input.name || `param${index}`, e.target.value)}
+                            />
+                          </div>
+                        ))}
+                        
+                        {selectedMethod.payable && (
+                          <div>
+                            <Label htmlFor="method-value">Value (ETH)</Label>
+                            <Input 
+                              id="method-value"
+                              className="mt-1"
+                              placeholder="0.0"
+                              type="number"
+                              step="0.001"
+                              value={methodValue}
+                              onChange={(e) => setMethodValue(e.target.value)}
+                            />
+                          </div>
+                        )}
+                        
+                        <Button 
+                          className="w-full mt-2" 
+                          onClick={selectedMethod.functionType === 'read' ? executeReadMethod : executeWriteMethod}
+                          disabled={executing}
+                        >
+                          {executing && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
+                          {selectedMethod.functionType === 'read' ? 'Call Function' : 'Send Transaction'}
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div>
+                    <h4 className="font-medium mb-4">Output</h4>
+                    
+                    {executionError ? (
+                      <Alert variant="destructive">
+                        <AlertCircle className="h-4 w-4" />
+                        <AlertTitle>Error</AlertTitle>
+                        <AlertDescription>{executionError}</AlertDescription>
+                      </Alert>
+                    ) : methodResult ? (
+                      <div className="space-y-2">
+                        {selectedMethod.functionType === 'write' && (
+                          <div className="flex items-center space-x-2 mb-2">
+                            <Badge className={methodResult.status === 'pending' ? "bg-amber-100 text-amber-800" : "bg-green-100 text-green-800"}>
+                              {methodResult.status}
+                            </Badge>
+                            
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <Button 
+                                    variant="ghost" 
+                                    size="sm"
+                                    onClick={() => copyToClipboard(methodResult.hash)}
+                                  >
+                                    <Copy className="h-3 w-3 mr-1" />
+                                    {methodResult.hash.substring(0, 8)}...{methodResult.hash.substring(methodResult.hash.length - 6)}
+                                  </Button>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p>Copy transaction hash</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                            
+                            <Button 
+                              variant="ghost" 
+                              size="sm"
+                              onClick={() => window.open(`https://etherscan.io/tx/${methodResult.hash}`, '_blank')}
+                            >
+                              <ExternalLink className="h-3 w-3" />
+                            </Button>
+                          </div>
+                        )}
+                        
+                        <div className="p-3 bg-neutral-50 rounded-md font-mono text-sm whitespace-pre-wrap overflow-auto max-h-64">
+                          {formatResult(methodResult)}
+                        </div>
+                        
+                        <div className="flex justify-end">
+                          <Button 
+                            variant="ghost" 
                             size="sm"
                             onClick={() => copyToClipboard(formatResult(methodResult))}
                           >
-                            <Copy className="h-4 w-4" />
+                            <Copy className="h-4 w-4 mr-2" />
+                            Copy
                           </Button>
                         </div>
                       </div>
                     ) : (
-                      <div className="bg-neutral-50 p-4 rounded-md">
-                        <div className="space-y-2">
-                          <div className="flex items-center justify-between">
-                            <span className="text-sm font-medium">Transaction Hash</span>
-                            <div className="flex items-center space-x-2">
-                              <Badge className={cn(
-                                "border-0",
-                                methodResult.status === 'confirmed' ? "bg-green-100 text-green-800" : "bg-amber-100 text-amber-800"
-                              )}>
-                                {methodResult.status}
+                      <div className="rounded-md border p-8 flex flex-col items-center justify-center text-center">
+                        <p className="text-sm text-neutral-500 mb-4">
+                          {selectedMethod.functionType === 'read' ? 
+                            'This is a read-only function. It will not submit a transaction or cost gas.' : 
+                            'This function will submit a transaction to the blockchain and may cost gas.'}
+                        </p>
+                        {selectedMethod.functionType === 'read' ? (
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={executeReadMethod}
+                          >
+                            Call Function
+                          </Button>
+                        ) : (
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={executeWriteMethod}
+                          >
+                            Send Transaction
+                          </Button>
+                        )}
+                      </div>
+                    )}
+                    
+                    {selectedMethod.outputs && selectedMethod.outputs.length > 0 && (
+                      <div className="mt-4">
+                        <h5 className="text-sm font-medium mb-2">Return Types</h5>
+                        <div className="text-sm space-y-1">
+                          {selectedMethod.outputs.map((output, index) => (
+                            <div key={index} className="flex">
+                              <span className="text-neutral-500 mr-2">{index}:</span>
+                              <span>{output.name || "unnamed"}</span>
+                              <Badge variant="outline" className="ml-2 text-xs">
+                                {output.type}
                               </Badge>
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => copyToClipboard(methodResult.hash)}
-                              >
-                                <Copy className="h-4 w-4" />
-                              </Button>
                             </div>
-                          </div>
-                          <div className="font-mono text-sm break-all">{methodResult.hash}</div>
-                          
-                          {methodResult.blockNumber && (
-                            <div className="pt-2">
-                              <span className="text-sm font-medium">Block Number</span>
-                              <div className="font-mono text-sm">{methodResult.blockNumber}</div>
-                            </div>
-                          )}
-                          
-                          {methodResult.gasUsed && (
-                            <div className="pt-2">
-                              <span className="text-sm font-medium">Gas Used</span>
-                              <div className="font-mono text-sm">{methodResult.gasUsed}</div>
-                            </div>
-                          )}
-                          
-                          <div className="pt-2">
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="w-full"
-                              asChild
-                            >
-                              <a
-                                href={`https://etherscan.io/tx/${methodResult.hash}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center justify-center"
-                              >
-                                <ExternalLink className="h-4 w-4 mr-2" />
-                                View on Etherscan
-                              </a>
-                            </Button>
-                          </div>
+                          ))}
                         </div>
                       </div>
                     )}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-medium">Select a Method</h3>
+                  <div className="flex">
+                    <Select 
+                      value=""
+                      onValueChange={(value) => {
+                        const method = contract.methods.find(m => m.signature === value);
+                        if (method) {
+                          handleMethodSelect(method);
+                        }
+                      }}
+                    >
+                      <SelectTrigger className="w-[280px]">
+                        <SelectValue placeholder="Select a method" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="">Select a method</SelectItem>
+                        {contract.methods.map((method, index) => (
+                          <SelectItem key={index} value={method.signature}>
+                            {method.name} ({method.functionType})
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {contract.methods
+                    .filter(method => method.functionType === 'read')
+                    .map((method, index) => (
+                      <Card key={index} className="cursor-pointer hover:border-primary" onClick={() => handleMethodSelect(method)}>
+                        <CardHeader className="pb-2">
+                          <CardTitle className="text-base">{method.name}</CardTitle>
+                          <CardDescription>
+                            Inputs: {method.inputs.length} | Outputs: {method.outputs?.length || 0}
+                          </CardDescription>
+                        </CardHeader>
+                        <CardFooter className="pt-2">
+                          <Badge className="bg-blue-100 text-blue-800 border-0">Read</Badge>
+                        </CardFooter>
+                      </Card>
+                    ))}
+                </div>
+                
+                <div className="border-t pt-6 mt-6">
+                  <h3 className="text-lg font-medium mb-4">Write Functions</h3>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {contract.methods
+                      .filter(method => method.functionType === 'write')
+                      .map((method, index) => (
+                        <Card key={index} className="cursor-pointer hover:border-primary" onClick={() => handleMethodSelect(method)}>
+                          <CardHeader className="pb-2">
+                            <CardTitle className="text-base">{method.name}</CardTitle>
+                            <CardDescription>
+                              Inputs: {method.inputs.length} | Payable: {method.payable ? 'Yes' : 'No'}
+                            </CardDescription>
+                          </CardHeader>
+                          <CardFooter className="pt-2">
+                            <Badge className="bg-amber-100 text-amber-800 border-0">Write</Badge>
+                          </CardFooter>
+                        </Card>
+                      ))}
+                  </div>
+                </div>
+                
+                {contract.methods.some(method => method.functionType === 'event') && (
+                  <div className="border-t pt-6 mt-6">
+                    <h3 className="text-lg font-medium mb-4">Events</h3>
+                    
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {contract.methods
+                        .filter(method => method.functionType === 'event')
+                        .map((method, index) => (
+                          <Card key={index} className="cursor-pointer hover:border-primary" onClick={() => handleMethodSelect(method)}>
+                            <CardHeader className="pb-2">
+                              <CardTitle className="text-base">{method.name}</CardTitle>
+                              <CardDescription>
+                                Inputs: {method.inputs.length}
+                              </CardDescription>
+                            </CardHeader>
+                            <CardFooter className="pt-2">
+                              <Badge className="bg-purple-100 text-purple-800 border-0">Event</Badge>
+                            </CardFooter>
+                          </Card>
+                        ))}
+                    </div>
                   </div>
                 )}
               </div>
@@ -1380,27 +1534,18 @@ export function ContractInteractionWizard() {
           </TabsContent>
           
           {/* Saved Contracts Tab */}
-          <TabsContent value="saved" className="p-6 space-y-6">
-            {contract.savedContracts.length === 0 ? (
-              <div className="text-center py-8">
-                <Layers className="h-16 w-16 mx-auto text-neutral-300 mb-4" />
-                <h3 className="text-lg font-medium mb-2">No Saved Contracts</h3>
-                <p className="text-sm text-neutral-500 max-w-md mx-auto mb-6">
-                  Save contracts for quick access later. Your saved contracts will appear here.
-                </p>
-                <Button
-                  variant="outline"
-                  onClick={() => setActiveTab('lookup')}
-                >
-                  <Search className="h-4 w-4 mr-2" />
-                  Browse Contracts
-                </Button>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {/* Saved contracts table would go here */}
-              </div>
-            )}
+          <TabsContent value="saved" className="p-6">
+            <div className="flex flex-col items-center justify-center py-8">
+              <Save className="h-12 w-12 text-neutral-300 mb-4" />
+              <h3 className="text-lg font-medium mb-2">No Saved Contracts</h3>
+              <p className="text-sm text-neutral-500 text-center max-w-md mb-6">
+                Save your frequently used contracts here for quick access. Look up a contract and click "Save" to add it to your list.
+              </p>
+              <Button variant="outline" onClick={() => setActiveTab('lookup')}>
+                <Search className="h-4 w-4 mr-2" />
+                Look Up Contract
+              </Button>
+            </div>
           </TabsContent>
         </Tabs>
       </CardContent>
