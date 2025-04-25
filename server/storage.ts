@@ -106,8 +106,12 @@ export interface IStorage {
   getProposal(id: number): Promise<Proposal | undefined>;
   getProposals(status?: string, categoryId?: number): Promise<Proposal[]>;
   createProposal(proposal: InsertProposal): Promise<Proposal>;
-  updateProposalVotes(proposalId: number, voteType: string, votePower: number): Promise<void>;
   executeProposal(proposalId: number): Promise<Proposal>;
+  updateProposalVotes(proposalId: number, voteType: string, votePower: number): Promise<void>;
+  
+  // Enhanced vote methods for quadratic voting and delegation
+  getVotesByUser(userId: number, proposalId?: number): Promise<Vote[]>;
+  calculateQuadraticVotePower(baseVotes: number): Promise<number>;
   
   // Vote delegation methods
   getVoteDelegation(id: number): Promise<VoteDelegation | undefined>;
@@ -116,10 +120,6 @@ export interface IStorage {
   getActiveVoteDelegationsForProposal(proposalId: number): Promise<VoteDelegation[]>;
   createVoteDelegation(delegation: InsertVoteDelegation): Promise<VoteDelegation>;
   updateVoteDelegation(id: number, active: boolean): Promise<VoteDelegation>;
-  
-  // Vote methods with quadratic voting
-  getVotesByUser(userId: number, proposalId?: number): Promise<Vote[]>;
-  calculateQuadraticVotePower(baseVotes: number): Promise<number>;
   
   // Escrow methods
   getEscrow(id: number): Promise<Escrow | undefined>;
@@ -2140,16 +2140,35 @@ export class DatabaseStorage implements IStorage {
     return proposals.length > 0 ? proposals[0] : undefined;
   }
 
-  async getProposals(status?: string): Promise<Proposal[]> {
-    if (!status) {
-      return await db.select().from(schema.proposals).orderBy(desc(schema.proposals.createdAt));
+  async getProposals(status?: string, categoryId?: number): Promise<Proposal[]> {
+    let query = db.select().from(schema.proposals);
+    
+    if (status && categoryId) {
+      query = query.where(
+        and(
+          eq(schema.proposals.status, status),
+          eq(schema.proposals.categoryId, categoryId)
+        )
+      );
+    } else if (status) {
+      query = query.where(eq(schema.proposals.status, status));
+    } else if (categoryId) {
+      query = query.where(eq(schema.proposals.categoryId, categoryId));
     }
     
-    return await db
-      .select()
-      .from(schema.proposals)
-      .where(eq(schema.proposals.status, status))
-      .orderBy(desc(schema.proposals.createdAt));
+    return await query.orderBy(desc(schema.proposals.createdAt));
+  }
+  
+  async executeProposal(proposalId: number): Promise<Proposal> {
+    const [executedProposal] = await db
+      .update(schema.proposals)
+      .set({ 
+        status: 'executed',
+        updatedAt: new Date()
+      })
+      .where(eq(schema.proposals.id, proposalId))
+      .returning();
+    return executedProposal;
   }
 
   async createProposal(proposal: InsertProposal): Promise<Proposal> {
@@ -2192,7 +2211,79 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createVote(vote: InsertVote): Promise<Vote> {
-    const [createdVote] = await db.insert(schema.votes).values(vote).returning();
+    // Calculate vote power if using quadratic voting
+    let votePower = vote.votePower;
+    const baseVotes = vote.baseVotes;
+    
+    if (baseVotes) {
+      // Apply quadratic voting formula
+      votePower = await this.calculateQuadraticVotePower(baseVotes);
+    }
+    
+    // Insert the primary vote with calculated votePower
+    const enhancedVote = {
+      ...vote,
+      votePower,
+      isQuadratic: true,
+      isDelegated: false,
+      delegatedFrom: null
+    };
+    
+    const [createdVote] = await db.insert(schema.votes).values(enhancedVote).returning();
+    
+    // Check for delegations
+    const delegations = await this.getActiveVoteDelegationsForProposal(vote.proposalId);
+    const userDelegations = delegations.filter(del => del.delegateId === vote.userId);
+    
+    // Create votes for each delegation
+    for (const delegation of userDelegations) {
+      // Get the delegator
+      const delegator = await this.getUser(delegation.delegatorId);
+      if (!delegator) continue;
+      
+      // Skip if delegator has already voted directly
+      const existingVotes = await db.select()
+        .from(schema.votes)
+        .where(
+          and(
+            eq(schema.votes.proposalId, vote.proposalId),
+            eq(schema.votes.userId, delegation.delegatorId)
+          )
+        );
+        
+      if (existingVotes.length > 0) continue;
+      
+      // Use delegator's token balance as the base votes
+      let delegatedBaseVotes = 0;
+      if (delegator.dacTokenBalance) {
+        delegatedBaseVotes = parseFloat(delegator.dacTokenBalance);
+      }
+      
+      // Apply quadratic voting formula
+      const delegatedVotePower = await this.calculateQuadraticVotePower(delegatedBaseVotes);
+      
+      // Create a delegated vote
+      const delegatedVote = {
+        proposalId: vote.proposalId,
+        userId: delegation.delegatorId,
+        voteType: vote.voteType,
+        votePower: delegatedVotePower,
+        baseVotes: delegatedBaseVotes,
+        isQuadratic: true,
+        isDelegated: true,
+        delegatedFrom: vote.userId,
+        createdAt: new Date()
+      };
+      
+      await db.insert(schema.votes).values(delegatedVote);
+      
+      // Update proposal vote counts
+      await this.updateProposalVotes(vote.proposalId, vote.voteType, delegatedVotePower);
+    }
+    
+    // Update proposal vote counts for the main vote
+    await this.updateProposalVotes(vote.proposalId, vote.voteType, votePower);
+    
     return createdVote;
   }
 

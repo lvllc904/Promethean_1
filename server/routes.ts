@@ -112,7 +112,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get(`${apiPrefix}/dao/proposals`, async (req, res) => {
     try {
       const status = req.query.status as string;
-      const proposals = await storage.getProposals(status);
+      const categoryId = req.query.categoryId ? parseInt(req.query.categoryId as string) : undefined;
+      const proposals = await storage.getProposals(status, categoryId);
       res.json(proposals);
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch proposals" });
