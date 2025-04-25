@@ -520,7 +520,7 @@ export function ContractInteractionWizard() {
       return;
     }
     
-    if (!ethers.utils.isAddress(contract.address)) {
+    if (!ethers.isAddress(contract.address)) {
       setContract(prev => ({ ...prev, error: "Invalid Ethereum address" }));
       return;
     }
@@ -622,7 +622,7 @@ export function ContractInteractionWizard() {
     setExecutionError(null);
     
     try {
-      const contractInterface = new ethers.utils.Interface(contract.abi);
+      const contractInterface = new ethers.Interface(contract.abi);
       const contractInstance = new ethers.Contract(contract.address, contractInterface, provider);
       
       // Prepare method arguments
