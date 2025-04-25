@@ -731,6 +731,8 @@ export const workerReputations = pgTable("worker_reputations", {
   badgeIds: integer("badge_ids").array(), // Earned badges/achievements
   experiencePoints: integer("experience_points").default(0), // XP for leveling up
   level: integer("level").default(1), // Worker level based on XP
+  endorsementCount: integer("endorsement_count").default(0), // Count of skill endorsements received
+  verifiedEndorsementCount: integer("verified_endorsement_count").default(0), // Count of verified endorsements
   lastUpdated: timestamp("last_updated").defaultNow(),
 });
 
@@ -741,6 +743,8 @@ export const insertWorkerReputationSchema = createInsertSchema(workerReputations
   responseRate: true,
   completionRate: true,
   onTimeRate: true,
+  endorsementCount: true,
+  verifiedEndorsementCount: true,
   lastUpdated: true,
 });
 
