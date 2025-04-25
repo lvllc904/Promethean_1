@@ -116,7 +116,7 @@ const ApiCredentials = () => {
   // Test API credential
   const testCredentialMutation = useMutation({
     mutationFn: (id: number) => 
-      apiRequest(`/api/admin/credentials/${id}/test`, { method: 'POST' }),
+      apiRequest<{success: boolean, message: string}>('POST', `/api/admin/credentials/${id}/test`),
     onSuccess: (data, id) => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/credentials'] });
       toast({

@@ -50,7 +50,7 @@ const ServiceCategories = () => {
   // Create new service category
   const addCategoryMutation = useMutation({
     mutationFn: (newCategory: ServiceCategoryFormValues) => 
-      apiRequest('/api/admin/categories', { method: 'POST', data: newCategory }),
+      apiRequest<{id: number}>('POST', '/api/admin/categories', newCategory),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/categories'] });
       setAddDialogOpen(false);
@@ -71,7 +71,7 @@ const ServiceCategories = () => {
   // Update service category
   const updateCategoryMutation = useMutation({
     mutationFn: ({ id, data }: { id: number, data: Partial<ServiceCategoryFormValues> }) => 
-      apiRequest(`/api/admin/categories/${id}`, { method: 'PATCH', data }),
+      apiRequest<{success: boolean}>('PATCH', `/api/admin/categories/${id}`, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/categories'] });
       setEditingCategory(null);
@@ -92,7 +92,7 @@ const ServiceCategories = () => {
   // Delete service category
   const deleteCategoryMutation = useMutation({
     mutationFn: (id: number) => 
-      apiRequest(`/api/admin/categories/${id}`, { method: 'DELETE' }),
+      apiRequest<{success: boolean}>('DELETE', `/api/admin/categories/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/categories'] });
       toast({
@@ -112,10 +112,7 @@ const ServiceCategories = () => {
   // Toggle category active status
   const toggleCategoryStatusMutation = useMutation({
     mutationFn: ({ id, isActive }: { id: number, isActive: boolean }) => 
-      apiRequest(`/api/admin/categories/${id}/status`, { 
-        method: 'PATCH', 
-        data: { isActive } 
-      }),
+      apiRequest<{success: boolean}>('PATCH', `/api/admin/categories/${id}/status`, { isActive }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/categories'] });
       toast({
