@@ -495,6 +495,9 @@ export const socialFollows = pgTable('social_follows', {
   };
 });
 
+// Since we can't use relations directly, we'll handle this in our service layer
+// For proper type safety, we'd ideally use the relations API, but our version doesn't support it
+
 export const insertSocialFollowSchema = createInsertSchema(socialFollows).omit({
   id: true,
   createdAt: true,
