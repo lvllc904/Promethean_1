@@ -616,6 +616,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const endorsements = await storage.getWorkerSkillEndorsements(workerId);
       res.json(endorsements);
     } catch (error) {
+      console.error("Error fetching worker skill endorsements:", error);
       res.status(500).json({ message: "Failed to fetch worker skill endorsements" });
     }
   });
