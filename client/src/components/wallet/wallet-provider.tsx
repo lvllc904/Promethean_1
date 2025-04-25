@@ -301,13 +301,10 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       
       {/* Wallet Fallback Dialog */}
       <Dialog open={isFallbackOpen} onOpenChange={setIsFallbackOpen}>
-        <DialogContent className="sm:max-w-md p-0" aria-describedby="wallet-fallback-description">
-          {/* Hidden but accessible title and description for screen readers */}
-          <div className="sr-only">
-            Wallet Connection Required
-          </div>
-          <div id="wallet-fallback-description" className="sr-only">
-            No Ethereum wallet detected. You need to install a wallet to use all features.
+        <DialogContent className="sm:max-w-md p-0">
+          {/* Using the correct dialog title structure for accessibility */}
+          <div style={{ display: 'none' }}>
+            <DialogTitle>Wallet Connection Required</DialogTitle>
           </div>
           <WalletFallback onClose={closeFallback} />
         </DialogContent>
