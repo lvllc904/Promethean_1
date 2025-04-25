@@ -1667,13 +1667,78 @@ export class MemStorage implements IStorage {
 
   async createVote(insertVote: InsertVote): Promise<Vote> {
     const id = this.currentVoteId++;
-    const now = new Date().toISOString();
+    const now = new Date();
+    
+    // Calculate vote power if using quadratic voting
+    let votePower = insertVote.votePower;
+    const baseVotes = insertVote.baseVotes;
+    
+    if (baseVotes) {
+      // Apply quadratic voting formula
+      votePower = await this.calculateQuadraticVotePower(baseVotes);
+    }
+    
+    // Check for delegated votes
+    const delegations = await this.getActiveVoteDelegationsForProposal(insertVote.proposalId);
+    const userDelegations = delegations.filter(del => del.delegateId === insertVote.userId);
+    
+    // Create the primary vote
     const vote: Vote = { 
       ...insertVote, 
-      id,
-      createdAt: now
+      id, 
+      votePower,
+      isQuadratic: true,
+      isDelegated: false,
+      delegatedFrom: null,
+      createdAt: now 
     };
     this.votes.set(id, vote);
+    
+    // Create votes for each delegation
+    for (const delegation of userDelegations) {
+      const delegator = await this.getUser(delegation.delegatorId);
+      if (!delegator) continue;
+      
+      // Skip if delegator has already voted directly
+      const existingVote = Array.from(this.votes.values()).find(v => 
+        v.proposalId === insertVote.proposalId && v.userId === delegation.delegatorId
+      );
+      if (existingVote) continue;
+      
+      // Create a delegated vote
+      const delegatedId = this.currentVoteId++;
+      let delegatedBaseVotes = 0;
+      
+      // Use delegator's token balance as the base votes
+      if (delegator.dacTokenBalance) {
+        delegatedBaseVotes = parseFloat(delegator.dacTokenBalance);
+      }
+      
+      // Apply quadratic voting formula
+      const delegatedVotePower = await this.calculateQuadraticVotePower(delegatedBaseVotes);
+      
+      const delegatedVote: Vote = {
+        id: delegatedId,
+        proposalId: insertVote.proposalId,
+        userId: delegation.delegatorId,
+        voteType: insertVote.voteType,
+        votePower: delegatedVotePower,
+        baseVotes: delegatedBaseVotes,
+        isQuadratic: true,
+        isDelegated: true,
+        delegatedFrom: insertVote.userId,
+        createdAt: now
+      };
+      
+      this.votes.set(delegatedId, delegatedVote);
+      
+      // Update proposal vote counts
+      await this.updateProposalVotes(insertVote.proposalId, insertVote.voteType, delegatedVotePower);
+    }
+    
+    // Update proposal vote counts for the main vote
+    await this.updateProposalVotes(insertVote.proposalId, insertVote.voteType, votePower);
+    
     return vote;
   }
 
@@ -1765,6 +1830,99 @@ export class MemStorage implements IStorage {
 
 // Database implementation of the storage interface
 export class DatabaseStorage implements IStorage {
+  // Governance category methods
+  async getGovernanceCategory(id: number): Promise<GovernanceCategory | undefined> {
+    const categories = await db.select().from(schema.governanceCategories).where(eq(schema.governanceCategories.id, id));
+    return categories.length > 0 ? categories[0] : undefined;
+  }
+  
+  async getGovernanceCategories(): Promise<GovernanceCategory[]> {
+    return await db.select().from(schema.governanceCategories).where(eq(schema.governanceCategories.isActive, true));
+  }
+  
+  async createGovernanceCategory(category: InsertGovernanceCategory): Promise<GovernanceCategory> {
+    const [createdCategory] = await db.insert(schema.governanceCategories).values(category).returning();
+    return createdCategory;
+  }
+  
+  async updateGovernanceCategory(id: number, updates: Partial<GovernanceCategory>): Promise<GovernanceCategory> {
+    const [updatedCategory] = await db
+      .update(schema.governanceCategories)
+      .set({ ...updates, updatedAt: new Date() })
+      .where(eq(schema.governanceCategories.id, id))
+      .returning();
+    return updatedCategory;
+  }
+  
+  // Vote delegation methods
+  async getVoteDelegation(id: number): Promise<VoteDelegation | undefined> {
+    const delegations = await db.select().from(schema.voteDelegations).where(eq(schema.voteDelegations.id, id));
+    return delegations.length > 0 ? delegations[0] : undefined;
+  }
+  
+  async getVoteDelegationsByDelegator(delegatorId: number): Promise<VoteDelegation[]> {
+    return await db.select().from(schema.voteDelegations).where(eq(schema.voteDelegations.delegatorId, delegatorId));
+  }
+  
+  async getVoteDelegationsByDelegate(delegateId: number): Promise<VoteDelegation[]> {
+    return await db.select().from(schema.voteDelegations).where(eq(schema.voteDelegations.delegateId, delegateId));
+  }
+  
+  async getActiveVoteDelegationsForProposal(proposalId: number): Promise<VoteDelegation[]> {
+    const proposal = await this.getProposal(proposalId);
+    if (!proposal) {
+      return [];
+    }
+    
+    // Get delegations that are active and either:
+    // 1. Apply specifically to this proposal
+    // 2. Apply globally
+    // 3. Apply to the category of this proposal
+    return await db.select().from(schema.voteDelegations).where(
+      and(
+        eq(schema.voteDelegations.active, true),
+        or(
+          eq(schema.voteDelegations.proposalId, proposalId),
+          eq(schema.voteDelegations.scope, 'global'),
+          and(
+            eq(schema.voteDelegations.scope, 'category'),
+            eq(schema.voteDelegations.categoryId, proposal.categoryId || 0)
+          )
+        )
+      )
+    );
+  }
+  
+  async createVoteDelegation(delegation: InsertVoteDelegation): Promise<VoteDelegation> {
+    const [createdDelegation] = await db.insert(schema.voteDelegations).values(delegation).returning();
+    return createdDelegation;
+  }
+  
+  async updateVoteDelegation(id: number, active: boolean): Promise<VoteDelegation> {
+    const [updatedDelegation] = await db
+      .update(schema.voteDelegations)
+      .set({ active, updatedAt: new Date() })
+      .where(eq(schema.voteDelegations.id, id))
+      .returning();
+    return updatedDelegation;
+  }
+  
+  // Enhanced vote methods for quadratic voting
+  async getVotesByUser(userId: number, proposalId?: number): Promise<Vote[]> {
+    let query = db.select().from(schema.votes).where(eq(schema.votes.userId, userId));
+    
+    if (proposalId) {
+      query = query.where(eq(schema.votes.proposalId, proposalId));
+    }
+    
+    return await query;
+  }
+  
+  async calculateQuadraticVotePower(baseVotes: number): Promise<number> {
+    // Quadratic voting formula: vote power = sqrt(baseVotes)
+    return Math.floor(Math.sqrt(baseVotes) * 100) / 100; // Round to 2 decimal places
+  }
+  
   // User methods
   async getUser(id: number): Promise<User | undefined> {
     const users = await db.select().from(schema.users).where(eq(schema.users.id, id));
