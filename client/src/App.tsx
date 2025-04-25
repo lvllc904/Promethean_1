@@ -91,6 +91,49 @@ function Router() {
       <Route path="/feedback" component={Feedback} />
       <Route path="/wallet" component={Wallet} />
       <Route path="/admin" component={AdminDashboard} />
+      
+      {/* Admin Section Routes */}
+      <Route path="/admin/contracts">
+        {() => (
+          <Suspense fallback={<div className="p-8 text-center">Loading Admin Contract Interface...</div>}>
+            {(() => {
+              const AdminContracts = lazy(() => import('@/pages/admin/contracts'));
+              return <AdminContracts />;
+            })()}
+          </Suspense>
+        )}
+      </Route>
+      <Route path="/admin/blockchain/explorer">
+        {() => (
+          <Suspense fallback={<div className="p-8 text-center">Loading Admin Blockchain Explorer...</div>}>
+            {(() => {
+              const AdminBlockchainExplorer = lazy(() => import('@/pages/admin/blockchain/explorer'));
+              return <AdminBlockchainExplorer />;
+            })()}
+          </Suspense>
+        )}
+      </Route>
+      <Route path="/admin/dex">
+        {() => (
+          <Suspense fallback={<div className="p-8 text-center">Loading Admin DEX Interface...</div>}>
+            {(() => {
+              const AdminDex = lazy(() => import('@/pages/admin/dex'));
+              return <AdminDex />;
+            })()}
+          </Suspense>
+        )}
+      </Route>
+      <Route path="/admin/community/rewards">
+        {() => (
+          <Suspense fallback={<div className="p-8 text-center">Loading Admin Community Rewards...</div>}>
+            {(() => {
+              const AdminCommunityRewards = lazy(() => import('@/pages/admin/community/rewards'));
+              return <AdminCommunityRewards />;
+            })()}
+          </Suspense>
+        )}
+      </Route>
+      
       <Route component={NotFound} />
     </Switch>
   );

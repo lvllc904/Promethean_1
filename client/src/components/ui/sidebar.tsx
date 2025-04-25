@@ -62,6 +62,7 @@ export function Sidebar() {
   const [daoOpen, setDaoOpen] = useState(false);
   const [marketplaceOpen, setMarketplaceOpen] = useState(false);
   const [communityOpen, setCommunityOpen] = useState(false);
+  const [adminOpen, setAdminOpen] = useState(false);
   
   // This would be replaced with actual data from API in a real implementation
   const [unreadMessages, setUnreadMessages] = useState(0);
@@ -209,21 +210,32 @@ export function Sidebar() {
         {/* Admin Dashboard */}
         <div>
           <button 
-            onClick={() => {}} // No need to toggle, just navigate
-            className="w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-md text-neutral-700 hover:bg-neutral-100"
+            onClick={() => setAdminOpen(!adminOpen)} 
+            className={cn(
+              "w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-md transition-colors",
+              isActiveGroup(["/admin"]) 
+                ? "bg-primary-50 text-primary-500" 
+                : "text-neutral-700 hover:bg-neutral-100"
+            )}
           >
-            <Link href="/admin">
-              <div className={cn(
-                "flex items-center w-full px-3 py-2 text-sm font-medium rounded-md transition-colors cursor-pointer",
-                isActiveGroup(["/admin"]) 
-                  ? "bg-primary-50 text-primary-500" 
-                  : "text-neutral-700 hover:bg-neutral-100"
-              )}>
-                <Settings className="h-5 w-5 mr-3" />
-                Admin Dashboard
-              </div>
-            </Link>
+            <div className="flex items-center">
+              <Settings className="h-5 w-5 mr-3" />
+              Admin Dashboard
+            </div>
+            <ChevronDown 
+              className={cn("h-5 w-5 transition-transform duration-200", adminOpen && "transform rotate-180")} 
+            />
           </button>
+          
+          {adminOpen && (
+            <div className="ml-7 pl-3 border-l border-neutral-200 space-y-1 mt-1">
+              <NavGroupItem href="/admin" isActive={isActive("/admin")}>Overview</NavGroupItem>
+              <NavGroupItem href="/admin/contracts" isActive={isActive("/admin/contracts")}>Smart Contracts</NavGroupItem>
+              <NavGroupItem href="/admin/blockchain/explorer" isActive={isActive("/admin/blockchain/explorer")}>Blockchain Explorer</NavGroupItem>
+              <NavGroupItem href="/admin/dex" isActive={isActive("/admin/dex")}>DEX Management</NavGroupItem>
+              <NavGroupItem href="/admin/community/rewards" isActive={isActive("/admin/community/rewards")}>Community Rewards</NavGroupItem>
+            </div>
+          )}
         </div>
       </nav>
       
