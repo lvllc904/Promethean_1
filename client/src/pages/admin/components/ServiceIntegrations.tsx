@@ -54,16 +54,16 @@ const ServiceIntegrations = () => {
   
   // Fetch all credentials for dropdown
   const { data: credentials, isLoading: isLoadingCredentials } = useQuery({
-    queryKey: ['/api/admin/credentials'],
+    queryKey: ['/api/admin/api-credentials'],
     retry: 1,
   });
   
   // Create new service integration
   const addIntegrationMutation = useMutation({
     mutationFn: (newIntegration: ServiceIntegrationFormValues) => 
-      apiRequest<{id: number}>('POST', '/api/admin/integrations', newIntegration),
+      apiRequest<{id: number}>('POST', '/api/admin/service-integrations', newIntegration),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/integrations'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/service-integrations'] });
       setAddDialogOpen(false);
       toast({
         title: "Integration Added",
@@ -82,9 +82,9 @@ const ServiceIntegrations = () => {
   // Update service integration
   const updateIntegrationMutation = useMutation({
     mutationFn: ({ id, data }: { id: number, data: Partial<ServiceIntegrationFormValues> }) => 
-      apiRequest<{success: boolean}>('PATCH', `/api/admin/integrations/${id}`, data),
+      apiRequest<{success: boolean}>('PATCH', `/api/admin/service-integrations/${id}`, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/integrations'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/service-integrations'] });
       setEditingIntegration(null);
       setAddDialogOpen(false);
       toast({
@@ -104,9 +104,9 @@ const ServiceIntegrations = () => {
   // Delete service integration
   const deleteIntegrationMutation = useMutation({
     mutationFn: (id: number) => 
-      apiRequest<{success: boolean}>('DELETE', `/api/admin/integrations/${id}`),
+      apiRequest<{success: boolean}>('DELETE', `/api/admin/service-integrations/${id}`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/integrations'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/service-integrations'] });
       toast({
         title: "Integration Deleted",
         description: "Service integration has been deleted successfully.",
@@ -124,9 +124,9 @@ const ServiceIntegrations = () => {
   // Toggle integration active status
   const toggleIntegrationStatusMutation = useMutation({
     mutationFn: ({ id, isActive }: { id: number, isActive: boolean }) => 
-      apiRequest<{success: boolean}>('PATCH', `/api/admin/integrations/${id}/status`, { isActive }),
+      apiRequest<{success: boolean}>('PATCH', `/api/admin/service-integrations/${id}/status`, { isActive }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/integrations'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/service-integrations'] });
       toast({
         title: "Status Updated",
         description: "Integration status has been updated successfully.",
@@ -144,9 +144,9 @@ const ServiceIntegrations = () => {
   // Test integration
   const testIntegrationMutation = useMutation({
     mutationFn: (id: number) => 
-      apiRequest<{success: boolean, message: string}>('POST', `/api/admin/integrations/${id}/test`),
+      apiRequest<{success: boolean, message: string}>('POST', `/api/admin/service-integrations/${id}/test`),
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/integrations'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/service-integrations'] });
       toast({
         title: data.success ? "Test Successful" : "Test Failed",
         description: data.message,
@@ -165,9 +165,9 @@ const ServiceIntegrations = () => {
   // Reset usage count
   const resetUsageCountMutation = useMutation({
     mutationFn: (id: number) => 
-      apiRequest<{success: boolean}>('POST', `/api/admin/integrations/${id}/reset-usage`),
+      apiRequest<{success: boolean}>('POST', `/api/admin/service-integrations/${id}/reset-usage`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/integrations'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/service-integrations'] });
       toast({
         title: "Usage Count Reset",
         description: "Integration usage count has been reset successfully.",
@@ -232,8 +232,8 @@ const ServiceIntegrations = () => {
     if (providerCredentials.length === 1) {
       form.setValue('credentialId', providerCredentials[0].id);
     } else {
-      // Use null instead of undefined for the form value
-      form.setValue('credentialId', null);
+      // Clear the credential selection
+      form.setValue('credentialId', undefined);
     }
   };
   
