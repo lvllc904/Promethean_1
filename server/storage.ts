@@ -2142,6 +2142,247 @@ export class DatabaseStorage implements IStorage {
       .returning();
     return updatedProposal;
   }
+
+  // Worker Ratings & Reputation methods
+  async getWorkerRating(id: number): Promise<WorkerRating | undefined> {
+    const [rating] = await db
+      .select()
+      .from(schema.workerRatings)
+      .where(eq(schema.workerRatings.id, id));
+    return rating;
+  }
+  
+  async getWorkerRatings(workerId: number): Promise<WorkerRating[]> {
+    return await db
+      .select()
+      .from(schema.workerRatings)
+      .where(eq(schema.workerRatings.workerId, workerId));
+  }
+  
+  async createWorkerRating(rating: InsertWorkerRating): Promise<WorkerRating> {
+    const [newRating] = await db
+      .insert(schema.workerRatings)
+      .values({
+        ...rating,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      })
+      .returning();
+    return newRating;
+  }
+  
+  async getWorkerReputation(workerId: number): Promise<WorkerReputation | undefined> {
+    const [reputation] = await db
+      .select()
+      .from(schema.workerReputations)
+      .where(eq(schema.workerReputations.workerId, workerId));
+    
+    if (reputation) {
+      return reputation;
+    }
+    
+    // Initialize if not exists
+    return await this.initializeWorkerReputation(workerId);
+  }
+  
+  private async initializeWorkerReputation(workerId: number): Promise<WorkerReputation | undefined> {
+    // Check if the worker exists (is a user)
+    const worker = await this.getUser(workerId);
+    if (!worker) {
+      return undefined;
+    }
+    
+    try {
+      const [newReputation] = await db
+        .insert(schema.workerReputations)
+        .values({
+          workerId,
+          overallScore: 0,
+          totalRatings: 0,
+          skillScores: {},
+          reliability: 0,
+          qualityScore: 0,
+          communicationScore: 0,
+          badges: [],
+          level: 1,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        })
+        .returning();
+      return newReputation;
+    } catch (error) {
+      console.error("Failed to initialize worker reputation:", error);
+      return undefined;
+    }
+  }
+  
+  async updateWorkerReputation(workerId: number): Promise<WorkerReputation | undefined> {
+    // Get all ratings for this worker
+    const ratings = await this.getWorkerRatings(workerId);
+    if (ratings.length === 0) {
+      return await this.getWorkerReputation(workerId);
+    }
+    
+    // Calculate overall score (average of all ratings)
+    const overallScore = ratings.reduce((sum, r) => sum + r.rating, 0) / ratings.length;
+    
+    // Calculate skill scores
+    const skillScores = {};
+    const skillRatings = {};
+    
+    ratings.forEach(rating => {
+      if (rating.skills && rating.skills.length > 0) {
+        rating.skills.forEach(skill => {
+          if (!skillScores[skill]) {
+            skillScores[skill] = 0;
+            skillRatings[skill] = 0;
+          }
+          skillScores[skill] += rating.rating;
+          skillRatings[skill]++;
+        });
+      }
+    });
+    
+    // Calculate average for each skill
+    Object.keys(skillScores).forEach(skill => {
+      skillScores[skill] = skillScores[skill] / skillRatings[skill];
+    });
+    
+    // Calculate other scores based on completed tasks
+    const completedTasks = await db
+      .select()
+      .from(schema.tasks)
+      .where(and(
+        eq(schema.tasks.assigneeId, workerId),
+        eq(schema.tasks.status, "completed")
+      ));
+    
+    // Reliability: percentage of tasks completed on time
+    const reliability = completedTasks.length > 0 
+      ? completedTasks.filter(task => !task.dueDate || task.dueDate >= task.updatedAt).length / completedTasks.length
+      : 0;
+    
+    // Calculate level based on number of completed tasks and average rating
+    const level = Math.min(10, Math.floor(1 + (completedTasks.length / 5) + (overallScore / 2)));
+    
+    // Get existing reputation or create new one
+    let reputation = await this.getWorkerReputation(workerId);
+    if (!reputation) {
+      return undefined;
+    }
+    
+    // Assign badges based on achievements
+    const badges = await this.assignWorkerBadges(workerId, {
+      ...reputation,
+      overallScore,
+      skillScores,
+      level,
+      totalRatings: ratings.length
+    });
+    
+    // Update reputation
+    const [updatedReputation] = await db
+      .update(schema.workerReputations)
+      .set({
+        overallScore,
+        totalRatings: ratings.length,
+        skillScores,
+        reliability,
+        qualityScore: overallScore, // Simplified for now
+        communicationScore: overallScore, // Simplified for now
+        level,
+        badges,
+        updatedAt: new Date()
+      })
+      .where(eq(schema.workerReputations.workerId, workerId))
+      .returning();
+    
+    return updatedReputation;
+  }
+  
+  private async assignWorkerBadges(workerId: number, reputation: Partial<WorkerReputation>): Promise<string[]> {
+    const assignedBadges = [];
+    
+    // Assign level badges
+    if (reputation.level >= 5) {
+      assignedBadges.push("Experienced");
+    }
+    if (reputation.level >= 8) {
+      assignedBadges.push("Expert");
+    }
+    
+    // Assign rating badges
+    if (reputation.overallScore >= 4.5 && reputation.totalRatings >= 5) {
+      assignedBadges.push("Top Rated");
+    }
+    
+    // Assign skill badges based on skill scores
+    Object.entries(reputation.skillScores || {}).forEach(([skill, score]) => {
+      if (score >= 4.5) {
+        assignedBadges.push(`${skill} Specialist`);
+      }
+    });
+    
+    return assignedBadges;
+  }
+  
+  async getWorkerBadges(): Promise<WorkerBadge[]> {
+    return await db
+      .select()
+      .from(schema.workerBadges);
+  }
+  
+  async getWorkerBadge(id: number): Promise<WorkerBadge | undefined> {
+    const [badge] = await db
+      .select()
+      .from(schema.workerBadges)
+      .where(eq(schema.workerBadges.id, id));
+    return badge;
+  }
+  
+  async createWorkerBadge(badge: InsertWorkerBadge): Promise<WorkerBadge> {
+    const [newBadge] = await db
+      .insert(schema.workerBadges)
+      .values({
+        ...badge,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      })
+      .returning();
+    return newBadge;
+  }
+  
+  async getWorkerLeaderboard(category?: string, limit = 10): Promise<WorkerReputation[]> {
+    if (category) {
+      // For categories, we need a more complex query to filter by skills
+      // This is a simplified approach. For a real app, we'd need a more sophisticated query
+      const allReputations = await db
+        .select()
+        .from(schema.workerReputations)
+        .orderBy(desc(schema.workerReputations.overallScore))
+        .limit(100); // Get a larger set to filter from
+      
+      // Filter and sort by the specific skill
+      const filteredReputations = allReputations
+        .filter(rep => 
+          rep.skillScores && 
+          Object.keys(rep.skillScores).includes(category)
+        )
+        .sort((a, b) => 
+          (b.skillScores[category] || 0) - (a.skillScores[category] || 0)
+        )
+        .slice(0, limit);
+      
+      return filteredReputations;
+    } else {
+      // Simple overall score leaderboard
+      return await db
+        .select()
+        .from(schema.workerReputations)
+        .orderBy(desc(schema.workerReputations.overallScore))
+        .limit(limit);
+    }
+  }
 }
 
 // Use DatabaseStorage instead of MemStorage
