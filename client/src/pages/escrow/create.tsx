@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useWallet } from "@/components/wallet/wallet-provider";
+import { useAuth } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
 import { useLocation } from "wouter";
 import { apiRequest } from "@/lib/queryClient";
@@ -47,10 +48,14 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 export default function CreateEscrow() {
-  const { isConnected, user } = useWallet();
+  const { isConnected, user: walletUser } = useWallet();
+  const { user: authUser } = useAuth();
   const { toast } = useToast();
   const [, navigate] = useLocation();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // Use either wallet user or auth user
+  const user = walletUser || authUser;
 
   // Define form with validation
   const form = useForm<FormValues>({
@@ -76,7 +81,7 @@ export default function CreateEscrow() {
       }
       return response.json();
     },
-    enabled: !!isConnected && !!user?.id,
+    enabled: !!user?.id, // Enable if either wallet or auth user is available
   });
 
   // Fetch potential buyers (simplified - in a real app this would be more sophisticated)
@@ -89,15 +94,15 @@ export default function CreateEscrow() {
       }
       return response.json();
     },
-    enabled: !!isConnected,
+    enabled: !!user?.id, // Enable if either wallet or auth user is available
   });
 
   // Handle form submission
   async function onSubmit(values: FormValues) {
-    if (!isConnected || !user?.id) {
+    if (!user?.id) {
       toast({
-        title: "Not connected",
-        description: "Please connect your wallet to create an escrow",
+        title: "Authentication Required",
+        description: "Please sign in to create an escrow",
         variant: "destructive",
       });
       return;
@@ -133,7 +138,7 @@ export default function CreateEscrow() {
 
       // Navigate to escrow management
       navigate("/escrow/manage");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error creating escrow:", error);
       toast({
         title: "Error",
@@ -145,18 +150,26 @@ export default function CreateEscrow() {
     }
   }
 
-  if (!isConnected) {
+  // If no user is authenticated (neither wallet nor traditional auth)
+  if (!user?.id) {
     return (
       <div className="container mx-auto p-6">
         <div className="flex flex-col items-center justify-center h-[60vh] text-center">
           <Lock className="h-16 w-16 text-primary-500 mb-4" />
-          <h2 className="text-2xl font-bold text-neutral-800 mb-2">Connect Your Wallet</h2>
+          <h2 className="text-2xl font-bold text-neutral-800 mb-2">Authentication Required</h2>
           <p className="text-neutral-600 mb-6 max-w-md">
-            You need to connect your wallet to create an escrow for secure property transactions.
+            You need to sign in or connect your wallet to create an escrow for secure property transactions.
           </p>
-          <Button onClick={() => toast({ title: "Please connect your wallet", description: "Use the connect button at the bottom of the sidebar" })}>
-            Connect Wallet
-          </Button>
+          <div className="flex gap-4">
+            <Button onClick={() => navigate("/auth/login")}>
+              Sign In
+            </Button>
+            {!isConnected && (
+              <Button variant="outline" onClick={() => toast({ title: "Connect Wallet", description: "Use the connect button at the bottom of the sidebar" })}>
+                Connect Wallet
+              </Button>
+            )}
+          </div>
         </div>
       </div>
     );
