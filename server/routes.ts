@@ -1429,6 +1429,204 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Payment Processing with Stripe
+  // Initialize Stripe
+  if (!process.env.STRIPE_SECRET_KEY) {
+    console.warn('STRIPE_SECRET_KEY is not set. Payment features will be unavailable.');
+  }
+  
+  const stripe = process.env.STRIPE_SECRET_KEY ? 
+    new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2023-10-16' }) : 
+    null;
+  
+  // Create payment intent for a task
+  app.post(`${apiPrefix}/payment/create-intent`, async (req, res) => {
+    try {
+      if (!stripe) {
+        return res.status(503).json({ 
+          success: false, 
+          message: "Payment service unavailable. Please contact support." 
+        });
+      }
+      
+      const { taskId } = req.body;
+      
+      if (!taskId) {
+        return res.status(400).json({ 
+          success: false, 
+          message: "Task ID is required" 
+        });
+      }
+      
+      // Get the task to determine payment amount
+      const task = await storage.getTask(taskId);
+      
+      if (!task) {
+        return res.status(404).json({ 
+          success: false, 
+          message: "Task not found" 
+        });
+      }
+      
+      // Convert price to cents for Stripe
+      const amount = Math.round(parseFloat(task.price) * 100);
+      
+      // Create a payment intent
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount,
+        currency: task.currency || 'usd',
+        description: `Payment for task: ${task.title}`,
+        metadata: {
+          taskId: task.id.toString(),
+          category: task.category,
+          creatorId: task.creatorId.toString(),
+          assigneeId: task.assigneeId ? task.assigneeId.toString() : undefined
+        }
+      });
+      
+      // Return the client secret to the client
+      res.json({
+        success: true,
+        clientSecret: paymentIntent.client_secret
+      });
+    } catch (error) {
+      console.error("Error creating payment intent:", error);
+      res.status(500).json({ 
+        success: false, 
+        message: "Failed to create payment intent" 
+      });
+    }
+  });
+  
+  // Webhook to handle payment events from Stripe
+  app.post(`${apiPrefix}/payment/webhook`, async (req, res) => {
+    try {
+      if (!stripe) {
+        return res.status(503).json({ 
+          success: false, 
+          message: "Payment service unavailable" 
+        });
+      }
+      
+      const sig = req.headers['stripe-signature'];
+      
+      if (!sig || !process.env.STRIPE_WEBHOOK_SECRET) {
+        return res.status(400).json({ 
+          success: false, 
+          message: "Stripe signature or webhook secret missing" 
+        });
+      }
+      
+      // Verify the event came from Stripe
+      let event;
+      try {
+        event = stripe.webhooks.constructEvent(
+          req.body, 
+          sig, 
+          process.env.STRIPE_WEBHOOK_SECRET
+        );
+      } catch (err) {
+        return res.status(400).json({ 
+          success: false, 
+          message: `Webhook signature verification failed: ${err.message}` 
+        });
+      }
+      
+      // Handle the event
+      switch (event.type) {
+        case 'payment_intent.succeeded':
+          const paymentIntent = event.data.object;
+          
+          // Update task status if this was a task payment
+          if (paymentIntent.metadata?.taskId) {
+            const taskId = parseInt(paymentIntent.metadata.taskId);
+            const task = await storage.getTask(taskId);
+            
+            if (task) {
+              // Update the task to reflect payment
+              await storage.updateTaskStatus(taskId, "paid");
+              
+              // Record the payment
+              // In a real app, we would have a payments table to track this
+              console.log(`Payment for task ${taskId} succeeded`);
+            }
+          }
+          break;
+        case 'payment_intent.payment_failed':
+          console.log('Payment failed:', event.data.object);
+          break;
+        default:
+          console.log(`Unhandled event type ${event.type}`);
+      }
+      
+      // Return a response to acknowledge receipt of the event
+      res.json({ received: true });
+    } catch (error) {
+      console.error("Error processing webhook:", error);
+      res.status(500).json({ 
+        success: false, 
+        message: "Failed to process webhook" 
+      });
+    }
+  });
+  
+  // Task payment completion API
+  app.post(`${apiPrefix}/payment/complete-task`, async (req, res) => {
+    try {
+      const { taskId, paymentIntentId } = req.body;
+      
+      if (!taskId || !paymentIntentId) {
+        return res.status(400).json({ 
+          success: false, 
+          message: "Task ID and Payment Intent ID are required" 
+        });
+      }
+      
+      // Verify the task exists
+      const task = await storage.getTask(parseInt(taskId));
+      if (!task) {
+        return res.status(404).json({ 
+          success: false, 
+          message: "Task not found" 
+        });
+      }
+      
+      // Verify the payment intent if Stripe is available
+      if (stripe) {
+        const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+        
+        // Verify payment is complete and for the correct task
+        if (
+          paymentIntent.status !== 'succeeded' || 
+          paymentIntent.metadata?.taskId !== taskId.toString()
+        ) {
+          return res.status(400).json({ 
+            success: false, 
+            message: "Invalid payment for this task" 
+          });
+        }
+      }
+      
+      // Update task status to completed
+      await storage.updateTaskStatus(parseInt(taskId), "completed");
+      
+      // Get the updated task
+      const updatedTask = await storage.getTask(parseInt(taskId));
+      
+      res.json({
+        success: true,
+        message: "Task payment completed successfully",
+        task: updatedTask
+      });
+    } catch (error) {
+      console.error("Error completing task payment:", error);
+      res.status(500).json({ 
+        success: false, 
+        message: "Failed to complete task payment" 
+      });
+    }
+  });
+
   // Create the HTTP server
   const httpServer = createServer(app);
 
