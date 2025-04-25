@@ -20,6 +20,7 @@ import {
   insertWorkerRatingSchema,
   insertWorkerReputationSchema,
   insertWorkerBadgeSchema,
+  insertWorkerSkillEndorsementSchema,
   insertEscrowSchema,
   insertTitleTransferSchema,
   insertArbitratorSchema,
@@ -605,6 +606,119 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(skills);
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch popular skills" });
+    }
+  });
+  
+  // Worker Skill Endorsement Routes
+  app.get(`${apiPrefix}/workers/:id/endorsements`, async (req, res) => {
+    try {
+      const workerId = parseInt(req.params.id);
+      const endorsements = await storage.getWorkerSkillEndorsements(workerId);
+      res.json(endorsements);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch worker skill endorsements" });
+    }
+  });
+  
+  app.get(`${apiPrefix}/workers/:id/skills`, async (req, res) => {
+    try {
+      const workerId = parseInt(req.params.id);
+      const skills = await storage.getWorkerSkillsByEndorsements(workerId);
+      res.json(skills);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch worker skills" });
+    }
+  });
+  
+  app.post(`${apiPrefix}/workers/:id/endorsements`, async (req, res) => {
+    try {
+      if (!req.isAuthenticated()) {
+        return res.status(401).json({ message: "Authentication required" });
+      }
+      
+      const workerId = parseInt(req.params.id);
+      const endorserId = req.user.id;
+      
+      // Prevent self-endorsement
+      if (workerId === endorserId) {
+        return res.status(400).json({ message: "Cannot endorse yourself" });
+      }
+      
+      // Parse and validate the endorsement data
+      const endorsementData = insertWorkerSkillEndorsementSchema.parse({
+        ...req.body,
+        workerId,
+        endorserId
+      });
+      
+      const newEndorsement = await storage.createWorkerSkillEndorsement(endorsementData);
+      res.status(201).json(newEndorsement);
+      
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid endorsement data", errors: error.errors });
+      }
+      res.status(500).json({ message: "Failed to create worker skill endorsement" });
+    }
+  });
+  
+  app.put(`${apiPrefix}/workers/endorsements/:id/verify`, async (req, res) => {
+    try {
+      if (!req.isAuthenticated()) {
+        return res.status(401).json({ message: "Authentication required" });
+      }
+      
+      // Only admin or moderators should be able to verify endorsements
+      if (!req.user.role || !['admin', 'moderator'].includes(req.user.role)) {
+        return res.status(403).json({ message: "Insufficient permissions" });
+      }
+      
+      const endorsementId = parseInt(req.params.id);
+      const { isVerified } = req.body;
+      
+      if (typeof isVerified !== 'boolean') {
+        return res.status(400).json({ message: "isVerified parameter must be a boolean" });
+      }
+      
+      const updatedEndorsement = await storage.verifyWorkerSkillEndorsement(
+        endorsementId, 
+        isVerified
+      );
+      
+      res.json(updatedEndorsement);
+      
+    } catch (error) {
+      res.status(500).json({ message: "Failed to verify worker skill endorsement" });
+    }
+  });
+  
+  app.delete(`${apiPrefix}/workers/endorsements/:id`, async (req, res) => {
+    try {
+      if (!req.isAuthenticated()) {
+        return res.status(401).json({ message: "Authentication required" });
+      }
+      
+      const endorsementId = parseInt(req.params.id);
+      
+      // Get the endorsement to check if the user has permission to delete it
+      const endorsement = await storage.getWorkerSkillEndorsement(endorsementId);
+      
+      if (!endorsement) {
+        return res.status(404).json({ message: "Endorsement not found" });
+      }
+      
+      // Only the endorser, the endorsed worker, or admins can delete endorsements
+      if (endorsement.endorserId !== req.user.id && 
+          endorsement.workerId !== req.user.id && 
+          req.user.role !== 'admin') {
+        return res.status(403).json({ message: "You don't have permission to delete this endorsement" });
+      }
+      
+      await storage.deleteWorkerSkillEndorsement(endorsementId);
+      res.sendStatus(204);
+      
+    } catch (error) {
+      res.status(500).json({ message: "Failed to delete worker skill endorsement" });
     }
   });
 
