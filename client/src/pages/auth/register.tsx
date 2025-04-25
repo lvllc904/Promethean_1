@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -15,20 +15,23 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { UserCircle2, KeyRound, Mail, User, Loader2, ChevronLeft } from "lucide-react";
 
-// Login form schema
-const loginSchema = z.object({
-  username: z.string().min(1, "Username is required"),
-  password: z.string().min(1, "Password is required"),
+// Registration form schema
+const registerSchema = z.object({
+  username: z.string().min(3, "Username must be at least 3 characters"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+  email: z.string().email("Invalid email address"),
+  name: z.string().optional(),
 });
 
 // Types for our form values
-type LoginFormValues = z.infer<typeof loginSchema>;
+type RegisterFormValues = z.infer<typeof registerSchema>;
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const [, navigate] = useLocation();
-  const { user, loginMutation } = useAuth();
+  const { user, registerMutation } = useAuth();
 
   // Redirect if already logged in
   useEffect(() => {
@@ -37,18 +40,20 @@ export default function LoginPage() {
     }
   }, [user, navigate]);
 
-  // Login form setup
-  const loginForm = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
+  // Registration form setup
+  const registerForm = useForm<RegisterFormValues>({
+    resolver: zodResolver(registerSchema),
     defaultValues: {
       username: "",
       password: "",
+      email: "",
+      name: "",
     },
   });
 
-  // Handle login submission
-  const onLoginSubmit = (values: LoginFormValues) => {
-    loginMutation.mutate(values);
+  // Handle registration submission
+  const onRegisterSubmit = (values: RegisterFormValues) => {
+    registerMutation.mutate(values);
   };
 
   return (
@@ -56,9 +61,9 @@ export default function LoginPage() {
       <div className="flex flex-col lg:flex-row w-full max-w-6xl shadow-lg rounded-lg overflow-hidden">
         {/* Hero Section */}
         <div className="lg:w-1/2 bg-gradient-to-br from-primary to-primary-700 p-12 text-white flex flex-col justify-center">
-          <h1 className="text-3xl font-bold mb-6">Welcome to DAC Marketplace</h1>
+          <h1 className="text-3xl font-bold mb-6">Join DAC Marketplace</h1>
           <p className="text-lg mb-8">
-            Join our community of property investors, real estate professionals, and blockchain enthusiasts.
+            Create an account to access all platform features including marketplace, property listings, and governance.
           </p>
           <div className="space-y-6">
             <div className="flex items-start space-x-3">
@@ -110,13 +115,13 @@ export default function LoginPage() {
           </Button>
           
           <div className="flex-1">
-            <h2 className="text-2xl font-bold mb-2">Sign In to Your Account</h2>
-            <p className="text-muted-foreground mb-6">Enter your credentials to access the platform</p>
+            <h2 className="text-2xl font-bold mb-2">Create Your Account</h2>
+            <p className="text-muted-foreground mb-6">Enter your details to join DAC Marketplace</p>
             
-            <Form {...loginForm}>
-              <form onSubmit={loginForm.handleSubmit(onLoginSubmit)} className="space-y-6">
+            <Form {...registerForm}>
+              <form onSubmit={registerForm.handleSubmit(onRegisterSubmit)} className="space-y-4">
                 <FormField
-                  control={loginForm.control}
+                  control={registerForm.control}
                   name="username"
                   render={({ field }) => (
                     <FormItem>
@@ -124,7 +129,7 @@ export default function LoginPage() {
                       <FormControl>
                         <div className="relative">
                           <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-neutral-500" />
-                          <Input className="pl-10" placeholder="Enter your username" {...field} />
+                          <Input className="pl-10" placeholder="Choose a username" {...field} />
                         </div>
                       </FormControl>
                       <FormMessage />
@@ -132,7 +137,39 @@ export default function LoginPage() {
                   )}
                 />
                 <FormField
-                  control={loginForm.control}
+                  control={registerForm.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-neutral-500" />
+                          <Input className="pl-10" type="email" placeholder="your@email.com" {...field} />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={registerForm.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Full Name (Optional)</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <UserCircle2 className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-neutral-500" />
+                          <Input className="pl-10" placeholder="Your full name" {...field} />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={registerForm.control}
                   name="password"
                   render={({ field }) => (
                     <FormItem>
@@ -140,38 +177,43 @@ export default function LoginPage() {
                       <FormControl>
                         <div className="relative">
                           <KeyRound className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-neutral-500" />
-                          <Input className="pl-10" type="password" placeholder="••••••••" {...field} />
+                          <Input className="pl-10" type="password" placeholder="Create a secure password" {...field} />
                         </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
+                <Alert className="mt-4 bg-blue-50">
+                  <AlertDescription className="text-xs text-blue-700">
+                    By creating an account, you will receive a governance token giving you voting rights on platform decisions.
+                  </AlertDescription>
+                </Alert>
                 <Button 
                   type="submit" 
-                  className="w-full" 
-                  disabled={loginMutation.isPending}
+                  className="w-full mt-2" 
+                  disabled={registerMutation.isPending}
                 >
-                  {loginMutation.isPending ? (
+                  {registerMutation.isPending ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Signing In...
+                      Creating Account...
                     </>
                   ) : (
-                    "Sign In"
+                    "Create Account"
                   )}
                 </Button>
               </form>
             </Form>
 
             <p className="text-center text-sm text-muted-foreground mt-6">
-              Don't have an account?{" "}
+              Already have an account?{" "}
               <Button 
                 variant="link" 
                 className="p-0 h-auto" 
-                onClick={() => navigate("/auth/register")}
+                onClick={() => navigate("/auth/login")}
               >
-                Create one now
+                Sign in
               </Button>
             </p>
           </div>

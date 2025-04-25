@@ -12,11 +12,13 @@ const scryptAsync = promisify(scrypt);
 export interface AuthUser {
   id: number;
   username: string;
-  email?: string;
-  name?: string;
-  membershipTier?: string;
-  dacTokenBalance?: number;
-  walletAddress?: string;
+  email?: string | null;
+  name?: string | null;
+  membershipTier?: string | null;
+  walletAddress?: string | null;
+  dacTokenBalance?: string | null;
+  promTokenBalance?: string | null;
+  avatarUrl?: string | null;
 }
 
 // Extend Express Session and Request types

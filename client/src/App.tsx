@@ -21,7 +21,9 @@ import Wallet from "@/pages/wallet";
 import Feedback from "@/pages/feedback";
 import AdminDashboard from "@/pages/admin";
 import { WalletProvider } from "@/components/wallet/wallet-provider";
+import { AuthProvider } from "@/hooks/use-auth";
 import { AppLayout } from "@/components/layout/app-layout";
+import { ProtectedRoute } from "@/lib/protected-route";
 
 // Import the new page components
 import CreateProposal from "@/pages/dao/proposals/create";
@@ -33,6 +35,11 @@ import SocialFeed from "@/pages/social/feed";
 import SocialMessages from "@/pages/social/messages";
 import SocialProfile from "@/pages/social/profile";
 
+// Import auth pages
+import AuthPage from "@/pages/auth/index";
+import LoginPage from "@/pages/auth/login";
+import RegisterPage from "@/pages/auth/register";
+
 // Import lazy loaded escrow components
 const EscrowDashboard = lazy(() => import('@/pages/escrow/dashboard'));
 const CreateEscrow = lazy(() => import('@/pages/escrow/create'));
@@ -43,23 +50,29 @@ const Arbitrators = lazy(() => import('@/pages/escrow/arbitrators'));
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={Dashboard} />
-      <Route path="/properties" component={PropertiesIndex} />
-      <Route path="/properties/create" component={CreateProperty} />
-      <Route path="/properties/my" component={MyProperties} />
-      <Route path="/properties/valuation" component={PropertyValuation} />
-      <Route path="/properties/valuation/:id" component={PropertyValuation} />
-      <Route path="/properties/:id/tokenize" component={TokenizeProperty} />
-      <Route path="/dao/governance" component={Governance} />
-      <Route path="/dao/proposals" component={Proposals} />
-      <Route path="/dao/proposals/create" component={CreateProposal} />
-      <Route path="/dex" component={DexPage} />
-      <Route path="/marketplace" component={MarketplaceIndex} />
-      <Route path="/marketplace/create" component={CreateTask} />
-      <Route path="/marketplace/my" component={MyTasks} />
-      <Route path="/memberships" component={Memberships} />
-      <Route path="/community" component={Community} />
-      <Route path="/community/rewards">
+      {/* Authentication Routes */}
+      <Route path="/auth" component={AuthPage} />
+      <Route path="/auth/login" component={LoginPage} />
+      <Route path="/auth/register" component={RegisterPage} />
+      
+      {/* Protected Routes */}
+      <ProtectedRoute path="/" component={Dashboard} />
+      <ProtectedRoute path="/properties" component={PropertiesIndex} />
+      <ProtectedRoute path="/properties/create" component={CreateProperty} />
+      <ProtectedRoute path="/properties/my" component={MyProperties} />
+      <ProtectedRoute path="/properties/valuation" component={PropertyValuation} />
+      <ProtectedRoute path="/properties/valuation/:id" component={PropertyValuation} />
+      <ProtectedRoute path="/properties/:id/tokenize" component={TokenizeProperty} />
+      <ProtectedRoute path="/dao/governance" component={Governance} />
+      <ProtectedRoute path="/dao/proposals" component={Proposals} />
+      <ProtectedRoute path="/dao/proposals/create" component={CreateProposal} />
+      <ProtectedRoute path="/dex" component={DexPage} />
+      <ProtectedRoute path="/marketplace" component={MarketplaceIndex} />
+      <ProtectedRoute path="/marketplace/create" component={CreateTask} />
+      <ProtectedRoute path="/marketplace/my" component={MyTasks} />
+      <ProtectedRoute path="/memberships" component={Memberships} />
+      <ProtectedRoute path="/community" component={Community} />
+      <ProtectedRoute path="/community/rewards">
         {() => (
           <Suspense fallback={<div className="p-8 text-center">Loading Community Rewards...</div>}>
             {(() => {
@@ -68,14 +81,14 @@ function Router() {
             })()}
           </Suspense>
         )}
-      </Route>
-      <Route path="/profile" component={CommunityTalent} />
-      <Route path="/social/feed" component={SocialFeed} />
-      <Route path="/social/messages" component={SocialMessages} />
-      <Route path="/social/messages/:id" component={SocialMessages} />
-      <Route path="/social/profile" component={SocialProfile} />
-      <Route path="/social/profile/:id" component={SocialProfile} />
-      <Route path="/contracts">
+      </ProtectedRoute>
+      <ProtectedRoute path="/profile" component={CommunityTalent} />
+      <ProtectedRoute path="/social/feed" component={SocialFeed} />
+      <ProtectedRoute path="/social/messages" component={SocialMessages} />
+      <ProtectedRoute path="/social/messages/:id" component={SocialMessages} />
+      <ProtectedRoute path="/social/profile" component={SocialProfile} />
+      <ProtectedRoute path="/social/profile/:id" component={SocialProfile} />
+      <ProtectedRoute path="/contracts">
         {() => (
           <Suspense fallback={<div className="p-8 text-center">Loading Smart Contract Interface...</div>}>
             {(() => {
@@ -84,8 +97,8 @@ function Router() {
             })()}
           </Suspense>
         )}
-      </Route>
-      <Route path="/blockchain/explorer">
+      </ProtectedRoute>
+      <ProtectedRoute path="/blockchain/explorer">
         {() => (
           <Suspense fallback={<div className="p-8 text-center">Loading Blockchain Explorer...</div>}>
             {(() => {
@@ -94,13 +107,13 @@ function Router() {
             })()}
           </Suspense>
         )}
-      </Route>
-      <Route path="/feedback" component={Feedback} />
-      <Route path="/wallet" component={Wallet} />
-      <Route path="/admin" component={AdminDashboard} />
+      </ProtectedRoute>
+      <ProtectedRoute path="/feedback" component={Feedback} />
+      <ProtectedRoute path="/wallet" component={Wallet} />
+      <ProtectedRoute path="/admin" component={AdminDashboard} />
       
       {/* Admin Section Routes */}
-      <Route path="/admin/contracts">
+      <ProtectedRoute path="/admin/contracts">
         {() => (
           <Suspense fallback={<div className="p-8 text-center">Loading Admin Contract Interface...</div>}>
             {(() => {
@@ -109,8 +122,8 @@ function Router() {
             })()}
           </Suspense>
         )}
-      </Route>
-      <Route path="/admin/blockchain/explorer">
+      </ProtectedRoute>
+      <ProtectedRoute path="/admin/blockchain/explorer">
         {() => (
           <Suspense fallback={<div className="p-8 text-center">Loading Admin Blockchain Explorer...</div>}>
             {(() => {
@@ -119,8 +132,8 @@ function Router() {
             })()}
           </Suspense>
         )}
-      </Route>
-      <Route path="/admin/dex">
+      </ProtectedRoute>
+      <ProtectedRoute path="/admin/dex">
         {() => (
           <Suspense fallback={<div className="p-8 text-center">Loading Admin DEX Interface...</div>}>
             {(() => {
@@ -129,8 +142,8 @@ function Router() {
             })()}
           </Suspense>
         )}
-      </Route>
-      <Route path="/admin/community/rewards">
+      </ProtectedRoute>
+      <ProtectedRoute path="/admin/community/rewards">
         {() => (
           <Suspense fallback={<div className="p-8 text-center">Loading Admin Community Rewards...</div>}>
             {(() => {
@@ -139,48 +152,48 @@ function Router() {
             })()}
           </Suspense>
         )}
-      </Route>
+      </ProtectedRoute>
       
       {/* Escrow System Routes */}
-      <Route path="/escrow/dashboard">
+      <ProtectedRoute path="/escrow/dashboard">
         {() => (
           <Suspense fallback={<div className="p-8 text-center">Loading Escrow Dashboard...</div>}>
             <EscrowDashboard />
           </Suspense>
         )}
-      </Route>
+      </ProtectedRoute>
       
-      <Route path="/escrow/create">
+      <ProtectedRoute path="/escrow/create">
         {() => (
           <Suspense fallback={<div className="p-8 text-center">Loading Create Escrow...</div>}>
             <CreateEscrow />
           </Suspense>
         )}
-      </Route>
+      </ProtectedRoute>
       
-      <Route path="/escrow/manage">
+      <ProtectedRoute path="/escrow/manage">
         {() => (
           <Suspense fallback={<div className="p-8 text-center">Loading Manage Escrows...</div>}>
             <ManageEscrows />
           </Suspense>
         )}
-      </Route>
+      </ProtectedRoute>
       
-      <Route path="/escrow/transfers">
+      <ProtectedRoute path="/escrow/transfers">
         {() => (
           <Suspense fallback={<div className="p-8 text-center">Loading Title Transfers...</div>}>
             <TitleTransfers />
           </Suspense>
         )}
-      </Route>
+      </ProtectedRoute>
       
-      <Route path="/escrow/arbitrators">
+      <ProtectedRoute path="/escrow/arbitrators">
         {() => (
           <Suspense fallback={<div className="p-8 text-center">Loading Arbitrators...</div>}>
             <Arbitrators />
           </Suspense>
         )}
-      </Route>
+      </ProtectedRoute>
       
       <Route component={NotFound} />
     </Switch>
@@ -191,9 +204,11 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <WalletProvider>
-        <AppLayout>
-          <Router />
-        </AppLayout>
+        <AuthProvider>
+          <AppLayout>
+            <Router />
+          </AppLayout>
+        </AuthProvider>
       </WalletProvider>
       <Toaster />
     </QueryClientProvider>
