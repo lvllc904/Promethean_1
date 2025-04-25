@@ -1,4 +1,5 @@
 import { Switch, Route } from "wouter";
+import { lazy } from "react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
@@ -51,12 +52,15 @@ function Router() {
       <Route path="/marketplace/my" component={MyTasks} />
       <Route path="/memberships" component={Memberships} />
       <Route path="/community" component={Community} />
+      <Route path="/community/rewards" component={lazy(() => import('@/pages/community/rewards'))} />
       <Route path="/profile" component={CommunityTalent} />
       <Route path="/social/feed" component={SocialFeed} />
       <Route path="/social/messages" component={SocialMessages} />
       <Route path="/social/messages/:id" component={SocialMessages} />
       <Route path="/social/profile" component={SocialProfile} />
       <Route path="/social/profile/:id" component={SocialProfile} />
+      <Route path="/contracts" component={lazy(() => import('@/pages/contracts'))} />
+      <Route path="/blockchain/explorer" component={lazy(() => import('@/pages/blockchain/explorer'))} />
       <Route path="/feedback" component={Feedback} />
       <Route path="/wallet" component={Wallet} />
       <Route path="/admin" component={AdminDashboard} />

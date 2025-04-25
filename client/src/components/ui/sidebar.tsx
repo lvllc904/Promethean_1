@@ -8,8 +8,11 @@ import {
   MessageSquare, 
   Award,
   ChevronDown,
+  Database,
   Wallet2,
   Settings,
+  Trophy,
+  Zap,
   ArrowLeftRight 
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -193,6 +196,33 @@ export function Sidebar() {
             </div>
           )}
         </div>
+        
+        {/* Community Rewards */}
+        <NavItem 
+          href="/community/rewards" 
+          icon={<Trophy className="h-5 w-5" />} 
+          isActive={isActive("/community/rewards")}
+        >
+          Community Rewards
+        </NavItem>
+
+        {/* Smart Contracts */}
+        <NavItem 
+          href="/contracts" 
+          icon={<Zap className="h-5 w-5" />} 
+          isActive={isActive("/contracts")}
+        >
+          Smart Contracts
+        </NavItem>
+
+        {/* Blockchain Explorer */}
+        <NavItem 
+          href="/blockchain/explorer" 
+          icon={<Database className="h-5 w-5" />} 
+          isActive={isActive("/blockchain/explorer")}
+        >
+          Blockchain Explorer
+        </NavItem>
         
         {/* DEX */}
         <NavItem 
