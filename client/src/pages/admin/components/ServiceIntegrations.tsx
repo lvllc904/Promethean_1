@@ -144,7 +144,7 @@ const ServiceIntegrations = () => {
   // Test integration
   const testIntegrationMutation = useMutation({
     mutationFn: (id: number) => 
-      apiRequest(`/api/admin/integrations/${id}/test`, { method: 'POST' }),
+      apiRequest<{success: boolean, message: string}>('POST', `/api/admin/integrations/${id}/test`),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/integrations'] });
       toast({
@@ -165,7 +165,7 @@ const ServiceIntegrations = () => {
   // Reset usage count
   const resetUsageCountMutation = useMutation({
     mutationFn: (id: number) => 
-      apiRequest(`/api/admin/integrations/${id}/reset-usage`, { method: 'POST' }),
+      apiRequest<{success: boolean}>('POST', `/api/admin/integrations/${id}/reset-usage`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/integrations'] });
       toast({

@@ -258,11 +258,11 @@ const ServiceProviders = () => {
   }
   
   // Filter providers by category if a category is selected
-  const filteredProviders = providers && (
+  const filteredProviders = providers && Array.isArray(providers) ? (
     activeCategory 
       ? providers.filter((provider: any) => provider.categoryId === activeCategory)
       : providers
-  );
+  ) : [];
   
   return (
     <Card>
@@ -278,7 +278,7 @@ const ServiceProviders = () => {
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Category Tabs */}
-        {categories && categories.length > 0 && (
+        {categories && Array.isArray(categories) && categories.length > 0 && (
           <Tabs 
             defaultValue="all" 
             onValueChange={(value) => setActiveCategory(value === 'all' ? null : parseInt(value))}
@@ -315,7 +315,9 @@ const ServiceProviders = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredProviders && filteredProviders.map((provider: any) => {
-              const category = categories?.find((c: any) => c.id === provider.categoryId);
+              const category = categories && Array.isArray(categories) ? 
+                categories.find((c: any) => c.id === provider.categoryId) : 
+                undefined;
               return (
                 <Card key={provider.id} className={`${provider.isActive ? 'border-gray-200' : 'border-red-200 bg-red-50'}`}>
                   <CardHeader className="pb-3">
@@ -481,7 +483,7 @@ const ServiceProviders = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {categories && categories.map((category: any) => (
+                          {categories && Array.isArray(categories) && categories.map((category: any) => (
                             <SelectItem key={category.id} value={category.id.toString()}>
                               {category.name}
                             </SelectItem>

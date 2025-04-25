@@ -207,7 +207,9 @@ const ServiceCategories = () => {
   }
   
   // Sort categories by display order
-  const sortedCategories = categories && [...categories].sort((a, b) => a.displayOrder - b.displayOrder);
+  const sortedCategories = categories && Array.isArray(categories) ? 
+    [...categories].sort((a: any, b: any) => a.displayOrder - b.displayOrder) : 
+    [];
   
   return (
     <Card>
@@ -246,7 +248,7 @@ const ServiceCategories = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {sortedCategories && sortedCategories.map((category) => (
+              {sortedCategories && sortedCategories.map((category: any) => (
                 <TableRow key={category.id}>
                   <TableCell className="font-medium">{category.displayOrder}</TableCell>
                   <TableCell>
