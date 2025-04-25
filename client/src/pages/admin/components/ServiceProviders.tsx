@@ -61,22 +61,22 @@ const ServiceProviders = () => {
   
   // Fetch all service providers
   const { data: providers, isLoading: isLoadingProviders, error: providersError } = useQuery({
-    queryKey: ['/api/admin/providers'],
+    queryKey: ['/api/admin/service-providers'],
     retry: 1,
   });
   
   // Fetch all categories for dropdown
   const { data: categories, isLoading: isLoadingCategories } = useQuery({
-    queryKey: ['/api/admin/categories'],
+    queryKey: ['/api/admin/service-categories'],
     retry: 1,
   });
   
   // Create new service provider
   const addProviderMutation = useMutation({
     mutationFn: (newProvider: ServiceProviderFormValues) => 
-      apiRequest<{id: number}>('POST', '/api/admin/providers', newProvider),
+      apiRequest<{id: number}>('POST', '/api/admin/service-providers', newProvider),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/providers'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/service-providers'] });
       setAddDialogOpen(false);
       toast({
         title: "Provider Added",
@@ -95,9 +95,9 @@ const ServiceProviders = () => {
   // Update service provider
   const updateProviderMutation = useMutation({
     mutationFn: ({ id, data }: { id: number, data: Partial<ServiceProviderFormValues> }) => 
-      apiRequest<{success: boolean}>('PATCH', `/api/admin/providers/${id}`, data),
+      apiRequest<{success: boolean}>('PATCH', `/api/admin/service-providers/${id}`, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/providers'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/service-providers'] });
       setEditingProvider(null);
       setAddDialogOpen(false);
       toast({
@@ -117,9 +117,9 @@ const ServiceProviders = () => {
   // Delete service provider
   const deleteProviderMutation = useMutation({
     mutationFn: (id: number) => 
-      apiRequest<{success: boolean}>('DELETE', `/api/admin/providers/${id}`),
+      apiRequest<{success: boolean}>('DELETE', `/api/admin/service-providers/${id}`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/providers'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/service-providers'] });
       toast({
         title: "Provider Deleted",
         description: "Service provider has been deleted successfully.",
@@ -137,9 +137,9 @@ const ServiceProviders = () => {
   // Toggle provider active status
   const toggleProviderStatusMutation = useMutation({
     mutationFn: ({ id, isActive }: { id: number, isActive: boolean }) => 
-      apiRequest<{success: boolean}>('PATCH', `/api/admin/providers/${id}/status`, { isActive }),
+      apiRequest<{success: boolean}>('PATCH', `/api/admin/service-providers/${id}/status`, { isActive }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/providers'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/admin/service-providers'] });
       toast({
         title: "Status Updated",
         description: "Provider status has been updated successfully.",
