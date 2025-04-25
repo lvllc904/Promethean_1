@@ -31,7 +31,9 @@ import Stripe from "stripe";
 import { requireSocialAuth, SocialAuthRequest } from './middleware/social-auth';
 import { socialSecurityService } from './services/social-security';
 import { socialProfileService } from './services/social-profile';
-import { insertSocialProfileSchema, insertSocialPostSchema } from '@shared/schema';
+import { insertSocialProfileSchema, insertSocialPostSchema, socialMessages } from '@shared/schema';
+import { eq, and, or, asc, desc, isNull, sql } from 'drizzle-orm';
+import { db } from './db';
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Base API prefix
@@ -1843,7 +1845,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
   
   // Social Following Endpoints
-  app.post(`${apiPrefix}/social/follow/:profileId`, requireSocialAuth, async (req, res) => {
+  app.post(`${apiPrefix}/social/follow/:profileId`, requireSocialAuth, async (req: SocialAuthRequest, res) => {
     try {
       if (!req.user) {
         return res.status(401).json({ error: 'Unauthorized' });
@@ -1864,7 +1866,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
-  app.delete(`${apiPrefix}/social/follow/:profileId`, requireSocialAuth, async (req, res) => {
+  app.delete(`${apiPrefix}/social/follow/:profileId`, requireSocialAuth, async (req: SocialAuthRequest, res) => {
     try {
       if (!req.user) {
         return res.status(401).json({ error: 'Unauthorized' });
@@ -1885,7 +1887,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
-  app.get(`${apiPrefix}/social/followers/:profileId`, requireSocialAuth, async (req, res) => {
+  app.get(`${apiPrefix}/social/followers/:profileId`, requireSocialAuth, async (req: SocialAuthRequest, res) => {
     try {
       const profileId = parseInt(req.params.profileId);
       const followers = await socialProfileService.getFollowers(profileId);
@@ -1896,7 +1898,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
-  app.get(`${apiPrefix}/social/following/:profileId`, requireSocialAuth, async (req, res) => {
+  app.get(`${apiPrefix}/social/following/:profileId`, requireSocialAuth, async (req: SocialAuthRequest, res) => {
     try {
       const profileId = parseInt(req.params.profileId);
       const following = await socialProfileService.getFollowing(profileId);
@@ -1907,7 +1909,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
-  app.get(`${apiPrefix}/social/check-following/:followerProfileId/:followedProfileId`, requireSocialAuth, async (req, res) => {
+  app.get(`${apiPrefix}/social/check-following/:followerProfileId/:followedProfileId`, requireSocialAuth, async (req: SocialAuthRequest, res) => {
     try {
       const followerProfileId = parseInt(req.params.followerProfileId);
       const followedProfileId = parseInt(req.params.followedProfileId);
@@ -1916,6 +1918,199 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error('Error checking follow status:', error);
       res.status(500).json({ error: 'Failed to check follow status' });
+    }
+  });
+  
+  // Social Message Endpoints
+  app.post(`${apiPrefix}/social/messages`, requireSocialAuth, async (req: SocialAuthRequest, res) => {
+    try {
+      if (!req.user) {
+        return res.status(401).json({ error: 'Unauthorized' });
+      }
+      
+      const { recipientId, content, encryptedKey } = req.body;
+      
+      if (!recipientId || !content || !encryptedKey) {
+        return res.status(400).json({ error: 'Missing required fields' });
+      }
+      
+      // Get sender profile
+      const senderProfile = await socialProfileService.getProfileByUserId(req.user.userId);
+      
+      if (!senderProfile) {
+        return res.status(404).json({ error: 'Sender profile not found' });
+      }
+      
+      // Create the message
+      const message = await db.insert(socialMessages)
+        .values({
+          senderId: senderProfile.id,
+          recipientId,
+          content,
+          encryptedKey,
+          readAt: null
+        })
+        .returning();
+      
+      res.status(201).json(message[0]);
+    } catch (error) {
+      console.error('Error sending message:', error);
+      res.status(500).json({ error: 'Failed to send message' });
+    }
+  });
+  
+  app.get(`${apiPrefix}/social/messages/conversation/:profileId`, requireSocialAuth, async (req: SocialAuthRequest, res) => {
+    try {
+      if (!req.user) {
+        return res.status(401).json({ error: 'Unauthorized' });
+      }
+      
+      const otherProfileId = parseInt(req.params.profileId);
+      const userProfile = await socialProfileService.getProfileByUserId(req.user.userId);
+      
+      if (!userProfile) {
+        return res.status(404).json({ error: 'User profile not found' });
+      }
+      
+      // Get all messages between the two users
+      const messages = await db.select()
+        .from(socialMessages)
+        .where(
+          or(
+            and(
+              eq(socialMessages.senderId, userProfile.id),
+              eq(socialMessages.recipientId, otherProfileId)
+            ),
+            and(
+              eq(socialMessages.senderId, otherProfileId),
+              eq(socialMessages.recipientId, userProfile.id)
+            )
+          )
+        )
+        .orderBy(asc(socialMessages.createdAt));
+      
+      res.json(messages);
+    } catch (error) {
+      console.error('Error fetching conversation:', error);
+      res.status(500).json({ error: 'Failed to fetch conversation' });
+    }
+  });
+  
+  app.get(`${apiPrefix}/social/messages/inbox`, requireSocialAuth, async (req: SocialAuthRequest, res) => {
+    try {
+      if (!req.user) {
+        return res.status(401).json({ error: 'Unauthorized' });
+      }
+      
+      const userProfile = await socialProfileService.getProfileByUserId(req.user.userId);
+      
+      if (!userProfile) {
+        return res.status(404).json({ error: 'User profile not found' });
+      }
+      
+      // Get all distinct conversations
+      const conversations = await db.select({
+        profileId: sql<number>`CASE WHEN ${socialMessages.senderId} = ${userProfile.id} THEN ${socialMessages.recipientId} ELSE ${socialMessages.senderId} END`,
+        lastMessageAt: sql<Date>`MAX(${socialMessages.createdAt})`,
+        unreadCount: sql<number>`SUM(CASE WHEN ${socialMessages.readAt} IS NULL AND ${socialMessages.recipientId} = ${userProfile.id} THEN 1 ELSE 0 END)`
+      })
+      .from(socialMessages)
+      .where(
+        or(
+          eq(socialMessages.senderId, userProfile.id),
+          eq(socialMessages.recipientId, userProfile.id)
+        )
+      )
+      .groupBy(sql`CASE WHEN ${socialMessages.senderId} = ${userProfile.id} THEN ${socialMessages.recipientId} ELSE ${socialMessages.senderId} END`)
+      .orderBy(desc(sql`MAX(${socialMessages.createdAt})`));
+      
+      // Get profiles for each conversation
+      const profiles = await Promise.all(
+        conversations.map(async (conv) => {
+          const profile = await socialProfileService.getProfileById(conv.profileId);
+          return {
+            ...conv,
+            profile
+          };
+        })
+      );
+      
+      res.json(profiles);
+    } catch (error) {
+      console.error('Error fetching inbox:', error);
+      res.status(500).json({ error: 'Failed to fetch inbox' });
+    }
+  });
+  
+  app.patch(`${apiPrefix}/social/messages/read/:messageId`, requireSocialAuth, async (req: SocialAuthRequest, res) => {
+    try {
+      if (!req.user) {
+        return res.status(401).json({ error: 'Unauthorized' });
+      }
+      
+      const messageId = parseInt(req.params.messageId);
+      const userProfile = await socialProfileService.getProfileByUserId(req.user.userId);
+      
+      if (!userProfile) {
+        return res.status(404).json({ error: 'User profile not found' });
+      }
+      
+      // Verify the message exists and is sent to the current user
+      const message = await db.select()
+        .from(socialMessages)
+        .where(
+          and(
+            eq(socialMessages.id, messageId),
+            eq(socialMessages.recipientId, userProfile.id)
+          )
+        )
+        .limit(1);
+      
+      if (message.length === 0) {
+        return res.status(404).json({ error: 'Message not found or not authorized' });
+      }
+      
+      // Mark the message as read
+      const updatedMessage = await db.update(socialMessages)
+        .set({ readAt: new Date() })
+        .where(eq(socialMessages.id, messageId))
+        .returning();
+      
+      res.json(updatedMessage[0]);
+    } catch (error) {
+      console.error('Error marking message as read:', error);
+      res.status(500).json({ error: 'Failed to mark message as read' });
+    }
+  });
+  
+  app.patch(`${apiPrefix}/social/messages/read-all/:profileId`, requireSocialAuth, async (req: SocialAuthRequest, res) => {
+    try {
+      if (!req.user) {
+        return res.status(401).json({ error: 'Unauthorized' });
+      }
+      
+      const otherProfileId = parseInt(req.params.profileId);
+      const userProfile = await socialProfileService.getProfileByUserId(req.user.userId);
+      
+      if (!userProfile) {
+        return res.status(404).json({ error: 'User profile not found' });
+      }
+      
+      // Mark all messages from the specified user to the current user as read
+      await db.update(socialMessages)
+        .set({ readAt: new Date() })
+        .where(
+          and(
+            eq(socialMessages.senderId, otherProfileId),
+            eq(socialMessages.recipientId, userProfile.id),
+            isNull(socialMessages.readAt)
+          )
+        );
+      
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Error marking messages as read:', error);
+      res.status(500).json({ error: 'Failed to mark messages as read' });
     }
   });
 
