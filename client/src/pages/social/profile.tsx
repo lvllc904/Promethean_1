@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link, useLocation, useParams } from 'wouter';
+import { Heart } from 'lucide-react';
 import { 
   Users, 
   MessageSquare, 

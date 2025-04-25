@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link, useLocation } from 'wouter';
+import { MessageSquare } from 'lucide-react';
 import { 
   Search, 
   Send, 
@@ -346,13 +347,13 @@ export default function MessagesPage() {
                   </div>
                   
                   <div className="flex items-center gap-1">
-                    <Button variant="ghost" size="icon" title="Call">
+                    <Button variant="ghost" size="icon" aria-label="Call">
                       <Phone className="h-5 w-5" />
                     </Button>
-                    <Button variant="ghost" size="icon" title="Video call">
+                    <Button variant="ghost" size="icon" aria-label="Video call">
                       <Video className="h-5 w-5" />
                     </Button>
-                    <Button variant="ghost" size="icon" title="Info">
+                    <Button variant="ghost" size="icon" aria-label="Info">
                       <Info className="h-5 w-5" />
                     </Button>
                   </div>
