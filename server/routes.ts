@@ -31,7 +31,7 @@ import Stripe from "stripe";
 import { requireSocialAuth, SocialAuthRequest } from './middleware/social-auth';
 import { socialSecurityService } from './services/social-security';
 import { socialProfileService } from './services/social-profile';
-import { insertSocialProfileSchema, insertSocialPostSchema, socialMessages } from '@shared/schema';
+import { insertSocialProfileSchema, insertSocialPostSchema, insertSocialMessageSchema, socialMessages } from '@shared/schema';
 import { eq, and, or, asc, desc, isNull, sql } from 'drizzle-orm';
 import { db } from './db';
 
@@ -1941,13 +1941,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ error: 'Sender profile not found' });
       }
       
+      // Use Zod schema to validate input
+      try {
+        insertSocialMessageSchema.parse({
+          senderId: senderProfile.id,
+          recipientId,
+          encryptedContent: content,
+          encryptionMetadata: { key: encryptedKey }
+        });
+      } catch (validationError) {
+        if (validationError instanceof z.ZodError) {
+          return res.status(400).json({ error: 'Invalid message data', issues: validationError.errors });
+        }
+        throw validationError;
+      }
+      
+      if (!senderProfile) {
+        return res.status(404).json({ error: 'Sender profile not found' });
+      }
+      
       // Create the message
       const message = await db.insert(socialMessages)
         .values({
           senderId: senderProfile.id,
           recipientId,
-          content,
-          encryptedKey,
+          encryptedContent: content,
+          encryptionMetadata: { key: encryptedKey },
           readAt: null
         })
         .returning();
