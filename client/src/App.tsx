@@ -15,6 +15,7 @@ import MyTasks from "@/pages/marketplace/my";
 import Memberships from "@/pages/memberships";
 import Community from "@/pages/community";
 import CommunityTalent from "@/pages/profile";
+import DexPage from "@/pages/dex";
 import Wallet from "@/pages/wallet";
 import Feedback from "@/pages/feedback";
 import AdminDashboard from "@/pages/admin";
@@ -44,6 +45,7 @@ function Router() {
       <Route path="/dao/governance" component={Governance} />
       <Route path="/dao/proposals" component={Proposals} />
       <Route path="/dao/proposals/create" component={CreateProposal} />
+      <Route path="/dex" component={DexPage} />
       <Route path="/marketplace" component={MarketplaceIndex} />
       <Route path="/marketplace/create" component={CreateTask} />
       <Route path="/marketplace/my" component={MyTasks} />

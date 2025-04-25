@@ -55,7 +55,8 @@ export const SwapInterface: React.FC<SwapInterfaceProps> = ({ className }) => {
     executeSwap,
     approveToken,
     switchTokens,
-    currentDex
+    currentDex,
+    availableTokens
   } = useDex();
   
   const { isConnected, signer, provider, address } = useWallet();

@@ -9,7 +9,8 @@ import {
   Award,
   ChevronDown,
   Wallet2,
-  Settings
+  Settings,
+  ArrowLeftRight
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -192,6 +193,15 @@ export function Sidebar() {
             </div>
           )}
         </div>
+        
+        {/* DEX */}
+        <NavItem 
+          href="/dex" 
+          icon={<ArrowLeftRight className="h-5 w-5" />} 
+          isActive={isActive("/dex")}
+        >
+          DEX
+        </NavItem>
         
         {/* Memberships */}
         <NavItem 
