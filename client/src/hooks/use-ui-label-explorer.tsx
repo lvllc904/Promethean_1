@@ -1,5 +1,15 @@
 import React, { createContext, ReactNode, useContext, useState } from 'react';
-import { UiLabel } from '@shared/schema';
+
+// Use the frontend UiLabel type from hooks/use-ui-label.tsx
+interface UiLabel {
+  id: number;
+  key: string;
+  value: string;
+  context: string;
+  defaultValue: string;
+  createdAt: string;
+  updatedAt: string | null;
+}
 
 type UiLabelExplorerContextType = {
   isExplorerMode: boolean;

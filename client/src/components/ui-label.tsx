@@ -41,7 +41,10 @@ export const UiLabel: React.FC<UiLabelProps> = ({
   // Handle click when in explorer mode
   const handleClick = () => {
     if (isExplorerMode && labelObject) {
-      setSelectedLabel(labelObject);
+      // Pass the label object to the explorer context
+      setSelectedLabel({
+        ...labelObject
+      });
     }
   };
   
