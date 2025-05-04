@@ -1,512 +1,421 @@
-import React, { useState, useEffect } from 'react';
-import { useQuery, useMutation } from '@tanstack/react-query';
-import { apiRequest, queryClient } from '@/lib/queryClient';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { UiLabel, insertUiLabelSchema } from '@shared/schema';
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardFooter, 
-  CardHeader, 
-  CardTitle 
-} from "@/components/ui/card";
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
-} from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { 
-  Form, 
-  FormControl, 
-  FormDescription, 
-  FormField, 
-  FormItem, 
-  FormLabel, 
-  FormMessage 
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { 
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { 
-  AlertCircle, 
-  Edit, 
-  Plus, 
-  Save, 
-  Search, 
-  Tags, 
-  Trash2,
-  X
-} from "lucide-react";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { useToast } from "@/hooks/use-toast";
-import { Badge } from "@/components/ui/badge";
-import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
-import { 
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import React, { useState } from 'react';
+import { useUiLabel, UiLabel } from '@/hooks/use-ui-label';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { Plus, Pencil, Trash, Search, Filter, X } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import { Badge } from '@/components/ui/badge';
 
-// Extend the insert schema for UI label management
-const uiLabelFormSchema = insertUiLabelSchema.extend({
-  internalKey: z.string().min(2, "Key must be at least 2 characters"),
-  context: z.string().min(1, "Context is required"),
-  defaultLabel: z.string().min(1, "Default label is required"),
-  customLabel: z.string().optional(),
-});
-
-type UiLabelFormValues = z.infer<typeof uiLabelFormSchema>;
-
-const DEFAULT_CONTEXTS = [
-  "Global",
-  "Navigation",
-  "Properties",
-  "Governance",
-  "Tasks",
-  "Escrow",
-  "Wallet",
-  "Settings",
-  "Authentication",
-  "Social",
-  "Legal",
-  "Notifications"
-];
-
-const UiLabelManagement = () => {
+const UiLabelManagement: React.FC = () => {
+  const { labels, isLoading, createLabel, updateLabel, deleteLabel } = useUiLabel();
   const { toast } = useToast();
+  
+  const [newLabel, setNewLabel] = useState<{
+    key: string;
+    value: string;
+    defaultValue: string;
+    context: string;
+  }>({
+    key: '',
+    value: '',
+    defaultValue: '',
+    context: 'Global',
+  });
+  
   const [editingLabel, setEditingLabel] = useState<UiLabel | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
-  const [contextFilter, setContextFilter] = useState<string>('');
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [contextFilter, setContextFilter] = useState<string>('All');
   
-  // Fetch all UI labels
-  const { 
-    data: labels, 
-    isLoading, 
-    error, 
-    refetch 
-  } = useQuery<UiLabel[]>({
-    queryKey: ['/api/admin/ui-labels'],
-    retry: 1,
-  });
+  // Get unique contexts for filtering
+  const contexts = ['All', ...new Set(labels.map(label => label.context))];
   
-  // Create/update UI label
-  const saveLabelMutation = useMutation({
-    mutationFn: (data: UiLabelFormValues) => 
-      apiRequest('POST', '/api/admin/ui-labels', data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/ui-labels'] });
-      toast({
-        title: "Label Saved",
-        description: "UI label has been saved successfully.",
-      });
-      setIsAddDialogOpen(false);
-      setEditingLabel(null);
-    },
-    onError: (error: any) => {
-      toast({
-        title: "Failed to save label",
-        description: error.message || "An error occurred while saving the label.",
-        variant: "destructive",
-      });
-    }
-  });
-  
-  // Delete UI label
-  const deleteLabelMutation = useMutation({
-    mutationFn: (id: number) => 
-      apiRequest('DELETE', `/api/admin/ui-labels/${id}`),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/ui-labels'] });
-      toast({
-        title: "Label Deleted",
-        description: "UI label has been deleted successfully.",
-      });
-    },
-    onError: (error: any) => {
-      toast({
-        title: "Failed to delete label",
-        description: error.message || "An error occurred while deleting the label.",
-        variant: "destructive",
-      });
-    }
-  });
-  
-  // Form for creating/editing UI labels
-  const form = useForm<UiLabelFormValues>({
-    resolver: zodResolver(uiLabelFormSchema),
-    defaultValues: {
-      internalKey: "",
-      context: "Global",
-      defaultLabel: "",
-      customLabel: "",
-    },
-  });
-  
-  // Reset form when editing label changes
-  useEffect(() => {
-    if (editingLabel) {
-      form.reset({
-        internalKey: editingLabel.internalKey,
-        context: editingLabel.context,
-        defaultLabel: editingLabel.defaultLabel,
-        customLabel: editingLabel.customLabel || "",
-      });
-      setIsAddDialogOpen(true);
-    } else {
-      form.reset({
-        internalKey: "",
-        context: "Global",
-        defaultLabel: "",
-        customLabel: "",
-      });
-    }
-  }, [editingLabel, form]);
-  
-  // Handle form submission
-  const onSubmit = (data: UiLabelFormValues) => {
-    const submitData = {
-      ...data,
-      id: editingLabel?.id,
-    };
-    saveLabelMutation.mutate(submitData);
-  };
-  
-  // Filter labels by search term and context
-  const filteredLabels = labels ? labels.filter(label => {
-    const matchesSearch = searchTerm === '' || 
-      label.internalKey.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      label.defaultLabel.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (label.customLabel && label.customLabel.toLowerCase().includes(searchTerm.toLowerCase()));
+  // Filter labels based on search term and context filter
+  const filteredLabels = labels.filter(label => {
+    const matchesSearch = 
+      label.key.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      label.value.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      label.defaultValue.toLowerCase().includes(searchTerm.toLowerCase());
     
-    const matchesContext = contextFilter === '' || label.context === contextFilter;
+    const matchesContext = contextFilter === 'All' || label.context === contextFilter;
     
     return matchesSearch && matchesContext;
-  }) : [];
+  });
   
-  // Get unique contexts from labels
-  const uniqueContexts = labels ? 
-    [...new Set(labels.map(label => label.context))] : 
-    [];
-  
-  const allContexts = [...new Set([...DEFAULT_CONTEXTS, ...uniqueContexts])].sort();
-  
-  // Handle cancel edit
-  const cancelEdit = () => {
-    setEditingLabel(null);
-    setIsAddDialogOpen(false);
-  };
-  
-  // Handle delete confirmation
-  const confirmDelete = (label: UiLabel) => {
-    if (window.confirm(`Are you sure you want to delete the label "${label.internalKey}"?`)) {
-      deleteLabelMutation.mutate(label.id);
+  const handleCreateLabel = async () => {
+    try {
+      if (!newLabel.key || !newLabel.value || !newLabel.defaultValue || !newLabel.context) {
+        toast({
+          title: 'Validation Error',
+          description: 'All fields are required.',
+          variant: 'destructive',
+        });
+        return;
+      }
+      
+      // Check if key already exists in the same context
+      const keyExists = labels.some(
+        label => label.key === newLabel.key && label.context === newLabel.context
+      );
+      
+      if (keyExists) {
+        toast({
+          title: 'Validation Error',
+          description: `A label with key "${newLabel.key}" already exists in "${newLabel.context}" context.`,
+          variant: 'destructive',
+        });
+        return;
+      }
+      
+      await createLabel(newLabel);
+      
+      // Reset form
+      setNewLabel({
+        key: '',
+        value: '',
+        defaultValue: '',
+        context: 'Global',
+      });
+      
+    } catch (error) {
+      console.error('Failed to create label:', error);
     }
   };
   
-  if (isLoading) {
-    return (
-      <Card>
-        <CardHeader>
-          <Skeleton className="h-8 w-1/3" />
-          <Skeleton className="h-4 w-2/3" />
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-2">
-            {[1, 2, 3, 4, 5].map((i) => (
-              <Skeleton key={i} className="h-10 w-full" />
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
+  const handleUpdateLabel = async () => {
+    if (!editingLabel) return;
+    
+    try {
+      await updateLabel(editingLabel.id, editingLabel.value);
+      setEditingLabel(null);
+    } catch (error) {
+      console.error('Failed to update label:', error);
+    }
+  };
   
-  if (error) {
-    return (
-      <Alert variant="destructive">
-        <AlertCircle className="h-4 w-4" />
-        <AlertTitle>Error</AlertTitle>
-        <AlertDescription>
-          Failed to load UI labels. Please try again later.
-        </AlertDescription>
-      </Alert>
-    );
-  }
+  const handleDeleteLabel = async (id: number) => {
+    try {
+      await deleteLabel(id);
+    } catch (error) {
+      console.error('Failed to delete label:', error);
+    }
+  };
   
-  return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle className="flex justify-between items-center">
-          <span>UI Label Management</span>
-          <Button onClick={() => setIsAddDialogOpen(true)}>
-            <Plus className="mr-2 h-4 w-4" /> Add Label
-          </Button>
-        </CardTitle>
-        <CardDescription>
-          Customize UI text across the platform for white-label branding
-        </CardDescription>
-      </CardHeader>
-      
-      <CardContent className="space-y-4">
-        {/* Search and filter */}
-        <div className="flex flex-col md:flex-row gap-4">
-          <div className="relative flex-1">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+  // Handle context changes for the new label form
+  const handleContextChange = (value: string) => {
+    setNewLabel({ ...newLabel, context: value });
+  };
+  
+  const clearFilters = () => {
+    setSearchTerm('');
+    setContextFilter('All');
+  };
+  
+  const renderAddDialog = () => (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button className="ml-auto">
+          <Plus className="h-4 w-4 mr-2" />
+          Add Label
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[500px]">
+        <DialogHeader>
+          <DialogTitle>Add New UI Label</DialogTitle>
+          <DialogDescription>
+            Create a new UI label for customizable text in the application.
+          </DialogDescription>
+        </DialogHeader>
+        
+        <div className="grid gap-4 py-4">
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="key" className="text-right">
+              Key
+            </Label>
             <Input
-              type="search"
-              placeholder="Search labels..."
-              className="pl-8"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              id="key"
+              value={newLabel.key}
+              onChange={(e) => setNewLabel({ ...newLabel, key: e.target.value })}
+              placeholder="e.g. homepage.title"
+              className="col-span-3"
             />
           </div>
           
-          <Select
-            value={contextFilter}
-            onValueChange={setContextFilter}
-          >
-            <SelectTrigger className="w-full md:w-[200px]">
-              <SelectValue placeholder="Filter by context" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="">All Contexts</SelectItem>
-              {allContexts.map(context => (
-                <SelectItem key={context} value={context}>
-                  {context}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="value" className="text-right">
+              Value
+            </Label>
+            <Textarea
+              id="value"
+              value={newLabel.value}
+              onChange={(e) => setNewLabel({ ...newLabel, value: e.target.value })}
+              placeholder="The actual text to display"
+              className="col-span-3"
+              rows={2}
+            />
+          </div>
+          
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="defaultValue" className="text-right">
+              Default Value
+            </Label>
+            <Textarea
+              id="defaultValue"
+              value={newLabel.defaultValue}
+              onChange={(e) => setNewLabel({ ...newLabel, defaultValue: e.target.value })}
+              placeholder="The fallback text"
+              className="col-span-3"
+              rows={2}
+            />
+          </div>
+          
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="context" className="text-right">
+              Context
+            </Label>
+            <Select
+              value={newLabel.context}
+              onValueChange={handleContextChange}
+            >
+              <SelectTrigger className="col-span-3">
+                <SelectValue placeholder="Select a context" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Contexts</SelectLabel>
+                  <SelectItem value="Global">Global</SelectItem>
+                  <SelectItem value="Admin">Admin</SelectItem>
+                  <SelectItem value="Dashboard">Dashboard</SelectItem>
+                  <SelectItem value="Properties">Properties</SelectItem>
+                  <SelectItem value="Marketplace">Marketplace</SelectItem>
+                  <SelectItem value="DAO">DAO</SelectItem>
+                  <SelectItem value="DEX">DEX</SelectItem>
+                  <SelectItem value="Escrow">Escrow</SelectItem>
+                  <SelectItem value="Community">Community</SelectItem>
+                  <SelectItem value="Rewards">Rewards</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
         
-        {/* Labels table */}
-        {filteredLabels.length > 0 ? (
-          <div className="border rounded-md">
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button variant="outline">Cancel</Button>
+          </DialogClose>
+          <Button onClick={handleCreateLabel}>Create Label</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+  
+  const renderEditDialog = () => (
+    <Dialog open={!!editingLabel} onOpenChange={(open) => !open && setEditingLabel(null)}>
+      <DialogContent className="sm:max-w-[500px]">
+        <DialogHeader>
+          <DialogTitle>Edit UI Label</DialogTitle>
+          <DialogDescription>
+            Update the value of this UI label.
+          </DialogDescription>
+        </DialogHeader>
+        
+        {editingLabel && (
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label className="text-right font-semibold">Key</Label>
+              <div className="col-span-3">{editingLabel.key}</div>
+            </div>
+            
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label className="text-right font-semibold">Context</Label>
+              <div className="col-span-3">{editingLabel.context}</div>
+            </div>
+            
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label className="text-right font-semibold">Default Value</Label>
+              <div className="col-span-3 text-muted-foreground">{editingLabel.defaultValue}</div>
+            </div>
+            
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="value" className="text-right">
+                Value
+              </Label>
+              <Textarea
+                id="value"
+                value={editingLabel.value}
+                onChange={(e) => setEditingLabel({ ...editingLabel, value: e.target.value })}
+                className="col-span-3"
+                rows={3}
+              />
+            </div>
+          </div>
+        )}
+        
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button variant="outline">Cancel</Button>
+          </DialogClose>
+          <Button onClick={handleUpdateLabel}>Update Label</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+  
+  return (
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <div>
+          <CardTitle>UI Label Management</CardTitle>
+          <CardDescription>
+            Manage customizable text labels throughout the application
+          </CardDescription>
+        </div>
+        {renderAddDialog()}
+      </CardHeader>
+      
+      <CardContent>
+        <div className="space-y-4">
+          <div className="flex flex-col md:flex-row gap-2 md:items-center justify-between">
+            <div className="relative w-full md:w-64">
+              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search labels..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-8"
+              />
+              {searchTerm && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="absolute right-0 top-0 h-9 w-9"
+                  onClick={() => setSearchTerm('')}
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              )}
+            </div>
+            
+            <div className="flex items-center gap-2">
+              <Filter className="h-4 w-4 text-muted-foreground" />
+              <Select
+                value={contextFilter}
+                onValueChange={setContextFilter}
+              >
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Filter by context" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Contexts</SelectLabel>
+                    {contexts.map((context) => (
+                      <SelectItem key={context} value={context}>
+                        {context}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+              
+              {(searchTerm || contextFilter !== 'All') && (
+                <Button variant="ghost" size="sm" onClick={clearFilters}>
+                  Clear Filters
+                </Button>
+              )}
+            </div>
+          </div>
+          
+          <div className="rounded-md border">
             <Table>
+              <TableCaption>
+                {isLoading ? 'Loading UI labels...' : `Total: ${filteredLabels.length} labels`}
+              </TableCaption>
               <TableHeader>
                 <TableRow>
                   <TableHead>Key</TableHead>
+                  <TableHead>Value</TableHead>
                   <TableHead>Context</TableHead>
-                  <TableHead>Default Label</TableHead>
-                  <TableHead>Custom Label</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredLabels.map((label) => (
-                  <TableRow key={label.id}>
-                    <TableCell className="font-mono text-sm">
-                      {label.internalKey}
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="outline">
-                        {label.context}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>{label.defaultLabel}</TableCell>
-                    <TableCell>
-                      {label.customLabel || (
-                        <span className="text-muted-foreground italic">
-                          Not customized
-                        </span>
-                      )}
-                    </TableCell>
-                    <TableCell className="text-right space-x-2">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setEditingLabel(label)}
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => confirmDelete(label)}
-                      >
-                        <Trash2 className="h-4 w-4 text-destructive" />
-                      </Button>
+                {isLoading ? (
+                  <TableRow>
+                    <TableCell colSpan={4} className="text-center">Loading...</TableCell>
+                  </TableRow>
+                ) : filteredLabels.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={4} className="text-center">
+                      {searchTerm || contextFilter !== 'All'
+                        ? 'No labels matching the current filters'
+                        : 'No labels found. Create your first one!'}
                     </TableCell>
                   </TableRow>
-                ))}
+                ) : (
+                  filteredLabels.map((label) => (
+                    <TableRow key={label.id}>
+                      <TableCell className="font-mono text-xs">{label.key}</TableCell>
+                      <TableCell>
+                        <div className="max-w-[300px] truncate" title={label.value}>
+                          {label.value}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant="outline">{label.context}</Badge>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex justify-end gap-2">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => setEditingLabel(label)}
+                          >
+                            <Pencil className="h-4 w-4" />
+                          </Button>
+                          
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button variant="ghost" size="icon" className="text-destructive">
+                                <Trash className="h-4 w-4" />
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  This will permanently delete the UI label "{label.key}" in context "{label.context}".
+                                  This action cannot be undone.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction
+                                  onClick={() => handleDeleteLabel(label.id)}
+                                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                >
+                                  Delete
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
               </TableBody>
             </Table>
           </div>
-        ) : (
-          <div className="text-center py-8 border rounded-md">
-            <div className="mb-4">
-              <Tags className="h-12 w-12 mx-auto text-muted-foreground" />
-            </div>
-            <h3 className="text-lg font-medium">No matching labels found</h3>
-            <p className="text-muted-foreground mt-1">
-              {labels?.length ? "Try adjusting your search or filter." : "Start by adding your first UI label."}
-            </p>
-            <Button className="mt-4" onClick={() => setIsAddDialogOpen(true)}>
-              <Plus className="mr-2 h-4 w-4" /> Add Label
-            </Button>
-          </div>
-        )}
+        </div>
       </CardContent>
       
-      {/* Add/Edit Label Dialog */}
-      <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-        <DialogContent className="sm:max-w-[550px]">
-          <DialogHeader>
-            <DialogTitle>
-              {editingLabel ? "Edit UI Label" : "Add New UI Label"}
-            </DialogTitle>
-            <DialogDescription>
-              {editingLabel 
-                ? "Modify this UI label to customize text displayed to users." 
-                : "Create a new UI label to override default text in the application."}
-            </DialogDescription>
-          </DialogHeader>
-          
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <div className="grid grid-cols-1 gap-4">
-                <FormField
-                  control={form.control}
-                  name="internalKey"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Internal Key</FormLabel>
-                      <FormControl>
-                        <Input 
-                          placeholder="e.g., dashboard.welcome_message" 
-                          {...field} 
-                          disabled={!!editingLabel}
-                        />
-                      </FormControl>
-                      <FormDescription>
-                        Unique identifier used in code (cannot be changed after creation)
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <FormField
-                  control={form.control}
-                  name="context"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Context</FormLabel>
-                      <Select
-                        value={field.value}
-                        onValueChange={field.onChange}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select a context" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {allContexts.map(context => (
-                            <SelectItem key={context} value={context}>
-                              {context}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormDescription>
-                        The section or feature where this text appears
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <FormField
-                  control={form.control}
-                  name="defaultLabel"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Default Label</FormLabel>
-                      <FormControl>
-                        <Textarea 
-                          placeholder="The original text displayed to users" 
-                          {...field} 
-                        />
-                      </FormControl>
-                      <FormDescription>
-                        Original text shown when no customization is applied
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <FormField
-                  control={form.control}
-                  name="customLabel"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Custom Label</FormLabel>
-                      <FormControl>
-                        <Textarea 
-                          placeholder="Your customized text" 
-                          {...field} 
-                          value={field.value || ""}
-                        />
-                      </FormControl>
-                      <FormDescription>
-                        Custom text that will replace the default text
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              
-              <DialogFooter className="flex gap-2 justify-end">
-                <Button 
-                  type="button" 
-                  variant="outline" 
-                  onClick={cancelEdit}
-                >
-                  Cancel
-                </Button>
-                <Button 
-                  type="submit"
-                  disabled={saveLabelMutation.isPending}
-                >
-                  {saveLabelMutation.isPending && (
-                    <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-background"></span>
-                  )}
-                  Save Label
-                </Button>
-              </DialogFooter>
-            </form>
-          </Form>
-        </DialogContent>
-      </Dialog>
+      {renderEditDialog()}
     </Card>
   );
 };

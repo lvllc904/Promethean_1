@@ -5,6 +5,7 @@ import { Loader2, Tags } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import AdminLayout from './components/AdminLayout';
 import UiLabelManagement from './components/UiLabelManagement';
+import UiLabelExample from './components/UiLabelExample';
 import { PageHeader } from '@/components/ui/page-header';
 
 export default function UiLabelsPage() {
