@@ -154,6 +154,28 @@ function Router() {
         )}
       </ProtectedRoute>
       
+      <ProtectedRoute path="/admin/ui-labels">
+        {() => (
+          <Suspense fallback={<div className="p-8 text-center">Loading UI Labels Management...</div>}>
+            {(() => {
+              const UiLabelsPage = lazy(() => import('@/pages/admin/ui-labels'));
+              return <UiLabelsPage />;
+            })()}
+          </Suspense>
+        )}
+      </ProtectedRoute>
+      
+      <ProtectedRoute path="/admin/white-label">
+        {() => (
+          <Suspense fallback={<div className="p-8 text-center">Loading White Label Settings...</div>}>
+            {(() => {
+              const WhiteLabelPage = lazy(() => import('@/pages/admin/white-label'));
+              return <WhiteLabelPage />;
+            })()}
+          </Suspense>
+        )}
+      </ProtectedRoute>
+      
       {/* Escrow System Routes */}
       <ProtectedRoute path="/escrow/dashboard">
         {() => (

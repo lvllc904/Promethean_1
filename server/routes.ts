@@ -1724,6 +1724,81 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
+  // UI Label Management APIs
+  app.get(`${apiPrefix}/admin/ui-labels`, async (req, res) => {
+    try {
+      const labels = await storage.getUiLabels();
+      res.json(labels);
+    } catch (error) {
+      console.error('Error fetching UI labels:', error);
+      res.status(500).json({ message: "Failed to fetch UI labels" });
+    }
+  });
+  
+  app.get(`${apiPrefix}/admin/ui-labels/:context`, async (req, res) => {
+    try {
+      const { context } = req.params;
+      const labels = await storage.getUiLabelsByContext(context);
+      res.json(labels);
+    } catch (error) {
+      console.error('Error fetching UI labels by context:', error);
+      res.status(500).json({ message: "Failed to fetch UI labels by context" });
+    }
+  });
+  
+  app.post(`${apiPrefix}/admin/ui-labels`, async (req, res) => {
+    try {
+      const labelData = insertUiLabelSchema.parse(req.body);
+      const label = await storage.createOrUpdateUiLabel(labelData);
+      res.status(201).json(label);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ message: "Invalid UI label data", errors: error.errors });
+      }
+      console.error('Error saving UI label:', error);
+      res.status(500).json({ message: "Failed to save UI label" });
+    }
+  });
+  
+  app.delete(`${apiPrefix}/admin/ui-labels/:id`, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const success = await storage.deleteUiLabel(id);
+      
+      if (success) {
+        res.status(200).json({ success: true });
+      } else {
+        res.status(404).json({ message: "UI label not found" });
+      }
+    } catch (error) {
+      console.error('Error deleting UI label:', error);
+      res.status(500).json({ message: "Failed to delete UI label" });
+    }
+  });
+  
+  // UI Label public lookup endpoint
+  app.get(`${apiPrefix}/ui-labels`, async (req, res) => {
+    try {
+      const { key, context = 'Global' } = req.query;
+      
+      if (!key) {
+        return res.status(400).json({ message: "Missing required parameter: key" });
+      }
+      
+      const label = await storage.getUiLabel(key as string, context as string);
+      
+      if (label) {
+        res.json({ value: label.customLabel });
+      } else {
+        // Return null if no custom label is found, frontend will fallback to default
+        res.json({ value: null });
+      }
+    } catch (error) {
+      console.error('Error fetching UI label:', error);
+      res.status(500).json({ message: "Failed to fetch UI label" });
+    }
+  });
+
   // API Usage Logs
   app.get(`${apiPrefix}/admin/api-usage-logs`, async (req, res) => {
     try {
