@@ -81,17 +81,29 @@ export const UiLabelProvider = ({ children }: { children: ReactNode }) => {
 
   // Organize labels by context and key for faster lookup
   useEffect(() => {
-    const labelMap: Record<string, Record<string, string>> = {};
-    
-    labels.forEach(label => {
-      if (!labelMap[label.context]) {
-        labelMap[label.context] = {};
-      }
-      labelMap[label.context][label.key] = label.value;
-    });
-    
-    setLocalLabels(labelMap);
-  }, [labels]);
+    if (labels && labels.length > 0) {
+      const labelMap: Record<string, Record<string, string>> = {
+        Global: {},
+        Navigation: {},
+        Dashboard: {},
+        Property: {},
+        Marketplace: {},
+        Social: {},
+        Admin: {},
+      };
+      
+      // Only update if we have actual labels
+      labels.forEach(label => {
+        if (!labelMap[label.context]) {
+          labelMap[label.context] = {};
+        }
+        labelMap[label.context][label.key] = label.value;
+      });
+      
+      // Use functional update to avoid dependency on previous state
+      setLocalLabels(labelMap);
+    }
+  }, [labels.length]); // Only re-run when the number of labels changes
 
   // Get a label by key and context
   const getLabel = (key: string, defaultValue: string, context = 'Global'): string => {
