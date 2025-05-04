@@ -28,7 +28,16 @@ const UiLabelContext = createContext<UiLabelContextType | null>(null);
 
 export const UiLabelProvider = ({ children }: { children: ReactNode }) => {
   const { toast } = useToast();
-  const [localLabels, setLocalLabels] = useState<Record<string, Record<string, string>>>({});
+  // Initialize labels map to avoid infinite loop from state changes
+  const [localLabels, setLocalLabels] = useState<Record<string, Record<string, string>>>({
+    Global: {},
+    Navigation: {},
+    Dashboard: {},
+    Property: {},
+    Marketplace: {},
+    Social: {},
+    Admin: {},
+  });
   
   // Fetch all UI labels
   const { 
@@ -50,7 +59,9 @@ export const UiLabelProvider = ({ children }: { children: ReactNode }) => {
         return [];
       }
     },
+    staleTime: 60000, // Cache valid for 1 minute
     refetchOnWindowFocus: false,
+    refetchOnMount: true,
     retry: 1,
   });
 
