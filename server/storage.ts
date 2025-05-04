@@ -24,7 +24,8 @@ import {
   legalAgents, type LegalAgent, type InsertLegalAgent,
   legalConsultations, type LegalConsultation, type InsertLegalConsultation,
   legalDocumentTemplates, type LegalDocumentTemplate, type InsertLegalDocumentTemplate,
-  legalComplianceChecks, type LegalComplianceCheck, type InsertLegalComplianceCheck
+  legalComplianceChecks, type LegalComplianceCheck, type InsertLegalComplianceCheck,
+  uiLabels, type UiLabel, type InsertUiLabel
 } from "@shared/schema";
 import * as schema from "@shared/schema";
 import { db } from "./db";
@@ -321,6 +322,10 @@ export class MemStorage implements IStorage {
   private voteDelegations = new Map<number, VoteDelegation>();
   private currentGovernanceCategoryId = 1;
   private currentVoteDelegationId = 1;
+  
+  // UI Labels data storage
+  private uiLabels = new Map<number, UiLabel>();
+  private currentUiLabelId = 1;
   
   // Governance category methods
   async getGovernanceCategory(id: number): Promise<GovernanceCategory | undefined> {
@@ -3695,6 +3700,173 @@ export class DatabaseStorage implements IStorage {
       }
       
       return this.whitelabelSetting;
+    }
+  }
+  
+  // Admin dashboard methods - UI Labels
+  async getUiLabels(): Promise<UiLabel[]> {
+    try {
+      return await db.select().from(uiLabels);
+    } catch (error) {
+      // Fallback to in-memory if database table doesn't exist yet
+      return Array.from(this.uiLabels.values());
+    }
+  }
+  
+  async getUiLabelsByContext(context: string): Promise<UiLabel[]> {
+    try {
+      return await db
+        .select()
+        .from(uiLabels)
+        .where(eq(uiLabels.context, context));
+    } catch (error) {
+      // Fallback to in-memory if database table doesn't exist yet
+      return Array.from(this.uiLabels.values())
+        .filter(label => label.context === context);
+    }
+  }
+  
+  async getUiLabel(internalKey: string, context: string): Promise<UiLabel | undefined> {
+    try {
+      // First try to find an exact match for the key and context
+      const [contextMatch] = await db
+        .select()
+        .from(uiLabels)
+        .where(
+          and(
+            eq(uiLabels.internalKey, internalKey),
+            eq(uiLabels.context, context)
+          )
+        );
+      
+      // If found, return it
+      if (contextMatch) {
+        return contextMatch;
+      }
+      
+      // If not found and the context is not "Global", check for a global key match
+      if (context !== "Global") {
+        const [globalMatch] = await db
+          .select()
+          .from(uiLabels)
+          .where(
+            and(
+              eq(uiLabels.internalKey, internalKey),
+              eq(uiLabels.context, "Global")
+            )
+          );
+        
+        return globalMatch || undefined;
+      }
+      
+      return undefined;
+    } catch (error) {
+      // Fallback to in-memory if database table doesn't exist yet
+      // First try to find an exact match for the key and context
+      const contextMatch = Array.from(this.uiLabels.values()).find(
+        label => label.internalKey === internalKey && label.context === context
+      );
+      
+      // If found, return it
+      if (contextMatch) {
+        return contextMatch;
+      }
+      
+      // If not found and the context is not "Global", check for a global key match
+      if (context !== "Global") {
+        return Array.from(this.uiLabels.values()).find(
+          label => label.internalKey === internalKey && label.context === "Global"
+        );
+      }
+      
+      // No match found
+      return undefined;
+    }
+  }
+  
+  async createOrUpdateUiLabel(label: InsertUiLabel): Promise<UiLabel> {
+    try {
+      // Check if label already exists with this internal key and context
+      const [existingLabel] = await db
+        .select()
+        .from(uiLabels)
+        .where(
+          and(
+            eq(uiLabels.internalKey, label.internalKey),
+            eq(uiLabels.context, label.context)
+          )
+        );
+      
+      if (existingLabel) {
+        // Update existing label
+        const [updatedLabel] = await db
+          .update(uiLabels)
+          .set({
+            customLabel: label.customLabel,
+            updatedAt: new Date()
+          })
+          .where(eq(uiLabels.id, existingLabel.id))
+          .returning();
+        
+        return updatedLabel;
+      } else {
+        // Create new label
+        const [newLabel] = await db
+          .insert(uiLabels)
+          .values({
+            ...label,
+            createdAt: new Date(),
+            updatedAt: new Date()
+          })
+          .returning();
+        
+        return newLabel;
+      }
+    } catch (error) {
+      // Fallback to in-memory if database table doesn't exist yet
+      // Check if label already exists with this internal key and context
+      const existingLabel = Array.from(this.uiLabels.values()).find(
+        l => l.internalKey === label.internalKey && l.context === label.context
+      );
+      
+      if (existingLabel) {
+        // Update existing label
+        const updatedLabel: UiLabel = {
+          ...existingLabel,
+          customLabel: label.customLabel,
+          updatedAt: new Date()
+        };
+        
+        this.uiLabels.set(existingLabel.id, updatedLabel);
+        return updatedLabel;
+      } else {
+        // Create new label
+        const id = this.currentUiLabelId++;
+        const now = new Date();
+        const newLabel: UiLabel = {
+          id,
+          ...label,
+          createdAt: now,
+          updatedAt: now
+        };
+        
+        this.uiLabels.set(id, newLabel);
+        return newLabel;
+      }
+    }
+  }
+  
+  async deleteUiLabel(id: number): Promise<boolean> {
+    try {
+      const result = await db
+        .delete(uiLabels)
+        .where(eq(uiLabels.id, id))
+        .returning();
+      
+      return result.length > 0;
+    } catch (error) {
+      // Fallback to in-memory if database table doesn't exist yet
+      return this.uiLabels.delete(id);
     }
   }
   
