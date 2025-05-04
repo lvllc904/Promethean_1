@@ -38,12 +38,20 @@ export const UiLabelProvider = ({ children }: { children: ReactNode }) => {
   } = useQuery<UiLabel[]>({
     queryKey: ['/api/admin/ui-labels'],
     queryFn: async () => {
-      const response = await fetch('/api/admin/ui-labels');
-      if (!response.ok) {
-        throw new Error('Failed to fetch UI labels');
+      try {
+        const response = await fetch('/api/admin/ui-labels');
+        if (!response.ok) {
+          console.warn('Failed to fetch UI labels, using defaults');
+          return [];
+        }
+        return response.json();
+      } catch (error) {
+        console.warn('Error fetching UI labels:', error);
+        return [];
       }
-      return response.json();
     },
+    refetchOnWindowFocus: false,
+    retry: 1,
   });
 
   // Organize labels by context and key for faster lookup

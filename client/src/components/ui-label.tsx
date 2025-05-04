@@ -2,72 +2,58 @@ import React from 'react';
 import { useUiLabel } from '@/hooks/use-ui-label';
 
 interface UiLabelProps {
-  labelKey: string;
+  keyName: string;
   defaultValue: string;
   context?: string;
+  as?: React.ElementType;
   className?: string;
 }
 
 /**
- * UI Label component - renders text that can be customized through the admin UI
- * Allows for white-label rebranding of text throughout the application
+ * A component for displaying customizable text labels.
+ * 
+ * @param keyName - The unique key identifier for this label
+ * @param defaultValue - The default text to display if no custom label is defined
+ * @param context - The context category for this label (default: "Global")
+ * @param as - The HTML element to render (default: span)
+ * @param className - Optional CSS classes to apply
  */
 export const UiLabel: React.FC<UiLabelProps> = ({
-  labelKey,
+  keyName,
   defaultValue,
-  context = "Global",
-  className = "",
+  context = 'Global',
+  as: Component = 'span',
+  className = '',
 }) => {
   const { getLabel } = useUiLabel();
-  const text = getLabel(labelKey, defaultValue, context);
   
-  return <span className={className}>{text}</span>;
+  const label = getLabel(keyName, defaultValue, context);
+  
+  return <Component className={className}>{label}</Component>;
 };
 
 /**
- * Heading component that uses UI Labels
+ * Higher-order component that adds UI label capability to an existing component.
+ * 
+ * @param WrappedComponent - The component to wrap
+ * @param keyPrefix - Optional prefix to add to label keys
+ * @param context - The context category for labels (default: "Global")
  */
-interface UiLabelHeadingProps {
-  labelKey: string;
-  defaultValue: string;
-  context?: string;
-  level?: 1 | 2 | 3 | 4 | 5 | 6;
-  className?: string;
+export function withUiLabels<P extends object>(
+  WrappedComponent: React.ComponentType<P>,
+  keyPrefix?: string,
+  context = 'Global'
+) {
+  return function WithUiLabels(props: P) {
+    const { getLabel } = useUiLabel();
+    
+    const labelProps = {
+      getLabel: (key: string, defaultValue: string) => 
+        getLabel(keyPrefix ? `${keyPrefix}.${key}` : key, defaultValue, context),
+    };
+    
+    return <WrappedComponent {...props} {...labelProps} />;
+  };
 }
-
-export const UiLabelHeading: React.FC<UiLabelHeadingProps> = ({
-  labelKey,
-  defaultValue,
-  context = "Global",
-  level = 2,
-  className = "",
-}) => {
-  const { getLabel } = useUiLabel();
-  const text = getLabel(labelKey, defaultValue, context);
-  
-  const HeadingTag = `h${level}` as keyof JSX.IntrinsicElements;
-  
-  return <HeadingTag className={className}>{text}</HeadingTag>;
-};
-
-/**
- * Button text component that uses UI Labels
- */
-interface UiLabelButtonTextProps {
-  labelKey: string;
-  defaultValue: string;
-  context?: string;
-}
-
-export const UiLabelButtonText: React.FC<UiLabelButtonTextProps> = ({
-  labelKey,
-  defaultValue,
-  context = "Global",
-}) => {
-  const { getLabel } = useUiLabel();
-  const text = getLabel(labelKey, defaultValue, context);
-  
-  return <>{text}</>;
-};
 
 export default UiLabel;

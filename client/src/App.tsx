@@ -22,7 +22,7 @@ import Feedback from "@/pages/feedback";
 import AdminDashboard from "@/pages/admin";
 import { WalletProvider } from "@/components/wallet/wallet-provider";
 import { AuthProvider } from "@/hooks/use-auth";
-import { UiLabelProvider } from "@/hooks/use-ui-label";
+import { UiLabel, UiLabelProvider } from "@/hooks/use-ui-label";
 import { AppLayout } from "@/components/layout/app-layout";
 import { ProtectedRoute } from "@/lib/protected-route";
 
