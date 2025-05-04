@@ -49,7 +49,14 @@ export default function UiLabelsPage() {
           <Separator />
           
           <div className="space-y-8">
-            <UiLabelManagement />
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <div className="lg:col-span-2">
+                <UiLabelManagement />
+              </div>
+              <div className="lg:col-span-1">
+                <UiLabelExample />
+              </div>
+            </div>
           </div>
         </div>
       </AdminLayout>

@@ -269,6 +269,8 @@ export function Sidebar() {
               <NavGroupItem href="/admin/blockchain/explorer" isActive={isActive("/admin/blockchain/explorer")}>Blockchain Explorer</NavGroupItem>
               <NavGroupItem href="/admin/dex" isActive={isActive("/admin/dex")}>DEX Management</NavGroupItem>
               <NavGroupItem href="/admin/community/rewards" isActive={isActive("/admin/community/rewards")}>Community Rewards</NavGroupItem>
+              <NavGroupItem href="/admin/white-label" isActive={isActive("/admin/white-label")}>White Label</NavGroupItem>
+              <NavGroupItem href="/admin/ui-labels" isActive={isActive("/admin/ui-labels")}>UI Labels</NavGroupItem>
             </div>
           )}
         </div>
