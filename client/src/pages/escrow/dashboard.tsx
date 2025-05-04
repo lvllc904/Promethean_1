@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useWallet } from "@/components/wallet/wallet-provider";
+import { useAuth } from "@/hooks/use-auth";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -8,6 +9,7 @@ import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
 import { Link } from "wouter";
 import { Lock, FileText, TrendingUp, UserCheck, ArrowUpRight } from "lucide-react";
+import { DualAuthWrapper } from "@/components/auth/dual-auth-wrapper";
 
 interface EscrowStats {
   totalEscrows: number;
@@ -18,7 +20,8 @@ interface EscrowStats {
 }
 
 export default function EscrowDashboard() {
-  const { isConnected, address, user } = useWallet();
+  const { isConnected, address } = useWallet();
+  const { user } = useAuth();
   const { toast } = useToast();
   const [stats, setStats] = useState<EscrowStats>({
     totalEscrows: 0,
@@ -28,14 +31,18 @@ export default function EscrowDashboard() {
     pendingTransfers: 0
   });
 
+  // Determine if we can fetch user data
+  const canFetchUserData = (!!isConnected && !!address) || !!user?.id;
+  const userId = user?.id;
+
   const { data: escrows, isLoading: isLoadingEscrows } = useQuery({
-    queryKey: ['/api/escrows', address],
+    queryKey: ['/api/escrows', userId, address],
     queryFn: async () => {
-      if (!user?.id) return [];
+      if (!userId) return [];
       
       // Fetch escrows where user is either buyer or seller
-      const buyerResponse = await fetch(`/api/escrows?buyerId=${user.id}`);
-      const sellerResponse = await fetch(`/api/escrows?sellerId=${user.id}`);
+      const buyerResponse = await fetch(`/api/escrows?buyerId=${userId}`);
+      const sellerResponse = await fetch(`/api/escrows?sellerId=${userId}`);
       
       if (!buyerResponse.ok || !sellerResponse.ok) {
         throw new Error('Failed to fetch escrows');
@@ -48,13 +55,13 @@ export default function EscrowDashboard() {
       const allEscrows = [...buyerEscrows, ...sellerEscrows];
       return Array.from(new Map(allEscrows.map(item => [item.id, item])).values());
     },
-    enabled: !!isConnected && !!user?.id
+    enabled: canFetchUserData
   });
 
   const { data: transfers, isLoading: isLoadingTransfers } = useQuery({
-    queryKey: ['/api/title-transfers', user?.id],
+    queryKey: ['/api/title-transfers', userId],
     queryFn: async () => {
-      if (!user?.id) return [];
+      if (!userId) return [];
       
       // Get properties owned by user
       const propertiesResponse = await fetch(`/api/properties/my`);
@@ -76,7 +83,7 @@ export default function EscrowDashboard() {
       const transfersArrays = await Promise.all(transferPromises);
       return transfersArrays.flat();
     },
-    enabled: !!isConnected && !!user?.id
+    enabled: canFetchUserData
   });
 
   const { data: arbitrators, isLoading: isLoadingArbitrators } = useQuery({
@@ -107,24 +114,8 @@ export default function EscrowDashboard() {
     }
   }, [escrows, transfers]);
 
-  if (!isConnected) {
-    return (
-      <div className="container mx-auto p-6">
-        <div className="flex flex-col items-center justify-center h-[60vh] text-center">
-          <Lock className="h-16 w-16 text-primary-500 mb-4" />
-          <h2 className="text-2xl font-bold text-neutral-800 mb-2">Connect Your Wallet</h2>
-          <p className="text-neutral-600 mb-6 max-w-md">
-            You need to connect your wallet to access the escrow system and securely manage your property transactions.
-          </p>
-          <Button onClick={() => toast({ title: "Please connect your wallet", description: "Use the connect button at the bottom of the sidebar" })}>
-            Connect Wallet
-          </Button>
-        </div>
-      </div>
-    );
-  }
-
-  return (
+  // Dashboard content - will be wrapped in DualAuthWrapper
+  const DashboardContent = () => (
     <div className="container mx-auto p-6">
       <div className="flex flex-col space-y-6">
         <div>
@@ -297,7 +288,7 @@ export default function EscrowDashboard() {
                       </Badge>
                     </div>
                     <p className="text-sm text-neutral-600 mt-1">
-                      {user?.id === escrow.sellerId ? 'You are the seller' : 'You are the buyer'}
+                      {userId === escrow.sellerId ? 'You are the seller' : 'You are the buyer'}
                     </p>
                     <p className="text-sm font-medium mt-1">
                       Amount: ${parseFloat(escrow.amount).toLocaleString()} {escrow.currency}
@@ -320,5 +311,16 @@ export default function EscrowDashboard() {
         </div>
       </div>
     </div>
+  );
+
+  return (
+    <DualAuthWrapper
+      title="Access Escrow System"
+      description="You need to sign in to access the escrow system and manage your property transactions."
+      walletFeatureDescription="Connect your wallet for blockchain-powered secure transactions, or use traditional authentication for standard escrow features."
+      authRequiredMessage="Authentication Required for Escrow Access"
+    >
+      <DashboardContent />
+    </DualAuthWrapper>
   );
 }
