@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useUiLabel } from '@/hooks/use-ui-label';
+import { useUiLabelExplorer } from '@/hooks/use-ui-label-explorer';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface UiLabelProps {
   keyName: string;
@@ -25,10 +27,59 @@ export const UiLabel: React.FC<UiLabelProps> = ({
   as: Component = 'span',
   className = '',
 }) => {
-  const { getLabel } = useUiLabel();
+  const { getLabel, labels } = useUiLabel();
+  const { isExplorerMode, setSelectedLabel } = useUiLabelExplorer();
+  const [isHovered, setIsHovered] = useState(false);
   
   const label = getLabel(keyName, defaultValue, context);
   
+  // Try to find the exact label object for this key
+  const labelObject = labels.find(
+    (l) => l.key === keyName && l.context === context
+  );
+
+  // Handle click when in explorer mode
+  const handleClick = () => {
+    if (isExplorerMode && labelObject) {
+      setSelectedLabel(labelObject);
+    }
+  };
+  
+  // If explorer mode is active, wrap with interactive elements
+  if (isExplorerMode) {
+    const explorerStyles = `
+      ${className}
+      ${isHovered ? 'bg-primary/10 rounded outline-dashed outline-1 outline-primary' : ''}
+      ${isExplorerMode ? 'cursor-pointer transition-colors' : ''}
+    `;
+    
+    return (
+      <TooltipProvider>
+        <Tooltip open={isHovered}>
+          <TooltipTrigger asChild>
+            <Component 
+              className={explorerStyles}
+              onClick={handleClick}
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+            >
+              {label}
+            </Component>
+          </TooltipTrigger>
+          <TooltipContent side="top" className="max-w-[300px]">
+            <div className="space-y-1 text-xs">
+              <div><span className="font-semibold">Key:</span> {keyName}</div>
+              <div><span className="font-semibold">Context:</span> {context}</div>
+              <div><span className="font-semibold">Current:</span> {label}</div>
+              <div className="text-primary font-semibold">Click to edit</div>
+            </div>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    );
+  }
+  
+  // Normal rendering when not in explorer mode
   return <Component className={className}>{label}</Component>;
 };
 

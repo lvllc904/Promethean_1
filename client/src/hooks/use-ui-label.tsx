@@ -22,6 +22,7 @@ type UiLabelContextType = {
   updateLabel: (id: number, value: string) => Promise<UiLabel>;
   deleteLabel: (id: number) => Promise<void>;
   refreshLabels: () => Promise<void>;
+  getLabelObject: (key: string, context: string) => UiLabel | undefined;
 };
 
 const UiLabelContext = createContext<UiLabelContextType | null>(null);
@@ -214,6 +215,11 @@ export const UiLabelProvider = ({ children }: { children: ReactNode }) => {
   const refreshLabels = async () => {
     await refetch();
   };
+  
+  // Get the full label object by key and context
+  const getLabelObject = (key: string, context: string): UiLabel | undefined => {
+    return labels.find(label => label.key === key && label.context === context);
+  };
 
   return (
     <UiLabelContext.Provider
@@ -225,6 +231,7 @@ export const UiLabelProvider = ({ children }: { children: ReactNode }) => {
         updateLabel,
         deleteLabel,
         refreshLabels,
+        getLabelObject,
       }}
     >
       {children}
