@@ -27,7 +27,8 @@ import {
   insertLegalAgentSchema,
   insertLegalConsultationSchema,
   insertLegalDocumentTemplateSchema,
-  insertLegalComplianceCheckSchema
+  insertLegalComplianceCheckSchema,
+  insertUiLabelSchema
 } from "@shared/schema";
 import { aiConcierge } from "./services/ai-concierge";
 import { scheduler } from "./services/scheduler";
