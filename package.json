@@ -51,6 +51,7 @@
     "@testing-library/user-event": "^14.6.1",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/qrcode": "^1.5.5",
+    "@types/react-helmet": "^6.1.11",
     "@types/speakeasy": "^2.0.10",
     "autocannon": "^8.0.0",
     "class-variance-authority": "^0.7.0",

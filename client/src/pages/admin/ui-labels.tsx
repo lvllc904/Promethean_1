@@ -3,9 +3,11 @@ import { Helmet } from 'react-helmet';
 import { useAuth } from '@/hooks/use-auth';
 import { Loader2, Tags } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AdminLayout from './components/AdminLayout';
 import UiLabelManagement from './components/UiLabelManagement';
 import UiLabelExample from './components/UiLabelExample';
+import UiLabelExplorer from './components/UiLabelExplorer';
 import { PageHeader } from '@/components/ui/page-header';
 
 export default function UiLabelsPage() {
@@ -52,16 +54,30 @@ export default function UiLabelsPage() {
           
           <Separator />
           
-          <div className="space-y-8">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              <div className="lg:col-span-2">
-                <UiLabelManagement />
+          <Tabs defaultValue="management" className="w-full">
+            <TabsList className="grid w-full md:w-auto grid-cols-2">
+              <TabsTrigger value="management">Traditional Management</TabsTrigger>
+              <TabsTrigger value="explorer">Visual Explorer</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="management" className="space-y-4 mt-6">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div className="lg:col-span-2">
+                  <UiLabelManagement />
+                </div>
+                <div className="lg:col-span-1">
+                  <UiLabelExample />
+                </div>
               </div>
-              <div className="lg:col-span-1">
-                <UiLabelExample />
+            </TabsContent>
+            
+            <TabsContent value="explorer" className="space-y-4 mt-6">
+              <UiLabelExplorer />
+              <div className="mt-4">
+                <UiLabelExample isMinimal />
               </div>
-            </div>
-          </div>
+            </TabsContent>
+          </Tabs>
         </div>
       </AdminLayout>
     </>

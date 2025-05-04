@@ -6,7 +6,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AlertCircle, CheckCircle2, Info } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
-const UiLabelExample: React.FC = () => {
+interface UiLabelExampleProps {
+  isMinimal?: boolean;
+}
+
+const UiLabelExample: React.FC<UiLabelExampleProps> = ({ isMinimal = false }) => {
   const { getLabel } = useUiLabel();
   
   // Examples of using UI labels in different contexts
@@ -22,18 +26,20 @@ const UiLabelExample: React.FC = () => {
       </CardHeader>
       
       <CardContent className="space-y-6">
-        <Alert>
-          <Info className="h-4 w-4" />
-          <AlertTitle>
-            {getLabel('example.info.title', 'How UI Labels Work')}
-          </AlertTitle>
-          <AlertDescription>
-            {getLabel(
-              'example.info.description', 
-              'UI Labels allow you to customize text throughout the application without changing code. Try editing a label to see it update here in real-time.'
-            )}
-          </AlertDescription>
-        </Alert>
+        {!isMinimal && (
+          <Alert>
+            <Info className="h-4 w-4" />
+            <AlertTitle>
+              {getLabel('example.info.title', 'How UI Labels Work')}
+            </AlertTitle>
+            <AlertDescription>
+              {getLabel(
+                'example.info.description', 
+                'UI Labels allow you to customize text throughout the application without changing code. Try editing a label to see it update here in real-time.'
+              )}
+            </AlertDescription>
+          </Alert>
+        )}
         
         <Tabs defaultValue="buttons">
           <TabsList className="w-full grid grid-cols-3">
@@ -63,14 +69,16 @@ const UiLabelExample: React.FC = () => {
                 {getLabel('example.buttons.outline', 'Outline Button')}
               </Button>
             </div>
-            <Alert className="bg-muted">
-              <AlertDescription className="text-xs">
-                {getLabel(
-                  'example.buttons.usage', 
-                  'Usage: `<Button>{getLabel("example.buttons.primary", "Primary Button")}</Button>`'
-                )}
-              </AlertDescription>
-            </Alert>
+            {!isMinimal && (
+              <Alert className="bg-muted">
+                <AlertDescription className="text-xs">
+                  {getLabel(
+                    'example.buttons.usage', 
+                    'Usage: `<Button>{getLabel("example.buttons.primary", "Primary Button")}</Button>`'
+                  )}
+                </AlertDescription>
+              </Alert>
+            )}
           </TabsContent>
           
           <TabsContent value="alerts" className="space-y-4 pt-4">
@@ -105,14 +113,16 @@ const UiLabelExample: React.FC = () => {
                 </AlertDescription>
               </Alert>
             </div>
-            <Alert className="bg-muted">
-              <AlertDescription className="text-xs">
-                {getLabel(
-                  'example.alerts.usage', 
-                  'Usage: `<AlertTitle>{getLabel("example.alerts.info.title", "Information")}</AlertTitle>`'
-                )}
-              </AlertDescription>
-            </Alert>
+            {!isMinimal && (
+              <Alert className="bg-muted">
+                <AlertDescription className="text-xs">
+                  {getLabel(
+                    'example.alerts.usage', 
+                    'Usage: `<AlertTitle>{getLabel("example.alerts.info.title", "Information")}</AlertTitle>`'
+                  )}
+                </AlertDescription>
+              </Alert>
+            )}
           </TabsContent>
           
           <TabsContent value="text" className="space-y-4 pt-4">
@@ -148,14 +158,16 @@ const UiLabelExample: React.FC = () => {
                 <p className="text-sm text-muted-foreground">paragraph</p>
               </div>
             </div>
-            <Alert className="bg-muted">
-              <AlertDescription className="text-xs">
-                {getLabel(
-                  'example.text.usage', 
-                  'Usage: `<p>{getLabel("example.text.paragraph", "Default text...")}</p>`'
-                )}
-              </AlertDescription>
-            </Alert>
+            {!isMinimal && (
+              <Alert className="bg-muted">
+                <AlertDescription className="text-xs">
+                  {getLabel(
+                    'example.text.usage', 
+                    'Usage: `<p>{getLabel("example.text.paragraph", "Default text...")}</p>`'
+                  )}
+                </AlertDescription>
+              </Alert>
+            )}
           </TabsContent>
         </Tabs>
       </CardContent>
