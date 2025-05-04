@@ -1,0 +1,24 @@
+Based on the UI Label Management feature overview you provided, here's how a user (likely a platform administrator) would go about changing a label in the SaaS that doesn't align with their branding or use case:
+Using the Admin Management Interface (as described in the feature overview):
+ * Access the Admin Portal: The user would first need to log in to the platform's administrative portal using their administrator credentials.
+ * Navigate to the UI Labels Management Page: Within the admin portal's navigation, they would locate and click on the section dedicated to UI Label Management (e.g., "UI Labels," "Custom Language," "Text Customization" - the exact name might vary).
+ * Locate the Label to Change:
+   * Search: On the UI Labels Management page, they would use the provided search functionality. They could search by keywords from the label they want to change (even if it's the current, misaligned label) or, if they know it, the internal key of the label.
+   * Browse: Alternatively, they could browse through the list of all existing labels, potentially filtered by context (e.g., "Global," "Navigation," "Dashboard") to narrow down their search.
+ * Identify the Correct Label: Once they find the label they want to modify in the list, they would identify the corresponding internal key and the current "Value" (which is the text they want to change).
+ * Edit the Label Value: In the row for the identified label, there should be an editable field (likely a text input) where they can enter the new, customized text that aligns with their branding or use case.
+ * Specify the Context (if necessary):
+   * If the label is specific to a particular section or feature area (e.g., a button within the "Properties" section), they would ensure they are editing the label within the correct context.
+   * If the label is intended to be a global change, they would either edit the label in the "Global" context or ensure no specific context is selected.
+ * Save the Changes: After entering the new text in the editable field, they would click a "Save Changes," "Apply Labels," or similar button on the page to persist their modifications to the backend.
+ * Verify the Change: After saving, the user should navigate to the relevant part of the user-facing application to verify that the label has been updated as expected. The frontend, using the getUILabel function, should now retrieve and display the customized value instead of the default.
+Example Scenario:
+Let's say the default label for a button in the "Properties" section is "View Property Details," but the user's branding uses "Explore Listing."
+ * The administrator logs into the admin portal.
+ * They go to the "UI Labels Management" page.
+ * They might search for "View Property" or browse the labels under the "Properties" context.
+ * They find the internal key associated with that button (e.g., properties.viewDetailsButton).
+ * In the row for that key and under the "Properties" context, they edit the "Value" field to "Explore Listing."
+ * They click "Save Changes."
+ * They navigate to the "Properties" section of the marketplace and confirm that the button now displays "Explore Listing."
+In summary, the user leverages the dedicated UI within the admin portal to find the specific label they want to change (either by searching or browsing), edits its value within the appropriate context, and saves the changes. The platform's frontend then dynamically reflects these customizations.
