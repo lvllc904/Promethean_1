@@ -53,7 +53,20 @@ export const UiLabelProvider = ({ children }: { children: ReactNode }) => {
           console.warn('Failed to fetch UI labels, using defaults');
           return [];
         }
-        return response.json();
+        
+        // Get the server response with database field names
+        const serverLabels = await response.json();
+        
+        // Map from server field names to client field names
+        return serverLabels.map((label: any) => ({
+          id: label.id,
+          key: label.internalKey,
+          value: label.customLabel,
+          defaultValue: label.defaultValue || "",
+          context: label.context,
+          createdAt: label.createdAt,
+          updatedAt: label.updatedAt
+        }));
       } catch (error) {
         console.warn('Error fetching UI labels:', error);
         return [];
@@ -93,7 +106,15 @@ export const UiLabelProvider = ({ children }: { children: ReactNode }) => {
   // Create a new UI label
   const createLabelMutation = useMutation({
     mutationFn: async (label: Omit<UiLabel, 'id' | 'createdAt' | 'updatedAt'>) => {
-      const response = await apiRequest('POST', '/api/admin/ui-labels', label);
+      // Map the frontend field names to the backend field names
+      const mappedLabel = {
+        internalKey: label.key,
+        customLabel: label.value,
+        defaultValue: label.defaultValue,
+        context: label.context
+      };
+      
+      const response = await apiRequest('POST', '/api/admin/ui-labels', mappedLabel);
       if (!response.ok) {
         throw new Error('Failed to create UI label');
       }
@@ -118,11 +139,25 @@ export const UiLabelProvider = ({ children }: { children: ReactNode }) => {
   // Update an existing UI label
   const updateLabelMutation = useMutation({
     mutationFn: async ({ id, value }: { id: number; value: string }) => {
-      const response = await apiRequest('PATCH', `/api/admin/ui-labels/${id}`, { value });
+      // Map the frontend field name to the backend field name
+      const response = await apiRequest('PATCH', `/api/admin/ui-labels/${id}`, { 
+        customLabel: value 
+      });
       if (!response.ok) {
         throw new Error('Failed to update UI label');
       }
-      return await response.json();
+      
+      // Map from server response to client format
+      const serverLabel = await response.json();
+      return {
+        id: serverLabel.id,
+        key: serverLabel.internalKey,
+        value: serverLabel.customLabel,
+        defaultValue: serverLabel.defaultValue || "",
+        context: serverLabel.context,
+        createdAt: serverLabel.createdAt,
+        updatedAt: serverLabel.updatedAt
+      };
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/ui-labels'] });
