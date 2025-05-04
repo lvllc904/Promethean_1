@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useWallet } from "@/components/wallet/wallet-provider";
+import { useAuth } from "@/hooks/use-auth";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { DualAuthWrapper } from "@/components/auth/dual-auth-wrapper";
 
 import {
   Card,
@@ -356,20 +358,25 @@ const EscrowDetails = ({ escrow, property, buyer, seller, currentUserId, onRefre
 };
 
 export default function ManageEscrows() {
-  const { isConnected, user } = useWallet();
+  const { isConnected, address } = useWallet();
+  const { user } = useAuth();
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [activeTab, setActiveTab] = useState("all");
+  
+  // Determine if we can fetch user data
+  const canFetchUserData = (!!isConnected && !!address) || !!user?.id;
+  const userId = user?.id;
 
   // Fetch all escrows where user is buyer or seller
   const { data: escrows, isLoading: isLoadingEscrows, refetch: refetchEscrows } = useQuery({
-    queryKey: ['/api/escrows', user?.id],
+    queryKey: ['/api/escrows', userId, address],
     queryFn: async () => {
-      if (!user?.id) return [];
+      if (!userId) return [];
       
       // Fetch escrows where user is either buyer or seller
-      const buyerResponse = await fetch(`/api/escrows?buyerId=${user.id}`);
-      const sellerResponse = await fetch(`/api/escrows?sellerId=${user.id}`);
+      const buyerResponse = await fetch(`/api/escrows?buyerId=${userId}`);
+      const sellerResponse = await fetch(`/api/escrows?sellerId=${userId}`);
       
       if (!buyerResponse.ok || !sellerResponse.ok) {
         throw new Error('Failed to fetch escrows');
@@ -382,7 +389,7 @@ export default function ManageEscrows() {
       const allEscrows = [...buyerEscrows, ...sellerEscrows];
       return Array.from(new Map(allEscrows.map(item => [item.id, item])).values());
     },
-    enabled: !!isConnected && !!user?.id
+    enabled: canFetchUserData
   });
 
   // Fetch properties for the escrows
@@ -448,32 +455,16 @@ export default function ManageEscrows() {
   // Filter escrows based on active tab
   const filteredEscrows = escrows?.filter(escrow => {
     if (activeTab === "all") return true;
-    if (activeTab === "asSeller") return escrow.sellerId === user?.id;
-    if (activeTab === "asBuyer") return escrow.buyerId === user?.id;
+    if (activeTab === "asSeller") return escrow.sellerId === userId;
+    if (activeTab === "asBuyer") return escrow.buyerId === userId;
     if (activeTab === "active") return ["pending", "funded"].includes(escrow.status);
     if (activeTab === "completed") return escrow.status === "completed";
     if (activeTab === "disputed") return escrow.status === "disputed";
     return true;
   }) || [];
 
-  if (!isConnected) {
-    return (
-      <div className="container mx-auto p-6">
-        <div className="flex flex-col items-center justify-center h-[60vh] text-center">
-          <Lock className="h-16 w-16 text-primary-500 mb-4" />
-          <h2 className="text-2xl font-bold text-neutral-800 mb-2">Connect Your Wallet</h2>
-          <p className="text-neutral-600 mb-6 max-w-md">
-            You need to connect your wallet to manage your escrows.
-          </p>
-          <Button onClick={() => toast({ title: "Please connect your wallet", description: "Use the connect button at the bottom of the sidebar" })}>
-            Connect Wallet
-          </Button>
-        </div>
-      </div>
-    );
-  }
-
-  return (
+  // Dashboard content - will be wrapped in DualAuthWrapper
+  const EscrowManagementContent = () => (
     <div className="container mx-auto p-6">
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-neutral-800 mb-2">Manage Escrows</h1>
@@ -534,7 +525,7 @@ export default function ManageEscrows() {
                     property={getProperty(escrow.propertyId)}
                     buyer={getUser(escrow.buyerId)}
                     seller={getUser(escrow.sellerId)}
-                    currentUserId={user?.id || 0}
+                    currentUserId={userId || 0}
                     onRefresh={handleRefreshData}
                   />
                 ))}
@@ -582,5 +573,16 @@ export default function ManageEscrows() {
         </div>
       </Alert>
     </div>
+  );
+  
+  return (
+    <DualAuthWrapper
+      title="Manage Your Escrows"
+      description="You need to sign in to manage your escrow agreements and property transactions."
+      walletFeatureDescription="Connect your wallet for blockchain-powered secure transactions, or use traditional authentication for standard escrow features."
+      authRequiredMessage="Authentication Required for Escrow Management"
+    >
+      <EscrowManagementContent />
+    </DualAuthWrapper>
   );
 }
