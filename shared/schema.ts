@@ -590,6 +590,30 @@ export const insertGovernanceProposalSchema = createInsertSchema(governancePropo
 export type InsertReview = z.infer<typeof insertReviewSchema>;
 export type Review = typeof reviews.$inferSelect;
 
+// UI Label customizations for platform
+export const uiLabels = pgTable("ui_labels", {
+  id: serial("id").primaryKey(),
+  internalKey: text("internal_key").notNull(),
+  context: text("context").notNull().default("Global"),
+  customLabel: text("custom_label").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+}, (table) => {
+  return {
+    // Ensure uniqueness for key/context combination
+    uniqueKeyContext: uniqueIndex("ui_labels_key_context_idx").on(table.internalKey, table.context),
+  };
+});
+
+export const insertUiLabelSchema = createInsertSchema(uiLabels).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type InsertUiLabel = z.infer<typeof insertUiLabelSchema>;
+export type UiLabel = typeof uiLabels.$inferSelect;
+
 export type InsertGovernanceProposal = z.infer<typeof insertGovernanceProposalSchema>;
 export type GovernanceProposal = typeof governanceProposals.$inferSelect;
 

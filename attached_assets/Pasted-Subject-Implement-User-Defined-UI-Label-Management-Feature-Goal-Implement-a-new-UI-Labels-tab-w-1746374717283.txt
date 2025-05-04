@@ -1,0 +1,50 @@
+Subject: Implement User-Defined UI Label Management Feature
+
+Goal: Implement a new "UI Labels" tab within the "Admin Dashboard" section of the platform. This feature will allow administrators to define and manage custom, user-facing labels for terms used throughout the platform's user interface. The underlying backend logic and frontend code labels should remain unchanged.
+
+Detailed Requirements:
+
+1.  Admin Dashboard Integration:
+    * Add a new top-level tab labeled "**UI Labels**" within the existing "Admin Dashboard" tabbed navigation (alongside "Overview," "Admin Tools," "User Management," and "Platform Settings").
+    * Ensure the new tab's styling is consistent with the existing admin dashboard UI.
+
+2.  UI Label Management Interface (Content of the "UI Labels" Tab):
+    * **Label Listing:** Display a scrollable list or table presenting all relevant internal label keys used in the platform's frontend. For each key, show the current default user-facing label in a non-editable format for reference.
+    * **Search Functionality:** Include a text input field with a "Search" button (or live filtering) to allow administrators to find specific internal label keys or existing custom labels within the list.
+    * **Contextual Label Overrides:**
+        * Implement a mechanism to define custom labels with context. Provide a dropdown or selection element for choosing the context (e.g., "Global," "Properties Section," "Task Marketplace Section," "Escrow System Section," etc.). The "Global" context will apply if no specific section context is defined.
+        * For each internal label key, allow administrators to enter a custom user-facing label for the selected context.
+    * **Editable Label Fields:** Provide a text input field next to each internal label (potentially grouped by context) where administrators can enter their desired custom user-facing text.
+    * **Save/Apply Button:** Include a prominent button (e.g., "Save Changes," "Apply Labels") at the top or bottom of the interface to persist the configured label mappings to the backend.
+
+3.  Backend Integration:
+    * Create a database table (or utilize an existing configuration management system) to store the mappings. This storage should include fields for:
+        * `internal_key` (text/string, unique identifier of the label in the code)
+        * `context` (text/string, e.g., "Global", "Properties", "TaskMarketplace")
+        * `custom_label` (text/string, the user-defined label)
+    * Develop the following API endpoints:
+        * `GET /api/admin/ui-labels`: Returns a JSON object containing all relevant internal label keys and their current default values.
+        * `POST /api/admin/ui-labels`: Accepts a JSON payload containing an array of label mappings (internal\_key, context, custom\_label) to be saved or updated in the storage.
+
+4.  Frontend Integration:
+    * Implement a global JavaScript function (e.g., `getUILabel(internalKey, context)`) in a globally accessible script file.
+    * This function should:
+        * Accept the `internalKey` (string) and the current `context` (string, optional - defaults to "Global") of the UI element as arguments.
+        * Make an asynchronous request (e.g., using `fetch`) to a new API endpoint (e.g., `GET /api/ui-labels?key=${internalKey}&context=${context}`) to retrieve any user-defined custom label.
+        * If a custom label is found for the specific `context`, return it.
+        * If no context-specific label is found, make another request (or handle in the previous response) to check for a "Global" context override for the `internalKey` and return it if found.
+        * If no custom label is found in any context, return the original default label that is currently hardcoded or defined in the frontend code.
+    * **Crucially:** Replace all instances of hardcoded user-facing text or direct variable display in the frontend UI templates and components with calls to this `getUILabel()` function, passing the appropriate internal key and context. You will need to identify all such instances across the codebase.
+
+5.  No Backend or Core Frontend Logic Changes: The underlying data structures, variable names, core logic in the backend, and the fundamental structure of the frontend code (beyond replacing direct text with the `getUILabel()` function) should **not** be altered. This feature focuses solely on controlling the visual labels presented to the user.
+
+Success Criteria:
+
+* A new "UI Labels" tab is present and functional within the "Admin Dashboard."
+* Administrators can view a list of internal labels and their default values.
+* Administrators can define and save custom labels, both globally and for specific platform sections/contexts.
+* The frontend UI dynamically displays the configured user-defined labels based on the `getUILabel()` function and the defined mappings, with appropriate context handling and fallback to default labels.
+* No changes have been made to the core backend logic or the fundamental structure/variable names of the frontend code.
+
+Provide an estimated timeline for the implementation of this feature.
+

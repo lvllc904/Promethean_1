@@ -215,6 +215,13 @@ export interface IStorage {
   getWhitelabelSettings(): Promise<WhitelabelSetting | undefined>;
   updateWhitelabelSettings(settings: Partial<InsertWhitelabelSetting>): Promise<WhitelabelSetting>;
   
+  // Admin dashboard methods - UI Labels
+  getUiLabels(): Promise<UiLabel[]>;
+  getUiLabelsByContext(context: string): Promise<UiLabel[]>;
+  getUiLabel(internalKey: string, context: string): Promise<UiLabel | undefined>;
+  createOrUpdateUiLabel(label: InsertUiLabel): Promise<UiLabel>;
+  deleteUiLabel(id: number): Promise<boolean>;
+  
   // Admin dashboard methods - API Usage Logs
   getApiUsageLogs(integrationId?: number, from?: Date, to?: Date): Promise<ApiUsageLog[]>;
   createApiUsageLog(log: InsertApiUsageLog): Promise<ApiUsageLog>;
