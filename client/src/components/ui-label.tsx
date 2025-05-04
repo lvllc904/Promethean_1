@@ -51,9 +51,36 @@ export const UiLabel: React.FC<UiLabelProps> = ({
     const explorerStyles = `
       ${className}
       ${isHovered ? 'bg-primary/10 rounded outline-dashed outline-1 outline-primary' : ''}
-      ${isExplorerMode ? 'cursor-pointer transition-colors' : ''}
+      ${isExplorerMode ? 'cursor-pointer transition-colors touch-manipulation' : ''}
     `;
     
+    // Mobile-friendly implementation - detect touch devices
+    const isTouchDevice = typeof window !== 'undefined' && 
+                          ('ontouchstart' in window || 
+                           navigator.maxTouchPoints > 0);
+                           
+    // Touch devices will use a tap-to-reveal approach rather than hover
+    if (isTouchDevice) {
+      return (
+        <Component 
+          className={explorerStyles}
+          onClick={(e: React.MouseEvent) => {
+            // Prevent navigation if it's a link
+            e.preventDefault();
+            e.stopPropagation();
+            handleClick();
+          }}
+          // Add long press detection for mobile
+          onTouchStart={() => setIsHovered(true)}
+          onTouchEnd={() => setTimeout(() => setIsHovered(false), 1500)}
+          onTouchCancel={() => setIsHovered(false)}
+        >
+          {label}
+        </Component>
+      );
+    }
+    
+    // Desktop version with hover tooltips
     return (
       <TooltipProvider>
         <Tooltip open={isHovered}>
