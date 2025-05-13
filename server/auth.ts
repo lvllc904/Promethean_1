@@ -201,6 +201,30 @@ export function setupAuth(app: Express) {
     });
   });
   
+  // Check username availability
+  app.head("/api/auth/check-username", async (req: Request, res: Response) => {
+    try {
+      const { username } = req.query;
+      
+      if (!username || typeof username !== 'string') {
+        return res.status(400).end();
+      }
+      
+      const existingUser = await storage.getUserByUsername(username);
+      
+      if (existingUser) {
+        // Username exists - HTTP 200
+        return res.status(200).end();
+      }
+      
+      // Username doesn't exist (available) - HTTP 404
+      return res.status(404).end();
+    } catch (error) {
+      console.error("Error checking username:", error);
+      res.status(500).end();
+    }
+  });
+
   // Get current user
   app.get("/api/auth/user", async (req: Request, res: Response) => {
     if (!req.session || !req.session.userId) {
