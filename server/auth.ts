@@ -29,8 +29,8 @@ declare global {
     }
   }
   
-  namespace Express.Session {
-    interface SessionData {
+  namespace Express {
+    interface Session {
       userId?: number;
     }
   }
