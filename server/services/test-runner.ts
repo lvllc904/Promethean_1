@@ -47,14 +47,42 @@ export class TestRunnerService {
    * Helper method to run a command and capture its output
    */
   private runCommand(command: string, args: string[]): Promise<TestResult> {
+    // Security validation: Only allow specific whitelisted commands
+    const allowedCommands = ['npx', 'tsx', 'node', 'npm'];
+    if (!allowedCommands.includes(command)) {
+      return Promise.resolve({
+        success: false,
+        output: `Security error: Command '${command}' is not in the allowed list`,
+        duration: 0
+      });
+    }
+    
+    // Validate arguments to prevent injection
+    const sanitizedArgs = args.filter(arg => {
+      // Only allow alphanumeric characters, some special chars, and known paths
+      return /^[a-zA-Z0-9\/\-_.@]+$/.test(arg) || 
+             arg.startsWith('tests/') || 
+             arg.startsWith('--') ||
+             arg === 'run';
+    });
+    
+    if (sanitizedArgs.length !== args.length) {
+      return Promise.resolve({
+        success: false,
+        output: 'Security error: Arguments contain potentially unsafe characters',
+        duration: 0
+      });
+    }
+    
     return new Promise((resolve) => {
       const startTime = Date.now();
       let output = '';
       let error = '';
 
-      const process = spawn(command, args, {
+      const process = spawn(command, sanitizedArgs, {
         cwd: this.baseDir,
-        env: { ...process.env, NODE_ENV: 'test' }
+        env: { ...process.env, NODE_ENV: 'test' },
+        shell: false // Explicitly disable shell to prevent command injection
       });
 
       process.stdout.on('data', (data) => {

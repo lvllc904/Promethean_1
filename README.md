@@ -83,6 +83,10 @@ This platform is designed to be white-labelable. You can customize:
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
+## Software Bill of Materials (SBOM)
+
+This project maintains a comprehensive [Software Bill of Materials](./SBOM.md) that documents all dependencies, components, and libraries used in the platform. The SBOM is regularly updated and provides transparency for security and license compliance purposes.
+
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
