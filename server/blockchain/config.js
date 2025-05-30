@@ -190,7 +190,7 @@ function validateNetworkConfig(network) {
   return !!(config && addresses.prometheaCore && addresses.prometheaToken);
 }
 
-module.exports = {
+export {
   networkConfigs,
   getNetworkConfig,
   getRecommendedNetwork,

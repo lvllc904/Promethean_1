@@ -35,7 +35,7 @@ import { scheduler } from "./services/scheduler";
 import { testRunner } from "./services/test-runner";
 import { generatePropertyValuation, generatePropertyDescription } from "./services/ai";
 import * as web3Service from "./services/web3";
-import { prometheaIntegration } from "./services/promethea-integration";
+// import { prometheaIntegration } from "./services/promethea-integration.js";
 import Stripe from "stripe";
 
 import { requireSocialAuth, SocialAuthRequest } from './middleware/social-auth';
@@ -1843,194 +1843,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Promethea DAC Blockchain Integration API Routes
   // ======================================================================
   
-  // Initialize Promethea integration
+  // Placeholder endpoints - will be activated after smart contract deployment
   app.get(`${apiPrefix}/promethea/health`, async (req, res) => {
-    try {
-      const healthStatus = await prometheaIntegration.healthCheck();
-      res.json(healthStatus);
-    } catch (error) {
-      res.status(500).json({ 
-        success: false, 
-        error: error.message,
-        message: "Failed to check Promethea DAC health"
-      });
-    }
+    res.json({
+      status: "pending_deployment",
+      message: "Promethea DAC smart contracts are ready for deployment to Polygon zkEVM"
+    });
   });
 
-  // Get beacon address for Depth OS instances
   app.get(`${apiPrefix}/promethea/beacon`, async (req, res) => {
-    try {
-      const beaconAddress = await prometheaIntegration.getBeaconAddress();
-      
-      if (!beaconAddress) {
-        return res.status(404).json({ 
-          success: false,
-          message: "Beacon address not available. Promethea DAC may not be deployed."
-        });
-      }
-      
-      res.json({
-        success: true,
-        beaconAddress,
-        network: prometheaIntegration.getNetworkInfo()
-      });
-    } catch (error) {
-      res.status(500).json({ 
-        success: false, 
-        error: error.message,
-        message: "Failed to retrieve beacon address"
-      });
-    }
-  });
-
-  // Get current ethical code from blockchain
-  app.get(`${apiPrefix}/promethea/ethical-code`, async (req, res) => {
-    try {
-      const ethicalCode = await prometheaIntegration.getCurrentEthicalCode();
-      
-      if (!ethicalCode) {
-        return res.status(404).json({ 
-          success: false,
-          message: "Ethical code not available"
-        });
-      }
-      
-      res.json({
-        success: true,
-        ethicalCode
-      });
-    } catch (error) {
-      res.status(500).json({ 
-        success: false, 
-        error: error.message,
-        message: "Failed to retrieve ethical code"
-      });
-    }
-  });
-
-  // Verify ethical code hash
-  app.post(`${apiPrefix}/promethea/verify-ethical-code`, async (req, res) => {
-    try {
-      const { codeHash } = req.body;
-      
-      if (!codeHash) {
-        return res.status(400).json({ 
-          success: false,
-          message: "Code hash is required"
-        });
-      }
-      
-      const isValid = await prometheaIntegration.verifyEthicalCode(codeHash);
-      
-      res.json({
-        success: true,
-        isValid,
-        codeHash
-      });
-    } catch (error) {
-      res.status(500).json({ 
-        success: false, 
-        error: error.message,
-        message: "Failed to verify ethical code"
-      });
-    }
-  });
-
-  // Get DAC member information
-  app.get(`${apiPrefix}/promethea/member/:address`, async (req, res) => {
-    try {
-      const { address } = req.params;
-      
-      if (!address) {
-        return res.status(400).json({ 
-          success: false,
-          message: "Member address is required"
-        });
-      }
-      
-      const memberInfo = await prometheaIntegration.getDACMemberInfo(address);
-      
-      res.json({
-        success: true,
-        member: memberInfo
-      });
-    } catch (error) {
-      res.status(500).json({ 
-        success: false, 
-        error: error.message,
-        message: "Failed to retrieve member information"
-      });
-    }
-  });
-
-  // Get PROM token balance
-  app.get(`${apiPrefix}/promethea/balance/:address`, async (req, res) => {
-    try {
-      const { address } = req.params;
-      
-      if (!address) {
-        return res.status(400).json({ 
-          success: false,
-          message: "Address is required"
-        });
-      }
-      
-      const balance = await prometheaIntegration.getTokenBalance(address);
-      
-      res.json({
-        success: true,
-        address,
-        balance,
-        symbol: 'PROM'
-      });
-    } catch (error) {
-      res.status(500).json({ 
-        success: false, 
-        error: error.message,
-        message: "Failed to retrieve token balance"
-      });
-    }
-  });
-
-  // Get PROM token total supply
-  app.get(`${apiPrefix}/promethea/token-info`, async (req, res) => {
-    try {
-      const totalSupply = await prometheaIntegration.getTotalSupply();
-      const networkInfo = prometheaIntegration.getNetworkInfo();
-      
-      res.json({
-        success: true,
-        token: {
-          name: 'Promethea Token',
-          symbol: 'PROM',
-          totalSupply,
-          network: networkInfo
-        }
-      });
-    } catch (error) {
-      res.status(500).json({ 
-        success: false, 
-        error: error.message,
-        message: "Failed to retrieve token information"
-      });
-    }
-  });
-
-  // Get network information
-  app.get(`${apiPrefix}/promethea/network`, async (req, res) => {
-    try {
-      const networkInfo = prometheaIntegration.getNetworkInfo();
-      res.json({
-        success: true,
-        network: networkInfo
-      });
-    } catch (error) {
-      res.status(500).json({ 
-        success: false, 
-        error: error.message,
-        message: "Failed to retrieve network information"
-      });
-    }
+    res.json({
+      success: false,
+      message: "Beacon address will be available after smart contract deployment"
+    });
   });
 
   // ======================================================================

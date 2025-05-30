@@ -1,7 +1,7 @@
-const { ethers } = require('ethers');
-const { getNetworkConfig, getContractAddresses, dacConfig } = require('../blockchain/config');
-const fs = require('fs');
-const path = require('path');
+import { ethers } from 'ethers';
+import { getNetworkConfig, getContractAddresses, dacConfig } from '../blockchain/config.js';
+import fs from 'fs';
+import path from 'path';
 
 /**
  * Promethea DAC Integration Service
@@ -261,7 +261,9 @@ class PrometheaIntegrationService {
 // Singleton instance
 const prometheaIntegration = new PrometheaIntegrationService();
 
-module.exports = {
+export {
   PrometheaIntegrationService,
   prometheaIntegration
 };
+
+export default prometheaIntegration;
