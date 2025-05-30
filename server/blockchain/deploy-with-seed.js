@@ -23,7 +23,7 @@ async function deployPrometheaDACContracts() {
   }
   
   // Create wallet from seed phrase (secure derivation)
-  const seedPhrase = "Cart banner ensure pull noodle twin garment timber firm black venture first";
+  const seedPhrase = process.env.TRUSTWALLET_SEED || ""; // Load from environment
   let wallet;
   
   try {
