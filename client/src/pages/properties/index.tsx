@@ -140,39 +140,50 @@ export default function PropertiesIndex() {
           <h1 className="text-2xl font-heading font-bold mb-2">Properties & RWA Marketplace</h1>
           <p className="text-neutral-500">Browse properties, tokenize assets, and access fractional ownership opportunities.</p>
         </div>
-        <div className="flex space-x-2 w-full md:w-auto">
-          <div className="relative flex-1 md:w-64">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400" size={18} />
-            <Input 
-              placeholder="Search properties..."
-              className="pl-10"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-          
-          <Select value={sortBy} onValueChange={setSortBy}>
-            <SelectTrigger className="w-[160px]">
-              <ArrowUpDown className="mr-2 h-4 w-4" />
-              <SelectValue placeholder="Sort by" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="latest">Latest</SelectItem>
-              <SelectItem value="price_low">Price: Low to High</SelectItem>
-              <SelectItem value="price_high">Price: High to Low</SelectItem>
-              <SelectItem value="beds">Most Beds</SelectItem>
-              <SelectItem value="baths">Most Baths</SelectItem>
-            </SelectContent>
-          </Select>
-          
-          <Drawer>
-            <DrawerTrigger asChild>
-              <Button variant="outline">
-                <Filter className="mr-2 h-4 w-4" />
-                Filters
-              </Button>
-            </DrawerTrigger>
-            <DrawerContent>
+      </div>
+      
+      <Tabs defaultValue="properties" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-4">
+          <TabsTrigger value="properties">Properties</TabsTrigger>
+          <TabsTrigger value="tokenize">Tokenize Assets</TabsTrigger>
+          <TabsTrigger value="browse">Browse Assets</TabsTrigger>
+          <TabsTrigger value="portfolio">My Portfolio</TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="properties" className="space-y-6">
+          <div className="flex space-x-2 w-full md:w-auto">
+            <div className="relative flex-1 md:w-64">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400" size={18} />
+              <Input 
+                placeholder="Search properties..."
+                className="pl-10"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+            
+            <Select value={sortBy} onValueChange={setSortBy}>
+              <SelectTrigger className="w-[160px]">
+                <ArrowUpDown className="mr-2 h-4 w-4" />
+                <SelectValue placeholder="Sort by" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="latest">Latest</SelectItem>
+                <SelectItem value="price_low">Price: Low to High</SelectItem>
+                <SelectItem value="price_high">Price: High to Low</SelectItem>
+                <SelectItem value="beds">Most Beds</SelectItem>
+                <SelectItem value="baths">Most Baths</SelectItem>
+              </SelectContent>
+            </Select>
+            
+            <Drawer>
+              <DrawerTrigger asChild>
+                <Button variant="outline">
+                  <Filter className="mr-2 h-4 w-4" />
+                  Filters
+                </Button>
+              </DrawerTrigger>
+              <DrawerContent>
               <div className="mx-auto w-full max-w-lg">
                 <DrawerHeader>
                   <DrawerTitle>Filter Properties</DrawerTitle>
@@ -465,6 +476,265 @@ export default function PropertiesIndex() {
           </Button>
         </div>
       )}
+        </TabsContent>
+        
+        <TabsContent value="tokenize" className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card>
+              <CardContent className="p-6">
+                <div className="text-center">
+                  <Building2 className="h-12 w-12 mx-auto text-primary mb-4" />
+                  <h3 className="text-lg font-semibold mb-2">Tokenize Real Estate</h3>
+                  <p className="text-muted-foreground mb-4">
+                    Convert your property into tradeable tokens for fractional ownership
+                  </p>
+                  <Button className="w-full">
+                    <Plus className="mr-2 h-4 w-4" />
+                    Start Tokenization
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardContent className="p-6">
+                <div className="text-center">
+                  <Shield className="h-12 w-12 mx-auto text-green-600 mb-4" />
+                  <h3 className="text-lg font-semibold mb-2">Professional Services</h3>
+                  <p className="text-muted-foreground mb-4">
+                    Tokenize intellectual property, consulting hours, and expertise
+                  </p>
+                  <Button variant="outline" className="w-full">
+                    <Plus className="mr-2 h-4 w-4" />
+                    Create Service Tokens
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+          
+          <Card>
+            <CardContent className="p-6">
+              <h3 className="text-lg font-semibold mb-4">Asset Categories</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {[
+                  { name: 'Real Estate', count: 42, icon: Building2 },
+                  { name: 'Professional Services', count: 28, icon: Shield },
+                  { name: 'Intellectual Property', count: 15, icon: PieChart },
+                  { name: 'Equipment & Assets', count: 23, icon: DollarSign }
+                ].map((category) => (
+                  <div key={category.name} className="text-center p-4 border rounded-lg hover:bg-muted transition-colors">
+                    <category.icon className="h-8 w-8 mx-auto mb-2 text-primary" />
+                    <div className="font-medium">{category.name}</div>
+                    <div className="text-sm text-muted-foreground">{category.count} assets</div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="browse" className="space-y-6">
+          <div className="flex justify-between items-center">
+            <div>
+              <h3 className="text-lg font-semibold">Available Assets</h3>
+              <p className="text-muted-foreground">Browse tokenized assets available for investment</p>
+            </div>
+            <div className="flex gap-2">
+              <Select defaultValue="all">
+                <SelectTrigger className="w-40">
+                  <SelectValue placeholder="Asset Type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Assets</SelectItem>
+                  <SelectItem value="real-estate">Real Estate</SelectItem>
+                  <SelectItem value="services">Services</SelectItem>
+                  <SelectItem value="ip">Intellectual Property</SelectItem>
+                </SelectContent>
+              </Select>
+              <Select defaultValue="yield">
+                <SelectTrigger className="w-40">
+                  <SelectValue placeholder="Sort by" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="yield">Highest Yield</SelectItem>
+                  <SelectItem value="price">Lowest Price</SelectItem>
+                  <SelectItem value="recent">Most Recent</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              {
+                id: 1,
+                name: "Downtown Office Complex",
+                type: "Real Estate",
+                price: "$25.00",
+                yield: "8.5%",
+                totalValue: "$2.5M",
+                available: "40%",
+                location: "San Francisco, CA"
+              },
+              {
+                id: 2,
+                name: "AI Consulting Hours",
+                type: "Professional Services",
+                price: "$150.00",
+                yield: "12.0%",
+                totalValue: "$500K",
+                available: "65%",
+                location: "Remote"
+              },
+              {
+                id: 3,
+                name: "Patent Portfolio",
+                type: "Intellectual Property",
+                price: "$500.00",
+                yield: "15.2%",
+                totalValue: "$1.2M",
+                available: "25%",
+                location: "Technology Sector"
+              }
+            ].map((asset) => (
+              <Card key={asset.id} className="hover:shadow-lg transition-shadow">
+                <CardContent className="p-6">
+                  <div className="flex justify-between items-start mb-4">
+                    <Badge variant="secondary">{asset.type}</Badge>
+                    <div className="text-right">
+                      <div className="text-sm text-green-600 font-medium">{asset.yield} APY</div>
+                    </div>
+                  </div>
+                  
+                  <h4 className="font-semibold mb-2">{asset.name}</h4>
+                  <p className="text-sm text-muted-foreground mb-3">{asset.location}</p>
+                  
+                  <div className="space-y-2 mb-4">
+                    <div className="flex justify-between text-sm">
+                      <span>Token Price:</span>
+                      <span className="font-medium">{asset.price}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span>Total Value:</span>
+                      <span>{asset.totalValue}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span>Available:</span>
+                      <span>{asset.available}</span>
+                    </div>
+                  </div>
+                  
+                  <Progress value={parseInt(asset.available)} className="mb-4" />
+                  
+                  <Button className="w-full">
+                    <Wallet className="mr-2 h-4 w-4" />
+                    Invest Now
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+        
+        <TabsContent value="portfolio" className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground">Total Portfolio Value</p>
+                    <p className="text-2xl font-bold">$48,750</p>
+                  </div>
+                  <TrendingUp className="h-8 w-8 text-green-600" />
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground">Total Assets</p>
+                    <p className="text-2xl font-bold">12</p>
+                  </div>
+                  <Building2 className="h-8 w-8 text-blue-600" />
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground">Avg. Yield</p>
+                    <p className="text-2xl font-bold">9.8%</p>
+                  </div>
+                  <PieChart className="h-8 w-8 text-purple-600" />
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-muted-foreground">Monthly Dividends</p>
+                    <p className="text-2xl font-bold">$1,250</p>
+                  </div>
+                  <DollarSign className="h-8 w-8 text-green-600" />
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+          
+          <Card>
+            <CardContent className="p-6">
+              <h3 className="text-lg font-semibold mb-4">Your Assets</h3>
+              <div className="space-y-4">
+                {[
+                  {
+                    name: "Downtown Office Complex",
+                    type: "Real Estate",
+                    tokens: 50,
+                    value: "$1,250",
+                    yield: "8.5%",
+                    change: "+2.4%"
+                  },
+                  {
+                    name: "AI Consulting Package",
+                    type: "Professional Services",
+                    tokens: 25,
+                    value: "$3,750",
+                    yield: "12.0%",
+                    change: "+5.1%"
+                  }
+                ].map((asset, index) => (
+                  <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
+                    <div className="flex items-center space-x-4">
+                      <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                        <Building2 className="h-6 w-6 text-primary" />
+                      </div>
+                      <div>
+                        <h4 className="font-medium">{asset.name}</h4>
+                        <p className="text-sm text-muted-foreground">{asset.tokens} tokens • {asset.type}</p>
+                      </div>
+                    </div>
+                    
+                    <div className="text-right">
+                      <div className="font-medium">{asset.value}</div>
+                      <div className="text-sm">
+                        <span className="text-muted-foreground">{asset.yield} • </span>
+                        <span className="text-green-600">{asset.change}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
