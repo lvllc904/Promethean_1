@@ -3197,6 +3197,169 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // RWA Tokenization API endpoints
+  let rwaService: any;
+  try {
+    const RWATokenizationService = (await import('./services/rwa-tokenization-service.js')).default;
+    rwaService = new RWATokenizationService();
+    console.log('RWA Tokenization service initialized');
+  } catch (error) {
+    console.log('RWA Tokenization service not available:', error.message);
+  }
+
+  // Create tokenization proposal
+  app.post(`${apiPrefix}/rwa/tokenize`, isAuthenticatedAny, async (req, res) => {
+    try {
+      if (!rwaService) {
+        return res.status(503).json({ error: 'RWA service not available' });
+      }
+
+      const proposal = await rwaService.createTokenizationProposal({
+        ...req.body,
+        userId: req.user!.id
+      });
+
+      res.json(proposal);
+    } catch (error) {
+      console.error('RWA tokenization error:', error);
+      res.status(500).json({ error: 'Failed to create tokenization proposal' });
+    }
+  });
+
+  // Get supported asset types
+  app.get(`${apiPrefix}/rwa/asset-types`, async (req, res) => {
+    try {
+      if (!rwaService) {
+        return res.status(503).json({ error: 'RWA service not available' });
+      }
+
+      const assetTypes = rwaService.getSupportedAssetTypes();
+      res.json({ assetTypes });
+    } catch (error) {
+      console.error('Asset types query error:', error);
+      res.status(500).json({ error: 'Failed to get asset types' });
+    }
+  });
+
+  // Calculate tokenization fees
+  app.post(`${apiPrefix}/rwa/calculate-fees`, async (req, res) => {
+    try {
+      if (!rwaService) {
+        return res.status(503).json({ error: 'RWA service not available' });
+      }
+
+      const { assetValue, tokenAmount } = req.body;
+      const fees = rwaService.calculateFees(assetValue, tokenAmount);
+      res.json(fees);
+    } catch (error) {
+      console.error('Fee calculation error:', error);
+      res.status(500).json({ error: 'Failed to calculate fees' });
+    }
+  });
+
+  // Create marketplace listing
+  app.post(`${apiPrefix}/rwa/marketplace/list`, isAuthenticatedAny, async (req, res) => {
+    try {
+      if (!rwaService) {
+        return res.status(503).json({ error: 'RWA service not available' });
+      }
+
+      const listing = await rwaService.createMarketplaceListing({
+        ...req.body,
+        sellerId: req.user!.id
+      });
+
+      res.json(listing);
+    } catch (error) {
+      console.error('Marketplace listing error:', error);
+      res.status(500).json({ error: 'Failed to create listing' });
+    }
+  });
+
+  // Execute purchase
+  app.post(`${apiPrefix}/rwa/marketplace/purchase`, isAuthenticated, async (req, res) => {
+    try {
+      if (!rwaService) {
+        return res.status(503).json({ error: 'RWA service not available' });
+      }
+
+      const purchase = await rwaService.executePurchase({
+        ...req.body,
+        buyerId: req.user!.id
+      });
+
+      res.json(purchase);
+    } catch (error) {
+      console.error('Purchase execution error:', error);
+      res.status(500).json({ error: 'Failed to execute purchase' });
+    }
+  });
+
+  // Get asset metrics
+  app.get(`${apiPrefix}/rwa/assets/:tokenContract/metrics`, async (req, res) => {
+    try {
+      if (!rwaService) {
+        return res.status(503).json({ error: 'RWA service not available' });
+      }
+
+      const { tokenContract } = req.params;
+      const metrics = await rwaService.getAssetMetrics(tokenContract);
+      res.json(metrics);
+    } catch (error) {
+      console.error('Asset metrics error:', error);
+      res.status(500).json({ error: 'Failed to get asset metrics' });
+    }
+  });
+
+  // Get user portfolio
+  app.get(`${apiPrefix}/rwa/portfolio`, isAuthenticated, async (req, res) => {
+    try {
+      if (!rwaService) {
+        return res.status(503).json({ error: 'RWA service not available' });
+      }
+
+      const portfolio = await rwaService.getUserPortfolio(req.user!.id);
+      res.json(portfolio);
+    } catch (error) {
+      console.error('Portfolio query error:', error);
+      res.status(500).json({ error: 'Failed to get portfolio' });
+    }
+  });
+
+  // Verify investor compliance
+  app.post(`${apiPrefix}/rwa/compliance/verify`, isAuthenticated, async (req, res) => {
+    try {
+      if (!rwaService) {
+        return res.status(503).json({ error: 'RWA service not available' });
+      }
+
+      const compliance = await rwaService.verifyInvestorCompliance({
+        ...req.body,
+        userId: req.user!.id
+      });
+
+      res.json(compliance);
+    } catch (error) {
+      console.error('Compliance verification error:', error);
+      res.status(500).json({ error: 'Failed to verify compliance' });
+    }
+  });
+
+  // Distribute dividends
+  app.post(`${apiPrefix}/rwa/dividends/distribute`, isAuthenticated, async (req, res) => {
+    try {
+      if (!rwaService) {
+        return res.status(503).json({ error: 'RWA service not available' });
+      }
+
+      const distribution = await rwaService.distributeDividends(req.body);
+      res.json(distribution);
+    } catch (error) {
+      console.error('Dividend distribution error:', error);
+      res.status(500).json({ error: 'Failed to distribute dividends' });
+    }
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;
