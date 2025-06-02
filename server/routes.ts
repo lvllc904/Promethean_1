@@ -44,6 +44,7 @@ import { socialProfileService } from './services/social-profile';
 import { insertSocialProfileSchema, insertSocialPostSchema, insertSocialMessageSchema, socialMessages } from '@shared/schema';
 import { eq, and, or, asc, desc, isNull, sql } from 'drizzle-orm';
 import { db } from './db';
+import { isAuthenticated, isAuthenticatedAny } from './auth';
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Base API prefix
