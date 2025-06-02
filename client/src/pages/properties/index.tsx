@@ -8,7 +8,12 @@ import {
   Building2,
   Bed,
   Bath,
-  DollarSign 
+  DollarSign,
+  Wallet,
+  Shield,
+  PieChart,
+  TrendingUp,
+  Plus
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { 
@@ -33,14 +38,12 @@ import {
   DrawerFooter,
   DrawerClose
 } from '@/components/ui/drawer';
-import { 
-  Slider,
-  SliderTrack,
-  SliderRange,
-  SliderThumb 
-} from '@/components/ui/slider';
+import { Slider } from '@/components/ui/slider';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
 import { PropertyCard } from '@/components/ui/property-card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
@@ -133,7 +136,10 @@ export default function PropertiesIndex() {
   return (
     <div>
       <div className="flex flex-col md:flex-row items-center justify-between mb-6">
-        <h1 className="text-2xl font-heading font-bold mb-4 md:mb-0">Browse Properties</h1>
+        <div>
+          <h1 className="text-2xl font-heading font-bold mb-2">Properties & RWA Marketplace</h1>
+          <p className="text-neutral-500">Browse properties, tokenize assets, and access fractional ownership opportunities.</p>
+        </div>
         <div className="flex space-x-2 w-full md:w-auto">
           <div className="relative flex-1 md:w-64">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400" size={18} />
