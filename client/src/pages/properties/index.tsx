@@ -184,8 +184,8 @@ export default function PropertiesIndex() {
                 </Button>
               </DrawerTrigger>
               <DrawerContent>
-              <div className="mx-auto w-full max-w-lg">
-                <DrawerHeader>
+                <div className="mx-auto w-full max-w-lg">
+                  <DrawerHeader>
                   <DrawerTitle>Filter Properties</DrawerTitle>
                   <DrawerDescription>
                     Apply filters to find your perfect property.
@@ -341,10 +341,9 @@ export default function PropertiesIndex() {
               </div>
             </DrawerContent>
           </Drawer>
-        </div>
-      </div>
-      
-      {/* Active Filters */}
+          </div>
+          
+          {/* Active Filters */}
       {(searchQuery || propertyType.length > 0 || listingType.length > 0 || bedsMin > 0 || bathsMin > 0 || priceRange[0] > 0 || priceRange[1] < 5000000) && (
         <div className="flex flex-wrap items-center gap-2 mb-4 p-3 bg-neutral-50 rounded-md">
           <div className="text-sm font-medium text-neutral-600 mr-2">
