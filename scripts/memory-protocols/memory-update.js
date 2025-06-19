@@ -3,8 +3,8 @@
  * Mandatory execution after interactions to maintain knowledge base
  */
 
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
 class MemoryUpdater {
   constructor() {
@@ -507,10 +507,10 @@ class MemoryUpdater {
   }
 }
 
-module.exports = MemoryUpdater;
+export default MemoryUpdater;
 
-// Export for direct usage
-if (require.main === module) {
+// Direct execution capability
+if (import.meta.url === `file://${process.argv[1]}`) {
   const updater = new MemoryUpdater();
   
   // Example interaction data

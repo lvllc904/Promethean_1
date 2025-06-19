@@ -3,9 +3,9 @@
  * Mandatory execution before suggesting solutions
  */
 
-const fs = require('fs');
-const path = require('path');
-const SessionInitializer = require('./session-init');
+import fs from 'fs';
+import path from 'path';
+import SessionInitializer from './session-init.js';
 
 class ProblemAnalyzer {
   constructor() {
@@ -542,10 +542,10 @@ class ProblemAnalyzer {
   }
 }
 
-module.exports = ProblemAnalyzer;
+export default ProblemAnalyzer;
 
-// Export for direct usage
-if (require.main === module) {
+// Direct execution capability
+if (import.meta.url === `file://${process.argv[1]}`) {
   const analyzer = new ProblemAnalyzer();
   const problem = process.argv[2] || 'performance optimization';
 

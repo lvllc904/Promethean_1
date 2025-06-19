@@ -3,8 +3,12 @@
  * Mandatory execution sequence for loading complete context at session start
  */
 
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 class SessionInitializer {
   constructor() {
@@ -294,10 +298,10 @@ class SessionInitializer {
   }
 }
 
-module.exports = SessionInitializer;
+export default SessionInitializer;
 
-// Export for direct usage
-if (require.main === module) {
+// Direct execution capability
+if (import.meta.url === `file://${process.argv[1]}`) {
   const initializer = new SessionInitializer();
   const userRequest = process.argv[2] || '';
   

@@ -3,9 +3,9 @@
  * Mandatory execution before major suggestions to ensure quality
  */
 
-const fs = require('fs');
-const path = require('path');
-const SessionInitializer = require('./session-init');
+import fs from 'fs';
+import path from 'path';
+import SessionInitializer from './session-init.js';
 
 class SolutionValidator {
   constructor() {
@@ -599,10 +599,10 @@ class SolutionValidator {
   }
 }
 
-module.exports = SolutionValidator;
+export default SolutionValidator;
 
-// Export for direct usage
-if (require.main === module) {
+// Direct execution capability
+if (import.meta.url === `file://${process.argv[1]}`) {
   const validator = new SolutionValidator();
   
   // Example solution for testing

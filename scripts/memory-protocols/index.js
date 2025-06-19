@@ -3,10 +3,10 @@
  * Complete implementation of the persistent AI development partner system
  */
 
-const SessionInitializer = require('./session-init');
-const ProblemAnalyzer = require('./problem-analysis');
-const MemoryUpdater = require('./memory-update');
-const SolutionValidator = require('./validation');
+import SessionInitializer from './session-init.js';
+import ProblemAnalyzer from './problem-analysis.js';
+import MemoryUpdater from './memory-update.js';
+import SolutionValidator from './validation.js';
 
 class SymbioticMemoryFramework {
   constructor() {
@@ -376,13 +376,11 @@ that led to this situation.`;
 // Export singleton instance
 const symbioticMemory = new SymbioticMemoryFramework();
 
-module.exports = {
-  SymbioticMemoryFramework,
-  symbioticMemory
-};
+export { SymbioticMemoryFramework, symbioticMemory };
+export default symbioticMemory;
 
 // Direct execution capability
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   const userRequest = process.argv[2] || 'implement symbiotic memory framework';
   
   symbioticMemory.executeWorkflow(userRequest)
