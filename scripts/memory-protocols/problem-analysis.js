@@ -86,9 +86,9 @@ class ProblemAnalyzer {
       if (this.matchesProblemType(problemLower, type)) {
         similar.push({
           type,
-          rootCauses: this.getRootCauses(type),
-          solutionApproaches: this.getSolutionApproaches(type),
-          userImpact: this.getUserImpact(type)
+          rootCauses: this.getRootCauses(type) || [],
+          solutionApproaches: this.getSolutionApproaches(type) || [],
+          userImpact: this.getUserImpact(type) || 'Medium'
         });
       }
     }
@@ -100,15 +100,17 @@ class ProblemAnalyzer {
     const failures = [];
     
     // Check ADRs for "Tried/Failed" entries
-    if (this.context?.adrs) {
+    if (this.context?.adrs && Array.isArray(this.context.adrs)) {
       for (const adr of this.context.adrs) {
-        const failureMatch = adr.content.match(/- \*\*Tried\/Failed\*\*: (.+)/);
-        if (failureMatch && this.isRelatedToProblem(failureMatch[1], problem)) {
-          failures.push({
-            adr: adr.title,
-            failure: failureMatch[1],
-            context: this.extractADRContext(adr)
-          });
+        if (adr && adr.content) {
+          const failureMatch = adr.content.match(/- \*\*Tried\/Failed\*\*: (.+)/);
+          if (failureMatch && this.isRelatedToProblem(failureMatch[1], problem)) {
+            failures.push({
+              adr: adr.title || 'Unknown ADR',
+              failure: failureMatch[1],
+              context: this.extractADRContext(adr)
+            });
+          }
         }
       }
     }
@@ -120,20 +122,22 @@ class ProblemAnalyzer {
     const successful = [];
     
     // Check ADRs for successful implementations
-    if (this.context?.adrs) {
+    if (this.context?.adrs && Array.isArray(this.context.adrs)) {
       for (const adr of this.context.adrs) {
-        const consequencesMatch = adr.content.match(/- \*\*Consequences\*\*: (.+)/);
-        const feedbackMatch = adr.content.match(/- \*\*User Feedback\*\*: (.+)/);
-        
-        if (consequencesMatch && feedbackMatch && 
-            this.isRelatedToProblem(adr.content, problem) &&
-            this.isPositiveFeedback(feedbackMatch[1])) {
-          successful.push({
-            adr: adr.title,
-            approach: this.extractADRApproach(adr),
-            consequences: consequencesMatch[1],
-            userFeedback: feedbackMatch[1]
-          });
+        if (adr && adr.content) {
+          const consequencesMatch = adr.content.match(/- \*\*Consequences\*\*: (.+)/);
+          const feedbackMatch = adr.content.match(/- \*\*User Feedback\*\*: (.+)/);
+          
+          if (consequencesMatch && feedbackMatch && 
+              this.isRelatedToProblem(adr.content, problem) &&
+              this.isPositiveFeedback(feedbackMatch[1])) {
+            successful.push({
+              adr: adr.title || 'Unknown ADR',
+              approach: this.extractADRApproach(adr),
+              consequences: consequencesMatch[1],
+              userFeedback: feedbackMatch[1]
+            });
+          }
         }
       }
     }
