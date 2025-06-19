@@ -252,11 +252,11 @@ class SessionInitializer {
   identifyMissingContext(analysis) {
     const missing = [];
     
-    if (!this.context.quickContext.includes('Current Session Focus')) {
+    if (!this.context.quickContext?.includes('Current Session Focus')) {
       missing.push('Session focus needs to be defined');
     }
     
-    if (analysis.matchedPatterns.length === 0) {
+    if (!analysis?.matchedPatterns || analysis.matchedPatterns.length === 0) {
       missing.push('Request pattern not in documented database');
     }
     
