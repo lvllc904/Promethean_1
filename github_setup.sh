@@ -1,16 +1,16 @@
 #!/bin/bash
 
-# GitHub setup script for DAC2 repository
+# GitHub setup script for ThePrometheanSociety repository
 # This script initializes a Git repository and pushes it to GitHub
 
-echo "🚀 Setting up GitHub repository for DAC2..."
+echo "🚀 Setting up GitHub repository for ThePrometheanSociety..."
 
 # Ask for GitHub username
 read -p "Enter your GitHub username: " GITHUB_USERNAME
 
 # Ask for repository name
-read -p "Enter your GitHub repository name (default: DAC2): " REPO_NAME
-REPO_NAME=${REPO_NAME:-DAC2}
+read -p "Enter your GitHub repository name (default: ThePrometheanSociety): " REPO_NAME
+REPO_NAME=${REPO_NAME:-ThePrometheanSociety}
 
 # Ask for personal access token (more secure than password)
 read -sp "Enter your GitHub personal access token: " GITHUB_TOKEN

@@ -6,7 +6,7 @@ This guide provides instructions for deploying the DAC Marketplace application t
 
 ### Using the Automated Script
 
-1. Make sure you've created an empty repository named "DAC2" in your GitHub account
+1. Make sure you've created an empty repository named "ThePrometheanSociety" in your GitHub account
 2. Run the provided script:
    ```bash
    ./github_setup.sh
@@ -22,7 +22,7 @@ This guide provides instructions for deploying the DAC Marketplace application t
 
 If you prefer to do this manually:
 
-1. Create a repository on GitHub named "DAC2"
+1. Create a repository on GitHub named "ThePrometheanSociety"
 2. Initialize Git in your project:
    ```bash
    git init
@@ -37,7 +37,7 @@ If you prefer to do this manually:
    ```
 5. Add GitHub remote:
    ```bash
-   git remote add origin https://github.com/YOUR-USERNAME/DAC2.git
+   git remote add origin https://github.com/YOUR-USERNAME/ThePrometheanSociety.git
    ```
 6. Push to GitHub:
    ```bash

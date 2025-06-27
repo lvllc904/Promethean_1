@@ -12,8 +12,8 @@ By participating in this project, you agree to abide by our Code of Conduct. Ple
 
 2. **Clone the Repository**: Clone your fork locally.
    ```bash
-   git clone https://github.com/YOUR-USERNAME/dac-marketplace.git
-   cd dac-marketplace
+   git clone https://github.com/YOUR-USERNAME/ThePrometheanSociety.git
+   cd ThePrometheanSociety
    ```
 
 3. **Install Dependencies**: Install all necessary dependencies.
