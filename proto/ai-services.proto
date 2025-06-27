@@ -1,0 +1,554 @@
+syntax = "proto3";
+
+package dac.ai;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+// AI Services Definition
+service AIService {
+  // Property Valuation Services
+  rpc GeneratePropertyValuation(PropertyValuationRequest) returns (stream PropertyValuationResponse);
+  rpc GeneratePropertyDescription(PropertyDescriptionRequest) returns (PropertyDescriptionResponse);
+  rpc AnalyzePropertyMarket(MarketAnalysisRequest) returns (stream MarketAnalysisResponse);
+  
+  // Governance AI Services
+  rpc AnalyzeProposalContent(ProposalAnalysisRequest) returns (ProposalAnalysisResponse);
+  rpc GenerateProposalFromFeedback(ProposalGenerationRequest) returns (stream ProposalGenerationResponse);
+  rpc AnalyzeVotingPatterns(VotingPatternRequest) returns (VotingPatternResponse);
+  
+  // Review Analysis Services
+  rpc ProcessReviewBatch(stream ReviewBatchRequest) returns (stream ReviewAnalysisResponse);
+  rpc GetReviewSentiment(ReviewSentimentRequest) returns (ReviewSentimentResponse);
+  rpc GenerateReviewSummary(ReviewSummaryRequest) returns (ReviewSummaryResponse);
+  
+  // Legal and Compliance Services
+  rpc AnalyzeLegalDocument(LegalDocumentRequest) returns (stream LegalAnalysisResponse);
+  rpc GenerateSmartContract(SmartContractRequest) returns (stream SmartContractResponse);
+  rpc ValidateCompliance(ComplianceRequest) returns (ComplianceResponse);
+  
+  // AI Model Management
+  rpc GetModelHealth(google.protobuf.Empty) returns (ModelHealthResponse);
+  rpc ConfigureModelSettings(ModelConfigRequest) returns (ModelConfigResponse);
+  rpc GetProcessingStats(google.protobuf.Empty) returns (ProcessingStatsResponse);
+}
+
+// Property Services Messages
+message PropertyValuationRequest {
+  string property_id = 1;
+  PropertyData property_data = 2;
+  ValuationMethod method = 3;
+  repeated string comparable_properties = 4;
+  MarketConditions market_conditions = 5;
+}
+
+message PropertyData {
+  string address = 1;
+  string property_type = 2;
+  double square_footage = 3;
+  int32 bedrooms = 4;
+  int32 bathrooms = 5;
+  int32 year_built = 6;
+  string lot_size = 7;
+  repeated string features = 8;
+  string condition = 9;
+  LocationData location = 10;
+  repeated string images = 11;
+}
+
+message LocationData {
+  double latitude = 1;
+  double longitude = 2;
+  string neighborhood = 3;
+  string school_district = 4;
+  double walkability_score = 5;
+  repeated string nearby_amenities = 6;
+}
+
+message MarketConditions {
+  string market_trend = 1;
+  double average_days_on_market = 2;
+  double price_per_sqft_trend = 3;
+  double inventory_level = 4;
+  double interest_rates = 5;
+}
+
+message PropertyValuationResponse {
+  string request_id = 1;
+  ValuationStatus status = 2;
+  double progress_percentage = 3;
+  optional ValuationResult result = 4;
+  repeated string processing_steps = 5;
+  optional string error_message = 6;
+}
+
+message ValuationResult {
+  double estimated_value = 1;
+  double confidence_score = 2;
+  ValueRange value_range = 3;
+  repeated ComparableProperty comparables = 4;
+  repeated ValuationFactor factors = 5;
+  string methodology_used = 6;
+  google.protobuf.Timestamp valuation_date = 7;
+}
+
+message ValueRange {
+  double min_value = 1;
+  double max_value = 2;
+  double median_value = 3;
+}
+
+message ComparableProperty {
+  string address = 1;
+  double sale_price = 2;
+  google.protobuf.Timestamp sale_date = 3;
+  double similarity_score = 4;
+  repeated string adjustment_factors = 5;
+}
+
+message ValuationFactor {
+  string factor_name = 1;
+  double impact_score = 2;
+  string description = 3;
+  FactorType type = 4;
+}
+
+message PropertyDescriptionRequest {
+  PropertyData property_data = 1;
+  string target_audience = 2;
+  string tone = 3;
+  repeated string highlight_features = 4;
+}
+
+message PropertyDescriptionResponse {
+  string description = 1;
+  repeated string key_highlights = 2;
+  repeated string suggested_tags = 3;
+  string seo_title = 4;
+  string seo_description = 5;
+}
+
+message MarketAnalysisRequest {
+  string location = 1;
+  string property_type = 2;
+  string price_range = 3;
+  google.protobuf.Timestamp analysis_date = 4;
+}
+
+message MarketAnalysisResponse {
+  string request_id = 1;
+  AnalysisStatus status = 2;
+  double progress_percentage = 3;
+  optional MarketAnalysisResult result = 4;
+}
+
+message MarketAnalysisResult {
+  MarketTrends trends = 1;
+  PriceAnalysis price_analysis = 2;
+  InventoryAnalysis inventory = 3;
+  repeated string market_insights = 4;
+  repeated string recommendations = 5;
+}
+
+message MarketTrends {
+  double price_growth_rate = 1;
+  double sales_volume_change = 2;
+  double average_days_on_market = 3;
+  string market_direction = 4;
+}
+
+message PriceAnalysis {
+  double median_price = 1;
+  double price_per_sqft = 2;
+  double price_volatility = 3;
+  repeated PriceSegment segments = 4;
+}
+
+message PriceSegment {
+  string price_range = 1;
+  int32 property_count = 2;
+  double market_share = 3;
+  double avg_days_on_market = 4;
+}
+
+message InventoryAnalysis {
+  int32 total_listings = 1;
+  int32 new_listings = 2;
+  int32 sold_properties = 3;
+  double months_of_supply = 4;
+}
+
+// Governance AI Services Messages
+message ProposalAnalysisRequest {
+  string proposal_content = 1;
+  string proposal_type = 2;
+  repeated string stakeholder_groups = 3;
+  repeated string relevant_policies = 4;
+}
+
+message ProposalAnalysisResponse {
+  ProposalAnalysisResult analysis = 1;
+  repeated string recommendations = 2;
+  repeated RiskAssessment risks = 3;
+  repeated ImpactAssessment impacts = 4;
+}
+
+message ProposalAnalysisResult {
+  double feasibility_score = 1;
+  double complexity_score = 2;
+  double stakeholder_alignment = 3;
+  repeated string key_themes = 4;
+  repeated string potential_issues = 5;
+}
+
+message RiskAssessment {
+  string risk_category = 1;
+  string risk_description = 2;
+  RiskLevel level = 3;
+  repeated string mitigation_strategies = 4;
+}
+
+message ImpactAssessment {
+  string impact_area = 1;
+  string description = 2;
+  ImpactLevel level = 3;
+  repeated string affected_stakeholders = 4;
+}
+
+message ProposalGenerationRequest {
+  repeated string community_feedback = 1;
+  string proposal_category = 2;
+  repeated string policy_constraints = 3;
+  string target_outcome = 4;
+}
+
+message ProposalGenerationResponse {
+  string request_id = 1;
+  GenerationStatus status = 2;
+  double progress_percentage = 3;
+  optional GeneratedProposal proposal = 4;
+}
+
+message GeneratedProposal {
+  string title = 1;
+  string description = 2;
+  string detailed_content = 3;
+  repeated string implementation_steps = 4;
+  repeated string success_metrics = 5;
+  string voting_recommendation = 6;
+}
+
+message VotingPatternRequest {
+  repeated int32 proposal_ids = 1;
+  optional int32 user_id = 2;
+  google.protobuf.Timestamp start_date = 3;
+  google.protobuf.Timestamp end_date = 4;
+}
+
+message VotingPatternResponse {
+  VotingPatternAnalysis analysis = 1;
+  repeated VotingCluster clusters = 2;
+  repeated string insights = 3;
+}
+
+message VotingPatternAnalysis {
+  double participation_rate = 1;
+  double consensus_level = 2;
+  repeated string dominant_patterns = 3;
+  repeated string anomalies = 4;
+}
+
+message VotingCluster {
+  string cluster_name = 1;
+  repeated int32 user_ids = 2;
+  repeated string common_traits = 3;
+  double cohesion_score = 4;
+}
+
+// Review Analysis Messages
+message ReviewBatchRequest {
+  repeated ReviewData reviews = 1;
+  string analysis_type = 2;
+  repeated string focus_areas = 3;
+}
+
+message ReviewData {
+  string id = 1;
+  string content = 2;
+  int32 rating = 3;
+  string author = 4;
+  google.protobuf.Timestamp created_at = 5;
+  string category = 6;
+  repeated string tags = 7;
+}
+
+message ReviewAnalysisResponse {
+  string batch_id = 1;
+  AnalysisStatus status = 2;
+  double progress_percentage = 3;
+  repeated ReviewAnalysisResult results = 4;
+}
+
+message ReviewAnalysisResult {
+  string review_id = 1;
+  SentimentAnalysis sentiment = 2;
+  repeated string key_topics = 3;
+  repeated string issues_identified = 4;
+  double quality_score = 5;
+  string category_classification = 6;
+}
+
+message SentimentAnalysis {
+  double sentiment_score = 1;
+  string sentiment_label = 2;
+  double confidence = 3;
+  repeated EmotionScore emotions = 4;
+}
+
+message EmotionScore {
+  string emotion = 1;
+  double score = 2;
+}
+
+message ReviewSentimentRequest {
+  repeated string review_ids = 1;
+  string aggregation_method = 2;
+}
+
+message ReviewSentimentResponse {
+  SentimentSummary overall_sentiment = 1;
+  repeated ReviewSentimentDetail details = 2;
+}
+
+message SentimentSummary {
+  double average_sentiment = 1;
+  string dominant_sentiment = 2;
+  int32 positive_count = 3;
+  int32 negative_count = 4;
+  int32 neutral_count = 5;
+}
+
+message ReviewSentimentDetail {
+  string review_id = 1;
+  SentimentAnalysis sentiment = 2;
+}
+
+message ReviewSummaryRequest {
+  repeated string review_ids = 1;
+  string summary_type = 2;
+  int32 max_length = 3;
+}
+
+message ReviewSummaryResponse {
+  string summary = 1;
+  repeated string key_points = 2;
+  repeated string action_items = 3;
+  SentimentSummary sentiment_overview = 4;
+}
+
+// Legal and Compliance Messages
+message LegalDocumentRequest {
+  string document_content = 1;
+  string document_type = 2;
+  string jurisdiction = 3;
+  repeated string compliance_frameworks = 4;
+}
+
+message LegalAnalysisResponse {
+  string request_id = 1;
+  AnalysisStatus status = 2;
+  double progress_percentage = 3;
+  optional LegalAnalysisResult result = 4;
+}
+
+message LegalAnalysisResult {
+  repeated LegalIssue issues = 1;
+  repeated ComplianceCheck compliance_checks = 2;
+  repeated string recommendations = 3;
+  double risk_score = 4;
+}
+
+message LegalIssue {
+  string issue_type = 1;
+  string description = 2;
+  string severity = 3;
+  repeated string suggested_remedies = 4;
+}
+
+message ComplianceCheck {
+  string framework = 1;
+  string requirement = 2;
+  ComplianceStatus status = 3;
+  string notes = 4;
+}
+
+message SmartContractRequest {
+  string contract_type = 1;
+  string requirements = 2;
+  string blockchain_platform = 3;
+  repeated string security_requirements = 4;
+}
+
+message SmartContractResponse {
+  string request_id = 1;
+  GenerationStatus status = 2;
+  double progress_percentage = 3;
+  optional SmartContractResult result = 4;
+}
+
+message SmartContractResult {
+  string contract_code = 1;
+  string documentation = 2;
+  repeated string security_considerations = 3;
+  repeated string deployment_instructions = 4;
+  repeated string test_cases = 5;
+}
+
+message ComplianceRequest {
+  string entity_type = 1;
+  string jurisdiction = 2;
+  repeated string business_activities = 3;
+  repeated string regulatory_frameworks = 4;
+}
+
+message ComplianceResponse {
+  repeated ComplianceRequirement requirements = 1;
+  repeated string recommendations = 2;
+  double compliance_score = 3;
+}
+
+message ComplianceRequirement {
+  string requirement = 1;
+  string framework = 2;
+  ComplianceStatus status = 3;
+  string description = 4;
+  repeated string action_items = 5;
+}
+
+// Model Management Messages
+message ModelHealthResponse {
+  repeated ModelStatus models = 1;
+  SystemHealth system_health = 2;
+  google.protobuf.Timestamp last_check = 3;
+}
+
+message ModelStatus {
+  string model_name = 1;
+  string version = 2;
+  HealthStatus status = 3;
+  double response_time = 4;
+  double error_rate = 5;
+  string last_error = 6;
+}
+
+message SystemHealth {
+  double cpu_usage = 1;
+  double memory_usage = 2;
+  double disk_usage = 3;
+  int32 active_requests = 4;
+  double average_response_time = 5;
+}
+
+message ModelConfigRequest {
+  string model_name = 1;
+  repeated ConfigParameter parameters = 2;
+}
+
+message ConfigParameter {
+  string key = 1;
+  string value = 2;
+  string type = 3;
+}
+
+message ModelConfigResponse {
+  bool success = 1;
+  string message = 2;
+  repeated ConfigParameter updated_parameters = 3;
+}
+
+message ProcessingStatsResponse {
+  int64 total_requests = 1;
+  int64 successful_requests = 2;
+  int64 failed_requests = 3;
+  double average_processing_time = 4;
+  repeated ServiceStats service_stats = 5;
+}
+
+message ServiceStats {
+  string service_name = 1;
+  int64 request_count = 2;
+  double average_response_time = 3;
+  double error_rate = 4;
+}
+
+// Enums
+enum ValuationMethod {
+  VALUATION_METHOD_UNSPECIFIED = 0;
+  VALUATION_METHOD_COMPARATIVE = 1;
+  VALUATION_METHOD_INCOME = 2;
+  VALUATION_METHOD_COST = 3;
+  VALUATION_METHOD_HYBRID = 4;
+}
+
+enum ValuationStatus {
+  VALUATION_STATUS_UNSPECIFIED = 0;
+  VALUATION_STATUS_PENDING = 1;
+  VALUATION_STATUS_PROCESSING = 2;
+  VALUATION_STATUS_COMPLETED = 3;
+  VALUATION_STATUS_FAILED = 4;
+}
+
+enum FactorType {
+  FACTOR_TYPE_UNSPECIFIED = 0;
+  FACTOR_TYPE_POSITIVE = 1;
+  FACTOR_TYPE_NEGATIVE = 2;
+  FACTOR_TYPE_NEUTRAL = 3;
+}
+
+enum AnalysisStatus {
+  ANALYSIS_STATUS_UNSPECIFIED = 0;
+  ANALYSIS_STATUS_PENDING = 1;
+  ANALYSIS_STATUS_PROCESSING = 2;
+  ANALYSIS_STATUS_COMPLETED = 3;
+  ANALYSIS_STATUS_FAILED = 4;
+}
+
+enum RiskLevel {
+  RISK_LEVEL_UNSPECIFIED = 0;
+  RISK_LEVEL_LOW = 1;
+  RISK_LEVEL_MEDIUM = 2;
+  RISK_LEVEL_HIGH = 3;
+  RISK_LEVEL_CRITICAL = 4;
+}
+
+enum ImpactLevel {
+  IMPACT_LEVEL_UNSPECIFIED = 0;
+  IMPACT_LEVEL_MINIMAL = 1;
+  IMPACT_LEVEL_MODERATE = 2;
+  IMPACT_LEVEL_SIGNIFICANT = 3;
+  IMPACT_LEVEL_MAJOR = 4;
+}
+
+enum GenerationStatus {
+  GENERATION_STATUS_UNSPECIFIED = 0;
+  GENERATION_STATUS_PENDING = 1;
+  GENERATION_STATUS_GENERATING = 2;
+  GENERATION_STATUS_COMPLETED = 3;
+  GENERATION_STATUS_FAILED = 4;
+}
+
+enum ComplianceStatus {
+  COMPLIANCE_STATUS_UNSPECIFIED = 0;
+  COMPLIANCE_STATUS_COMPLIANT = 1;
+  COMPLIANCE_STATUS_NON_COMPLIANT = 2;
+  COMPLIANCE_STATUS_PARTIALLY_COMPLIANT = 3;
+  COMPLIANCE_STATUS_UNDER_REVIEW = 4;
+}
+
+enum HealthStatus {
+  HEALTH_STATUS_UNSPECIFIED = 0;
+  HEALTH_STATUS_HEALTHY = 1;
+  HEALTH_STATUS_DEGRADED = 2;
+  HEALTH_STATUS_UNHEALTHY = 3;
+  HEALTH_STATUS_OFFLINE = 4;
+}

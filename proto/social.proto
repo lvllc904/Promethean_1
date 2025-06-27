@@ -1,0 +1,787 @@
+syntax = "proto3";
+
+package dac.social;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+// Social Features Service
+service SocialService {
+  // Profile Management
+  rpc CreateProfile(CreateProfileRequest) returns (SocialProfile);
+  rpc GetProfile(GetProfileRequest) returns (SocialProfile);
+  rpc UpdateProfile(UpdateProfileRequest) returns (SocialProfile);
+  rpc SearchProfiles(SearchProfilesRequest) returns (SearchProfilesResponse);
+  
+  // Posts and Content
+  rpc CreatePost(CreatePostRequest) returns (Post);
+  rpc GetPost(GetPostRequest) returns (Post);
+  rpc UpdatePost(UpdatePostRequest) returns (Post);
+  rpc DeletePost(DeletePostRequest) returns (google.protobuf.Empty);
+  rpc GetFeed(GetFeedRequest) returns (stream Post);
+  rpc GetUserPosts(GetUserPostsRequest) returns (GetUserPostsResponse);
+  
+  // Social Interactions
+  rpc FollowUser(FollowRequest) returns (FollowResponse);
+  rpc UnfollowUser(UnfollowRequest) returns (google.protobuf.Empty);
+  rpc GetFollowers(GetFollowersRequest) returns (GetFollowersResponse);
+  rpc GetFollowing(GetFollowingRequest) returns (GetFollowingResponse);
+  rpc CheckFollowStatus(CheckFollowRequest) returns (CheckFollowResponse);
+  
+  // Messaging
+  rpc SendMessage(SendMessageRequest) returns (MessageResponse);
+  rpc GetConversation(GetConversationRequest) returns (stream Message);
+  rpc GetInbox(GetInboxRequest) returns (GetInboxResponse);
+  rpc MarkMessageAsRead(MarkReadRequest) returns (google.protobuf.Empty);
+  rpc MarkAllMessagesAsRead(MarkAllReadRequest) returns (google.protobuf.Empty);
+  
+  // Endorsements and Reputation
+  rpc CreateEndorsement(EndorsementRequest) returns (Endorsement);
+  rpc GetEndorsements(GetEndorsementsRequest) returns (GetEndorsementsResponse);
+  rpc UpdateReputation(UpdateReputationRequest) returns (ReputationUpdate);
+  rpc GetReputationHistory(ReputationHistoryRequest) returns (ReputationHistoryResponse);
+  
+  // Content Moderation
+  rpc ReportContent(ReportContentRequest) returns (ReportResponse);
+  rpc ModerateContent(ModerateContentRequest) returns (ModerationResult);
+  rpc GetModerationQueue(GetModerationQueueRequest) returns (GetModerationQueueResponse);
+  
+  // Privacy and Security
+  rpc UpdatePrivacySettings(UpdatePrivacyRequest) returns (PrivacySettings);
+  rpc BlockUser(BlockUserRequest) returns (google.protobuf.Empty);
+  rpc UnblockUser(UnblockUserRequest) returns (google.protobuf.Empty);
+  rpc GetBlockedUsers(GetBlockedUsersRequest) returns (GetBlockedUsersResponse);
+}
+
+// Core Data Types
+message SocialProfile {
+  string profile_id = 1;
+  int32 user_id = 2;
+  string pseudonym = 3;
+  string display_name = 4;
+  string bio = 5;
+  string avatar_url = 6;
+  string banner_url = 7;
+  repeated string interests = 8;
+  repeated string skills = 9;
+  string location = 10;
+  string website = 11;
+  repeated SocialLink social_links = 12;
+  int32 reputation_score = 13;
+  PrivacyLevel privacy_level = 14;
+  VerificationStatus verification_status = 15;
+  ProfileStats stats = 16;
+  google.protobuf.Timestamp created_at = 17;
+  google.protobuf.Timestamp updated_at = 18;
+  bool is_active = 19;
+  repeated ProfileBadge badges = 20;
+}
+
+message SocialLink {
+  string platform = 1;
+  string url = 2;
+  bool verified = 3;
+}
+
+message ProfileStats {
+  int32 followers_count = 1;
+  int32 following_count = 2;
+  int32 posts_count = 3;
+  int32 endorsements_received = 4;
+  int32 endorsements_given = 5;
+  int32 total_likes = 6;
+  int32 total_comments = 7;
+  double engagement_rate = 8;
+}
+
+message ProfileBadge {
+  string badge_id = 1;
+  string name = 2;
+  string description = 3;
+  string icon_url = 4;
+  BadgeCategory category = 5;
+  google.protobuf.Timestamp earned_at = 6;
+}
+
+message Post {
+  string post_id = 1;
+  string profile_id = 2;
+  string content = 3;
+  PostType type = 4;
+  repeated PostMedia media = 5;
+  repeated string tags = 6;
+  PostVisibility visibility = 7;
+  int32 likes_count = 8;
+  int32 comments_count = 9;
+  int32 shares_count = 10;
+  bool is_pinned = 11;
+  google.protobuf.Timestamp created_at = 12;
+  google.protobuf.Timestamp updated_at = 13;
+  SocialProfile author = 14;
+  repeated Comment comments = 15;
+  bool has_liked = 16;
+  PostMetrics metrics = 17;
+  ModerationStatus moderation_status = 18;
+}
+
+message PostMedia {
+  string media_id = 1;
+  MediaType type = 2;
+  string url = 3;
+  string thumbnail_url = 4;
+  string alt_text = 5;
+  MediaMetadata metadata = 6;
+}
+
+message MediaMetadata {
+  int32 width = 1;
+  int32 height = 2;
+  int64 file_size = 3;
+  string duration = 4; // for videos
+  string format = 5;
+}
+
+message Comment {
+  string comment_id = 1;
+  string post_id = 2;
+  string profile_id = 3;
+  string content = 4;
+  optional string parent_comment_id = 5;
+  int32 likes_count = 6;
+  google.protobuf.Timestamp created_at = 7;
+  SocialProfile author = 8;
+  bool has_liked = 9;
+  repeated Comment replies = 10;
+}
+
+message PostMetrics {
+  int32 impressions = 1;
+  int32 reach = 2;
+  double engagement_rate = 3;
+  int32 click_through_rate = 4;
+  repeated string top_countries = 5;
+  repeated string top_age_groups = 6;
+}
+
+message Message {
+  string message_id = 1;
+  string conversation_id = 2;
+  string sender_profile_id = 3;
+  string recipient_profile_id = 4;
+  string content = 5;
+  MessageType type = 6;
+  repeated MessageAttachment attachments = 7;
+  google.protobuf.Timestamp sent_at = 8;
+  google.protobuf.Timestamp read_at = 9;
+  bool is_encrypted = 10;
+  string encryption_key_id = 11;
+  SocialProfile sender = 12;
+  ModerationStatus moderation_status = 13;
+}
+
+message MessageAttachment {
+  string attachment_id = 1;
+  string name = 2;
+  string url = 3;
+  AttachmentType type = 4;
+  int64 file_size = 5;
+  string mime_type = 6;
+}
+
+message Conversation {
+  string conversation_id = 1;
+  repeated string participant_profile_ids = 2;
+  string last_message_content = 3;
+  google.protobuf.Timestamp last_message_at = 4;
+  int32 unread_count = 5;
+  bool is_archived = 6;
+  bool is_muted = 7;
+  repeated SocialProfile participants = 8;
+}
+
+message Follow {
+  string follow_id = 1;
+  string follower_profile_id = 2;
+  string followed_profile_id = 3;
+  google.protobuf.Timestamp created_at = 4;
+  FollowStatus status = 5;
+  SocialProfile follower = 6;
+  SocialProfile followed = 7;
+}
+
+message Endorsement {
+  string endorsement_id = 1;
+  string endorser_profile_id = 2;
+  string endorsed_profile_id = 3;
+  string skill = 4;
+  string description = 5;
+  EndorsementType type = 6;
+  int32 weight = 7;
+  google.protobuf.Timestamp created_at = 8;
+  SocialProfile endorser = 9;
+  bool is_mutual = 10;
+}
+
+message ReputationUpdate {
+  string update_id = 1;
+  string profile_id = 2;
+  int32 previous_score = 3;
+  int32 new_score = 4;
+  int32 change = 5;
+  ReputationSource source = 6;
+  string reason = 7;
+  google.protobuf.Timestamp updated_at = 8;
+}
+
+// Request/Response Messages
+message CreateProfileRequest {
+  int32 user_id = 1;
+  string pseudonym = 2;
+  string display_name = 3;
+  string bio = 4;
+  repeated string interests = 5;
+  repeated string skills = 6;
+  PrivacyLevel privacy_level = 7;
+  string avatar_url = 8;
+}
+
+message GetProfileRequest {
+  oneof identifier {
+    string profile_id = 1;
+    string pseudonym = 2;
+    int32 user_id = 3;
+  }
+  bool include_stats = 4;
+  bool include_badges = 5;
+}
+
+message UpdateProfileRequest {
+  string profile_id = 1;
+  optional string display_name = 2;
+  optional string bio = 3;
+  repeated string interests = 4;
+  repeated string skills = 5;
+  optional string avatar_url = 6;
+  optional string banner_url = 7;
+  optional string location = 8;
+  optional string website = 9;
+  repeated SocialLink social_links = 10;
+}
+
+message SearchProfilesRequest {
+  string query = 1;
+  repeated string skills = 2;
+  repeated string interests = 3;
+  optional string location = 4;
+  int32 page = 5;
+  int32 limit = 6;
+  ProfileSearchSort sort = 7;
+}
+
+message SearchProfilesResponse {
+  repeated SocialProfile profiles = 1;
+  int32 total_count = 2;
+  int32 page = 3;
+  int32 limit = 4;
+  bool has_next = 5;
+}
+
+message CreatePostRequest {
+  string profile_id = 1;
+  string content = 2;
+  PostType type = 3;
+  repeated PostMedia media = 4;
+  repeated string tags = 5;
+  PostVisibility visibility = 6;
+  bool is_pinned = 7;
+}
+
+message GetPostRequest {
+  string post_id = 1;
+  bool include_comments = 2;
+  bool include_metrics = 3;
+}
+
+message UpdatePostRequest {
+  string post_id = 1;
+  optional string content = 2;
+  repeated string tags = 3;
+  optional PostVisibility visibility = 4;
+  optional bool is_pinned = 5;
+}
+
+message DeletePostRequest {
+  string post_id = 1;
+  string reason = 2;
+}
+
+message GetFeedRequest {
+  string profile_id = 1;
+  FeedType feed_type = 2;
+  optional string cursor = 3;
+  int32 limit = 4;
+  FeedFilter filter = 5;
+}
+
+message FeedFilter {
+  repeated PostType post_types = 1;
+  repeated string tags = 2;
+  google.protobuf.Timestamp since = 3;
+  google.protobuf.Timestamp until = 4;
+}
+
+message GetUserPostsRequest {
+  string profile_id = 1;
+  optional PostType type = 2;
+  int32 page = 3;
+  int32 limit = 4;
+  bool include_pinned = 5;
+}
+
+message GetUserPostsResponse {
+  repeated Post posts = 1;
+  int32 total_count = 2;
+  int32 page = 3;
+  int32 limit = 4;
+  bool has_next = 5;
+}
+
+message FollowRequest {
+  string follower_profile_id = 1;
+  string followed_profile_id = 2;
+}
+
+message FollowResponse {
+  bool success = 1;
+  FollowStatus status = 2;
+  string message = 3;
+}
+
+message UnfollowRequest {
+  string follower_profile_id = 1;
+  string followed_profile_id = 2;
+}
+
+message GetFollowersRequest {
+  string profile_id = 1;
+  int32 page = 2;
+  int32 limit = 3;
+}
+
+message GetFollowersResponse {
+  repeated Follow followers = 1;
+  int32 total_count = 2;
+  int32 page = 3;
+  int32 limit = 4;
+  bool has_next = 5;
+}
+
+message GetFollowingRequest {
+  string profile_id = 1;
+  int32 page = 2;
+  int32 limit = 3;
+}
+
+message GetFollowingResponse {
+  repeated Follow following = 1;
+  int32 total_count = 2;
+  int32 page = 3;
+  int32 limit = 4;
+  bool has_next = 5;
+}
+
+message CheckFollowRequest {
+  string follower_profile_id = 1;
+  string followed_profile_id = 2;
+}
+
+message CheckFollowResponse {
+  bool is_following = 1;
+  FollowStatus status = 2;
+  google.protobuf.Timestamp followed_at = 3;
+}
+
+message SendMessageRequest {
+  string sender_profile_id = 1;
+  string recipient_profile_id = 2;
+  string content = 3;
+  MessageType type = 4;
+  repeated MessageAttachment attachments = 5;
+  bool encrypt = 6;
+}
+
+message MessageResponse {
+  bool success = 1;
+  Message message = 2;
+  string conversation_id = 3;
+  optional string error_message = 4;
+}
+
+message GetConversationRequest {
+  string conversation_id = 1;
+  string requesting_profile_id = 2;
+  optional string cursor = 3;
+  int32 limit = 4;
+}
+
+message GetInboxRequest {
+  string profile_id = 1;
+  int32 page = 2;
+  int32 limit = 3;
+  bool include_archived = 4;
+}
+
+message GetInboxResponse {
+  repeated Conversation conversations = 1;
+  int32 total_count = 2;
+  int32 unread_count = 3;
+  int32 page = 4;
+  int32 limit = 5;
+  bool has_next = 6;
+}
+
+message MarkReadRequest {
+  string message_id = 1;
+  string reader_profile_id = 2;
+}
+
+message MarkAllReadRequest {
+  string conversation_id = 1;
+  string reader_profile_id = 2;
+}
+
+message EndorsementRequest {
+  string endorser_profile_id = 1;
+  string endorsed_profile_id = 2;
+  string skill = 3;
+  string description = 4;
+  EndorsementType type = 5;
+}
+
+message GetEndorsementsRequest {
+  string profile_id = 1;
+  optional string skill = 2;
+  EndorsementDirection direction = 3;
+  int32 page = 4;
+  int32 limit = 5;
+}
+
+message GetEndorsementsResponse {
+  repeated Endorsement endorsements = 1;
+  int32 total_count = 2;
+  repeated SkillEndorsementSummary skill_summaries = 3;
+}
+
+message SkillEndorsementSummary {
+  string skill = 1;
+  int32 endorsement_count = 2;
+  double average_weight = 3;
+  repeated string top_endorsers = 4;
+}
+
+message UpdateReputationRequest {
+  string profile_id = 1;
+  int32 score_change = 2;
+  ReputationSource source = 3;
+  string reason = 4;
+  optional string transaction_id = 5;
+}
+
+message ReputationHistoryRequest {
+  string profile_id = 1;
+  optional google.protobuf.Timestamp start_date = 2;
+  optional google.protobuf.Timestamp end_date = 3;
+  int32 page = 4;
+  int32 limit = 5;
+}
+
+message ReputationHistoryResponse {
+  repeated ReputationUpdate updates = 1;
+  int32 total_count = 2;
+  ReputationSummary summary = 3;
+}
+
+message ReputationSummary {
+  int32 current_score = 1;
+  int32 highest_score = 2;
+  int32 lowest_score = 3;
+  int32 total_changes = 4;
+  double average_monthly_change = 5;
+}
+
+message ReportContentRequest {
+  string reporter_profile_id = 1;
+  ContentType content_type = 2;
+  string content_id = 3;
+  ReportReason reason = 4;
+  string description = 5;
+  repeated string evidence_urls = 6;
+}
+
+message ReportResponse {
+  bool success = 1;
+  string report_id = 2;
+  string message = 3;
+}
+
+message ModerateContentRequest {
+  string moderator_profile_id = 1;
+  string content_id = 2;
+  ContentType content_type = 3;
+  ModerationAction action = 4;
+  string reason = 5;
+}
+
+message ModerationResult {
+  bool success = 1;
+  ModerationAction action_taken = 2;
+  string content_id = 3;
+  google.protobuf.Timestamp moderated_at = 4;
+}
+
+message GetModerationQueueRequest {
+  string moderator_profile_id = 1;
+  optional ContentType content_type = 2;
+  optional ReportReason report_reason = 3;
+  int32 page = 4;
+  int32 limit = 5;
+}
+
+message GetModerationQueueResponse {
+  repeated ModerationItem items = 1;
+  int32 total_count = 2;
+  int32 page = 3;
+  int32 limit = 4;
+  bool has_next = 5;
+}
+
+message ModerationItem {
+  string item_id = 1;
+  ContentType content_type = 2;
+  string content_id = 3;
+  string reported_content = 4;
+  string reporter_profile_id = 5;
+  ReportReason reason = 6;
+  string description = 7;
+  google.protobuf.Timestamp reported_at = 8;
+  ModerationPriority priority = 9;
+}
+
+message UpdatePrivacyRequest {
+  string profile_id = 1;
+  PrivacySettings settings = 2;
+}
+
+message PrivacySettings {
+  PrivacyLevel profile_visibility = 1;
+  bool allow_direct_messages = 2;
+  bool show_online_status = 3;
+  bool show_followers = 4;
+  bool show_following = 5;
+  bool show_endorsements = 6;
+  bool allow_tags = 7;
+  MessagePrivacy message_privacy = 8;
+}
+
+message BlockUserRequest {
+  string blocker_profile_id = 1;
+  string blocked_profile_id = 2;
+  string reason = 3;
+}
+
+message UnblockUserRequest {
+  string blocker_profile_id = 1;
+  string blocked_profile_id = 2;
+}
+
+message GetBlockedUsersRequest {
+  string profile_id = 1;
+  int32 page = 2;
+  int32 limit = 3;
+}
+
+message GetBlockedUsersResponse {
+  repeated BlockedUser blocked_users = 1;
+  int32 total_count = 2;
+}
+
+message BlockedUser {
+  string blocked_profile_id = 1;
+  SocialProfile profile = 2;
+  string reason = 3;
+  google.protobuf.Timestamp blocked_at = 4;
+}
+
+// Enums
+enum PrivacyLevel {
+  PRIVACY_LEVEL_UNSPECIFIED = 0;
+  PRIVACY_LEVEL_OPEN = 1;
+  PRIVACY_LEVEL_SELECTIVE = 2;
+  PRIVACY_LEVEL_PRIVATE = 3;
+}
+
+enum VerificationStatus {
+  VERIFICATION_STATUS_UNSPECIFIED = 0;
+  VERIFICATION_STATUS_UNVERIFIED = 1;
+  VERIFICATION_STATUS_PENDING = 2;
+  VERIFICATION_STATUS_VERIFIED = 3;
+  VERIFICATION_STATUS_REJECTED = 4;
+}
+
+enum BadgeCategory {
+  BADGE_CATEGORY_UNSPECIFIED = 0;
+  BADGE_CATEGORY_ACHIEVEMENT = 1;
+  BADGE_CATEGORY_SKILL = 2;
+  BADGE_CATEGORY_CONTRIBUTION = 3;
+  BADGE_CATEGORY_REPUTATION = 4;
+  BADGE_CATEGORY_SPECIAL = 5;
+}
+
+enum PostType {
+  POST_TYPE_UNSPECIFIED = 0;
+  POST_TYPE_TEXT = 1;
+  POST_TYPE_IMAGE = 2;
+  POST_TYPE_VIDEO = 3;
+  POST_TYPE_LINK = 4;
+  POST_TYPE_POLL = 5;
+  POST_TYPE_ARTICLE = 6;
+}
+
+enum PostVisibility {
+  POST_VISIBILITY_UNSPECIFIED = 0;
+  POST_VISIBILITY_PUBLIC = 1;
+  POST_VISIBILITY_FOLLOWERS = 2;
+  POST_VISIBILITY_PRIVATE = 3;
+  POST_VISIBILITY_UNLISTED = 4;
+}
+
+enum MediaType {
+  MEDIA_TYPE_UNSPECIFIED = 0;
+  MEDIA_TYPE_IMAGE = 1;
+  MEDIA_TYPE_VIDEO = 2;
+  MEDIA_TYPE_AUDIO = 3;
+  MEDIA_TYPE_DOCUMENT = 4;
+}
+
+enum MessageType {
+  MESSAGE_TYPE_UNSPECIFIED = 0;
+  MESSAGE_TYPE_TEXT = 1;
+  MESSAGE_TYPE_IMAGE = 2;
+  MESSAGE_TYPE_VIDEO = 3;
+  MESSAGE_TYPE_AUDIO = 4;
+  MESSAGE_TYPE_FILE = 5;
+  MESSAGE_TYPE_SYSTEM = 6;
+}
+
+enum AttachmentType {
+  ATTACHMENT_TYPE_UNSPECIFIED = 0;
+  ATTACHMENT_TYPE_IMAGE = 1;
+  ATTACHMENT_TYPE_VIDEO = 2;
+  ATTACHMENT_TYPE_AUDIO = 3;
+  ATTACHMENT_TYPE_DOCUMENT = 4;
+  ATTACHMENT_TYPE_ARCHIVE = 5;
+}
+
+enum FollowStatus {
+  FOLLOW_STATUS_UNSPECIFIED = 0;
+  FOLLOW_STATUS_FOLLOWING = 1;
+  FOLLOW_STATUS_PENDING = 2;
+  FOLLOW_STATUS_BLOCKED = 3;
+  FOLLOW_STATUS_MUTED = 4;
+}
+
+enum EndorsementType {
+  ENDORSEMENT_TYPE_UNSPECIFIED = 0;
+  ENDORSEMENT_TYPE_SKILL = 1;
+  ENDORSEMENT_TYPE_CHARACTER = 2;
+  ENDORSEMENT_TYPE_WORK_QUALITY = 3;
+  ENDORSEMENT_TYPE_RELIABILITY = 4;
+  ENDORSEMENT_TYPE_LEADERSHIP = 5;
+}
+
+enum EndorsementDirection {
+  ENDORSEMENT_DIRECTION_UNSPECIFIED = 0;
+  ENDORSEMENT_DIRECTION_RECEIVED = 1;
+  ENDORSEMENT_DIRECTION_GIVEN = 2;
+  ENDORSEMENT_DIRECTION_BOTH = 3;
+}
+
+enum ReputationSource {
+  REPUTATION_SOURCE_UNSPECIFIED = 0;
+  REPUTATION_SOURCE_ENDORSEMENT = 1;
+  REPUTATION_SOURCE_GOVERNANCE_PARTICIPATION = 2;
+  REPUTATION_SOURCE_TRANSACTION_COMPLETION = 3;
+  REPUTATION_SOURCE_CONTENT_QUALITY = 4;
+  REPUTATION_SOURCE_COMMUNITY_CONTRIBUTION = 5;
+  REPUTATION_SOURCE_MODERATION_ACTION = 6;
+}
+
+enum ContentType {
+  CONTENT_TYPE_UNSPECIFIED = 0;
+  CONTENT_TYPE_POST = 1;
+  CONTENT_TYPE_COMMENT = 2;
+  CONTENT_TYPE_MESSAGE = 3;
+  CONTENT_TYPE_PROFILE = 4;
+}
+
+enum ReportReason {
+  REPORT_REASON_UNSPECIFIED = 0;
+  REPORT_REASON_SPAM = 1;
+  REPORT_REASON_HARASSMENT = 2;
+  REPORT_REASON_HATE_SPEECH = 3;
+  REPORT_REASON_MISINFORMATION = 4;
+  REPORT_REASON_COPYRIGHT = 5;
+  REPORT_REASON_INAPPROPRIATE_CONTENT = 6;
+  REPORT_REASON_IMPERSONATION = 7;
+  REPORT_REASON_OTHER = 8;
+}
+
+enum ModerationAction {
+  MODERATION_ACTION_UNSPECIFIED = 0;
+  MODERATION_ACTION_APPROVE = 1;
+  MODERATION_ACTION_REMOVE = 2;
+  MODERATION_ACTION_HIDE = 3;
+  MODERATION_ACTION_FLAG = 4;
+  MODERATION_ACTION_WARN_USER = 5;
+  MODERATION_ACTION_SUSPEND_USER = 6;
+}
+
+enum ModerationStatus {
+  MODERATION_STATUS_UNSPECIFIED = 0;
+  MODERATION_STATUS_PENDING = 1;
+  MODERATION_STATUS_APPROVED = 2;
+  MODERATION_STATUS_REMOVED = 3;
+  MODERATION_STATUS_FLAGGED = 4;
+}
+
+enum ModerationPriority {
+  MODERATION_PRIORITY_UNSPECIFIED = 0;
+  MODERATION_PRIORITY_LOW = 1;
+  MODERATION_PRIORITY_MEDIUM = 2;
+  MODERATION_PRIORITY_HIGH = 3;
+  MODERATION_PRIORITY_URGENT = 4;
+}
+
+enum ProfileSearchSort {
+  PROFILE_SEARCH_SORT_UNSPECIFIED = 0;
+  PROFILE_SEARCH_SORT_RELEVANCE = 1;
+  PROFILE_SEARCH_SORT_REPUTATION = 2;
+  PROFILE_SEARCH_SORT_RECENT = 3;
+  PROFILE_SEARCH_SORT_FOLLOWERS = 4;
+}
+
+enum FeedType {
+  FEED_TYPE_UNSPECIFIED = 0;
+  FEED_TYPE_HOME = 1;
+  FEED_TYPE_FOLLOWING = 2;
+  FEED_TYPE_TRENDING = 3;
+  FEED_TYPE_RECENT = 4;
+}
+
+enum MessagePrivacy {
+  MESSAGE_PRIVACY_UNSPECIFIED = 0;
+  MESSAGE_PRIVACY_EVERYONE = 1;
+  MESSAGE_PRIVACY_FOLLOWERS_ONLY = 2;
+  MESSAGE_PRIVACY_CONNECTIONS_ONLY = 3;
+  MESSAGE_PRIVACY_NO_ONE = 4;
+}

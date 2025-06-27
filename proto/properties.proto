@@ -1,0 +1,927 @@
+syntax = "proto3";
+
+package dac.properties;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+// Property Management Service
+service PropertyService {
+  // Property CRUD Operations
+  rpc CreateProperty(CreatePropertyRequest) returns (Property);
+  rpc GetProperty(GetPropertyRequest) returns (Property);
+  rpc UpdateProperty(UpdatePropertyRequest) returns (Property);
+  rpc DeleteProperty(DeletePropertyRequest) returns (google.protobuf.Empty);
+  rpc ListProperties(ListPropertiesRequest) returns (stream Property);
+  
+  // Property Search and Filtering
+  rpc SearchProperties(PropertySearchRequest) returns (PropertySearchResponse);
+  rpc GetFeaturedProperties(FeaturedPropertiesRequest) returns (FeaturedPropertiesResponse);
+  rpc GetPropertiesByOwner(OwnerPropertiesRequest) returns (OwnerPropertiesResponse);
+  
+  // Property Transactions
+  rpc InitiateTransaction(TransactionRequest) returns (TransactionResponse);
+  rpc GetTransactionStatus(TransactionStatusRequest) returns (TransactionStatus);
+  rpc CompleteTransaction(CompleteTransactionRequest) returns (TransactionResult);
+  rpc CancelTransaction(CancelTransactionRequest) returns (google.protobuf.Empty);
+  
+  // Fractional Ownership
+  rpc TokenizeProperty(TokenizationRequest) returns (stream TokenizationResponse);
+  rpc GetTokenInfo(TokenInfoRequest) returns (TokenInfo);
+  rpc TransferTokens(TokenTransferRequest) returns (TokenTransferResponse);
+  rpc GetTokenHolders(TokenHoldersRequest) returns (TokenHoldersResponse);
+  
+  // Property Valuation
+  rpc RequestValuation(ValuationRequest) returns (stream ValuationResponse);
+  rpc GetValuationHistory(ValuationHistoryRequest) returns (ValuationHistoryResponse);
+  rpc UpdateValuation(UpdateValuationRequest) returns (Valuation);
+  
+  // Documents and Media
+  rpc UploadDocument(stream DocumentUploadRequest) returns (DocumentUploadResponse);
+  rpc GetDocument(DocumentRequest) returns (stream DocumentResponse);
+  rpc ListDocuments(ListDocumentsRequest) returns (DocumentListResponse);
+  rpc UploadMedia(stream MediaUploadRequest) returns (MediaUploadResponse);
+  
+  // Property Analytics
+  rpc GetPropertyAnalytics(AnalyticsRequest) returns (PropertyAnalytics);
+  rpc GetMarketTrends(MarketTrendsRequest) returns (MarketTrendsResponse);
+  rpc GetRentalAnalytics(RentalAnalyticsRequest) returns (RentalAnalytics);
+}
+
+// Core Property Messages
+message Property {
+  int32 id = 1;
+  string title = 2;
+  string description = 3;
+  PropertyType type = 4;
+  PropertyStatus status = 5;
+  int32 owner_id = 6;
+  Address address = 7;
+  PropertyDetails details = 8;
+  PricingInfo pricing = 9;
+  repeated PropertyImage images = 10;
+  repeated PropertyDocument documents = 11;
+  PropertyMetrics metrics = 12;
+  TokenizationInfo tokenization = 13;
+  google.protobuf.Timestamp created_at = 14;
+  google.protobuf.Timestamp updated_at = 15;
+  repeated string tags = 16;
+  bool is_featured = 17;
+  User owner = 18;
+}
+
+message Address {
+  string street_address = 1;
+  string city = 2;
+  string state = 3;
+  string postal_code = 4;
+  string country = 5;
+  double latitude = 6;
+  double longitude = 7;
+  string neighborhood = 8;
+  string school_district = 9;
+}
+
+message PropertyDetails {
+  double square_footage = 1;
+  int32 bedrooms = 2;
+  int32 bathrooms = 3;
+  int32 year_built = 4;
+  string lot_size = 5;
+  PropertyCondition condition = 6;
+  repeated string features = 7;
+  repeated string amenities = 8;
+  string parking_type = 9;
+  int32 parking_spaces = 10;
+  bool has_garage = 11;
+  bool has_pool = 12;
+  bool has_garden = 13;
+  HeatingCooling heating_cooling = 14;
+  repeated string flooring_types = 15;
+}
+
+message HeatingCooling {
+  string heating_type = 1;
+  string cooling_type = 2;
+  int32 hvac_age = 3;
+  string energy_efficiency = 4;
+}
+
+message PricingInfo {
+  string listing_price = 1;
+  string price_per_sqft = 2;
+  string estimated_value = 3;
+  string monthly_rent = 4;
+  string annual_property_tax = 5;
+  string hoa_fees = 6;
+  string insurance_cost = 7;
+  PriceHistory price_history = 8;
+}
+
+message PriceHistory {
+  repeated PricePoint price_points = 1;
+}
+
+message PricePoint {
+  string price = 1;
+  google.protobuf.Timestamp date = 2;
+  PriceChangeReason reason = 3;
+  string notes = 4;
+}
+
+message PropertyImage {
+  string id = 1;
+  string url = 2;
+  string thumbnail_url = 3;
+  string caption = 4;
+  ImageType type = 5;
+  int32 order_index = 6;
+  google.protobuf.Timestamp uploaded_at = 7;
+}
+
+message PropertyDocument {
+  string id = 1;
+  string name = 2;
+  string url = 3;
+  DocumentType type = 4;
+  string file_size = 5;
+  string mime_type = 6;
+  google.protobuf.Timestamp uploaded_at = 7;
+  bool is_public = 8;
+}
+
+message PropertyMetrics {
+  double walkability_score = 1;
+  double transit_score = 2;
+  double bike_score = 3;
+  double crime_rate = 4;
+  double school_rating = 5;
+  int32 days_on_market = 6;
+  int32 view_count = 7;
+  int32 inquiry_count = 8;
+  double cap_rate = 9;
+  double rental_yield = 10;
+}
+
+message TokenizationInfo {
+  bool is_tokenized = 1;
+  string token_contract_address = 2;
+  string total_tokens = 3;
+  string tokens_available = 4;
+  string token_price = 5;
+  string minimum_investment = 6;
+  repeated TokenHolder token_holders = 7;
+  TokenizationStatus status = 8;
+}
+
+message TokenHolder {
+  int32 user_id = 1;
+  string token_amount = 2;
+  double ownership_percentage = 3;
+  google.protobuf.Timestamp acquired_at = 4;
+  User user = 5;
+}
+
+message User {
+  int32 id = 1;
+  string username = 2;
+  string name = 3;
+  string email = 4;
+  string avatar_url = 5;
+  string membership_tier = 6;
+}
+
+// Request/Response Messages
+message CreatePropertyRequest {
+  string title = 1;
+  string description = 2;
+  PropertyType type = 3;
+  int32 owner_id = 4;
+  Address address = 5;
+  PropertyDetails details = 6;
+  PricingInfo pricing = 7;
+  repeated string tags = 8;
+  bool is_featured = 9;
+}
+
+message GetPropertyRequest {
+  int32 id = 1;
+  bool include_analytics = 2;
+  bool include_documents = 3;
+}
+
+message UpdatePropertyRequest {
+  int32 id = 1;
+  optional string title = 2;
+  optional string description = 3;
+  optional PropertyStatus status = 4;
+  optional PropertyDetails details = 5;
+  optional PricingInfo pricing = 6;
+  repeated string tags = 7;
+  optional bool is_featured = 8;
+}
+
+message DeletePropertyRequest {
+  int32 id = 1;
+  string reason = 2;
+}
+
+message ListPropertiesRequest {
+  optional PropertyType type = 1;
+  optional PropertyStatus status = 2;
+  optional int32 owner_id = 3;
+  int32 page = 4;
+  int32 limit = 5;
+  string sort_by = 6;
+  string sort_order = 7;
+  PropertyFilters filters = 8;
+}
+
+message PropertyFilters {
+  PriceRange price_range = 1;
+  optional int32 min_bedrooms = 2;
+  optional int32 max_bedrooms = 3;
+  optional int32 min_bathrooms = 4;
+  optional int32 max_bathrooms = 5;
+  optional double min_sqft = 6;
+  optional double max_sqft = 7;
+  repeated string features = 8;
+  LocationFilter location = 9;
+  optional bool is_tokenized = 10;
+}
+
+message PriceRange {
+  string min_price = 1;
+  string max_price = 2;
+}
+
+message LocationFilter {
+  optional string city = 1;
+  optional string state = 2;
+  optional string neighborhood = 3;
+  optional double radius_miles = 4;
+  optional double center_lat = 5;
+  optional double center_lng = 6;
+}
+
+message PropertySearchRequest {
+  string query = 1;
+  PropertyFilters filters = 2;
+  int32 page = 3;
+  int32 limit = 4;
+  SearchSort sort = 5;
+}
+
+message PropertySearchResponse {
+  repeated Property properties = 1;
+  int32 total_count = 2;
+  int32 page = 3;
+  int32 limit = 4;
+  bool has_next = 5;
+  SearchFacets facets = 6;
+}
+
+message SearchFacets {
+  repeated FacetValue property_types = 1;
+  repeated FacetValue price_ranges = 2;
+  repeated FacetValue neighborhoods = 3;
+  repeated FacetValue features = 4;
+}
+
+message FacetValue {
+  string value = 1;
+  int32 count = 2;
+}
+
+message FeaturedPropertiesRequest {
+  int32 limit = 1;
+  optional PropertyType type = 2;
+}
+
+message FeaturedPropertiesResponse {
+  repeated Property properties = 1;
+}
+
+message OwnerPropertiesRequest {
+  int32 owner_id = 1;
+  optional PropertyStatus status = 2;
+  int32 page = 3;
+  int32 limit = 4;
+}
+
+message OwnerPropertiesResponse {
+  repeated Property properties = 1;
+  int32 total_count = 2;
+  PropertyOwnerStats stats = 3;
+}
+
+message PropertyOwnerStats {
+  int32 total_properties = 1;
+  int32 active_listings = 2;
+  int32 sold_properties = 3;
+  string total_value = 4;
+  double average_price = 5;
+}
+
+// Transaction Messages
+message TransactionRequest {
+  int32 property_id = 1;
+  int32 buyer_id = 2;
+  int32 seller_id = 3;
+  string offer_price = 4;
+  TransactionType transaction_type = 5;
+  string down_payment = 6;
+  string financing_details = 7;
+  google.protobuf.Timestamp closing_date = 8;
+  repeated string conditions = 9;
+}
+
+message TransactionResponse {
+  string transaction_id = 1;
+  TransactionStatus status = 2;
+  string escrow_address = 3;
+  google.protobuf.Timestamp created_at = 4;
+}
+
+message TransactionStatusRequest {
+  string transaction_id = 1;
+}
+
+message TransactionStatus {
+  string transaction_id = 1;
+  TransactionState state = 2;
+  repeated TransactionStep steps = 3;
+  string current_step = 4;
+  double progress_percentage = 5;
+  optional string error_message = 6;
+}
+
+message TransactionStep {
+  string step_name = 1;
+  StepStatus status = 2;
+  google.protobuf.Timestamp completed_at = 3;
+  repeated string required_documents = 4;
+  string notes = 5;
+}
+
+message CompleteTransactionRequest {
+  string transaction_id = 1;
+  string final_price = 2;
+  repeated CompletionDocument documents = 3;
+  string blockchain_tx_hash = 4;
+}
+
+message CompletionDocument {
+  string name = 1;
+  string document_url = 2;
+  DocumentType type = 3;
+}
+
+message TransactionResult {
+  bool success = 1;
+  string transaction_hash = 2;
+  string new_owner_address = 3;
+  google.protobuf.Timestamp completed_at = 4;
+  string deed_url = 5;
+}
+
+message CancelTransactionRequest {
+  string transaction_id = 1;
+  string reason = 2;
+  string cancellation_fee = 3;
+}
+
+// Tokenization Messages
+message TokenizationRequest {
+  int32 property_id = 1;
+  string total_tokens = 2;
+  string token_price = 3;
+  string minimum_investment = 4;
+  TokenizationParameters parameters = 5;
+}
+
+message TokenizationParameters {
+  string token_name = 1;
+  string token_symbol = 2;
+  string dividend_percentage = 3;
+  string management_fee = 4;
+  repeated string investor_rights = 5;
+  string lock_period = 6;
+}
+
+message TokenizationResponse {
+  string tokenization_id = 1;
+  TokenizationStatus status = 2;
+  double progress_percentage = 3;
+  optional string token_contract_address = 4;
+  optional string error_message = 5;
+  repeated string processing_steps = 6;
+}
+
+message TokenInfoRequest {
+  int32 property_id = 1;
+}
+
+message TokenInfo {
+  string contract_address = 1;
+  string token_name = 2;
+  string token_symbol = 3;
+  string total_supply = 4;
+  string available_tokens = 5;
+  string current_price = 6;
+  string market_cap = 7;
+  TokenMetrics metrics = 8;
+}
+
+message TokenMetrics {
+  int32 holder_count = 1;
+  string trading_volume_24h = 2;
+  double price_change_24h = 3;
+  string dividend_yield = 4;
+  double liquidity_ratio = 5;
+}
+
+message TokenTransferRequest {
+  string token_contract_address = 1;
+  int32 from_user_id = 2;
+  int32 to_user_id = 3;
+  string token_amount = 4;
+  string transfer_fee = 5;
+}
+
+message TokenTransferResponse {
+  bool success = 1;
+  string transaction_hash = 2;
+  string transfer_id = 3;
+  google.protobuf.Timestamp completed_at = 4;
+}
+
+message TokenHoldersRequest {
+  int32 property_id = 1;
+  int32 page = 2;
+  int32 limit = 3;
+}
+
+message TokenHoldersResponse {
+  repeated TokenHolder holders = 1;
+  int32 total_holders = 2;
+  TokenDistribution distribution = 3;
+}
+
+message TokenDistribution {
+  double top_10_percentage = 1;
+  double top_100_percentage = 2;
+  double median_holding = 3;
+  double gini_coefficient = 4;
+}
+
+// Valuation Messages
+message ValuationRequest {
+  int32 property_id = 1;
+  ValuationMethod method = 2;
+  bool include_comparables = 3;
+  bool include_market_analysis = 4;
+}
+
+message ValuationResponse {
+  string valuation_id = 1;
+  ValuationStatus status = 2;
+  double progress_percentage = 3;
+  optional Valuation valuation = 4;
+  repeated string processing_steps = 5;
+}
+
+message Valuation {
+  string id = 1;
+  int32 property_id = 2;
+  string estimated_value = 3;
+  double confidence_score = 4;
+  ValuationMethod method = 5;
+  ValueRange value_range = 6;
+  repeated ComparableProperty comparables = 7;
+  repeated ValuationFactor factors = 8;
+  google.protobuf.Timestamp created_at = 9;
+  string appraiser = 10;
+}
+
+message ValueRange {
+  string low_estimate = 1;
+  string high_estimate = 2;
+  string median_estimate = 3;
+}
+
+message ComparableProperty {
+  int32 property_id = 1;
+  string address = 2;
+  string sale_price = 3;
+  google.protobuf.Timestamp sale_date = 4;
+  double similarity_score = 5;
+  repeated string adjustments = 6;
+}
+
+message ValuationFactor {
+  string factor_name = 1;
+  double impact_weight = 2;
+  string description = 3;
+  FactorDirection direction = 4;
+}
+
+message ValuationHistoryRequest {
+  int32 property_id = 1;
+  optional google.protobuf.Timestamp start_date = 2;
+  optional google.protobuf.Timestamp end_date = 3;
+}
+
+message ValuationHistoryResponse {
+  repeated Valuation valuations = 1;
+  ValuationTrend trend = 2;
+}
+
+message ValuationTrend {
+  double appreciation_rate = 1;
+  string trend_direction = 2;
+  double volatility = 3;
+  double price_momentum = 4;
+}
+
+message UpdateValuationRequest {
+  string valuation_id = 1;
+  string updated_value = 2;
+  string reason = 3;
+  repeated ValuationFactor updated_factors = 4;
+}
+
+// Document and Media Messages
+message DocumentUploadRequest {
+  oneof data {
+    DocumentMetadata metadata = 1;
+    bytes chunk = 2;
+  }
+}
+
+message DocumentMetadata {
+  string filename = 1;
+  DocumentType type = 2;
+  int32 property_id = 3;
+  string description = 4;
+  bool is_public = 5;
+  int64 file_size = 6;
+}
+
+message DocumentUploadResponse {
+  string document_id = 1;
+  string url = 2;
+  bool success = 3;
+  optional string error_message = 4;
+}
+
+message DocumentRequest {
+  string document_id = 1;
+  bool download = 2;
+}
+
+message DocumentResponse {
+  oneof data {
+    DocumentMetadata metadata = 1;
+    bytes chunk = 2;
+  }
+}
+
+message ListDocumentsRequest {
+  int32 property_id = 1;
+  optional DocumentType type = 2;
+  bool public_only = 3;
+}
+
+message DocumentListResponse {
+  repeated PropertyDocument documents = 1;
+}
+
+message MediaUploadRequest {
+  oneof data {
+    MediaMetadata metadata = 1;
+    bytes chunk = 2;
+  }
+}
+
+message MediaMetadata {
+  string filename = 1;
+  ImageType type = 2;
+  int32 property_id = 3;
+  string caption = 4;
+  int32 order_index = 5;
+  int64 file_size = 6;
+}
+
+message MediaUploadResponse {
+  string image_id = 1;
+  string url = 2;
+  string thumbnail_url = 3;
+  bool success = 4;
+  optional string error_message = 5;
+}
+
+// Analytics Messages
+message AnalyticsRequest {
+  int32 property_id = 1;
+  google.protobuf.Timestamp start_date = 2;
+  google.protobuf.Timestamp end_date = 3;
+  repeated AnalyticsMetric metrics = 4;
+}
+
+message PropertyAnalytics {
+  int32 property_id = 1;
+  ViewAnalytics views = 2;
+  InquiryAnalytics inquiries = 3;
+  PerformanceMetrics performance = 4;
+  DemographicData demographics = 5;
+}
+
+message ViewAnalytics {
+  int32 total_views = 1;
+  int32 unique_views = 2;
+  double average_view_duration = 3;
+  repeated DailyViews daily_breakdown = 4;
+  repeated string top_referring_sources = 5;
+}
+
+message DailyViews {
+  google.protobuf.Timestamp date = 1;
+  int32 views = 2;
+  int32 unique_visitors = 3;
+}
+
+message InquiryAnalytics {
+  int32 total_inquiries = 1;
+  int32 phone_inquiries = 2;
+  int32 email_inquiries = 3;
+  int32 tour_requests = 4;
+  double conversion_rate = 5;
+}
+
+message PerformanceMetrics {
+  double listing_score = 1;
+  int32 days_on_market = 2;
+  double price_competitiveness = 3;
+  double market_activity = 4;
+  repeated string improvement_suggestions = 5;
+}
+
+message DemographicData {
+  repeated AgeGroup age_groups = 1;
+  repeated string top_locations = 2;
+  repeated string device_types = 3;
+}
+
+message AgeGroup {
+  string age_range = 1;
+  double percentage = 2;
+}
+
+message MarketTrendsRequest {
+  string location = 1;
+  PropertyType property_type = 2;
+  google.protobuf.Timestamp start_date = 3;
+  google.protobuf.Timestamp end_date = 4;
+}
+
+message MarketTrendsResponse {
+  MarketTrendData trends = 1;
+  PriceAnalysis price_analysis = 2;
+  SupplyDemandAnalysis supply_demand = 3;
+  repeated MarketInsight insights = 4;
+}
+
+message MarketTrendData {
+  double price_appreciation = 1;
+  double sales_volume_change = 2;
+  double inventory_change = 3;
+  double time_on_market_change = 4;
+}
+
+message PriceAnalysis {
+  string median_price = 1;
+  string price_per_sqft = 2;
+  double price_volatility = 3;
+  repeated PriceTrend price_trends = 4;
+}
+
+message PriceTrend {
+  google.protobuf.Timestamp month = 1;
+  string median_price = 2;
+  double month_over_month_change = 3;
+}
+
+message SupplyDemandAnalysis {
+  int32 new_listings = 1;
+  int32 sold_properties = 2;
+  double months_of_supply = 3;
+  double absorption_rate = 4;
+}
+
+message MarketInsight {
+  string category = 1;
+  string insight = 2;
+  InsightType type = 3;
+  double confidence = 4;
+}
+
+message RentalAnalyticsRequest {
+  int32 property_id = 1;
+  google.protobuf.Timestamp start_date = 2;
+  google.protobuf.Timestamp end_date = 3;
+}
+
+message RentalAnalytics {
+  RentalPerformance performance = 1;
+  TenantAnalytics tenants = 2;
+  FinancialMetrics financials = 3;
+  MaintenanceAnalytics maintenance = 4;
+}
+
+message RentalPerformance {
+  double occupancy_rate = 1;
+  double average_rental_price = 2;
+  int32 tenant_turnover_rate = 3;
+  double rental_yield = 4;
+}
+
+message TenantAnalytics {
+  int32 current_tenants = 1;
+  double average_lease_length = 2;
+  double tenant_satisfaction = 3;
+  int32 late_payments = 4;
+}
+
+message FinancialMetrics {
+  string total_rental_income = 1;
+  string operating_expenses = 2;
+  string net_operating_income = 3;
+  double cap_rate = 4;
+  string cash_flow = 5;
+}
+
+message MaintenanceAnalytics {
+  int32 maintenance_requests = 1;
+  string maintenance_costs = 2;
+  double average_response_time = 3;
+  repeated MaintenanceCategory top_issues = 4;
+}
+
+message MaintenanceCategory {
+  string category = 1;
+  int32 request_count = 2;
+  string total_cost = 3;
+}
+
+// Enums
+enum PropertyType {
+  PROPERTY_TYPE_UNSPECIFIED = 0;
+  PROPERTY_TYPE_SINGLE_FAMILY = 1;
+  PROPERTY_TYPE_CONDO = 2;
+  PROPERTY_TYPE_TOWNHOUSE = 3;
+  PROPERTY_TYPE_MULTI_FAMILY = 4;
+  PROPERTY_TYPE_COMMERCIAL = 5;
+  PROPERTY_TYPE_LAND = 6;
+  PROPERTY_TYPE_MIXED_USE = 7;
+}
+
+enum PropertyStatus {
+  PROPERTY_STATUS_UNSPECIFIED = 0;
+  PROPERTY_STATUS_DRAFT = 1;
+  PROPERTY_STATUS_ACTIVE = 2;
+  PROPERTY_STATUS_PENDING = 3;
+  PROPERTY_STATUS_SOLD = 4;
+  PROPERTY_STATUS_WITHDRAWN = 5;
+  PROPERTY_STATUS_EXPIRED = 6;
+}
+
+enum PropertyCondition {
+  PROPERTY_CONDITION_UNSPECIFIED = 0;
+  PROPERTY_CONDITION_EXCELLENT = 1;
+  PROPERTY_CONDITION_GOOD = 2;
+  PROPERTY_CONDITION_FAIR = 3;
+  PROPERTY_CONDITION_POOR = 4;
+  PROPERTY_CONDITION_RENOVATED = 5;
+}
+
+enum PriceChangeReason {
+  PRICE_CHANGE_REASON_UNSPECIFIED = 0;
+  PRICE_CHANGE_REASON_MARKET_ADJUSTMENT = 1;
+  PRICE_CHANGE_REASON_APPRAISAL = 2;
+  PRICE_CHANGE_REASON_SELLER_REQUEST = 3;
+  PRICE_CHANGE_REASON_COMPARABLE_SALES = 4;
+  PRICE_CHANGE_REASON_CONDITION_CHANGE = 5;
+}
+
+enum ImageType {
+  IMAGE_TYPE_UNSPECIFIED = 0;
+  IMAGE_TYPE_EXTERIOR = 1;
+  IMAGE_TYPE_INTERIOR = 2;
+  IMAGE_TYPE_KITCHEN = 3;
+  IMAGE_TYPE_BATHROOM = 4;
+  IMAGE_TYPE_BEDROOM = 5;
+  IMAGE_TYPE_LIVING_ROOM = 6;
+  IMAGE_TYPE_AERIAL = 7;
+  IMAGE_TYPE_FLOOR_PLAN = 8;
+}
+
+enum DocumentType {
+  DOCUMENT_TYPE_UNSPECIFIED = 0;
+  DOCUMENT_TYPE_DEED = 1;
+  DOCUMENT_TYPE_TITLE = 2;
+  DOCUMENT_TYPE_INSPECTION = 3;
+  DOCUMENT_TYPE_APPRAISAL = 4;
+  DOCUMENT_TYPE_DISCLOSURE = 5;
+  DOCUMENT_TYPE_CONTRACT = 6;
+  DOCUMENT_TYPE_INSURANCE = 7;
+  DOCUMENT_TYPE_FINANCIAL = 8;
+}
+
+enum TokenizationStatus {
+  TOKENIZATION_STATUS_UNSPECIFIED = 0;
+  TOKENIZATION_STATUS_PENDING = 1;
+  TOKENIZATION_STATUS_IN_PROGRESS = 2;
+  TOKENIZATION_STATUS_COMPLETED = 3;
+  TOKENIZATION_STATUS_FAILED = 4;
+  TOKENIZATION_STATUS_CANCELLED = 5;
+}
+
+enum TransactionType {
+  TRANSACTION_TYPE_UNSPECIFIED = 0;
+  TRANSACTION_TYPE_PURCHASE = 1;
+  TRANSACTION_TYPE_SALE = 2;
+  TRANSACTION_TYPE_LEASE = 3;
+  TRANSACTION_TYPE_TOKEN_PURCHASE = 4;
+  TRANSACTION_TYPE_TOKEN_SALE = 5;
+}
+
+enum TransactionState {
+  TRANSACTION_STATE_UNSPECIFIED = 0;
+  TRANSACTION_STATE_INITIATED = 1;
+  TRANSACTION_STATE_UNDER_CONTRACT = 2;
+  TRANSACTION_STATE_IN_ESCROW = 3;
+  TRANSACTION_STATE_PENDING_CLOSING = 4;
+  TRANSACTION_STATE_COMPLETED = 5;
+  TRANSACTION_STATE_CANCELLED = 6;
+  TRANSACTION_STATE_FAILED = 7;
+}
+
+enum StepStatus {
+  STEP_STATUS_UNSPECIFIED = 0;
+  STEP_STATUS_PENDING = 1;
+  STEP_STATUS_IN_PROGRESS = 2;
+  STEP_STATUS_COMPLETED = 3;
+  STEP_STATUS_FAILED = 4;
+  STEP_STATUS_SKIPPED = 5;
+}
+
+enum SearchSort {
+  SEARCH_SORT_UNSPECIFIED = 0;
+  SEARCH_SORT_RELEVANCE = 1;
+  SEARCH_SORT_PRICE_ASC = 2;
+  SEARCH_SORT_PRICE_DESC = 3;
+  SEARCH_SORT_DATE_ASC = 4;
+  SEARCH_SORT_DATE_DESC = 5;
+  SEARCH_SORT_SIZE_ASC = 6;
+  SEARCH_SORT_SIZE_DESC = 7;
+}
+
+enum ValuationMethod {
+  VALUATION_METHOD_UNSPECIFIED = 0;
+  VALUATION_METHOD_COMPARATIVE = 1;
+  VALUATION_METHOD_INCOME = 2;
+  VALUATION_METHOD_COST = 3;
+  VALUATION_METHOD_AI_HYBRID = 4;
+}
+
+enum ValuationStatus {
+  VALUATION_STATUS_UNSPECIFIED = 0;
+  VALUATION_STATUS_PENDING = 1;
+  VALUATION_STATUS_IN_PROGRESS = 2;
+  VALUATION_STATUS_COMPLETED = 3;
+  VALUATION_STATUS_FAILED = 4;
+}
+
+enum FactorDirection {
+  FACTOR_DIRECTION_UNSPECIFIED = 0;
+  FACTOR_DIRECTION_POSITIVE = 1;
+  FACTOR_DIRECTION_NEGATIVE = 2;
+  FACTOR_DIRECTION_NEUTRAL = 3;
+}
+
+enum AnalyticsMetric {
+  ANALYTICS_METRIC_UNSPECIFIED = 0;
+  ANALYTICS_METRIC_VIEWS = 1;
+  ANALYTICS_METRIC_INQUIRIES = 2;
+  ANALYTICS_METRIC_PERFORMANCE = 3;
+  ANALYTICS_METRIC_DEMOGRAPHICS = 4;
+}
+
+enum InsightType {
+  INSIGHT_TYPE_UNSPECIFIED = 0;
+  INSIGHT_TYPE_OPPORTUNITY = 1;
+  INSIGHT_TYPE_RISK = 2;
+  INSIGHT_TYPE_TREND = 3;
+  INSIGHT_TYPE_RECOMMENDATION = 4;
+}

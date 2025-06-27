@@ -1,0 +1,497 @@
+syntax = "proto3";
+
+package dac.auth;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+// Authentication and Authorization Service
+service AuthService {
+  // Authentication Operations
+  rpc Register(RegisterRequest) returns (AuthResponse);
+  rpc Login(LoginRequest) returns (AuthResponse);
+  rpc Logout(LogoutRequest) returns (google.protobuf.Empty);
+  rpc RefreshToken(RefreshTokenRequest) returns (TokenResponse);
+  rpc VerifyToken(VerifyTokenRequest) returns (VerifyTokenResponse);
+  
+  // User Management
+  rpc GetUserProfile(GetUserRequest) returns (UserProfile);
+  rpc UpdateProfile(UpdateProfileRequest) returns (UserProfile);
+  rpc ChangePassword(ChangePasswordRequest) returns (google.protobuf.Empty);
+  rpc DeleteAccount(DeleteAccountRequest) returns (google.protobuf.Empty);
+  
+  // Wallet Integration
+  rpc LinkWallet(LinkWalletRequest) returns (WalletLinkResponse);
+  rpc UnlinkWallet(UnlinkWalletRequest) returns (google.protobuf.Empty);
+  rpc VerifyWalletSignature(WalletVerificationRequest) returns (WalletVerificationResponse);
+  rpc GetWalletInfo(WalletInfoRequest) returns (WalletInfo);
+  
+  // Multi-Factor Authentication
+  rpc SetupMFA(MFASetupRequest) returns (MFASetupResponse);
+  rpc VerifyMFA(MFAVerifyRequest) returns (MFAVerifyResponse);
+  rpc DisableMFA(DisableMFARequest) returns (google.protobuf.Empty);
+  rpc GenerateBackupCodes(BackupCodesRequest) returns (BackupCodesResponse);
+  
+  // Session Management
+  rpc GetActiveSessions(GetSessionsRequest) returns (ActiveSessionsResponse);
+  rpc RevokeSession(RevokeSessionRequest) returns (google.protobuf.Empty);
+  rpc RevokeAllSessions(RevokeAllSessionsRequest) returns (google.protobuf.Empty);
+  
+  // Social Features Authentication
+  rpc CreateSocialProfile(SocialProfileRequest) returns (SocialProfileResponse);
+  rpc AuthenticateSocial(SocialAuthRequest) returns (SocialAuthResponse);
+  rpc GetSocialProfile(SocialProfileRequest) returns (SocialProfile);
+  
+  // Authorization and Permissions
+  rpc CheckPermission(PermissionRequest) returns (PermissionResponse);
+  rpc GetUserRoles(UserRolesRequest) returns (UserRolesResponse);
+  rpc AssignRole(AssignRoleRequest) returns (google.protobuf.Empty);
+  rpc RevokeRole(RevokeRoleRequest) returns (google.protobuf.Empty);
+}
+
+// Core Data Types
+message UserProfile {
+  int32 id = 1;
+  string username = 2;
+  string email = 3;
+  string name = 4;
+  string avatar_url = 5;
+  MembershipTier membership_tier = 6;
+  string wallet_address = 7;
+  string dac_token_balance = 8;
+  string prom_token_balance = 9;
+  int32 reputation_score = 10;
+  google.protobuf.Timestamp created_at = 11;
+  google.protobuf.Timestamp last_login = 12;
+  bool email_verified = 13;
+  bool mfa_enabled = 14;
+  repeated string roles = 15;
+  UserPreferences preferences = 16;
+  ProfileSettings settings = 17;
+}
+
+message UserPreferences {
+  string language = 1;
+  string timezone = 2;
+  string currency = 3;
+  NotificationSettings notifications = 4;
+  PrivacySettings privacy = 5;
+  ThemeSettings theme = 6;
+}
+
+message NotificationSettings {
+  bool email_notifications = 1;
+  bool push_notifications = 2;
+  bool sms_notifications = 3;
+  bool governance_updates = 4;
+  bool property_alerts = 5;
+  bool transaction_updates = 6;
+  bool marketing_emails = 7;
+}
+
+message PrivacySettings {
+  ProfileVisibility profile_visibility = 1;
+  bool show_wallet_balance = 2;
+  bool show_transaction_history = 3;
+  bool allow_direct_messages = 4;
+  bool show_online_status = 5;
+}
+
+message ThemeSettings {
+  string theme_mode = 1; // light, dark, auto
+  string primary_color = 2;
+  string layout_density = 3; // compact, normal, spacious
+}
+
+message ProfileSettings {
+  string bio = 1;
+  string location = 2;
+  string website = 3;
+  repeated string social_links = 4;
+  repeated string interests = 5;
+  bool is_investor = 6;
+  bool is_developer = 7;
+  bool is_agent = 8;
+}
+
+// Authentication Messages
+message RegisterRequest {
+  string username = 1;
+  string email = 2;
+  string password = 3;
+  string name = 4;
+  optional string referral_code = 5;
+  bool accept_terms = 6;
+  bool accept_privacy = 7;
+  optional string invite_code = 8;
+}
+
+message LoginRequest {
+  string identifier = 1; // username or email
+  string password = 2;
+  bool remember_me = 3;
+  optional string mfa_code = 4;
+  string device_info = 5;
+  string ip_address = 6;
+}
+
+message AuthResponse {
+  bool success = 1;
+  string access_token = 2;
+  string refresh_token = 3;
+  UserProfile user = 4;
+  google.protobuf.Timestamp expires_at = 5;
+  optional string error_message = 6;
+  bool requires_mfa = 7;
+  string session_id = 8;
+}
+
+message LogoutRequest {
+  string session_id = 1;
+  bool logout_all_devices = 2;
+}
+
+message RefreshTokenRequest {
+  string refresh_token = 1;
+  string device_id = 2;
+}
+
+message TokenResponse {
+  string access_token = 1;
+  string refresh_token = 2;
+  google.protobuf.Timestamp expires_at = 3;
+}
+
+message VerifyTokenRequest {
+  string token = 1;
+  repeated string required_permissions = 2;
+}
+
+message VerifyTokenResponse {
+  bool valid = 1;
+  int32 user_id = 2;
+  repeated string permissions = 3;
+  google.protobuf.Timestamp expires_at = 4;
+  TokenType token_type = 5;
+}
+
+// User Management Messages
+message GetUserRequest {
+  int32 user_id = 1;
+  bool include_preferences = 2;
+  bool include_wallet_info = 3;
+}
+
+message UpdateProfileRequest {
+  int32 user_id = 1;
+  optional string name = 2;
+  optional string avatar_url = 3;
+  optional string bio = 4;
+  optional string location = 5;
+  optional string website = 6;
+  repeated string social_links = 7;
+  optional UserPreferences preferences = 8;
+  optional ProfileSettings settings = 9;
+}
+
+message ChangePasswordRequest {
+  int32 user_id = 1;
+  string current_password = 2;
+  string new_password = 3;
+  optional string mfa_code = 4;
+}
+
+message DeleteAccountRequest {
+  int32 user_id = 1;
+  string password = 2;
+  string reason = 3;
+  optional string mfa_code = 4;
+}
+
+// Wallet Integration Messages
+message LinkWalletRequest {
+  int32 user_id = 1;
+  string wallet_address = 2;
+  string signature = 3;
+  string message = 4;
+  WalletType wallet_type = 5;
+}
+
+message WalletLinkResponse {
+  bool success = 1;
+  string wallet_address = 2;
+  WalletInfo wallet_info = 3;
+  optional string error_message = 4;
+}
+
+message UnlinkWalletRequest {
+  int32 user_id = 1;
+  string wallet_address = 2;
+  optional string mfa_code = 3;
+}
+
+message WalletVerificationRequest {
+  string wallet_address = 1;
+  string signature = 2;
+  string message = 3;
+  WalletType wallet_type = 4;
+}
+
+message WalletVerificationResponse {
+  bool valid = 1;
+  string recovered_address = 2;
+  optional string error_message = 3;
+}
+
+message WalletInfoRequest {
+  int32 user_id = 1;
+  string wallet_address = 2;
+}
+
+message WalletInfo {
+  string address = 1;
+  WalletType type = 2;
+  string eth_balance = 3;
+  string dac_token_balance = 4;
+  string prom_token_balance = 5;
+  repeated TokenBalance other_tokens = 6;
+  repeated NFTInfo nfts = 7;
+  google.protobuf.Timestamp linked_at = 8;
+  bool is_primary = 9;
+}
+
+message TokenBalance {
+  string contract_address = 1;
+  string symbol = 2;
+  string name = 3;
+  string balance = 4;
+  string formatted_balance = 5;
+  double usd_value = 6;
+}
+
+message NFTInfo {
+  string contract_address = 1;
+  string token_id = 2;
+  string name = 3;
+  string image_url = 4;
+  string collection_name = 5;
+}
+
+// Multi-Factor Authentication Messages
+message MFASetupRequest {
+  int32 user_id = 1;
+  MFAMethod method = 2;
+  string device_name = 3;
+}
+
+message MFASetupResponse {
+  bool success = 1;
+  string secret_key = 2;
+  string qr_code_url = 3;
+  repeated string backup_codes = 4;
+  string setup_token = 5;
+}
+
+message MFAVerifyRequest {
+  int32 user_id = 1;
+  string code = 2;
+  MFAMethod method = 3;
+  optional string setup_token = 4;
+}
+
+message MFAVerifyResponse {
+  bool valid = 1;
+  bool setup_complete = 2;
+  optional string error_message = 3;
+}
+
+message DisableMFARequest {
+  int32 user_id = 1;
+  string password = 2;
+  string mfa_code = 3;
+}
+
+message BackupCodesRequest {
+  int32 user_id = 1;
+  string password = 2;
+  string mfa_code = 3;
+}
+
+message BackupCodesResponse {
+  repeated string backup_codes = 1;
+  google.protobuf.Timestamp generated_at = 2;
+}
+
+// Session Management Messages
+message GetSessionsRequest {
+  int32 user_id = 1;
+}
+
+message ActiveSessionsResponse {
+  repeated UserSession sessions = 1;
+}
+
+message UserSession {
+  string session_id = 1;
+  string device_info = 2;
+  string ip_address = 3;
+  string location = 4;
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp last_active = 6;
+  bool is_current = 7;
+}
+
+message RevokeSessionRequest {
+  int32 user_id = 1;
+  string session_id = 2;
+}
+
+message RevokeAllSessionsRequest {
+  int32 user_id = 1;
+  bool except_current = 2;
+}
+
+// Social Features Messages
+message SocialProfileRequest {
+  int32 user_id = 1;
+  string pseudonym = 2;
+  string bio = 3;
+  repeated string interests = 4;
+  PrivacyLevel privacy_level = 5;
+}
+
+message SocialProfileResponse {
+  bool success = 1;
+  SocialProfile profile = 2;
+  string encryption_key = 3;
+}
+
+message SocialAuthRequest {
+  int32 user_id = 1;
+  string mfa_code = 2;
+  string device_fingerprint = 3;
+}
+
+message SocialAuthResponse {
+  bool success = 1;
+  string social_token = 2;
+  google.protobuf.Timestamp expires_at = 3;
+  repeated string permissions = 4;
+}
+
+message SocialProfile {
+  string profile_id = 1;
+  int32 user_id = 2;
+  string pseudonym = 3;
+  string bio = 4;
+  string avatar_url = 5;
+  repeated string interests = 6;
+  int32 reputation_score = 7;
+  PrivacyLevel privacy_level = 8;
+  google.protobuf.Timestamp created_at = 9;
+  bool is_verified = 10;
+  SocialStats stats = 11;
+}
+
+message SocialStats {
+  int32 followers_count = 1;
+  int32 following_count = 2;
+  int32 posts_count = 3;
+  int32 endorsements_received = 4;
+  int32 endorsements_given = 5;
+}
+
+// Authorization Messages
+message PermissionRequest {
+  int32 user_id = 1;
+  string resource = 2;
+  string action = 3;
+  optional string resource_id = 4;
+}
+
+message PermissionResponse {
+  bool granted = 1;
+  string reason = 2;
+  repeated string required_roles = 3;
+  repeated string missing_permissions = 4;
+}
+
+message UserRolesRequest {
+  int32 user_id = 1;
+}
+
+message UserRolesResponse {
+  repeated UserRole roles = 1;
+}
+
+message UserRole {
+  string role_name = 1;
+  string description = 2;
+  repeated string permissions = 3;
+  google.protobuf.Timestamp assigned_at = 4;
+  optional google.protobuf.Timestamp expires_at = 5;
+  string assigned_by = 6;
+}
+
+message AssignRoleRequest {
+  int32 user_id = 1;
+  string role_name = 2;
+  int32 assigned_by = 3;
+  optional google.protobuf.Timestamp expires_at = 4;
+  string reason = 5;
+}
+
+message RevokeRoleRequest {
+  int32 user_id = 1;
+  string role_name = 2;
+  int32 revoked_by = 3;
+  string reason = 4;
+}
+
+// Enums
+enum MembershipTier {
+  MEMBERSHIP_TIER_UNSPECIFIED = 0;
+  MEMBERSHIP_TIER_FREE = 1;
+  MEMBERSHIP_TIER_BASIC = 2;
+  MEMBERSHIP_TIER_PREMIUM = 3;
+  MEMBERSHIP_TIER_ENTERPRISE = 4;
+}
+
+enum ProfileVisibility {
+  PROFILE_VISIBILITY_UNSPECIFIED = 0;
+  PROFILE_VISIBILITY_PUBLIC = 1;
+  PROFILE_VISIBILITY_MEMBERS_ONLY = 2;
+  PROFILE_VISIBILITY_PRIVATE = 3;
+}
+
+enum TokenType {
+  TOKEN_TYPE_UNSPECIFIED = 0;
+  TOKEN_TYPE_ACCESS = 1;
+  TOKEN_TYPE_REFRESH = 2;
+  TOKEN_TYPE_SOCIAL = 3;
+  TOKEN_TYPE_API = 4;
+}
+
+enum WalletType {
+  WALLET_TYPE_UNSPECIFIED = 0;
+  WALLET_TYPE_METAMASK = 1;
+  WALLET_TYPE_WALLET_CONNECT = 2;
+  WALLET_TYPE_COINBASE = 3;
+  WALLET_TYPE_TRUST_WALLET = 4;
+  WALLET_TYPE_HARDWARE = 5;
+}
+
+enum MFAMethod {
+  MFA_METHOD_UNSPECIFIED = 0;
+  MFA_METHOD_TOTP = 1;
+  MFA_METHOD_SMS = 2;
+  MFA_METHOD_EMAIL = 3;
+  MFA_METHOD_HARDWARE_KEY = 4;
+}
+
+enum PrivacyLevel {
+  PRIVACY_LEVEL_UNSPECIFIED = 0;
+  PRIVACY_LEVEL_OPEN = 1;
+  PRIVACY_LEVEL_SELECTIVE = 2;
+  PRIVACY_LEVEL_PRIVATE = 3;
+}
