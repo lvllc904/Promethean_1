@@ -1,0 +1,55 @@
+
+     /**
+ * @name Web3 Security Analysis
+ * @description Custom security queries for Web3 and blockchain applications
+ * @kind problem
+ * @problem.severity error
+ * @security-severity 8.0
+ * @precision high
+ * @id web3/security-check
+ * @tags security
+ *       web3
+ *       blockchain
+ *       smart-contracts
+ */
+
+import javascript
+
+// Check for hardcoded private keys
+class HardcodedPrivateKey extends StringLiteral {
+  HardcodedPrivateKey() {
+    this.getValue().regexpMatch("(?i).*(private.?key|secret.?key).*") and
+    this.getValue().length() > 20
+  }
+}
+
+// Check for unsafe external calls
+class UnsafeExternalCall extends CallExpr {
+  UnsafeExternalCall() {
+    this.getCalleeName() = ["call", "delegatecall", "staticcall"] and
+    not exists(TryStmt try | try.getBody().getAChild*() = this)
+  }
+}
+
+// Check for missing access control
+class MissingAccessControl extends FunctionDeclaration {
+  MissingAccessControl() {
+    this.getName().regexpMatch("(?i).*(withdraw|transfer|mint|burn).*") and
+    not exists(CallExpr call | 
+      call.getEnclosingFunction() = this and
+      call.getCalleeName().regexpMatch("(?i).*(require|modifier|onlyowner).*")
+    )
+  }
+}
+
+// Report hardcoded private keys
+from HardcodedPrivateKey key
+select key, "Potential hardcoded private key detected. Use environment variables instead."
+
+// Report unsafe external calls
+from UnsafeExternalCall call
+select call, "Unsafe external call without proper error handling."
+
+// Report missing access control
+from MissingAccessControl func
+select func, "Critical function '" + func.getName() + "' may be missing access control."
