@@ -1,0 +1,14787 @@
+// source: auth.proto
+/**
+ * @fileoverview
+ * @enhanceable
+ * @suppress {missingRequire} reports error on implicit type usages.
+ * @suppress {messageConventions} JS Compiler reports an error if a variable or
+ *     field starts with 'MSG_' and isn't a translatable message.
+ * @public
+ */
+// GENERATED CODE -- DO NOT EDIT!
+/* eslint-disable */
+// @ts-nocheck
+
+var jspb = require('google-protobuf');
+var goog = jspb;
+var global = (function() {
+  if (this) { return this; }
+  if (typeof window !== 'undefined') { return window; }
+  if (typeof global !== 'undefined') { return global; }
+  if (typeof self !== 'undefined') { return self; }
+  return Function('return this')();
+}.call(null));
+
+var google_protobuf_timestamp_pb = require('google-protobuf/google/protobuf/timestamp_pb.js');
+goog.object.extend(proto, google_protobuf_timestamp_pb);
+var google_protobuf_empty_pb = require('google-protobuf/google/protobuf/empty_pb.js');
+goog.object.extend(proto, google_protobuf_empty_pb);
+goog.exportSymbol('proto.dac.auth.ActiveSessionsResponse', null, global);
+goog.exportSymbol('proto.dac.auth.AssignRoleRequest', null, global);
+goog.exportSymbol('proto.dac.auth.AuthResponse', null, global);
+goog.exportSymbol('proto.dac.auth.BackupCodesRequest', null, global);
+goog.exportSymbol('proto.dac.auth.BackupCodesResponse', null, global);
+goog.exportSymbol('proto.dac.auth.ChangePasswordRequest', null, global);
+goog.exportSymbol('proto.dac.auth.DeleteAccountRequest', null, global);
+goog.exportSymbol('proto.dac.auth.DisableMFARequest', null, global);
+goog.exportSymbol('proto.dac.auth.GetSessionsRequest', null, global);
+goog.exportSymbol('proto.dac.auth.GetUserRequest', null, global);
+goog.exportSymbol('proto.dac.auth.LinkWalletRequest', null, global);
+goog.exportSymbol('proto.dac.auth.LoginRequest', null, global);
+goog.exportSymbol('proto.dac.auth.LogoutRequest', null, global);
+goog.exportSymbol('proto.dac.auth.MFAMethod', null, global);
+goog.exportSymbol('proto.dac.auth.MFASetupRequest', null, global);
+goog.exportSymbol('proto.dac.auth.MFASetupResponse', null, global);
+goog.exportSymbol('proto.dac.auth.MFAVerifyRequest', null, global);
+goog.exportSymbol('proto.dac.auth.MFAVerifyResponse', null, global);
+goog.exportSymbol('proto.dac.auth.MembershipTier', null, global);
+goog.exportSymbol('proto.dac.auth.NFTInfo', null, global);
+goog.exportSymbol('proto.dac.auth.NotificationSettings', null, global);
+goog.exportSymbol('proto.dac.auth.PermissionRequest', null, global);
+goog.exportSymbol('proto.dac.auth.PermissionResponse', null, global);
+goog.exportSymbol('proto.dac.auth.PrivacyLevel', null, global);
+goog.exportSymbol('proto.dac.auth.PrivacySettings', null, global);
+goog.exportSymbol('proto.dac.auth.ProfileSettings', null, global);
+goog.exportSymbol('proto.dac.auth.ProfileVisibility', null, global);
+goog.exportSymbol('proto.dac.auth.RefreshTokenRequest', null, global);
+goog.exportSymbol('proto.dac.auth.RegisterRequest', null, global);
+goog.exportSymbol('proto.dac.auth.RevokeAllSessionsRequest', null, global);
+goog.exportSymbol('proto.dac.auth.RevokeRoleRequest', null, global);
+goog.exportSymbol('proto.dac.auth.RevokeSessionRequest', null, global);
+goog.exportSymbol('proto.dac.auth.SocialAuthRequest', null, global);
+goog.exportSymbol('proto.dac.auth.SocialAuthResponse', null, global);
+goog.exportSymbol('proto.dac.auth.SocialProfile', null, global);
+goog.exportSymbol('proto.dac.auth.SocialProfileRequest', null, global);
+goog.exportSymbol('proto.dac.auth.SocialProfileResponse', null, global);
+goog.exportSymbol('proto.dac.auth.SocialStats', null, global);
+goog.exportSymbol('proto.dac.auth.ThemeSettings', null, global);
+goog.exportSymbol('proto.dac.auth.TokenBalance', null, global);
+goog.exportSymbol('proto.dac.auth.TokenResponse', null, global);
+goog.exportSymbol('proto.dac.auth.TokenType', null, global);
+goog.exportSymbol('proto.dac.auth.UnlinkWalletRequest', null, global);
+goog.exportSymbol('proto.dac.auth.UpdateProfileRequest', null, global);
+goog.exportSymbol('proto.dac.auth.UserPreferences', null, global);
+goog.exportSymbol('proto.dac.auth.UserProfile', null, global);
+goog.exportSymbol('proto.dac.auth.UserRole', null, global);
+goog.exportSymbol('proto.dac.auth.UserRolesRequest', null, global);
+goog.exportSymbol('proto.dac.auth.UserRolesResponse', null, global);
+goog.exportSymbol('proto.dac.auth.UserSession', null, global);
+goog.exportSymbol('proto.dac.auth.VerifyTokenRequest', null, global);
+goog.exportSymbol('proto.dac.auth.VerifyTokenResponse', null, global);
+goog.exportSymbol('proto.dac.auth.WalletInfo', null, global);
+goog.exportSymbol('proto.dac.auth.WalletInfoRequest', null, global);
+goog.exportSymbol('proto.dac.auth.WalletLinkResponse', null, global);
+goog.exportSymbol('proto.dac.auth.WalletType', null, global);
+goog.exportSymbol('proto.dac.auth.WalletVerificationRequest', null, global);
+goog.exportSymbol('proto.dac.auth.WalletVerificationResponse', null, global);
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.UserProfile = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.dac.auth.UserProfile.repeatedFields_, null);
+};
+goog.inherits(proto.dac.auth.UserProfile, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.UserProfile.displayName = 'proto.dac.auth.UserProfile';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.UserPreferences = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.auth.UserPreferences, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.UserPreferences.displayName = 'proto.dac.auth.UserPreferences';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.NotificationSettings = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.auth.NotificationSettings, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.NotificationSettings.displayName = 'proto.dac.auth.NotificationSettings';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.PrivacySettings = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.auth.PrivacySettings, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.PrivacySettings.displayName = 'proto.dac.auth.PrivacySettings';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.ThemeSettings = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.auth.ThemeSettings, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.ThemeSettings.displayName = 'proto.dac.auth.ThemeSettings';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.ProfileSettings = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.dac.auth.ProfileSettings.repeatedFields_, null);
+};
+goog.inherits(proto.dac.auth.ProfileSettings, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.ProfileSettings.displayName = 'proto.dac.auth.ProfileSettings';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.RegisterRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.auth.RegisterRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.RegisterRequest.displayName = 'proto.dac.auth.RegisterRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.LoginRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.auth.LoginRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.LoginRequest.displayName = 'proto.dac.auth.LoginRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.AuthResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.auth.AuthResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.AuthResponse.displayName = 'proto.dac.auth.AuthResponse';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.LogoutRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.auth.LogoutRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.LogoutRequest.displayName = 'proto.dac.auth.LogoutRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.RefreshTokenRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.auth.RefreshTokenRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.RefreshTokenRequest.displayName = 'proto.dac.auth.RefreshTokenRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.TokenResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.auth.TokenResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.TokenResponse.displayName = 'proto.dac.auth.TokenResponse';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.VerifyTokenRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.dac.auth.VerifyTokenRequest.repeatedFields_, null);
+};
+goog.inherits(proto.dac.auth.VerifyTokenRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.VerifyTokenRequest.displayName = 'proto.dac.auth.VerifyTokenRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.VerifyTokenResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.dac.auth.VerifyTokenResponse.repeatedFields_, null);
+};
+goog.inherits(proto.dac.auth.VerifyTokenResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.VerifyTokenResponse.displayName = 'proto.dac.auth.VerifyTokenResponse';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.GetUserRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.auth.GetUserRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.GetUserRequest.displayName = 'proto.dac.auth.GetUserRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.UpdateProfileRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.dac.auth.UpdateProfileRequest.repeatedFields_, null);
+};
+goog.inherits(proto.dac.auth.UpdateProfileRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.UpdateProfileRequest.displayName = 'proto.dac.auth.UpdateProfileRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.ChangePasswordRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.auth.ChangePasswordRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.ChangePasswordRequest.displayName = 'proto.dac.auth.ChangePasswordRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.DeleteAccountRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.auth.DeleteAccountRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.DeleteAccountRequest.displayName = 'proto.dac.auth.DeleteAccountRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.LinkWalletRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.auth.LinkWalletRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.LinkWalletRequest.displayName = 'proto.dac.auth.LinkWalletRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.WalletLinkResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.auth.WalletLinkResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.WalletLinkResponse.displayName = 'proto.dac.auth.WalletLinkResponse';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.UnlinkWalletRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.auth.UnlinkWalletRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.UnlinkWalletRequest.displayName = 'proto.dac.auth.UnlinkWalletRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.WalletVerificationRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.auth.WalletVerificationRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.WalletVerificationRequest.displayName = 'proto.dac.auth.WalletVerificationRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.WalletVerificationResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.auth.WalletVerificationResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.WalletVerificationResponse.displayName = 'proto.dac.auth.WalletVerificationResponse';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.WalletInfoRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.auth.WalletInfoRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.WalletInfoRequest.displayName = 'proto.dac.auth.WalletInfoRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.WalletInfo = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.dac.auth.WalletInfo.repeatedFields_, null);
+};
+goog.inherits(proto.dac.auth.WalletInfo, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.WalletInfo.displayName = 'proto.dac.auth.WalletInfo';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.TokenBalance = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.auth.TokenBalance, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.TokenBalance.displayName = 'proto.dac.auth.TokenBalance';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.NFTInfo = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.auth.NFTInfo, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.NFTInfo.displayName = 'proto.dac.auth.NFTInfo';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.MFASetupRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.auth.MFASetupRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.MFASetupRequest.displayName = 'proto.dac.auth.MFASetupRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.MFASetupResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.dac.auth.MFASetupResponse.repeatedFields_, null);
+};
+goog.inherits(proto.dac.auth.MFASetupResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.MFASetupResponse.displayName = 'proto.dac.auth.MFASetupResponse';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.MFAVerifyRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.auth.MFAVerifyRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.MFAVerifyRequest.displayName = 'proto.dac.auth.MFAVerifyRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.MFAVerifyResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.auth.MFAVerifyResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.MFAVerifyResponse.displayName = 'proto.dac.auth.MFAVerifyResponse';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.DisableMFARequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.auth.DisableMFARequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.DisableMFARequest.displayName = 'proto.dac.auth.DisableMFARequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.BackupCodesRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.auth.BackupCodesRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.BackupCodesRequest.displayName = 'proto.dac.auth.BackupCodesRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.BackupCodesResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.dac.auth.BackupCodesResponse.repeatedFields_, null);
+};
+goog.inherits(proto.dac.auth.BackupCodesResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.BackupCodesResponse.displayName = 'proto.dac.auth.BackupCodesResponse';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.GetSessionsRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.auth.GetSessionsRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.GetSessionsRequest.displayName = 'proto.dac.auth.GetSessionsRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.ActiveSessionsResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.dac.auth.ActiveSessionsResponse.repeatedFields_, null);
+};
+goog.inherits(proto.dac.auth.ActiveSessionsResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.ActiveSessionsResponse.displayName = 'proto.dac.auth.ActiveSessionsResponse';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.UserSession = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.auth.UserSession, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.UserSession.displayName = 'proto.dac.auth.UserSession';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.RevokeSessionRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.auth.RevokeSessionRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.RevokeSessionRequest.displayName = 'proto.dac.auth.RevokeSessionRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.RevokeAllSessionsRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.auth.RevokeAllSessionsRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.RevokeAllSessionsRequest.displayName = 'proto.dac.auth.RevokeAllSessionsRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.SocialProfileRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.dac.auth.SocialProfileRequest.repeatedFields_, null);
+};
+goog.inherits(proto.dac.auth.SocialProfileRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.SocialProfileRequest.displayName = 'proto.dac.auth.SocialProfileRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.SocialProfileResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.auth.SocialProfileResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.SocialProfileResponse.displayName = 'proto.dac.auth.SocialProfileResponse';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.SocialAuthRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.auth.SocialAuthRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.SocialAuthRequest.displayName = 'proto.dac.auth.SocialAuthRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.SocialAuthResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.dac.auth.SocialAuthResponse.repeatedFields_, null);
+};
+goog.inherits(proto.dac.auth.SocialAuthResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.SocialAuthResponse.displayName = 'proto.dac.auth.SocialAuthResponse';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.SocialProfile = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.dac.auth.SocialProfile.repeatedFields_, null);
+};
+goog.inherits(proto.dac.auth.SocialProfile, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.SocialProfile.displayName = 'proto.dac.auth.SocialProfile';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.SocialStats = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.auth.SocialStats, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.SocialStats.displayName = 'proto.dac.auth.SocialStats';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.PermissionRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.auth.PermissionRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.PermissionRequest.displayName = 'proto.dac.auth.PermissionRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.PermissionResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.dac.auth.PermissionResponse.repeatedFields_, null);
+};
+goog.inherits(proto.dac.auth.PermissionResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.PermissionResponse.displayName = 'proto.dac.auth.PermissionResponse';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.UserRolesRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.auth.UserRolesRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.UserRolesRequest.displayName = 'proto.dac.auth.UserRolesRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.UserRolesResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.dac.auth.UserRolesResponse.repeatedFields_, null);
+};
+goog.inherits(proto.dac.auth.UserRolesResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.UserRolesResponse.displayName = 'proto.dac.auth.UserRolesResponse';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.UserRole = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.dac.auth.UserRole.repeatedFields_, null);
+};
+goog.inherits(proto.dac.auth.UserRole, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.UserRole.displayName = 'proto.dac.auth.UserRole';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.AssignRoleRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.auth.AssignRoleRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.AssignRoleRequest.displayName = 'proto.dac.auth.AssignRoleRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.auth.RevokeRoleRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.auth.RevokeRoleRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.auth.RevokeRoleRequest.displayName = 'proto.dac.auth.RevokeRoleRequest';
+}
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.dac.auth.UserProfile.repeatedFields_ = [15];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.UserProfile.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.UserProfile.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.UserProfile} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.UserProfile.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    id: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    username: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    email: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    name: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    avatarUrl: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    membershipTier: jspb.Message.getFieldWithDefault(msg, 6, 0),
+    walletAddress: jspb.Message.getFieldWithDefault(msg, 7, ""),
+    dacTokenBalance: jspb.Message.getFieldWithDefault(msg, 8, ""),
+    promTokenBalance: jspb.Message.getFieldWithDefault(msg, 9, ""),
+    reputationScore: jspb.Message.getFieldWithDefault(msg, 10, 0),
+    createdAt: (f = msg.getCreatedAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
+    lastLogin: (f = msg.getLastLogin()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
+    emailVerified: jspb.Message.getBooleanFieldWithDefault(msg, 13, false),
+    mfaEnabled: jspb.Message.getBooleanFieldWithDefault(msg, 14, false),
+    rolesList: (f = jspb.Message.getRepeatedField(msg, 15)) == null ? undefined : f,
+    preferences: (f = msg.getPreferences()) && proto.dac.auth.UserPreferences.toObject(includeInstance, f),
+    settings: (f = msg.getSettings()) && proto.dac.auth.ProfileSettings.toObject(includeInstance, f)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.UserProfile}
+ */
+proto.dac.auth.UserProfile.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.UserProfile;
+  return proto.dac.auth.UserProfile.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.UserProfile} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.UserProfile}
+ */
+proto.dac.auth.UserProfile.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setId(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setUsername(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setEmail(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setName(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setAvatarUrl(value);
+      break;
+    case 6:
+      var value = /** @type {!proto.dac.auth.MembershipTier} */ (reader.readEnum());
+      msg.setMembershipTier(value);
+      break;
+    case 7:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setWalletAddress(value);
+      break;
+    case 8:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setDacTokenBalance(value);
+      break;
+    case 9:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setPromTokenBalance(value);
+      break;
+    case 10:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setReputationScore(value);
+      break;
+    case 11:
+      var value = new google_protobuf_timestamp_pb.Timestamp;
+      reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      msg.setCreatedAt(value);
+      break;
+    case 12:
+      var value = new google_protobuf_timestamp_pb.Timestamp;
+      reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      msg.setLastLogin(value);
+      break;
+    case 13:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setEmailVerified(value);
+      break;
+    case 14:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setMfaEnabled(value);
+      break;
+    case 15:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addRoles(value);
+      break;
+    case 16:
+      var value = new proto.dac.auth.UserPreferences;
+      reader.readMessage(value,proto.dac.auth.UserPreferences.deserializeBinaryFromReader);
+      msg.setPreferences(value);
+      break;
+    case 17:
+      var value = new proto.dac.auth.ProfileSettings;
+      reader.readMessage(value,proto.dac.auth.ProfileSettings.deserializeBinaryFromReader);
+      msg.setSettings(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.UserProfile.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.UserProfile.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.UserProfile} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.UserProfile.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getUsername();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getEmail();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getName();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+  f = message.getAvatarUrl();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
+      f
+    );
+  }
+  f = message.getMembershipTier();
+  if (f !== 0.0) {
+    writer.writeEnum(
+      6,
+      f
+    );
+  }
+  f = message.getWalletAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      7,
+      f
+    );
+  }
+  f = message.getDacTokenBalance();
+  if (f.length > 0) {
+    writer.writeString(
+      8,
+      f
+    );
+  }
+  f = message.getPromTokenBalance();
+  if (f.length > 0) {
+    writer.writeString(
+      9,
+      f
+    );
+  }
+  f = message.getReputationScore();
+  if (f !== 0) {
+    writer.writeInt32(
+      10,
+      f
+    );
+  }
+  f = message.getCreatedAt();
+  if (f != null) {
+    writer.writeMessage(
+      11,
+      f,
+      google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+  f = message.getLastLogin();
+  if (f != null) {
+    writer.writeMessage(
+      12,
+      f,
+      google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+  f = message.getEmailVerified();
+  if (f) {
+    writer.writeBool(
+      13,
+      f
+    );
+  }
+  f = message.getMfaEnabled();
+  if (f) {
+    writer.writeBool(
+      14,
+      f
+    );
+  }
+  f = message.getRolesList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      15,
+      f
+    );
+  }
+  f = message.getPreferences();
+  if (f != null) {
+    writer.writeMessage(
+      16,
+      f,
+      proto.dac.auth.UserPreferences.serializeBinaryToWriter
+    );
+  }
+  f = message.getSettings();
+  if (f != null) {
+    writer.writeMessage(
+      17,
+      f,
+      proto.dac.auth.ProfileSettings.serializeBinaryToWriter
+    );
+  }
+};
+
+
+/**
+ * optional int32 id = 1;
+ * @return {number}
+ */
+proto.dac.auth.UserProfile.prototype.getId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.auth.UserProfile} returns this
+ */
+proto.dac.auth.UserProfile.prototype.setId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional string username = 2;
+ * @return {string}
+ */
+proto.dac.auth.UserProfile.prototype.getUsername = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.UserProfile} returns this
+ */
+proto.dac.auth.UserProfile.prototype.setUsername = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string email = 3;
+ * @return {string}
+ */
+proto.dac.auth.UserProfile.prototype.getEmail = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.UserProfile} returns this
+ */
+proto.dac.auth.UserProfile.prototype.setEmail = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string name = 4;
+ * @return {string}
+ */
+proto.dac.auth.UserProfile.prototype.getName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.UserProfile} returns this
+ */
+proto.dac.auth.UserProfile.prototype.setName = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional string avatar_url = 5;
+ * @return {string}
+ */
+proto.dac.auth.UserProfile.prototype.getAvatarUrl = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.UserProfile} returns this
+ */
+proto.dac.auth.UserProfile.prototype.setAvatarUrl = function(value) {
+  return jspb.Message.setProto3StringField(this, 5, value);
+};
+
+
+/**
+ * optional MembershipTier membership_tier = 6;
+ * @return {!proto.dac.auth.MembershipTier}
+ */
+proto.dac.auth.UserProfile.prototype.getMembershipTier = function() {
+  return /** @type {!proto.dac.auth.MembershipTier} */ (jspb.Message.getFieldWithDefault(this, 6, 0));
+};
+
+
+/**
+ * @param {!proto.dac.auth.MembershipTier} value
+ * @return {!proto.dac.auth.UserProfile} returns this
+ */
+proto.dac.auth.UserProfile.prototype.setMembershipTier = function(value) {
+  return jspb.Message.setProto3EnumField(this, 6, value);
+};
+
+
+/**
+ * optional string wallet_address = 7;
+ * @return {string}
+ */
+proto.dac.auth.UserProfile.prototype.getWalletAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.UserProfile} returns this
+ */
+proto.dac.auth.UserProfile.prototype.setWalletAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 7, value);
+};
+
+
+/**
+ * optional string dac_token_balance = 8;
+ * @return {string}
+ */
+proto.dac.auth.UserProfile.prototype.getDacTokenBalance = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 8, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.UserProfile} returns this
+ */
+proto.dac.auth.UserProfile.prototype.setDacTokenBalance = function(value) {
+  return jspb.Message.setProto3StringField(this, 8, value);
+};
+
+
+/**
+ * optional string prom_token_balance = 9;
+ * @return {string}
+ */
+proto.dac.auth.UserProfile.prototype.getPromTokenBalance = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 9, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.UserProfile} returns this
+ */
+proto.dac.auth.UserProfile.prototype.setPromTokenBalance = function(value) {
+  return jspb.Message.setProto3StringField(this, 9, value);
+};
+
+
+/**
+ * optional int32 reputation_score = 10;
+ * @return {number}
+ */
+proto.dac.auth.UserProfile.prototype.getReputationScore = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 10, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.auth.UserProfile} returns this
+ */
+proto.dac.auth.UserProfile.prototype.setReputationScore = function(value) {
+  return jspb.Message.setProto3IntField(this, 10, value);
+};
+
+
+/**
+ * optional google.protobuf.Timestamp created_at = 11;
+ * @return {?proto.google.protobuf.Timestamp}
+ */
+proto.dac.auth.UserProfile.prototype.getCreatedAt = function() {
+  return /** @type{?proto.google.protobuf.Timestamp} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 11));
+};
+
+
+/**
+ * @param {?proto.google.protobuf.Timestamp|undefined} value
+ * @return {!proto.dac.auth.UserProfile} returns this
+*/
+proto.dac.auth.UserProfile.prototype.setCreatedAt = function(value) {
+  return jspb.Message.setWrapperField(this, 11, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.auth.UserProfile} returns this
+ */
+proto.dac.auth.UserProfile.prototype.clearCreatedAt = function() {
+  return this.setCreatedAt(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.UserProfile.prototype.hasCreatedAt = function() {
+  return jspb.Message.getField(this, 11) != null;
+};
+
+
+/**
+ * optional google.protobuf.Timestamp last_login = 12;
+ * @return {?proto.google.protobuf.Timestamp}
+ */
+proto.dac.auth.UserProfile.prototype.getLastLogin = function() {
+  return /** @type{?proto.google.protobuf.Timestamp} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 12));
+};
+
+
+/**
+ * @param {?proto.google.protobuf.Timestamp|undefined} value
+ * @return {!proto.dac.auth.UserProfile} returns this
+*/
+proto.dac.auth.UserProfile.prototype.setLastLogin = function(value) {
+  return jspb.Message.setWrapperField(this, 12, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.auth.UserProfile} returns this
+ */
+proto.dac.auth.UserProfile.prototype.clearLastLogin = function() {
+  return this.setLastLogin(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.UserProfile.prototype.hasLastLogin = function() {
+  return jspb.Message.getField(this, 12) != null;
+};
+
+
+/**
+ * optional bool email_verified = 13;
+ * @return {boolean}
+ */
+proto.dac.auth.UserProfile.prototype.getEmailVerified = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 13, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.auth.UserProfile} returns this
+ */
+proto.dac.auth.UserProfile.prototype.setEmailVerified = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 13, value);
+};
+
+
+/**
+ * optional bool mfa_enabled = 14;
+ * @return {boolean}
+ */
+proto.dac.auth.UserProfile.prototype.getMfaEnabled = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 14, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.auth.UserProfile} returns this
+ */
+proto.dac.auth.UserProfile.prototype.setMfaEnabled = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 14, value);
+};
+
+
+/**
+ * repeated string roles = 15;
+ * @return {!Array<string>}
+ */
+proto.dac.auth.UserProfile.prototype.getRolesList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 15));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.dac.auth.UserProfile} returns this
+ */
+proto.dac.auth.UserProfile.prototype.setRolesList = function(value) {
+  return jspb.Message.setField(this, 15, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.dac.auth.UserProfile} returns this
+ */
+proto.dac.auth.UserProfile.prototype.addRoles = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 15, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.auth.UserProfile} returns this
+ */
+proto.dac.auth.UserProfile.prototype.clearRolesList = function() {
+  return this.setRolesList([]);
+};
+
+
+/**
+ * optional UserPreferences preferences = 16;
+ * @return {?proto.dac.auth.UserPreferences}
+ */
+proto.dac.auth.UserProfile.prototype.getPreferences = function() {
+  return /** @type{?proto.dac.auth.UserPreferences} */ (
+    jspb.Message.getWrapperField(this, proto.dac.auth.UserPreferences, 16));
+};
+
+
+/**
+ * @param {?proto.dac.auth.UserPreferences|undefined} value
+ * @return {!proto.dac.auth.UserProfile} returns this
+*/
+proto.dac.auth.UserProfile.prototype.setPreferences = function(value) {
+  return jspb.Message.setWrapperField(this, 16, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.auth.UserProfile} returns this
+ */
+proto.dac.auth.UserProfile.prototype.clearPreferences = function() {
+  return this.setPreferences(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.UserProfile.prototype.hasPreferences = function() {
+  return jspb.Message.getField(this, 16) != null;
+};
+
+
+/**
+ * optional ProfileSettings settings = 17;
+ * @return {?proto.dac.auth.ProfileSettings}
+ */
+proto.dac.auth.UserProfile.prototype.getSettings = function() {
+  return /** @type{?proto.dac.auth.ProfileSettings} */ (
+    jspb.Message.getWrapperField(this, proto.dac.auth.ProfileSettings, 17));
+};
+
+
+/**
+ * @param {?proto.dac.auth.ProfileSettings|undefined} value
+ * @return {!proto.dac.auth.UserProfile} returns this
+*/
+proto.dac.auth.UserProfile.prototype.setSettings = function(value) {
+  return jspb.Message.setWrapperField(this, 17, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.auth.UserProfile} returns this
+ */
+proto.dac.auth.UserProfile.prototype.clearSettings = function() {
+  return this.setSettings(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.UserProfile.prototype.hasSettings = function() {
+  return jspb.Message.getField(this, 17) != null;
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.UserPreferences.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.UserPreferences.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.UserPreferences} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.UserPreferences.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    language: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    timezone: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    currency: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    notifications: (f = msg.getNotifications()) && proto.dac.auth.NotificationSettings.toObject(includeInstance, f),
+    privacy: (f = msg.getPrivacy()) && proto.dac.auth.PrivacySettings.toObject(includeInstance, f),
+    theme: (f = msg.getTheme()) && proto.dac.auth.ThemeSettings.toObject(includeInstance, f)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.UserPreferences}
+ */
+proto.dac.auth.UserPreferences.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.UserPreferences;
+  return proto.dac.auth.UserPreferences.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.UserPreferences} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.UserPreferences}
+ */
+proto.dac.auth.UserPreferences.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setLanguage(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setTimezone(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setCurrency(value);
+      break;
+    case 4:
+      var value = new proto.dac.auth.NotificationSettings;
+      reader.readMessage(value,proto.dac.auth.NotificationSettings.deserializeBinaryFromReader);
+      msg.setNotifications(value);
+      break;
+    case 5:
+      var value = new proto.dac.auth.PrivacySettings;
+      reader.readMessage(value,proto.dac.auth.PrivacySettings.deserializeBinaryFromReader);
+      msg.setPrivacy(value);
+      break;
+    case 6:
+      var value = new proto.dac.auth.ThemeSettings;
+      reader.readMessage(value,proto.dac.auth.ThemeSettings.deserializeBinaryFromReader);
+      msg.setTheme(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.UserPreferences.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.UserPreferences.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.UserPreferences} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.UserPreferences.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getLanguage();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getTimezone();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getCurrency();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getNotifications();
+  if (f != null) {
+    writer.writeMessage(
+      4,
+      f,
+      proto.dac.auth.NotificationSettings.serializeBinaryToWriter
+    );
+  }
+  f = message.getPrivacy();
+  if (f != null) {
+    writer.writeMessage(
+      5,
+      f,
+      proto.dac.auth.PrivacySettings.serializeBinaryToWriter
+    );
+  }
+  f = message.getTheme();
+  if (f != null) {
+    writer.writeMessage(
+      6,
+      f,
+      proto.dac.auth.ThemeSettings.serializeBinaryToWriter
+    );
+  }
+};
+
+
+/**
+ * optional string language = 1;
+ * @return {string}
+ */
+proto.dac.auth.UserPreferences.prototype.getLanguage = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.UserPreferences} returns this
+ */
+proto.dac.auth.UserPreferences.prototype.setLanguage = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string timezone = 2;
+ * @return {string}
+ */
+proto.dac.auth.UserPreferences.prototype.getTimezone = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.UserPreferences} returns this
+ */
+proto.dac.auth.UserPreferences.prototype.setTimezone = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string currency = 3;
+ * @return {string}
+ */
+proto.dac.auth.UserPreferences.prototype.getCurrency = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.UserPreferences} returns this
+ */
+proto.dac.auth.UserPreferences.prototype.setCurrency = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional NotificationSettings notifications = 4;
+ * @return {?proto.dac.auth.NotificationSettings}
+ */
+proto.dac.auth.UserPreferences.prototype.getNotifications = function() {
+  return /** @type{?proto.dac.auth.NotificationSettings} */ (
+    jspb.Message.getWrapperField(this, proto.dac.auth.NotificationSettings, 4));
+};
+
+
+/**
+ * @param {?proto.dac.auth.NotificationSettings|undefined} value
+ * @return {!proto.dac.auth.UserPreferences} returns this
+*/
+proto.dac.auth.UserPreferences.prototype.setNotifications = function(value) {
+  return jspb.Message.setWrapperField(this, 4, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.auth.UserPreferences} returns this
+ */
+proto.dac.auth.UserPreferences.prototype.clearNotifications = function() {
+  return this.setNotifications(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.UserPreferences.prototype.hasNotifications = function() {
+  return jspb.Message.getField(this, 4) != null;
+};
+
+
+/**
+ * optional PrivacySettings privacy = 5;
+ * @return {?proto.dac.auth.PrivacySettings}
+ */
+proto.dac.auth.UserPreferences.prototype.getPrivacy = function() {
+  return /** @type{?proto.dac.auth.PrivacySettings} */ (
+    jspb.Message.getWrapperField(this, proto.dac.auth.PrivacySettings, 5));
+};
+
+
+/**
+ * @param {?proto.dac.auth.PrivacySettings|undefined} value
+ * @return {!proto.dac.auth.UserPreferences} returns this
+*/
+proto.dac.auth.UserPreferences.prototype.setPrivacy = function(value) {
+  return jspb.Message.setWrapperField(this, 5, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.auth.UserPreferences} returns this
+ */
+proto.dac.auth.UserPreferences.prototype.clearPrivacy = function() {
+  return this.setPrivacy(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.UserPreferences.prototype.hasPrivacy = function() {
+  return jspb.Message.getField(this, 5) != null;
+};
+
+
+/**
+ * optional ThemeSettings theme = 6;
+ * @return {?proto.dac.auth.ThemeSettings}
+ */
+proto.dac.auth.UserPreferences.prototype.getTheme = function() {
+  return /** @type{?proto.dac.auth.ThemeSettings} */ (
+    jspb.Message.getWrapperField(this, proto.dac.auth.ThemeSettings, 6));
+};
+
+
+/**
+ * @param {?proto.dac.auth.ThemeSettings|undefined} value
+ * @return {!proto.dac.auth.UserPreferences} returns this
+*/
+proto.dac.auth.UserPreferences.prototype.setTheme = function(value) {
+  return jspb.Message.setWrapperField(this, 6, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.auth.UserPreferences} returns this
+ */
+proto.dac.auth.UserPreferences.prototype.clearTheme = function() {
+  return this.setTheme(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.UserPreferences.prototype.hasTheme = function() {
+  return jspb.Message.getField(this, 6) != null;
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.NotificationSettings.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.NotificationSettings.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.NotificationSettings} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.NotificationSettings.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    emailNotifications: jspb.Message.getBooleanFieldWithDefault(msg, 1, false),
+    pushNotifications: jspb.Message.getBooleanFieldWithDefault(msg, 2, false),
+    smsNotifications: jspb.Message.getBooleanFieldWithDefault(msg, 3, false),
+    governanceUpdates: jspb.Message.getBooleanFieldWithDefault(msg, 4, false),
+    propertyAlerts: jspb.Message.getBooleanFieldWithDefault(msg, 5, false),
+    transactionUpdates: jspb.Message.getBooleanFieldWithDefault(msg, 6, false),
+    marketingEmails: jspb.Message.getBooleanFieldWithDefault(msg, 7, false)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.NotificationSettings}
+ */
+proto.dac.auth.NotificationSettings.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.NotificationSettings;
+  return proto.dac.auth.NotificationSettings.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.NotificationSettings} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.NotificationSettings}
+ */
+proto.dac.auth.NotificationSettings.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setEmailNotifications(value);
+      break;
+    case 2:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setPushNotifications(value);
+      break;
+    case 3:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setSmsNotifications(value);
+      break;
+    case 4:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setGovernanceUpdates(value);
+      break;
+    case 5:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setPropertyAlerts(value);
+      break;
+    case 6:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setTransactionUpdates(value);
+      break;
+    case 7:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setMarketingEmails(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.NotificationSettings.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.NotificationSettings.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.NotificationSettings} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.NotificationSettings.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getEmailNotifications();
+  if (f) {
+    writer.writeBool(
+      1,
+      f
+    );
+  }
+  f = message.getPushNotifications();
+  if (f) {
+    writer.writeBool(
+      2,
+      f
+    );
+  }
+  f = message.getSmsNotifications();
+  if (f) {
+    writer.writeBool(
+      3,
+      f
+    );
+  }
+  f = message.getGovernanceUpdates();
+  if (f) {
+    writer.writeBool(
+      4,
+      f
+    );
+  }
+  f = message.getPropertyAlerts();
+  if (f) {
+    writer.writeBool(
+      5,
+      f
+    );
+  }
+  f = message.getTransactionUpdates();
+  if (f) {
+    writer.writeBool(
+      6,
+      f
+    );
+  }
+  f = message.getMarketingEmails();
+  if (f) {
+    writer.writeBool(
+      7,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional bool email_notifications = 1;
+ * @return {boolean}
+ */
+proto.dac.auth.NotificationSettings.prototype.getEmailNotifications = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 1, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.auth.NotificationSettings} returns this
+ */
+proto.dac.auth.NotificationSettings.prototype.setEmailNotifications = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 1, value);
+};
+
+
+/**
+ * optional bool push_notifications = 2;
+ * @return {boolean}
+ */
+proto.dac.auth.NotificationSettings.prototype.getPushNotifications = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 2, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.auth.NotificationSettings} returns this
+ */
+proto.dac.auth.NotificationSettings.prototype.setPushNotifications = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 2, value);
+};
+
+
+/**
+ * optional bool sms_notifications = 3;
+ * @return {boolean}
+ */
+proto.dac.auth.NotificationSettings.prototype.getSmsNotifications = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 3, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.auth.NotificationSettings} returns this
+ */
+proto.dac.auth.NotificationSettings.prototype.setSmsNotifications = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 3, value);
+};
+
+
+/**
+ * optional bool governance_updates = 4;
+ * @return {boolean}
+ */
+proto.dac.auth.NotificationSettings.prototype.getGovernanceUpdates = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 4, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.auth.NotificationSettings} returns this
+ */
+proto.dac.auth.NotificationSettings.prototype.setGovernanceUpdates = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 4, value);
+};
+
+
+/**
+ * optional bool property_alerts = 5;
+ * @return {boolean}
+ */
+proto.dac.auth.NotificationSettings.prototype.getPropertyAlerts = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 5, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.auth.NotificationSettings} returns this
+ */
+proto.dac.auth.NotificationSettings.prototype.setPropertyAlerts = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 5, value);
+};
+
+
+/**
+ * optional bool transaction_updates = 6;
+ * @return {boolean}
+ */
+proto.dac.auth.NotificationSettings.prototype.getTransactionUpdates = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 6, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.auth.NotificationSettings} returns this
+ */
+proto.dac.auth.NotificationSettings.prototype.setTransactionUpdates = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 6, value);
+};
+
+
+/**
+ * optional bool marketing_emails = 7;
+ * @return {boolean}
+ */
+proto.dac.auth.NotificationSettings.prototype.getMarketingEmails = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 7, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.auth.NotificationSettings} returns this
+ */
+proto.dac.auth.NotificationSettings.prototype.setMarketingEmails = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 7, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.PrivacySettings.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.PrivacySettings.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.PrivacySettings} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.PrivacySettings.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    profileVisibility: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    showWalletBalance: jspb.Message.getBooleanFieldWithDefault(msg, 2, false),
+    showTransactionHistory: jspb.Message.getBooleanFieldWithDefault(msg, 3, false),
+    allowDirectMessages: jspb.Message.getBooleanFieldWithDefault(msg, 4, false),
+    showOnlineStatus: jspb.Message.getBooleanFieldWithDefault(msg, 5, false)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.PrivacySettings}
+ */
+proto.dac.auth.PrivacySettings.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.PrivacySettings;
+  return proto.dac.auth.PrivacySettings.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.PrivacySettings} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.PrivacySettings}
+ */
+proto.dac.auth.PrivacySettings.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {!proto.dac.auth.ProfileVisibility} */ (reader.readEnum());
+      msg.setProfileVisibility(value);
+      break;
+    case 2:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setShowWalletBalance(value);
+      break;
+    case 3:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setShowTransactionHistory(value);
+      break;
+    case 4:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setAllowDirectMessages(value);
+      break;
+    case 5:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setShowOnlineStatus(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.PrivacySettings.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.PrivacySettings.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.PrivacySettings} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.PrivacySettings.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getProfileVisibility();
+  if (f !== 0.0) {
+    writer.writeEnum(
+      1,
+      f
+    );
+  }
+  f = message.getShowWalletBalance();
+  if (f) {
+    writer.writeBool(
+      2,
+      f
+    );
+  }
+  f = message.getShowTransactionHistory();
+  if (f) {
+    writer.writeBool(
+      3,
+      f
+    );
+  }
+  f = message.getAllowDirectMessages();
+  if (f) {
+    writer.writeBool(
+      4,
+      f
+    );
+  }
+  f = message.getShowOnlineStatus();
+  if (f) {
+    writer.writeBool(
+      5,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional ProfileVisibility profile_visibility = 1;
+ * @return {!proto.dac.auth.ProfileVisibility}
+ */
+proto.dac.auth.PrivacySettings.prototype.getProfileVisibility = function() {
+  return /** @type {!proto.dac.auth.ProfileVisibility} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {!proto.dac.auth.ProfileVisibility} value
+ * @return {!proto.dac.auth.PrivacySettings} returns this
+ */
+proto.dac.auth.PrivacySettings.prototype.setProfileVisibility = function(value) {
+  return jspb.Message.setProto3EnumField(this, 1, value);
+};
+
+
+/**
+ * optional bool show_wallet_balance = 2;
+ * @return {boolean}
+ */
+proto.dac.auth.PrivacySettings.prototype.getShowWalletBalance = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 2, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.auth.PrivacySettings} returns this
+ */
+proto.dac.auth.PrivacySettings.prototype.setShowWalletBalance = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 2, value);
+};
+
+
+/**
+ * optional bool show_transaction_history = 3;
+ * @return {boolean}
+ */
+proto.dac.auth.PrivacySettings.prototype.getShowTransactionHistory = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 3, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.auth.PrivacySettings} returns this
+ */
+proto.dac.auth.PrivacySettings.prototype.setShowTransactionHistory = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 3, value);
+};
+
+
+/**
+ * optional bool allow_direct_messages = 4;
+ * @return {boolean}
+ */
+proto.dac.auth.PrivacySettings.prototype.getAllowDirectMessages = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 4, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.auth.PrivacySettings} returns this
+ */
+proto.dac.auth.PrivacySettings.prototype.setAllowDirectMessages = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 4, value);
+};
+
+
+/**
+ * optional bool show_online_status = 5;
+ * @return {boolean}
+ */
+proto.dac.auth.PrivacySettings.prototype.getShowOnlineStatus = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 5, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.auth.PrivacySettings} returns this
+ */
+proto.dac.auth.PrivacySettings.prototype.setShowOnlineStatus = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 5, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.ThemeSettings.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.ThemeSettings.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.ThemeSettings} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.ThemeSettings.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    themeMode: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    primaryColor: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    layoutDensity: jspb.Message.getFieldWithDefault(msg, 3, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.ThemeSettings}
+ */
+proto.dac.auth.ThemeSettings.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.ThemeSettings;
+  return proto.dac.auth.ThemeSettings.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.ThemeSettings} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.ThemeSettings}
+ */
+proto.dac.auth.ThemeSettings.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setThemeMode(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setPrimaryColor(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setLayoutDensity(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.ThemeSettings.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.ThemeSettings.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.ThemeSettings} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.ThemeSettings.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getThemeMode();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getPrimaryColor();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getLayoutDensity();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string theme_mode = 1;
+ * @return {string}
+ */
+proto.dac.auth.ThemeSettings.prototype.getThemeMode = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.ThemeSettings} returns this
+ */
+proto.dac.auth.ThemeSettings.prototype.setThemeMode = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string primary_color = 2;
+ * @return {string}
+ */
+proto.dac.auth.ThemeSettings.prototype.getPrimaryColor = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.ThemeSettings} returns this
+ */
+proto.dac.auth.ThemeSettings.prototype.setPrimaryColor = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string layout_density = 3;
+ * @return {string}
+ */
+proto.dac.auth.ThemeSettings.prototype.getLayoutDensity = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.ThemeSettings} returns this
+ */
+proto.dac.auth.ThemeSettings.prototype.setLayoutDensity = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.dac.auth.ProfileSettings.repeatedFields_ = [4,5];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.ProfileSettings.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.ProfileSettings.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.ProfileSettings} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.ProfileSettings.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    bio: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    location: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    website: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    socialLinksList: (f = jspb.Message.getRepeatedField(msg, 4)) == null ? undefined : f,
+    interestsList: (f = jspb.Message.getRepeatedField(msg, 5)) == null ? undefined : f,
+    isInvestor: jspb.Message.getBooleanFieldWithDefault(msg, 6, false),
+    isDeveloper: jspb.Message.getBooleanFieldWithDefault(msg, 7, false),
+    isAgent: jspb.Message.getBooleanFieldWithDefault(msg, 8, false)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.ProfileSettings}
+ */
+proto.dac.auth.ProfileSettings.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.ProfileSettings;
+  return proto.dac.auth.ProfileSettings.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.ProfileSettings} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.ProfileSettings}
+ */
+proto.dac.auth.ProfileSettings.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setBio(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setLocation(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setWebsite(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addSocialLinks(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addInterests(value);
+      break;
+    case 6:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setIsInvestor(value);
+      break;
+    case 7:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setIsDeveloper(value);
+      break;
+    case 8:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setIsAgent(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.ProfileSettings.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.ProfileSettings.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.ProfileSettings} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.ProfileSettings.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getBio();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getLocation();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getWebsite();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getSocialLinksList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      4,
+      f
+    );
+  }
+  f = message.getInterestsList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      5,
+      f
+    );
+  }
+  f = message.getIsInvestor();
+  if (f) {
+    writer.writeBool(
+      6,
+      f
+    );
+  }
+  f = message.getIsDeveloper();
+  if (f) {
+    writer.writeBool(
+      7,
+      f
+    );
+  }
+  f = message.getIsAgent();
+  if (f) {
+    writer.writeBool(
+      8,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string bio = 1;
+ * @return {string}
+ */
+proto.dac.auth.ProfileSettings.prototype.getBio = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.ProfileSettings} returns this
+ */
+proto.dac.auth.ProfileSettings.prototype.setBio = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string location = 2;
+ * @return {string}
+ */
+proto.dac.auth.ProfileSettings.prototype.getLocation = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.ProfileSettings} returns this
+ */
+proto.dac.auth.ProfileSettings.prototype.setLocation = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string website = 3;
+ * @return {string}
+ */
+proto.dac.auth.ProfileSettings.prototype.getWebsite = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.ProfileSettings} returns this
+ */
+proto.dac.auth.ProfileSettings.prototype.setWebsite = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * repeated string social_links = 4;
+ * @return {!Array<string>}
+ */
+proto.dac.auth.ProfileSettings.prototype.getSocialLinksList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 4));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.dac.auth.ProfileSettings} returns this
+ */
+proto.dac.auth.ProfileSettings.prototype.setSocialLinksList = function(value) {
+  return jspb.Message.setField(this, 4, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.dac.auth.ProfileSettings} returns this
+ */
+proto.dac.auth.ProfileSettings.prototype.addSocialLinks = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 4, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.auth.ProfileSettings} returns this
+ */
+proto.dac.auth.ProfileSettings.prototype.clearSocialLinksList = function() {
+  return this.setSocialLinksList([]);
+};
+
+
+/**
+ * repeated string interests = 5;
+ * @return {!Array<string>}
+ */
+proto.dac.auth.ProfileSettings.prototype.getInterestsList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 5));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.dac.auth.ProfileSettings} returns this
+ */
+proto.dac.auth.ProfileSettings.prototype.setInterestsList = function(value) {
+  return jspb.Message.setField(this, 5, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.dac.auth.ProfileSettings} returns this
+ */
+proto.dac.auth.ProfileSettings.prototype.addInterests = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 5, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.auth.ProfileSettings} returns this
+ */
+proto.dac.auth.ProfileSettings.prototype.clearInterestsList = function() {
+  return this.setInterestsList([]);
+};
+
+
+/**
+ * optional bool is_investor = 6;
+ * @return {boolean}
+ */
+proto.dac.auth.ProfileSettings.prototype.getIsInvestor = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 6, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.auth.ProfileSettings} returns this
+ */
+proto.dac.auth.ProfileSettings.prototype.setIsInvestor = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 6, value);
+};
+
+
+/**
+ * optional bool is_developer = 7;
+ * @return {boolean}
+ */
+proto.dac.auth.ProfileSettings.prototype.getIsDeveloper = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 7, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.auth.ProfileSettings} returns this
+ */
+proto.dac.auth.ProfileSettings.prototype.setIsDeveloper = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 7, value);
+};
+
+
+/**
+ * optional bool is_agent = 8;
+ * @return {boolean}
+ */
+proto.dac.auth.ProfileSettings.prototype.getIsAgent = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 8, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.auth.ProfileSettings} returns this
+ */
+proto.dac.auth.ProfileSettings.prototype.setIsAgent = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 8, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.RegisterRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.RegisterRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.RegisterRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.RegisterRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    username: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    email: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    password: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    name: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    referralCode: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    acceptTerms: jspb.Message.getBooleanFieldWithDefault(msg, 6, false),
+    acceptPrivacy: jspb.Message.getBooleanFieldWithDefault(msg, 7, false),
+    inviteCode: jspb.Message.getFieldWithDefault(msg, 8, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.RegisterRequest}
+ */
+proto.dac.auth.RegisterRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.RegisterRequest;
+  return proto.dac.auth.RegisterRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.RegisterRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.RegisterRequest}
+ */
+proto.dac.auth.RegisterRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setUsername(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setEmail(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setPassword(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setName(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setReferralCode(value);
+      break;
+    case 6:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setAcceptTerms(value);
+      break;
+    case 7:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setAcceptPrivacy(value);
+      break;
+    case 8:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setInviteCode(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.RegisterRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.RegisterRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.RegisterRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.RegisterRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getUsername();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getEmail();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getPassword();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getName();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+  f = /** @type {string} */ (jspb.Message.getField(message, 5));
+  if (f != null) {
+    writer.writeString(
+      5,
+      f
+    );
+  }
+  f = message.getAcceptTerms();
+  if (f) {
+    writer.writeBool(
+      6,
+      f
+    );
+  }
+  f = message.getAcceptPrivacy();
+  if (f) {
+    writer.writeBool(
+      7,
+      f
+    );
+  }
+  f = /** @type {string} */ (jspb.Message.getField(message, 8));
+  if (f != null) {
+    writer.writeString(
+      8,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string username = 1;
+ * @return {string}
+ */
+proto.dac.auth.RegisterRequest.prototype.getUsername = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.RegisterRequest} returns this
+ */
+proto.dac.auth.RegisterRequest.prototype.setUsername = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string email = 2;
+ * @return {string}
+ */
+proto.dac.auth.RegisterRequest.prototype.getEmail = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.RegisterRequest} returns this
+ */
+proto.dac.auth.RegisterRequest.prototype.setEmail = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string password = 3;
+ * @return {string}
+ */
+proto.dac.auth.RegisterRequest.prototype.getPassword = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.RegisterRequest} returns this
+ */
+proto.dac.auth.RegisterRequest.prototype.setPassword = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string name = 4;
+ * @return {string}
+ */
+proto.dac.auth.RegisterRequest.prototype.getName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.RegisterRequest} returns this
+ */
+proto.dac.auth.RegisterRequest.prototype.setName = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional string referral_code = 5;
+ * @return {string}
+ */
+proto.dac.auth.RegisterRequest.prototype.getReferralCode = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.RegisterRequest} returns this
+ */
+proto.dac.auth.RegisterRequest.prototype.setReferralCode = function(value) {
+  return jspb.Message.setField(this, 5, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.dac.auth.RegisterRequest} returns this
+ */
+proto.dac.auth.RegisterRequest.prototype.clearReferralCode = function() {
+  return jspb.Message.setField(this, 5, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.RegisterRequest.prototype.hasReferralCode = function() {
+  return jspb.Message.getField(this, 5) != null;
+};
+
+
+/**
+ * optional bool accept_terms = 6;
+ * @return {boolean}
+ */
+proto.dac.auth.RegisterRequest.prototype.getAcceptTerms = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 6, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.auth.RegisterRequest} returns this
+ */
+proto.dac.auth.RegisterRequest.prototype.setAcceptTerms = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 6, value);
+};
+
+
+/**
+ * optional bool accept_privacy = 7;
+ * @return {boolean}
+ */
+proto.dac.auth.RegisterRequest.prototype.getAcceptPrivacy = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 7, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.auth.RegisterRequest} returns this
+ */
+proto.dac.auth.RegisterRequest.prototype.setAcceptPrivacy = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 7, value);
+};
+
+
+/**
+ * optional string invite_code = 8;
+ * @return {string}
+ */
+proto.dac.auth.RegisterRequest.prototype.getInviteCode = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 8, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.RegisterRequest} returns this
+ */
+proto.dac.auth.RegisterRequest.prototype.setInviteCode = function(value) {
+  return jspb.Message.setField(this, 8, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.dac.auth.RegisterRequest} returns this
+ */
+proto.dac.auth.RegisterRequest.prototype.clearInviteCode = function() {
+  return jspb.Message.setField(this, 8, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.RegisterRequest.prototype.hasInviteCode = function() {
+  return jspb.Message.getField(this, 8) != null;
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.LoginRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.LoginRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.LoginRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.LoginRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    identifier: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    password: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    rememberMe: jspb.Message.getBooleanFieldWithDefault(msg, 3, false),
+    mfaCode: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    deviceInfo: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    ipAddress: jspb.Message.getFieldWithDefault(msg, 6, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.LoginRequest}
+ */
+proto.dac.auth.LoginRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.LoginRequest;
+  return proto.dac.auth.LoginRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.LoginRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.LoginRequest}
+ */
+proto.dac.auth.LoginRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setIdentifier(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setPassword(value);
+      break;
+    case 3:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setRememberMe(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setMfaCode(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setDeviceInfo(value);
+      break;
+    case 6:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setIpAddress(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.LoginRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.LoginRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.LoginRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.LoginRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getIdentifier();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getPassword();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getRememberMe();
+  if (f) {
+    writer.writeBool(
+      3,
+      f
+    );
+  }
+  f = /** @type {string} */ (jspb.Message.getField(message, 4));
+  if (f != null) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+  f = message.getDeviceInfo();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
+      f
+    );
+  }
+  f = message.getIpAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      6,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string identifier = 1;
+ * @return {string}
+ */
+proto.dac.auth.LoginRequest.prototype.getIdentifier = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.LoginRequest} returns this
+ */
+proto.dac.auth.LoginRequest.prototype.setIdentifier = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string password = 2;
+ * @return {string}
+ */
+proto.dac.auth.LoginRequest.prototype.getPassword = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.LoginRequest} returns this
+ */
+proto.dac.auth.LoginRequest.prototype.setPassword = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional bool remember_me = 3;
+ * @return {boolean}
+ */
+proto.dac.auth.LoginRequest.prototype.getRememberMe = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 3, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.auth.LoginRequest} returns this
+ */
+proto.dac.auth.LoginRequest.prototype.setRememberMe = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 3, value);
+};
+
+
+/**
+ * optional string mfa_code = 4;
+ * @return {string}
+ */
+proto.dac.auth.LoginRequest.prototype.getMfaCode = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.LoginRequest} returns this
+ */
+proto.dac.auth.LoginRequest.prototype.setMfaCode = function(value) {
+  return jspb.Message.setField(this, 4, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.dac.auth.LoginRequest} returns this
+ */
+proto.dac.auth.LoginRequest.prototype.clearMfaCode = function() {
+  return jspb.Message.setField(this, 4, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.LoginRequest.prototype.hasMfaCode = function() {
+  return jspb.Message.getField(this, 4) != null;
+};
+
+
+/**
+ * optional string device_info = 5;
+ * @return {string}
+ */
+proto.dac.auth.LoginRequest.prototype.getDeviceInfo = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.LoginRequest} returns this
+ */
+proto.dac.auth.LoginRequest.prototype.setDeviceInfo = function(value) {
+  return jspb.Message.setProto3StringField(this, 5, value);
+};
+
+
+/**
+ * optional string ip_address = 6;
+ * @return {string}
+ */
+proto.dac.auth.LoginRequest.prototype.getIpAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.LoginRequest} returns this
+ */
+proto.dac.auth.LoginRequest.prototype.setIpAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 6, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.AuthResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.AuthResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.AuthResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.AuthResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    success: jspb.Message.getBooleanFieldWithDefault(msg, 1, false),
+    accessToken: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    refreshToken: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    user: (f = msg.getUser()) && proto.dac.auth.UserProfile.toObject(includeInstance, f),
+    expiresAt: (f = msg.getExpiresAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
+    errorMessage: jspb.Message.getFieldWithDefault(msg, 6, ""),
+    requiresMfa: jspb.Message.getBooleanFieldWithDefault(msg, 7, false),
+    sessionId: jspb.Message.getFieldWithDefault(msg, 8, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.AuthResponse}
+ */
+proto.dac.auth.AuthResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.AuthResponse;
+  return proto.dac.auth.AuthResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.AuthResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.AuthResponse}
+ */
+proto.dac.auth.AuthResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setSuccess(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setAccessToken(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setRefreshToken(value);
+      break;
+    case 4:
+      var value = new proto.dac.auth.UserProfile;
+      reader.readMessage(value,proto.dac.auth.UserProfile.deserializeBinaryFromReader);
+      msg.setUser(value);
+      break;
+    case 5:
+      var value = new google_protobuf_timestamp_pb.Timestamp;
+      reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      msg.setExpiresAt(value);
+      break;
+    case 6:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setErrorMessage(value);
+      break;
+    case 7:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setRequiresMfa(value);
+      break;
+    case 8:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setSessionId(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.AuthResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.AuthResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.AuthResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.AuthResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getSuccess();
+  if (f) {
+    writer.writeBool(
+      1,
+      f
+    );
+  }
+  f = message.getAccessToken();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getRefreshToken();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getUser();
+  if (f != null) {
+    writer.writeMessage(
+      4,
+      f,
+      proto.dac.auth.UserProfile.serializeBinaryToWriter
+    );
+  }
+  f = message.getExpiresAt();
+  if (f != null) {
+    writer.writeMessage(
+      5,
+      f,
+      google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+  f = /** @type {string} */ (jspb.Message.getField(message, 6));
+  if (f != null) {
+    writer.writeString(
+      6,
+      f
+    );
+  }
+  f = message.getRequiresMfa();
+  if (f) {
+    writer.writeBool(
+      7,
+      f
+    );
+  }
+  f = message.getSessionId();
+  if (f.length > 0) {
+    writer.writeString(
+      8,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional bool success = 1;
+ * @return {boolean}
+ */
+proto.dac.auth.AuthResponse.prototype.getSuccess = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 1, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.auth.AuthResponse} returns this
+ */
+proto.dac.auth.AuthResponse.prototype.setSuccess = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 1, value);
+};
+
+
+/**
+ * optional string access_token = 2;
+ * @return {string}
+ */
+proto.dac.auth.AuthResponse.prototype.getAccessToken = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.AuthResponse} returns this
+ */
+proto.dac.auth.AuthResponse.prototype.setAccessToken = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string refresh_token = 3;
+ * @return {string}
+ */
+proto.dac.auth.AuthResponse.prototype.getRefreshToken = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.AuthResponse} returns this
+ */
+proto.dac.auth.AuthResponse.prototype.setRefreshToken = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional UserProfile user = 4;
+ * @return {?proto.dac.auth.UserProfile}
+ */
+proto.dac.auth.AuthResponse.prototype.getUser = function() {
+  return /** @type{?proto.dac.auth.UserProfile} */ (
+    jspb.Message.getWrapperField(this, proto.dac.auth.UserProfile, 4));
+};
+
+
+/**
+ * @param {?proto.dac.auth.UserProfile|undefined} value
+ * @return {!proto.dac.auth.AuthResponse} returns this
+*/
+proto.dac.auth.AuthResponse.prototype.setUser = function(value) {
+  return jspb.Message.setWrapperField(this, 4, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.auth.AuthResponse} returns this
+ */
+proto.dac.auth.AuthResponse.prototype.clearUser = function() {
+  return this.setUser(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.AuthResponse.prototype.hasUser = function() {
+  return jspb.Message.getField(this, 4) != null;
+};
+
+
+/**
+ * optional google.protobuf.Timestamp expires_at = 5;
+ * @return {?proto.google.protobuf.Timestamp}
+ */
+proto.dac.auth.AuthResponse.prototype.getExpiresAt = function() {
+  return /** @type{?proto.google.protobuf.Timestamp} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 5));
+};
+
+
+/**
+ * @param {?proto.google.protobuf.Timestamp|undefined} value
+ * @return {!proto.dac.auth.AuthResponse} returns this
+*/
+proto.dac.auth.AuthResponse.prototype.setExpiresAt = function(value) {
+  return jspb.Message.setWrapperField(this, 5, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.auth.AuthResponse} returns this
+ */
+proto.dac.auth.AuthResponse.prototype.clearExpiresAt = function() {
+  return this.setExpiresAt(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.AuthResponse.prototype.hasExpiresAt = function() {
+  return jspb.Message.getField(this, 5) != null;
+};
+
+
+/**
+ * optional string error_message = 6;
+ * @return {string}
+ */
+proto.dac.auth.AuthResponse.prototype.getErrorMessage = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.AuthResponse} returns this
+ */
+proto.dac.auth.AuthResponse.prototype.setErrorMessage = function(value) {
+  return jspb.Message.setField(this, 6, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.dac.auth.AuthResponse} returns this
+ */
+proto.dac.auth.AuthResponse.prototype.clearErrorMessage = function() {
+  return jspb.Message.setField(this, 6, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.AuthResponse.prototype.hasErrorMessage = function() {
+  return jspb.Message.getField(this, 6) != null;
+};
+
+
+/**
+ * optional bool requires_mfa = 7;
+ * @return {boolean}
+ */
+proto.dac.auth.AuthResponse.prototype.getRequiresMfa = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 7, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.auth.AuthResponse} returns this
+ */
+proto.dac.auth.AuthResponse.prototype.setRequiresMfa = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 7, value);
+};
+
+
+/**
+ * optional string session_id = 8;
+ * @return {string}
+ */
+proto.dac.auth.AuthResponse.prototype.getSessionId = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 8, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.AuthResponse} returns this
+ */
+proto.dac.auth.AuthResponse.prototype.setSessionId = function(value) {
+  return jspb.Message.setProto3StringField(this, 8, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.LogoutRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.LogoutRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.LogoutRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.LogoutRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    sessionId: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    logoutAllDevices: jspb.Message.getBooleanFieldWithDefault(msg, 2, false)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.LogoutRequest}
+ */
+proto.dac.auth.LogoutRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.LogoutRequest;
+  return proto.dac.auth.LogoutRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.LogoutRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.LogoutRequest}
+ */
+proto.dac.auth.LogoutRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setSessionId(value);
+      break;
+    case 2:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setLogoutAllDevices(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.LogoutRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.LogoutRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.LogoutRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.LogoutRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getSessionId();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getLogoutAllDevices();
+  if (f) {
+    writer.writeBool(
+      2,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string session_id = 1;
+ * @return {string}
+ */
+proto.dac.auth.LogoutRequest.prototype.getSessionId = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.LogoutRequest} returns this
+ */
+proto.dac.auth.LogoutRequest.prototype.setSessionId = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional bool logout_all_devices = 2;
+ * @return {boolean}
+ */
+proto.dac.auth.LogoutRequest.prototype.getLogoutAllDevices = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 2, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.auth.LogoutRequest} returns this
+ */
+proto.dac.auth.LogoutRequest.prototype.setLogoutAllDevices = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 2, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.RefreshTokenRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.RefreshTokenRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.RefreshTokenRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.RefreshTokenRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    refreshToken: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    deviceId: jspb.Message.getFieldWithDefault(msg, 2, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.RefreshTokenRequest}
+ */
+proto.dac.auth.RefreshTokenRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.RefreshTokenRequest;
+  return proto.dac.auth.RefreshTokenRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.RefreshTokenRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.RefreshTokenRequest}
+ */
+proto.dac.auth.RefreshTokenRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setRefreshToken(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setDeviceId(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.RefreshTokenRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.RefreshTokenRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.RefreshTokenRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.RefreshTokenRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getRefreshToken();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getDeviceId();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string refresh_token = 1;
+ * @return {string}
+ */
+proto.dac.auth.RefreshTokenRequest.prototype.getRefreshToken = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.RefreshTokenRequest} returns this
+ */
+proto.dac.auth.RefreshTokenRequest.prototype.setRefreshToken = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string device_id = 2;
+ * @return {string}
+ */
+proto.dac.auth.RefreshTokenRequest.prototype.getDeviceId = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.RefreshTokenRequest} returns this
+ */
+proto.dac.auth.RefreshTokenRequest.prototype.setDeviceId = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.TokenResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.TokenResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.TokenResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.TokenResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    accessToken: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    refreshToken: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    expiresAt: (f = msg.getExpiresAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.TokenResponse}
+ */
+proto.dac.auth.TokenResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.TokenResponse;
+  return proto.dac.auth.TokenResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.TokenResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.TokenResponse}
+ */
+proto.dac.auth.TokenResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setAccessToken(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setRefreshToken(value);
+      break;
+    case 3:
+      var value = new google_protobuf_timestamp_pb.Timestamp;
+      reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      msg.setExpiresAt(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.TokenResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.TokenResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.TokenResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.TokenResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getAccessToken();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getRefreshToken();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getExpiresAt();
+  if (f != null) {
+    writer.writeMessage(
+      3,
+      f,
+      google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+};
+
+
+/**
+ * optional string access_token = 1;
+ * @return {string}
+ */
+proto.dac.auth.TokenResponse.prototype.getAccessToken = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.TokenResponse} returns this
+ */
+proto.dac.auth.TokenResponse.prototype.setAccessToken = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string refresh_token = 2;
+ * @return {string}
+ */
+proto.dac.auth.TokenResponse.prototype.getRefreshToken = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.TokenResponse} returns this
+ */
+proto.dac.auth.TokenResponse.prototype.setRefreshToken = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional google.protobuf.Timestamp expires_at = 3;
+ * @return {?proto.google.protobuf.Timestamp}
+ */
+proto.dac.auth.TokenResponse.prototype.getExpiresAt = function() {
+  return /** @type{?proto.google.protobuf.Timestamp} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 3));
+};
+
+
+/**
+ * @param {?proto.google.protobuf.Timestamp|undefined} value
+ * @return {!proto.dac.auth.TokenResponse} returns this
+*/
+proto.dac.auth.TokenResponse.prototype.setExpiresAt = function(value) {
+  return jspb.Message.setWrapperField(this, 3, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.auth.TokenResponse} returns this
+ */
+proto.dac.auth.TokenResponse.prototype.clearExpiresAt = function() {
+  return this.setExpiresAt(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.TokenResponse.prototype.hasExpiresAt = function() {
+  return jspb.Message.getField(this, 3) != null;
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.dac.auth.VerifyTokenRequest.repeatedFields_ = [2];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.VerifyTokenRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.VerifyTokenRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.VerifyTokenRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.VerifyTokenRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    token: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    requiredPermissionsList: (f = jspb.Message.getRepeatedField(msg, 2)) == null ? undefined : f
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.VerifyTokenRequest}
+ */
+proto.dac.auth.VerifyTokenRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.VerifyTokenRequest;
+  return proto.dac.auth.VerifyTokenRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.VerifyTokenRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.VerifyTokenRequest}
+ */
+proto.dac.auth.VerifyTokenRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setToken(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addRequiredPermissions(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.VerifyTokenRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.VerifyTokenRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.VerifyTokenRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.VerifyTokenRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getToken();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getRequiredPermissionsList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      2,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string token = 1;
+ * @return {string}
+ */
+proto.dac.auth.VerifyTokenRequest.prototype.getToken = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.VerifyTokenRequest} returns this
+ */
+proto.dac.auth.VerifyTokenRequest.prototype.setToken = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * repeated string required_permissions = 2;
+ * @return {!Array<string>}
+ */
+proto.dac.auth.VerifyTokenRequest.prototype.getRequiredPermissionsList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 2));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.dac.auth.VerifyTokenRequest} returns this
+ */
+proto.dac.auth.VerifyTokenRequest.prototype.setRequiredPermissionsList = function(value) {
+  return jspb.Message.setField(this, 2, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.dac.auth.VerifyTokenRequest} returns this
+ */
+proto.dac.auth.VerifyTokenRequest.prototype.addRequiredPermissions = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 2, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.auth.VerifyTokenRequest} returns this
+ */
+proto.dac.auth.VerifyTokenRequest.prototype.clearRequiredPermissionsList = function() {
+  return this.setRequiredPermissionsList([]);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.dac.auth.VerifyTokenResponse.repeatedFields_ = [3];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.VerifyTokenResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.VerifyTokenResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.VerifyTokenResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.VerifyTokenResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    valid: jspb.Message.getBooleanFieldWithDefault(msg, 1, false),
+    userId: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    permissionsList: (f = jspb.Message.getRepeatedField(msg, 3)) == null ? undefined : f,
+    expiresAt: (f = msg.getExpiresAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
+    tokenType: jspb.Message.getFieldWithDefault(msg, 5, 0)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.VerifyTokenResponse}
+ */
+proto.dac.auth.VerifyTokenResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.VerifyTokenResponse;
+  return proto.dac.auth.VerifyTokenResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.VerifyTokenResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.VerifyTokenResponse}
+ */
+proto.dac.auth.VerifyTokenResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setValid(value);
+      break;
+    case 2:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setUserId(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addPermissions(value);
+      break;
+    case 4:
+      var value = new google_protobuf_timestamp_pb.Timestamp;
+      reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      msg.setExpiresAt(value);
+      break;
+    case 5:
+      var value = /** @type {!proto.dac.auth.TokenType} */ (reader.readEnum());
+      msg.setTokenType(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.VerifyTokenResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.VerifyTokenResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.VerifyTokenResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.VerifyTokenResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getValid();
+  if (f) {
+    writer.writeBool(
+      1,
+      f
+    );
+  }
+  f = message.getUserId();
+  if (f !== 0) {
+    writer.writeInt32(
+      2,
+      f
+    );
+  }
+  f = message.getPermissionsList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      3,
+      f
+    );
+  }
+  f = message.getExpiresAt();
+  if (f != null) {
+    writer.writeMessage(
+      4,
+      f,
+      google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+  f = message.getTokenType();
+  if (f !== 0.0) {
+    writer.writeEnum(
+      5,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional bool valid = 1;
+ * @return {boolean}
+ */
+proto.dac.auth.VerifyTokenResponse.prototype.getValid = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 1, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.auth.VerifyTokenResponse} returns this
+ */
+proto.dac.auth.VerifyTokenResponse.prototype.setValid = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 1, value);
+};
+
+
+/**
+ * optional int32 user_id = 2;
+ * @return {number}
+ */
+proto.dac.auth.VerifyTokenResponse.prototype.getUserId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.auth.VerifyTokenResponse} returns this
+ */
+proto.dac.auth.VerifyTokenResponse.prototype.setUserId = function(value) {
+  return jspb.Message.setProto3IntField(this, 2, value);
+};
+
+
+/**
+ * repeated string permissions = 3;
+ * @return {!Array<string>}
+ */
+proto.dac.auth.VerifyTokenResponse.prototype.getPermissionsList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 3));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.dac.auth.VerifyTokenResponse} returns this
+ */
+proto.dac.auth.VerifyTokenResponse.prototype.setPermissionsList = function(value) {
+  return jspb.Message.setField(this, 3, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.dac.auth.VerifyTokenResponse} returns this
+ */
+proto.dac.auth.VerifyTokenResponse.prototype.addPermissions = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 3, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.auth.VerifyTokenResponse} returns this
+ */
+proto.dac.auth.VerifyTokenResponse.prototype.clearPermissionsList = function() {
+  return this.setPermissionsList([]);
+};
+
+
+/**
+ * optional google.protobuf.Timestamp expires_at = 4;
+ * @return {?proto.google.protobuf.Timestamp}
+ */
+proto.dac.auth.VerifyTokenResponse.prototype.getExpiresAt = function() {
+  return /** @type{?proto.google.protobuf.Timestamp} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 4));
+};
+
+
+/**
+ * @param {?proto.google.protobuf.Timestamp|undefined} value
+ * @return {!proto.dac.auth.VerifyTokenResponse} returns this
+*/
+proto.dac.auth.VerifyTokenResponse.prototype.setExpiresAt = function(value) {
+  return jspb.Message.setWrapperField(this, 4, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.auth.VerifyTokenResponse} returns this
+ */
+proto.dac.auth.VerifyTokenResponse.prototype.clearExpiresAt = function() {
+  return this.setExpiresAt(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.VerifyTokenResponse.prototype.hasExpiresAt = function() {
+  return jspb.Message.getField(this, 4) != null;
+};
+
+
+/**
+ * optional TokenType token_type = 5;
+ * @return {!proto.dac.auth.TokenType}
+ */
+proto.dac.auth.VerifyTokenResponse.prototype.getTokenType = function() {
+  return /** @type {!proto.dac.auth.TokenType} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
+};
+
+
+/**
+ * @param {!proto.dac.auth.TokenType} value
+ * @return {!proto.dac.auth.VerifyTokenResponse} returns this
+ */
+proto.dac.auth.VerifyTokenResponse.prototype.setTokenType = function(value) {
+  return jspb.Message.setProto3EnumField(this, 5, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.GetUserRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.GetUserRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.GetUserRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.GetUserRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    userId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    includePreferences: jspb.Message.getBooleanFieldWithDefault(msg, 2, false),
+    includeWalletInfo: jspb.Message.getBooleanFieldWithDefault(msg, 3, false)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.GetUserRequest}
+ */
+proto.dac.auth.GetUserRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.GetUserRequest;
+  return proto.dac.auth.GetUserRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.GetUserRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.GetUserRequest}
+ */
+proto.dac.auth.GetUserRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setUserId(value);
+      break;
+    case 2:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setIncludePreferences(value);
+      break;
+    case 3:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setIncludeWalletInfo(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.GetUserRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.GetUserRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.GetUserRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.GetUserRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getUserId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getIncludePreferences();
+  if (f) {
+    writer.writeBool(
+      2,
+      f
+    );
+  }
+  f = message.getIncludeWalletInfo();
+  if (f) {
+    writer.writeBool(
+      3,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 user_id = 1;
+ * @return {number}
+ */
+proto.dac.auth.GetUserRequest.prototype.getUserId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.auth.GetUserRequest} returns this
+ */
+proto.dac.auth.GetUserRequest.prototype.setUserId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional bool include_preferences = 2;
+ * @return {boolean}
+ */
+proto.dac.auth.GetUserRequest.prototype.getIncludePreferences = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 2, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.auth.GetUserRequest} returns this
+ */
+proto.dac.auth.GetUserRequest.prototype.setIncludePreferences = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 2, value);
+};
+
+
+/**
+ * optional bool include_wallet_info = 3;
+ * @return {boolean}
+ */
+proto.dac.auth.GetUserRequest.prototype.getIncludeWalletInfo = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 3, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.auth.GetUserRequest} returns this
+ */
+proto.dac.auth.GetUserRequest.prototype.setIncludeWalletInfo = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 3, value);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.dac.auth.UpdateProfileRequest.repeatedFields_ = [7];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.UpdateProfileRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.UpdateProfileRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.UpdateProfileRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.UpdateProfileRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    userId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    name: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    avatarUrl: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    bio: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    location: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    website: jspb.Message.getFieldWithDefault(msg, 6, ""),
+    socialLinksList: (f = jspb.Message.getRepeatedField(msg, 7)) == null ? undefined : f,
+    preferences: (f = msg.getPreferences()) && proto.dac.auth.UserPreferences.toObject(includeInstance, f),
+    settings: (f = msg.getSettings()) && proto.dac.auth.ProfileSettings.toObject(includeInstance, f)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.UpdateProfileRequest}
+ */
+proto.dac.auth.UpdateProfileRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.UpdateProfileRequest;
+  return proto.dac.auth.UpdateProfileRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.UpdateProfileRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.UpdateProfileRequest}
+ */
+proto.dac.auth.UpdateProfileRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setUserId(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setName(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setAvatarUrl(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setBio(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setLocation(value);
+      break;
+    case 6:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setWebsite(value);
+      break;
+    case 7:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addSocialLinks(value);
+      break;
+    case 8:
+      var value = new proto.dac.auth.UserPreferences;
+      reader.readMessage(value,proto.dac.auth.UserPreferences.deserializeBinaryFromReader);
+      msg.setPreferences(value);
+      break;
+    case 9:
+      var value = new proto.dac.auth.ProfileSettings;
+      reader.readMessage(value,proto.dac.auth.ProfileSettings.deserializeBinaryFromReader);
+      msg.setSettings(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.UpdateProfileRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.UpdateProfileRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.UpdateProfileRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.UpdateProfileRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getUserId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = /** @type {string} */ (jspb.Message.getField(message, 2));
+  if (f != null) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = /** @type {string} */ (jspb.Message.getField(message, 3));
+  if (f != null) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = /** @type {string} */ (jspb.Message.getField(message, 4));
+  if (f != null) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+  f = /** @type {string} */ (jspb.Message.getField(message, 5));
+  if (f != null) {
+    writer.writeString(
+      5,
+      f
+    );
+  }
+  f = /** @type {string} */ (jspb.Message.getField(message, 6));
+  if (f != null) {
+    writer.writeString(
+      6,
+      f
+    );
+  }
+  f = message.getSocialLinksList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      7,
+      f
+    );
+  }
+  f = message.getPreferences();
+  if (f != null) {
+    writer.writeMessage(
+      8,
+      f,
+      proto.dac.auth.UserPreferences.serializeBinaryToWriter
+    );
+  }
+  f = message.getSettings();
+  if (f != null) {
+    writer.writeMessage(
+      9,
+      f,
+      proto.dac.auth.ProfileSettings.serializeBinaryToWriter
+    );
+  }
+};
+
+
+/**
+ * optional int32 user_id = 1;
+ * @return {number}
+ */
+proto.dac.auth.UpdateProfileRequest.prototype.getUserId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.auth.UpdateProfileRequest} returns this
+ */
+proto.dac.auth.UpdateProfileRequest.prototype.setUserId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional string name = 2;
+ * @return {string}
+ */
+proto.dac.auth.UpdateProfileRequest.prototype.getName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.UpdateProfileRequest} returns this
+ */
+proto.dac.auth.UpdateProfileRequest.prototype.setName = function(value) {
+  return jspb.Message.setField(this, 2, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.dac.auth.UpdateProfileRequest} returns this
+ */
+proto.dac.auth.UpdateProfileRequest.prototype.clearName = function() {
+  return jspb.Message.setField(this, 2, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.UpdateProfileRequest.prototype.hasName = function() {
+  return jspb.Message.getField(this, 2) != null;
+};
+
+
+/**
+ * optional string avatar_url = 3;
+ * @return {string}
+ */
+proto.dac.auth.UpdateProfileRequest.prototype.getAvatarUrl = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.UpdateProfileRequest} returns this
+ */
+proto.dac.auth.UpdateProfileRequest.prototype.setAvatarUrl = function(value) {
+  return jspb.Message.setField(this, 3, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.dac.auth.UpdateProfileRequest} returns this
+ */
+proto.dac.auth.UpdateProfileRequest.prototype.clearAvatarUrl = function() {
+  return jspb.Message.setField(this, 3, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.UpdateProfileRequest.prototype.hasAvatarUrl = function() {
+  return jspb.Message.getField(this, 3) != null;
+};
+
+
+/**
+ * optional string bio = 4;
+ * @return {string}
+ */
+proto.dac.auth.UpdateProfileRequest.prototype.getBio = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.UpdateProfileRequest} returns this
+ */
+proto.dac.auth.UpdateProfileRequest.prototype.setBio = function(value) {
+  return jspb.Message.setField(this, 4, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.dac.auth.UpdateProfileRequest} returns this
+ */
+proto.dac.auth.UpdateProfileRequest.prototype.clearBio = function() {
+  return jspb.Message.setField(this, 4, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.UpdateProfileRequest.prototype.hasBio = function() {
+  return jspb.Message.getField(this, 4) != null;
+};
+
+
+/**
+ * optional string location = 5;
+ * @return {string}
+ */
+proto.dac.auth.UpdateProfileRequest.prototype.getLocation = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.UpdateProfileRequest} returns this
+ */
+proto.dac.auth.UpdateProfileRequest.prototype.setLocation = function(value) {
+  return jspb.Message.setField(this, 5, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.dac.auth.UpdateProfileRequest} returns this
+ */
+proto.dac.auth.UpdateProfileRequest.prototype.clearLocation = function() {
+  return jspb.Message.setField(this, 5, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.UpdateProfileRequest.prototype.hasLocation = function() {
+  return jspb.Message.getField(this, 5) != null;
+};
+
+
+/**
+ * optional string website = 6;
+ * @return {string}
+ */
+proto.dac.auth.UpdateProfileRequest.prototype.getWebsite = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.UpdateProfileRequest} returns this
+ */
+proto.dac.auth.UpdateProfileRequest.prototype.setWebsite = function(value) {
+  return jspb.Message.setField(this, 6, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.dac.auth.UpdateProfileRequest} returns this
+ */
+proto.dac.auth.UpdateProfileRequest.prototype.clearWebsite = function() {
+  return jspb.Message.setField(this, 6, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.UpdateProfileRequest.prototype.hasWebsite = function() {
+  return jspb.Message.getField(this, 6) != null;
+};
+
+
+/**
+ * repeated string social_links = 7;
+ * @return {!Array<string>}
+ */
+proto.dac.auth.UpdateProfileRequest.prototype.getSocialLinksList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 7));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.dac.auth.UpdateProfileRequest} returns this
+ */
+proto.dac.auth.UpdateProfileRequest.prototype.setSocialLinksList = function(value) {
+  return jspb.Message.setField(this, 7, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.dac.auth.UpdateProfileRequest} returns this
+ */
+proto.dac.auth.UpdateProfileRequest.prototype.addSocialLinks = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 7, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.auth.UpdateProfileRequest} returns this
+ */
+proto.dac.auth.UpdateProfileRequest.prototype.clearSocialLinksList = function() {
+  return this.setSocialLinksList([]);
+};
+
+
+/**
+ * optional UserPreferences preferences = 8;
+ * @return {?proto.dac.auth.UserPreferences}
+ */
+proto.dac.auth.UpdateProfileRequest.prototype.getPreferences = function() {
+  return /** @type{?proto.dac.auth.UserPreferences} */ (
+    jspb.Message.getWrapperField(this, proto.dac.auth.UserPreferences, 8));
+};
+
+
+/**
+ * @param {?proto.dac.auth.UserPreferences|undefined} value
+ * @return {!proto.dac.auth.UpdateProfileRequest} returns this
+*/
+proto.dac.auth.UpdateProfileRequest.prototype.setPreferences = function(value) {
+  return jspb.Message.setWrapperField(this, 8, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.auth.UpdateProfileRequest} returns this
+ */
+proto.dac.auth.UpdateProfileRequest.prototype.clearPreferences = function() {
+  return this.setPreferences(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.UpdateProfileRequest.prototype.hasPreferences = function() {
+  return jspb.Message.getField(this, 8) != null;
+};
+
+
+/**
+ * optional ProfileSettings settings = 9;
+ * @return {?proto.dac.auth.ProfileSettings}
+ */
+proto.dac.auth.UpdateProfileRequest.prototype.getSettings = function() {
+  return /** @type{?proto.dac.auth.ProfileSettings} */ (
+    jspb.Message.getWrapperField(this, proto.dac.auth.ProfileSettings, 9));
+};
+
+
+/**
+ * @param {?proto.dac.auth.ProfileSettings|undefined} value
+ * @return {!proto.dac.auth.UpdateProfileRequest} returns this
+*/
+proto.dac.auth.UpdateProfileRequest.prototype.setSettings = function(value) {
+  return jspb.Message.setWrapperField(this, 9, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.auth.UpdateProfileRequest} returns this
+ */
+proto.dac.auth.UpdateProfileRequest.prototype.clearSettings = function() {
+  return this.setSettings(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.UpdateProfileRequest.prototype.hasSettings = function() {
+  return jspb.Message.getField(this, 9) != null;
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.ChangePasswordRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.ChangePasswordRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.ChangePasswordRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.ChangePasswordRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    userId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    currentPassword: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    newPassword: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    mfaCode: jspb.Message.getFieldWithDefault(msg, 4, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.ChangePasswordRequest}
+ */
+proto.dac.auth.ChangePasswordRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.ChangePasswordRequest;
+  return proto.dac.auth.ChangePasswordRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.ChangePasswordRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.ChangePasswordRequest}
+ */
+proto.dac.auth.ChangePasswordRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setUserId(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setCurrentPassword(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setNewPassword(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setMfaCode(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.ChangePasswordRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.ChangePasswordRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.ChangePasswordRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.ChangePasswordRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getUserId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getCurrentPassword();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getNewPassword();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = /** @type {string} */ (jspb.Message.getField(message, 4));
+  if (f != null) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 user_id = 1;
+ * @return {number}
+ */
+proto.dac.auth.ChangePasswordRequest.prototype.getUserId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.auth.ChangePasswordRequest} returns this
+ */
+proto.dac.auth.ChangePasswordRequest.prototype.setUserId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional string current_password = 2;
+ * @return {string}
+ */
+proto.dac.auth.ChangePasswordRequest.prototype.getCurrentPassword = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.ChangePasswordRequest} returns this
+ */
+proto.dac.auth.ChangePasswordRequest.prototype.setCurrentPassword = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string new_password = 3;
+ * @return {string}
+ */
+proto.dac.auth.ChangePasswordRequest.prototype.getNewPassword = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.ChangePasswordRequest} returns this
+ */
+proto.dac.auth.ChangePasswordRequest.prototype.setNewPassword = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string mfa_code = 4;
+ * @return {string}
+ */
+proto.dac.auth.ChangePasswordRequest.prototype.getMfaCode = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.ChangePasswordRequest} returns this
+ */
+proto.dac.auth.ChangePasswordRequest.prototype.setMfaCode = function(value) {
+  return jspb.Message.setField(this, 4, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.dac.auth.ChangePasswordRequest} returns this
+ */
+proto.dac.auth.ChangePasswordRequest.prototype.clearMfaCode = function() {
+  return jspb.Message.setField(this, 4, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.ChangePasswordRequest.prototype.hasMfaCode = function() {
+  return jspb.Message.getField(this, 4) != null;
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.DeleteAccountRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.DeleteAccountRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.DeleteAccountRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.DeleteAccountRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    userId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    password: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    reason: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    mfaCode: jspb.Message.getFieldWithDefault(msg, 4, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.DeleteAccountRequest}
+ */
+proto.dac.auth.DeleteAccountRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.DeleteAccountRequest;
+  return proto.dac.auth.DeleteAccountRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.DeleteAccountRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.DeleteAccountRequest}
+ */
+proto.dac.auth.DeleteAccountRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setUserId(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setPassword(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setReason(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setMfaCode(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.DeleteAccountRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.DeleteAccountRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.DeleteAccountRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.DeleteAccountRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getUserId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getPassword();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getReason();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = /** @type {string} */ (jspb.Message.getField(message, 4));
+  if (f != null) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 user_id = 1;
+ * @return {number}
+ */
+proto.dac.auth.DeleteAccountRequest.prototype.getUserId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.auth.DeleteAccountRequest} returns this
+ */
+proto.dac.auth.DeleteAccountRequest.prototype.setUserId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional string password = 2;
+ * @return {string}
+ */
+proto.dac.auth.DeleteAccountRequest.prototype.getPassword = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.DeleteAccountRequest} returns this
+ */
+proto.dac.auth.DeleteAccountRequest.prototype.setPassword = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string reason = 3;
+ * @return {string}
+ */
+proto.dac.auth.DeleteAccountRequest.prototype.getReason = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.DeleteAccountRequest} returns this
+ */
+proto.dac.auth.DeleteAccountRequest.prototype.setReason = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string mfa_code = 4;
+ * @return {string}
+ */
+proto.dac.auth.DeleteAccountRequest.prototype.getMfaCode = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.DeleteAccountRequest} returns this
+ */
+proto.dac.auth.DeleteAccountRequest.prototype.setMfaCode = function(value) {
+  return jspb.Message.setField(this, 4, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.dac.auth.DeleteAccountRequest} returns this
+ */
+proto.dac.auth.DeleteAccountRequest.prototype.clearMfaCode = function() {
+  return jspb.Message.setField(this, 4, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.DeleteAccountRequest.prototype.hasMfaCode = function() {
+  return jspb.Message.getField(this, 4) != null;
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.LinkWalletRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.LinkWalletRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.LinkWalletRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.LinkWalletRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    userId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    walletAddress: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    signature: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    message: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    walletType: jspb.Message.getFieldWithDefault(msg, 5, 0)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.LinkWalletRequest}
+ */
+proto.dac.auth.LinkWalletRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.LinkWalletRequest;
+  return proto.dac.auth.LinkWalletRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.LinkWalletRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.LinkWalletRequest}
+ */
+proto.dac.auth.LinkWalletRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setUserId(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setWalletAddress(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setSignature(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setMessage(value);
+      break;
+    case 5:
+      var value = /** @type {!proto.dac.auth.WalletType} */ (reader.readEnum());
+      msg.setWalletType(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.LinkWalletRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.LinkWalletRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.LinkWalletRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.LinkWalletRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getUserId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getWalletAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getSignature();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getMessage();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+  f = message.getWalletType();
+  if (f !== 0.0) {
+    writer.writeEnum(
+      5,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 user_id = 1;
+ * @return {number}
+ */
+proto.dac.auth.LinkWalletRequest.prototype.getUserId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.auth.LinkWalletRequest} returns this
+ */
+proto.dac.auth.LinkWalletRequest.prototype.setUserId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional string wallet_address = 2;
+ * @return {string}
+ */
+proto.dac.auth.LinkWalletRequest.prototype.getWalletAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.LinkWalletRequest} returns this
+ */
+proto.dac.auth.LinkWalletRequest.prototype.setWalletAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string signature = 3;
+ * @return {string}
+ */
+proto.dac.auth.LinkWalletRequest.prototype.getSignature = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.LinkWalletRequest} returns this
+ */
+proto.dac.auth.LinkWalletRequest.prototype.setSignature = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string message = 4;
+ * @return {string}
+ */
+proto.dac.auth.LinkWalletRequest.prototype.getMessage = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.LinkWalletRequest} returns this
+ */
+proto.dac.auth.LinkWalletRequest.prototype.setMessage = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional WalletType wallet_type = 5;
+ * @return {!proto.dac.auth.WalletType}
+ */
+proto.dac.auth.LinkWalletRequest.prototype.getWalletType = function() {
+  return /** @type {!proto.dac.auth.WalletType} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
+};
+
+
+/**
+ * @param {!proto.dac.auth.WalletType} value
+ * @return {!proto.dac.auth.LinkWalletRequest} returns this
+ */
+proto.dac.auth.LinkWalletRequest.prototype.setWalletType = function(value) {
+  return jspb.Message.setProto3EnumField(this, 5, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.WalletLinkResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.WalletLinkResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.WalletLinkResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.WalletLinkResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    success: jspb.Message.getBooleanFieldWithDefault(msg, 1, false),
+    walletAddress: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    walletInfo: (f = msg.getWalletInfo()) && proto.dac.auth.WalletInfo.toObject(includeInstance, f),
+    errorMessage: jspb.Message.getFieldWithDefault(msg, 4, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.WalletLinkResponse}
+ */
+proto.dac.auth.WalletLinkResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.WalletLinkResponse;
+  return proto.dac.auth.WalletLinkResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.WalletLinkResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.WalletLinkResponse}
+ */
+proto.dac.auth.WalletLinkResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setSuccess(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setWalletAddress(value);
+      break;
+    case 3:
+      var value = new proto.dac.auth.WalletInfo;
+      reader.readMessage(value,proto.dac.auth.WalletInfo.deserializeBinaryFromReader);
+      msg.setWalletInfo(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setErrorMessage(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.WalletLinkResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.WalletLinkResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.WalletLinkResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.WalletLinkResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getSuccess();
+  if (f) {
+    writer.writeBool(
+      1,
+      f
+    );
+  }
+  f = message.getWalletAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getWalletInfo();
+  if (f != null) {
+    writer.writeMessage(
+      3,
+      f,
+      proto.dac.auth.WalletInfo.serializeBinaryToWriter
+    );
+  }
+  f = /** @type {string} */ (jspb.Message.getField(message, 4));
+  if (f != null) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional bool success = 1;
+ * @return {boolean}
+ */
+proto.dac.auth.WalletLinkResponse.prototype.getSuccess = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 1, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.auth.WalletLinkResponse} returns this
+ */
+proto.dac.auth.WalletLinkResponse.prototype.setSuccess = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 1, value);
+};
+
+
+/**
+ * optional string wallet_address = 2;
+ * @return {string}
+ */
+proto.dac.auth.WalletLinkResponse.prototype.getWalletAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.WalletLinkResponse} returns this
+ */
+proto.dac.auth.WalletLinkResponse.prototype.setWalletAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional WalletInfo wallet_info = 3;
+ * @return {?proto.dac.auth.WalletInfo}
+ */
+proto.dac.auth.WalletLinkResponse.prototype.getWalletInfo = function() {
+  return /** @type{?proto.dac.auth.WalletInfo} */ (
+    jspb.Message.getWrapperField(this, proto.dac.auth.WalletInfo, 3));
+};
+
+
+/**
+ * @param {?proto.dac.auth.WalletInfo|undefined} value
+ * @return {!proto.dac.auth.WalletLinkResponse} returns this
+*/
+proto.dac.auth.WalletLinkResponse.prototype.setWalletInfo = function(value) {
+  return jspb.Message.setWrapperField(this, 3, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.auth.WalletLinkResponse} returns this
+ */
+proto.dac.auth.WalletLinkResponse.prototype.clearWalletInfo = function() {
+  return this.setWalletInfo(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.WalletLinkResponse.prototype.hasWalletInfo = function() {
+  return jspb.Message.getField(this, 3) != null;
+};
+
+
+/**
+ * optional string error_message = 4;
+ * @return {string}
+ */
+proto.dac.auth.WalletLinkResponse.prototype.getErrorMessage = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.WalletLinkResponse} returns this
+ */
+proto.dac.auth.WalletLinkResponse.prototype.setErrorMessage = function(value) {
+  return jspb.Message.setField(this, 4, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.dac.auth.WalletLinkResponse} returns this
+ */
+proto.dac.auth.WalletLinkResponse.prototype.clearErrorMessage = function() {
+  return jspb.Message.setField(this, 4, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.WalletLinkResponse.prototype.hasErrorMessage = function() {
+  return jspb.Message.getField(this, 4) != null;
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.UnlinkWalletRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.UnlinkWalletRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.UnlinkWalletRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.UnlinkWalletRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    userId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    walletAddress: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    mfaCode: jspb.Message.getFieldWithDefault(msg, 3, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.UnlinkWalletRequest}
+ */
+proto.dac.auth.UnlinkWalletRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.UnlinkWalletRequest;
+  return proto.dac.auth.UnlinkWalletRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.UnlinkWalletRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.UnlinkWalletRequest}
+ */
+proto.dac.auth.UnlinkWalletRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setUserId(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setWalletAddress(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setMfaCode(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.UnlinkWalletRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.UnlinkWalletRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.UnlinkWalletRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.UnlinkWalletRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getUserId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getWalletAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = /** @type {string} */ (jspb.Message.getField(message, 3));
+  if (f != null) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 user_id = 1;
+ * @return {number}
+ */
+proto.dac.auth.UnlinkWalletRequest.prototype.getUserId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.auth.UnlinkWalletRequest} returns this
+ */
+proto.dac.auth.UnlinkWalletRequest.prototype.setUserId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional string wallet_address = 2;
+ * @return {string}
+ */
+proto.dac.auth.UnlinkWalletRequest.prototype.getWalletAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.UnlinkWalletRequest} returns this
+ */
+proto.dac.auth.UnlinkWalletRequest.prototype.setWalletAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string mfa_code = 3;
+ * @return {string}
+ */
+proto.dac.auth.UnlinkWalletRequest.prototype.getMfaCode = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.UnlinkWalletRequest} returns this
+ */
+proto.dac.auth.UnlinkWalletRequest.prototype.setMfaCode = function(value) {
+  return jspb.Message.setField(this, 3, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.dac.auth.UnlinkWalletRequest} returns this
+ */
+proto.dac.auth.UnlinkWalletRequest.prototype.clearMfaCode = function() {
+  return jspb.Message.setField(this, 3, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.UnlinkWalletRequest.prototype.hasMfaCode = function() {
+  return jspb.Message.getField(this, 3) != null;
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.WalletVerificationRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.WalletVerificationRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.WalletVerificationRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.WalletVerificationRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    walletAddress: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    signature: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    message: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    walletType: jspb.Message.getFieldWithDefault(msg, 4, 0)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.WalletVerificationRequest}
+ */
+proto.dac.auth.WalletVerificationRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.WalletVerificationRequest;
+  return proto.dac.auth.WalletVerificationRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.WalletVerificationRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.WalletVerificationRequest}
+ */
+proto.dac.auth.WalletVerificationRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setWalletAddress(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setSignature(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setMessage(value);
+      break;
+    case 4:
+      var value = /** @type {!proto.dac.auth.WalletType} */ (reader.readEnum());
+      msg.setWalletType(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.WalletVerificationRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.WalletVerificationRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.WalletVerificationRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.WalletVerificationRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getWalletAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getSignature();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getMessage();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getWalletType();
+  if (f !== 0.0) {
+    writer.writeEnum(
+      4,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string wallet_address = 1;
+ * @return {string}
+ */
+proto.dac.auth.WalletVerificationRequest.prototype.getWalletAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.WalletVerificationRequest} returns this
+ */
+proto.dac.auth.WalletVerificationRequest.prototype.setWalletAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string signature = 2;
+ * @return {string}
+ */
+proto.dac.auth.WalletVerificationRequest.prototype.getSignature = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.WalletVerificationRequest} returns this
+ */
+proto.dac.auth.WalletVerificationRequest.prototype.setSignature = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string message = 3;
+ * @return {string}
+ */
+proto.dac.auth.WalletVerificationRequest.prototype.getMessage = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.WalletVerificationRequest} returns this
+ */
+proto.dac.auth.WalletVerificationRequest.prototype.setMessage = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional WalletType wallet_type = 4;
+ * @return {!proto.dac.auth.WalletType}
+ */
+proto.dac.auth.WalletVerificationRequest.prototype.getWalletType = function() {
+  return /** @type {!proto.dac.auth.WalletType} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+};
+
+
+/**
+ * @param {!proto.dac.auth.WalletType} value
+ * @return {!proto.dac.auth.WalletVerificationRequest} returns this
+ */
+proto.dac.auth.WalletVerificationRequest.prototype.setWalletType = function(value) {
+  return jspb.Message.setProto3EnumField(this, 4, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.WalletVerificationResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.WalletVerificationResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.WalletVerificationResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.WalletVerificationResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    valid: jspb.Message.getBooleanFieldWithDefault(msg, 1, false),
+    recoveredAddress: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    errorMessage: jspb.Message.getFieldWithDefault(msg, 3, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.WalletVerificationResponse}
+ */
+proto.dac.auth.WalletVerificationResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.WalletVerificationResponse;
+  return proto.dac.auth.WalletVerificationResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.WalletVerificationResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.WalletVerificationResponse}
+ */
+proto.dac.auth.WalletVerificationResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setValid(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setRecoveredAddress(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setErrorMessage(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.WalletVerificationResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.WalletVerificationResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.WalletVerificationResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.WalletVerificationResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getValid();
+  if (f) {
+    writer.writeBool(
+      1,
+      f
+    );
+  }
+  f = message.getRecoveredAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = /** @type {string} */ (jspb.Message.getField(message, 3));
+  if (f != null) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional bool valid = 1;
+ * @return {boolean}
+ */
+proto.dac.auth.WalletVerificationResponse.prototype.getValid = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 1, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.auth.WalletVerificationResponse} returns this
+ */
+proto.dac.auth.WalletVerificationResponse.prototype.setValid = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 1, value);
+};
+
+
+/**
+ * optional string recovered_address = 2;
+ * @return {string}
+ */
+proto.dac.auth.WalletVerificationResponse.prototype.getRecoveredAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.WalletVerificationResponse} returns this
+ */
+proto.dac.auth.WalletVerificationResponse.prototype.setRecoveredAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string error_message = 3;
+ * @return {string}
+ */
+proto.dac.auth.WalletVerificationResponse.prototype.getErrorMessage = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.WalletVerificationResponse} returns this
+ */
+proto.dac.auth.WalletVerificationResponse.prototype.setErrorMessage = function(value) {
+  return jspb.Message.setField(this, 3, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.dac.auth.WalletVerificationResponse} returns this
+ */
+proto.dac.auth.WalletVerificationResponse.prototype.clearErrorMessage = function() {
+  return jspb.Message.setField(this, 3, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.WalletVerificationResponse.prototype.hasErrorMessage = function() {
+  return jspb.Message.getField(this, 3) != null;
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.WalletInfoRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.WalletInfoRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.WalletInfoRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.WalletInfoRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    userId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    walletAddress: jspb.Message.getFieldWithDefault(msg, 2, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.WalletInfoRequest}
+ */
+proto.dac.auth.WalletInfoRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.WalletInfoRequest;
+  return proto.dac.auth.WalletInfoRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.WalletInfoRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.WalletInfoRequest}
+ */
+proto.dac.auth.WalletInfoRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setUserId(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setWalletAddress(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.WalletInfoRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.WalletInfoRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.WalletInfoRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.WalletInfoRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getUserId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getWalletAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 user_id = 1;
+ * @return {number}
+ */
+proto.dac.auth.WalletInfoRequest.prototype.getUserId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.auth.WalletInfoRequest} returns this
+ */
+proto.dac.auth.WalletInfoRequest.prototype.setUserId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional string wallet_address = 2;
+ * @return {string}
+ */
+proto.dac.auth.WalletInfoRequest.prototype.getWalletAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.WalletInfoRequest} returns this
+ */
+proto.dac.auth.WalletInfoRequest.prototype.setWalletAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.dac.auth.WalletInfo.repeatedFields_ = [6,7];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.WalletInfo.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.WalletInfo.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.WalletInfo} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.WalletInfo.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    address: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    type: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    ethBalance: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    dacTokenBalance: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    promTokenBalance: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    otherTokensList: jspb.Message.toObjectList(msg.getOtherTokensList(),
+    proto.dac.auth.TokenBalance.toObject, includeInstance),
+    nftsList: jspb.Message.toObjectList(msg.getNftsList(),
+    proto.dac.auth.NFTInfo.toObject, includeInstance),
+    linkedAt: (f = msg.getLinkedAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
+    isPrimary: jspb.Message.getBooleanFieldWithDefault(msg, 9, false)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.WalletInfo}
+ */
+proto.dac.auth.WalletInfo.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.WalletInfo;
+  return proto.dac.auth.WalletInfo.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.WalletInfo} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.WalletInfo}
+ */
+proto.dac.auth.WalletInfo.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setAddress(value);
+      break;
+    case 2:
+      var value = /** @type {!proto.dac.auth.WalletType} */ (reader.readEnum());
+      msg.setType(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setEthBalance(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setDacTokenBalance(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setPromTokenBalance(value);
+      break;
+    case 6:
+      var value = new proto.dac.auth.TokenBalance;
+      reader.readMessage(value,proto.dac.auth.TokenBalance.deserializeBinaryFromReader);
+      msg.addOtherTokens(value);
+      break;
+    case 7:
+      var value = new proto.dac.auth.NFTInfo;
+      reader.readMessage(value,proto.dac.auth.NFTInfo.deserializeBinaryFromReader);
+      msg.addNfts(value);
+      break;
+    case 8:
+      var value = new google_protobuf_timestamp_pb.Timestamp;
+      reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      msg.setLinkedAt(value);
+      break;
+    case 9:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setIsPrimary(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.WalletInfo.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.WalletInfo.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.WalletInfo} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.WalletInfo.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getType();
+  if (f !== 0.0) {
+    writer.writeEnum(
+      2,
+      f
+    );
+  }
+  f = message.getEthBalance();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getDacTokenBalance();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+  f = message.getPromTokenBalance();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
+      f
+    );
+  }
+  f = message.getOtherTokensList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
+      6,
+      f,
+      proto.dac.auth.TokenBalance.serializeBinaryToWriter
+    );
+  }
+  f = message.getNftsList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
+      7,
+      f,
+      proto.dac.auth.NFTInfo.serializeBinaryToWriter
+    );
+  }
+  f = message.getLinkedAt();
+  if (f != null) {
+    writer.writeMessage(
+      8,
+      f,
+      google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+  f = message.getIsPrimary();
+  if (f) {
+    writer.writeBool(
+      9,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string address = 1;
+ * @return {string}
+ */
+proto.dac.auth.WalletInfo.prototype.getAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.WalletInfo} returns this
+ */
+proto.dac.auth.WalletInfo.prototype.setAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional WalletType type = 2;
+ * @return {!proto.dac.auth.WalletType}
+ */
+proto.dac.auth.WalletInfo.prototype.getType = function() {
+  return /** @type {!proto.dac.auth.WalletType} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+};
+
+
+/**
+ * @param {!proto.dac.auth.WalletType} value
+ * @return {!proto.dac.auth.WalletInfo} returns this
+ */
+proto.dac.auth.WalletInfo.prototype.setType = function(value) {
+  return jspb.Message.setProto3EnumField(this, 2, value);
+};
+
+
+/**
+ * optional string eth_balance = 3;
+ * @return {string}
+ */
+proto.dac.auth.WalletInfo.prototype.getEthBalance = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.WalletInfo} returns this
+ */
+proto.dac.auth.WalletInfo.prototype.setEthBalance = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string dac_token_balance = 4;
+ * @return {string}
+ */
+proto.dac.auth.WalletInfo.prototype.getDacTokenBalance = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.WalletInfo} returns this
+ */
+proto.dac.auth.WalletInfo.prototype.setDacTokenBalance = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional string prom_token_balance = 5;
+ * @return {string}
+ */
+proto.dac.auth.WalletInfo.prototype.getPromTokenBalance = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.WalletInfo} returns this
+ */
+proto.dac.auth.WalletInfo.prototype.setPromTokenBalance = function(value) {
+  return jspb.Message.setProto3StringField(this, 5, value);
+};
+
+
+/**
+ * repeated TokenBalance other_tokens = 6;
+ * @return {!Array<!proto.dac.auth.TokenBalance>}
+ */
+proto.dac.auth.WalletInfo.prototype.getOtherTokensList = function() {
+  return /** @type{!Array<!proto.dac.auth.TokenBalance>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.dac.auth.TokenBalance, 6));
+};
+
+
+/**
+ * @param {!Array<!proto.dac.auth.TokenBalance>} value
+ * @return {!proto.dac.auth.WalletInfo} returns this
+*/
+proto.dac.auth.WalletInfo.prototype.setOtherTokensList = function(value) {
+  return jspb.Message.setRepeatedWrapperField(this, 6, value);
+};
+
+
+/**
+ * @param {!proto.dac.auth.TokenBalance=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.dac.auth.TokenBalance}
+ */
+proto.dac.auth.WalletInfo.prototype.addOtherTokens = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 6, opt_value, proto.dac.auth.TokenBalance, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.auth.WalletInfo} returns this
+ */
+proto.dac.auth.WalletInfo.prototype.clearOtherTokensList = function() {
+  return this.setOtherTokensList([]);
+};
+
+
+/**
+ * repeated NFTInfo nfts = 7;
+ * @return {!Array<!proto.dac.auth.NFTInfo>}
+ */
+proto.dac.auth.WalletInfo.prototype.getNftsList = function() {
+  return /** @type{!Array<!proto.dac.auth.NFTInfo>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.dac.auth.NFTInfo, 7));
+};
+
+
+/**
+ * @param {!Array<!proto.dac.auth.NFTInfo>} value
+ * @return {!proto.dac.auth.WalletInfo} returns this
+*/
+proto.dac.auth.WalletInfo.prototype.setNftsList = function(value) {
+  return jspb.Message.setRepeatedWrapperField(this, 7, value);
+};
+
+
+/**
+ * @param {!proto.dac.auth.NFTInfo=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.dac.auth.NFTInfo}
+ */
+proto.dac.auth.WalletInfo.prototype.addNfts = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 7, opt_value, proto.dac.auth.NFTInfo, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.auth.WalletInfo} returns this
+ */
+proto.dac.auth.WalletInfo.prototype.clearNftsList = function() {
+  return this.setNftsList([]);
+};
+
+
+/**
+ * optional google.protobuf.Timestamp linked_at = 8;
+ * @return {?proto.google.protobuf.Timestamp}
+ */
+proto.dac.auth.WalletInfo.prototype.getLinkedAt = function() {
+  return /** @type{?proto.google.protobuf.Timestamp} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 8));
+};
+
+
+/**
+ * @param {?proto.google.protobuf.Timestamp|undefined} value
+ * @return {!proto.dac.auth.WalletInfo} returns this
+*/
+proto.dac.auth.WalletInfo.prototype.setLinkedAt = function(value) {
+  return jspb.Message.setWrapperField(this, 8, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.auth.WalletInfo} returns this
+ */
+proto.dac.auth.WalletInfo.prototype.clearLinkedAt = function() {
+  return this.setLinkedAt(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.WalletInfo.prototype.hasLinkedAt = function() {
+  return jspb.Message.getField(this, 8) != null;
+};
+
+
+/**
+ * optional bool is_primary = 9;
+ * @return {boolean}
+ */
+proto.dac.auth.WalletInfo.prototype.getIsPrimary = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 9, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.auth.WalletInfo} returns this
+ */
+proto.dac.auth.WalletInfo.prototype.setIsPrimary = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 9, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.TokenBalance.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.TokenBalance.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.TokenBalance} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.TokenBalance.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    contractAddress: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    symbol: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    name: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    balance: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    formattedBalance: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    usdValue: jspb.Message.getFloatingPointFieldWithDefault(msg, 6, 0.0)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.TokenBalance}
+ */
+proto.dac.auth.TokenBalance.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.TokenBalance;
+  return proto.dac.auth.TokenBalance.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.TokenBalance} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.TokenBalance}
+ */
+proto.dac.auth.TokenBalance.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setContractAddress(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setSymbol(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setName(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setBalance(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setFormattedBalance(value);
+      break;
+    case 6:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setUsdValue(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.TokenBalance.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.TokenBalance.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.TokenBalance} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.TokenBalance.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getContractAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getSymbol();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getName();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getBalance();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+  f = message.getFormattedBalance();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
+      f
+    );
+  }
+  f = message.getUsdValue();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      6,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string contract_address = 1;
+ * @return {string}
+ */
+proto.dac.auth.TokenBalance.prototype.getContractAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.TokenBalance} returns this
+ */
+proto.dac.auth.TokenBalance.prototype.setContractAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string symbol = 2;
+ * @return {string}
+ */
+proto.dac.auth.TokenBalance.prototype.getSymbol = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.TokenBalance} returns this
+ */
+proto.dac.auth.TokenBalance.prototype.setSymbol = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string name = 3;
+ * @return {string}
+ */
+proto.dac.auth.TokenBalance.prototype.getName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.TokenBalance} returns this
+ */
+proto.dac.auth.TokenBalance.prototype.setName = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string balance = 4;
+ * @return {string}
+ */
+proto.dac.auth.TokenBalance.prototype.getBalance = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.TokenBalance} returns this
+ */
+proto.dac.auth.TokenBalance.prototype.setBalance = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional string formatted_balance = 5;
+ * @return {string}
+ */
+proto.dac.auth.TokenBalance.prototype.getFormattedBalance = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.TokenBalance} returns this
+ */
+proto.dac.auth.TokenBalance.prototype.setFormattedBalance = function(value) {
+  return jspb.Message.setProto3StringField(this, 5, value);
+};
+
+
+/**
+ * optional double usd_value = 6;
+ * @return {number}
+ */
+proto.dac.auth.TokenBalance.prototype.getUsdValue = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 6, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.auth.TokenBalance} returns this
+ */
+proto.dac.auth.TokenBalance.prototype.setUsdValue = function(value) {
+  return jspb.Message.setProto3FloatField(this, 6, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.NFTInfo.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.NFTInfo.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.NFTInfo} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.NFTInfo.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    contractAddress: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    tokenId: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    name: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    imageUrl: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    collectionName: jspb.Message.getFieldWithDefault(msg, 5, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.NFTInfo}
+ */
+proto.dac.auth.NFTInfo.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.NFTInfo;
+  return proto.dac.auth.NFTInfo.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.NFTInfo} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.NFTInfo}
+ */
+proto.dac.auth.NFTInfo.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setContractAddress(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setTokenId(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setName(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setImageUrl(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setCollectionName(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.NFTInfo.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.NFTInfo.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.NFTInfo} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.NFTInfo.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getContractAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getTokenId();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getName();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getImageUrl();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+  f = message.getCollectionName();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string contract_address = 1;
+ * @return {string}
+ */
+proto.dac.auth.NFTInfo.prototype.getContractAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.NFTInfo} returns this
+ */
+proto.dac.auth.NFTInfo.prototype.setContractAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string token_id = 2;
+ * @return {string}
+ */
+proto.dac.auth.NFTInfo.prototype.getTokenId = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.NFTInfo} returns this
+ */
+proto.dac.auth.NFTInfo.prototype.setTokenId = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string name = 3;
+ * @return {string}
+ */
+proto.dac.auth.NFTInfo.prototype.getName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.NFTInfo} returns this
+ */
+proto.dac.auth.NFTInfo.prototype.setName = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string image_url = 4;
+ * @return {string}
+ */
+proto.dac.auth.NFTInfo.prototype.getImageUrl = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.NFTInfo} returns this
+ */
+proto.dac.auth.NFTInfo.prototype.setImageUrl = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional string collection_name = 5;
+ * @return {string}
+ */
+proto.dac.auth.NFTInfo.prototype.getCollectionName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.NFTInfo} returns this
+ */
+proto.dac.auth.NFTInfo.prototype.setCollectionName = function(value) {
+  return jspb.Message.setProto3StringField(this, 5, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.MFASetupRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.MFASetupRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.MFASetupRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.MFASetupRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    userId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    method: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    deviceName: jspb.Message.getFieldWithDefault(msg, 3, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.MFASetupRequest}
+ */
+proto.dac.auth.MFASetupRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.MFASetupRequest;
+  return proto.dac.auth.MFASetupRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.MFASetupRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.MFASetupRequest}
+ */
+proto.dac.auth.MFASetupRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setUserId(value);
+      break;
+    case 2:
+      var value = /** @type {!proto.dac.auth.MFAMethod} */ (reader.readEnum());
+      msg.setMethod(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setDeviceName(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.MFASetupRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.MFASetupRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.MFASetupRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.MFASetupRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getUserId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getMethod();
+  if (f !== 0.0) {
+    writer.writeEnum(
+      2,
+      f
+    );
+  }
+  f = message.getDeviceName();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 user_id = 1;
+ * @return {number}
+ */
+proto.dac.auth.MFASetupRequest.prototype.getUserId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.auth.MFASetupRequest} returns this
+ */
+proto.dac.auth.MFASetupRequest.prototype.setUserId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional MFAMethod method = 2;
+ * @return {!proto.dac.auth.MFAMethod}
+ */
+proto.dac.auth.MFASetupRequest.prototype.getMethod = function() {
+  return /** @type {!proto.dac.auth.MFAMethod} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+};
+
+
+/**
+ * @param {!proto.dac.auth.MFAMethod} value
+ * @return {!proto.dac.auth.MFASetupRequest} returns this
+ */
+proto.dac.auth.MFASetupRequest.prototype.setMethod = function(value) {
+  return jspb.Message.setProto3EnumField(this, 2, value);
+};
+
+
+/**
+ * optional string device_name = 3;
+ * @return {string}
+ */
+proto.dac.auth.MFASetupRequest.prototype.getDeviceName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.MFASetupRequest} returns this
+ */
+proto.dac.auth.MFASetupRequest.prototype.setDeviceName = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.dac.auth.MFASetupResponse.repeatedFields_ = [4];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.MFASetupResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.MFASetupResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.MFASetupResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.MFASetupResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    success: jspb.Message.getBooleanFieldWithDefault(msg, 1, false),
+    secretKey: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    qrCodeUrl: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    backupCodesList: (f = jspb.Message.getRepeatedField(msg, 4)) == null ? undefined : f,
+    setupToken: jspb.Message.getFieldWithDefault(msg, 5, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.MFASetupResponse}
+ */
+proto.dac.auth.MFASetupResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.MFASetupResponse;
+  return proto.dac.auth.MFASetupResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.MFASetupResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.MFASetupResponse}
+ */
+proto.dac.auth.MFASetupResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setSuccess(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setSecretKey(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setQrCodeUrl(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addBackupCodes(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setSetupToken(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.MFASetupResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.MFASetupResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.MFASetupResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.MFASetupResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getSuccess();
+  if (f) {
+    writer.writeBool(
+      1,
+      f
+    );
+  }
+  f = message.getSecretKey();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getQrCodeUrl();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getBackupCodesList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      4,
+      f
+    );
+  }
+  f = message.getSetupToken();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional bool success = 1;
+ * @return {boolean}
+ */
+proto.dac.auth.MFASetupResponse.prototype.getSuccess = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 1, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.auth.MFASetupResponse} returns this
+ */
+proto.dac.auth.MFASetupResponse.prototype.setSuccess = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 1, value);
+};
+
+
+/**
+ * optional string secret_key = 2;
+ * @return {string}
+ */
+proto.dac.auth.MFASetupResponse.prototype.getSecretKey = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.MFASetupResponse} returns this
+ */
+proto.dac.auth.MFASetupResponse.prototype.setSecretKey = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string qr_code_url = 3;
+ * @return {string}
+ */
+proto.dac.auth.MFASetupResponse.prototype.getQrCodeUrl = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.MFASetupResponse} returns this
+ */
+proto.dac.auth.MFASetupResponse.prototype.setQrCodeUrl = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * repeated string backup_codes = 4;
+ * @return {!Array<string>}
+ */
+proto.dac.auth.MFASetupResponse.prototype.getBackupCodesList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 4));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.dac.auth.MFASetupResponse} returns this
+ */
+proto.dac.auth.MFASetupResponse.prototype.setBackupCodesList = function(value) {
+  return jspb.Message.setField(this, 4, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.dac.auth.MFASetupResponse} returns this
+ */
+proto.dac.auth.MFASetupResponse.prototype.addBackupCodes = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 4, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.auth.MFASetupResponse} returns this
+ */
+proto.dac.auth.MFASetupResponse.prototype.clearBackupCodesList = function() {
+  return this.setBackupCodesList([]);
+};
+
+
+/**
+ * optional string setup_token = 5;
+ * @return {string}
+ */
+proto.dac.auth.MFASetupResponse.prototype.getSetupToken = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.MFASetupResponse} returns this
+ */
+proto.dac.auth.MFASetupResponse.prototype.setSetupToken = function(value) {
+  return jspb.Message.setProto3StringField(this, 5, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.MFAVerifyRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.MFAVerifyRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.MFAVerifyRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.MFAVerifyRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    userId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    code: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    method: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    setupToken: jspb.Message.getFieldWithDefault(msg, 4, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.MFAVerifyRequest}
+ */
+proto.dac.auth.MFAVerifyRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.MFAVerifyRequest;
+  return proto.dac.auth.MFAVerifyRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.MFAVerifyRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.MFAVerifyRequest}
+ */
+proto.dac.auth.MFAVerifyRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setUserId(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setCode(value);
+      break;
+    case 3:
+      var value = /** @type {!proto.dac.auth.MFAMethod} */ (reader.readEnum());
+      msg.setMethod(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setSetupToken(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.MFAVerifyRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.MFAVerifyRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.MFAVerifyRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.MFAVerifyRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getUserId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getCode();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getMethod();
+  if (f !== 0.0) {
+    writer.writeEnum(
+      3,
+      f
+    );
+  }
+  f = /** @type {string} */ (jspb.Message.getField(message, 4));
+  if (f != null) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 user_id = 1;
+ * @return {number}
+ */
+proto.dac.auth.MFAVerifyRequest.prototype.getUserId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.auth.MFAVerifyRequest} returns this
+ */
+proto.dac.auth.MFAVerifyRequest.prototype.setUserId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional string code = 2;
+ * @return {string}
+ */
+proto.dac.auth.MFAVerifyRequest.prototype.getCode = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.MFAVerifyRequest} returns this
+ */
+proto.dac.auth.MFAVerifyRequest.prototype.setCode = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional MFAMethod method = 3;
+ * @return {!proto.dac.auth.MFAMethod}
+ */
+proto.dac.auth.MFAVerifyRequest.prototype.getMethod = function() {
+  return /** @type {!proto.dac.auth.MFAMethod} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+};
+
+
+/**
+ * @param {!proto.dac.auth.MFAMethod} value
+ * @return {!proto.dac.auth.MFAVerifyRequest} returns this
+ */
+proto.dac.auth.MFAVerifyRequest.prototype.setMethod = function(value) {
+  return jspb.Message.setProto3EnumField(this, 3, value);
+};
+
+
+/**
+ * optional string setup_token = 4;
+ * @return {string}
+ */
+proto.dac.auth.MFAVerifyRequest.prototype.getSetupToken = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.MFAVerifyRequest} returns this
+ */
+proto.dac.auth.MFAVerifyRequest.prototype.setSetupToken = function(value) {
+  return jspb.Message.setField(this, 4, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.dac.auth.MFAVerifyRequest} returns this
+ */
+proto.dac.auth.MFAVerifyRequest.prototype.clearSetupToken = function() {
+  return jspb.Message.setField(this, 4, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.MFAVerifyRequest.prototype.hasSetupToken = function() {
+  return jspb.Message.getField(this, 4) != null;
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.MFAVerifyResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.MFAVerifyResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.MFAVerifyResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.MFAVerifyResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    valid: jspb.Message.getBooleanFieldWithDefault(msg, 1, false),
+    setupComplete: jspb.Message.getBooleanFieldWithDefault(msg, 2, false),
+    errorMessage: jspb.Message.getFieldWithDefault(msg, 3, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.MFAVerifyResponse}
+ */
+proto.dac.auth.MFAVerifyResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.MFAVerifyResponse;
+  return proto.dac.auth.MFAVerifyResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.MFAVerifyResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.MFAVerifyResponse}
+ */
+proto.dac.auth.MFAVerifyResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setValid(value);
+      break;
+    case 2:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setSetupComplete(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setErrorMessage(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.MFAVerifyResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.MFAVerifyResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.MFAVerifyResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.MFAVerifyResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getValid();
+  if (f) {
+    writer.writeBool(
+      1,
+      f
+    );
+  }
+  f = message.getSetupComplete();
+  if (f) {
+    writer.writeBool(
+      2,
+      f
+    );
+  }
+  f = /** @type {string} */ (jspb.Message.getField(message, 3));
+  if (f != null) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional bool valid = 1;
+ * @return {boolean}
+ */
+proto.dac.auth.MFAVerifyResponse.prototype.getValid = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 1, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.auth.MFAVerifyResponse} returns this
+ */
+proto.dac.auth.MFAVerifyResponse.prototype.setValid = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 1, value);
+};
+
+
+/**
+ * optional bool setup_complete = 2;
+ * @return {boolean}
+ */
+proto.dac.auth.MFAVerifyResponse.prototype.getSetupComplete = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 2, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.auth.MFAVerifyResponse} returns this
+ */
+proto.dac.auth.MFAVerifyResponse.prototype.setSetupComplete = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 2, value);
+};
+
+
+/**
+ * optional string error_message = 3;
+ * @return {string}
+ */
+proto.dac.auth.MFAVerifyResponse.prototype.getErrorMessage = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.MFAVerifyResponse} returns this
+ */
+proto.dac.auth.MFAVerifyResponse.prototype.setErrorMessage = function(value) {
+  return jspb.Message.setField(this, 3, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.dac.auth.MFAVerifyResponse} returns this
+ */
+proto.dac.auth.MFAVerifyResponse.prototype.clearErrorMessage = function() {
+  return jspb.Message.setField(this, 3, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.MFAVerifyResponse.prototype.hasErrorMessage = function() {
+  return jspb.Message.getField(this, 3) != null;
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.DisableMFARequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.DisableMFARequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.DisableMFARequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.DisableMFARequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    userId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    password: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    mfaCode: jspb.Message.getFieldWithDefault(msg, 3, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.DisableMFARequest}
+ */
+proto.dac.auth.DisableMFARequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.DisableMFARequest;
+  return proto.dac.auth.DisableMFARequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.DisableMFARequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.DisableMFARequest}
+ */
+proto.dac.auth.DisableMFARequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setUserId(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setPassword(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setMfaCode(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.DisableMFARequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.DisableMFARequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.DisableMFARequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.DisableMFARequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getUserId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getPassword();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getMfaCode();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 user_id = 1;
+ * @return {number}
+ */
+proto.dac.auth.DisableMFARequest.prototype.getUserId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.auth.DisableMFARequest} returns this
+ */
+proto.dac.auth.DisableMFARequest.prototype.setUserId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional string password = 2;
+ * @return {string}
+ */
+proto.dac.auth.DisableMFARequest.prototype.getPassword = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.DisableMFARequest} returns this
+ */
+proto.dac.auth.DisableMFARequest.prototype.setPassword = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string mfa_code = 3;
+ * @return {string}
+ */
+proto.dac.auth.DisableMFARequest.prototype.getMfaCode = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.DisableMFARequest} returns this
+ */
+proto.dac.auth.DisableMFARequest.prototype.setMfaCode = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.BackupCodesRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.BackupCodesRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.BackupCodesRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.BackupCodesRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    userId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    password: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    mfaCode: jspb.Message.getFieldWithDefault(msg, 3, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.BackupCodesRequest}
+ */
+proto.dac.auth.BackupCodesRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.BackupCodesRequest;
+  return proto.dac.auth.BackupCodesRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.BackupCodesRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.BackupCodesRequest}
+ */
+proto.dac.auth.BackupCodesRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setUserId(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setPassword(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setMfaCode(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.BackupCodesRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.BackupCodesRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.BackupCodesRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.BackupCodesRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getUserId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getPassword();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getMfaCode();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 user_id = 1;
+ * @return {number}
+ */
+proto.dac.auth.BackupCodesRequest.prototype.getUserId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.auth.BackupCodesRequest} returns this
+ */
+proto.dac.auth.BackupCodesRequest.prototype.setUserId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional string password = 2;
+ * @return {string}
+ */
+proto.dac.auth.BackupCodesRequest.prototype.getPassword = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.BackupCodesRequest} returns this
+ */
+proto.dac.auth.BackupCodesRequest.prototype.setPassword = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string mfa_code = 3;
+ * @return {string}
+ */
+proto.dac.auth.BackupCodesRequest.prototype.getMfaCode = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.BackupCodesRequest} returns this
+ */
+proto.dac.auth.BackupCodesRequest.prototype.setMfaCode = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.dac.auth.BackupCodesResponse.repeatedFields_ = [1];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.BackupCodesResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.BackupCodesResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.BackupCodesResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.BackupCodesResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    backupCodesList: (f = jspb.Message.getRepeatedField(msg, 1)) == null ? undefined : f,
+    generatedAt: (f = msg.getGeneratedAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.BackupCodesResponse}
+ */
+proto.dac.auth.BackupCodesResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.BackupCodesResponse;
+  return proto.dac.auth.BackupCodesResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.BackupCodesResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.BackupCodesResponse}
+ */
+proto.dac.auth.BackupCodesResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addBackupCodes(value);
+      break;
+    case 2:
+      var value = new google_protobuf_timestamp_pb.Timestamp;
+      reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      msg.setGeneratedAt(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.BackupCodesResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.BackupCodesResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.BackupCodesResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.BackupCodesResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getBackupCodesList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      1,
+      f
+    );
+  }
+  f = message.getGeneratedAt();
+  if (f != null) {
+    writer.writeMessage(
+      2,
+      f,
+      google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+};
+
+
+/**
+ * repeated string backup_codes = 1;
+ * @return {!Array<string>}
+ */
+proto.dac.auth.BackupCodesResponse.prototype.getBackupCodesList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 1));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.dac.auth.BackupCodesResponse} returns this
+ */
+proto.dac.auth.BackupCodesResponse.prototype.setBackupCodesList = function(value) {
+  return jspb.Message.setField(this, 1, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.dac.auth.BackupCodesResponse} returns this
+ */
+proto.dac.auth.BackupCodesResponse.prototype.addBackupCodes = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 1, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.auth.BackupCodesResponse} returns this
+ */
+proto.dac.auth.BackupCodesResponse.prototype.clearBackupCodesList = function() {
+  return this.setBackupCodesList([]);
+};
+
+
+/**
+ * optional google.protobuf.Timestamp generated_at = 2;
+ * @return {?proto.google.protobuf.Timestamp}
+ */
+proto.dac.auth.BackupCodesResponse.prototype.getGeneratedAt = function() {
+  return /** @type{?proto.google.protobuf.Timestamp} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 2));
+};
+
+
+/**
+ * @param {?proto.google.protobuf.Timestamp|undefined} value
+ * @return {!proto.dac.auth.BackupCodesResponse} returns this
+*/
+proto.dac.auth.BackupCodesResponse.prototype.setGeneratedAt = function(value) {
+  return jspb.Message.setWrapperField(this, 2, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.auth.BackupCodesResponse} returns this
+ */
+proto.dac.auth.BackupCodesResponse.prototype.clearGeneratedAt = function() {
+  return this.setGeneratedAt(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.BackupCodesResponse.prototype.hasGeneratedAt = function() {
+  return jspb.Message.getField(this, 2) != null;
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.GetSessionsRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.GetSessionsRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.GetSessionsRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.GetSessionsRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    userId: jspb.Message.getFieldWithDefault(msg, 1, 0)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.GetSessionsRequest}
+ */
+proto.dac.auth.GetSessionsRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.GetSessionsRequest;
+  return proto.dac.auth.GetSessionsRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.GetSessionsRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.GetSessionsRequest}
+ */
+proto.dac.auth.GetSessionsRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setUserId(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.GetSessionsRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.GetSessionsRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.GetSessionsRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.GetSessionsRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getUserId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 user_id = 1;
+ * @return {number}
+ */
+proto.dac.auth.GetSessionsRequest.prototype.getUserId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.auth.GetSessionsRequest} returns this
+ */
+proto.dac.auth.GetSessionsRequest.prototype.setUserId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.dac.auth.ActiveSessionsResponse.repeatedFields_ = [1];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.ActiveSessionsResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.ActiveSessionsResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.ActiveSessionsResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.ActiveSessionsResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    sessionsList: jspb.Message.toObjectList(msg.getSessionsList(),
+    proto.dac.auth.UserSession.toObject, includeInstance)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.ActiveSessionsResponse}
+ */
+proto.dac.auth.ActiveSessionsResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.ActiveSessionsResponse;
+  return proto.dac.auth.ActiveSessionsResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.ActiveSessionsResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.ActiveSessionsResponse}
+ */
+proto.dac.auth.ActiveSessionsResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = new proto.dac.auth.UserSession;
+      reader.readMessage(value,proto.dac.auth.UserSession.deserializeBinaryFromReader);
+      msg.addSessions(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.ActiveSessionsResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.ActiveSessionsResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.ActiveSessionsResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.ActiveSessionsResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getSessionsList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
+      1,
+      f,
+      proto.dac.auth.UserSession.serializeBinaryToWriter
+    );
+  }
+};
+
+
+/**
+ * repeated UserSession sessions = 1;
+ * @return {!Array<!proto.dac.auth.UserSession>}
+ */
+proto.dac.auth.ActiveSessionsResponse.prototype.getSessionsList = function() {
+  return /** @type{!Array<!proto.dac.auth.UserSession>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.dac.auth.UserSession, 1));
+};
+
+
+/**
+ * @param {!Array<!proto.dac.auth.UserSession>} value
+ * @return {!proto.dac.auth.ActiveSessionsResponse} returns this
+*/
+proto.dac.auth.ActiveSessionsResponse.prototype.setSessionsList = function(value) {
+  return jspb.Message.setRepeatedWrapperField(this, 1, value);
+};
+
+
+/**
+ * @param {!proto.dac.auth.UserSession=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.dac.auth.UserSession}
+ */
+proto.dac.auth.ActiveSessionsResponse.prototype.addSessions = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 1, opt_value, proto.dac.auth.UserSession, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.auth.ActiveSessionsResponse} returns this
+ */
+proto.dac.auth.ActiveSessionsResponse.prototype.clearSessionsList = function() {
+  return this.setSessionsList([]);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.UserSession.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.UserSession.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.UserSession} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.UserSession.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    sessionId: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    deviceInfo: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    ipAddress: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    location: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    createdAt: (f = msg.getCreatedAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
+    lastActive: (f = msg.getLastActive()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
+    isCurrent: jspb.Message.getBooleanFieldWithDefault(msg, 7, false)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.UserSession}
+ */
+proto.dac.auth.UserSession.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.UserSession;
+  return proto.dac.auth.UserSession.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.UserSession} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.UserSession}
+ */
+proto.dac.auth.UserSession.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setSessionId(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setDeviceInfo(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setIpAddress(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setLocation(value);
+      break;
+    case 5:
+      var value = new google_protobuf_timestamp_pb.Timestamp;
+      reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      msg.setCreatedAt(value);
+      break;
+    case 6:
+      var value = new google_protobuf_timestamp_pb.Timestamp;
+      reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      msg.setLastActive(value);
+      break;
+    case 7:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setIsCurrent(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.UserSession.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.UserSession.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.UserSession} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.UserSession.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getSessionId();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getDeviceInfo();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getIpAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getLocation();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+  f = message.getCreatedAt();
+  if (f != null) {
+    writer.writeMessage(
+      5,
+      f,
+      google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+  f = message.getLastActive();
+  if (f != null) {
+    writer.writeMessage(
+      6,
+      f,
+      google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+  f = message.getIsCurrent();
+  if (f) {
+    writer.writeBool(
+      7,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string session_id = 1;
+ * @return {string}
+ */
+proto.dac.auth.UserSession.prototype.getSessionId = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.UserSession} returns this
+ */
+proto.dac.auth.UserSession.prototype.setSessionId = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string device_info = 2;
+ * @return {string}
+ */
+proto.dac.auth.UserSession.prototype.getDeviceInfo = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.UserSession} returns this
+ */
+proto.dac.auth.UserSession.prototype.setDeviceInfo = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string ip_address = 3;
+ * @return {string}
+ */
+proto.dac.auth.UserSession.prototype.getIpAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.UserSession} returns this
+ */
+proto.dac.auth.UserSession.prototype.setIpAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string location = 4;
+ * @return {string}
+ */
+proto.dac.auth.UserSession.prototype.getLocation = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.UserSession} returns this
+ */
+proto.dac.auth.UserSession.prototype.setLocation = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional google.protobuf.Timestamp created_at = 5;
+ * @return {?proto.google.protobuf.Timestamp}
+ */
+proto.dac.auth.UserSession.prototype.getCreatedAt = function() {
+  return /** @type{?proto.google.protobuf.Timestamp} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 5));
+};
+
+
+/**
+ * @param {?proto.google.protobuf.Timestamp|undefined} value
+ * @return {!proto.dac.auth.UserSession} returns this
+*/
+proto.dac.auth.UserSession.prototype.setCreatedAt = function(value) {
+  return jspb.Message.setWrapperField(this, 5, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.auth.UserSession} returns this
+ */
+proto.dac.auth.UserSession.prototype.clearCreatedAt = function() {
+  return this.setCreatedAt(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.UserSession.prototype.hasCreatedAt = function() {
+  return jspb.Message.getField(this, 5) != null;
+};
+
+
+/**
+ * optional google.protobuf.Timestamp last_active = 6;
+ * @return {?proto.google.protobuf.Timestamp}
+ */
+proto.dac.auth.UserSession.prototype.getLastActive = function() {
+  return /** @type{?proto.google.protobuf.Timestamp} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 6));
+};
+
+
+/**
+ * @param {?proto.google.protobuf.Timestamp|undefined} value
+ * @return {!proto.dac.auth.UserSession} returns this
+*/
+proto.dac.auth.UserSession.prototype.setLastActive = function(value) {
+  return jspb.Message.setWrapperField(this, 6, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.auth.UserSession} returns this
+ */
+proto.dac.auth.UserSession.prototype.clearLastActive = function() {
+  return this.setLastActive(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.UserSession.prototype.hasLastActive = function() {
+  return jspb.Message.getField(this, 6) != null;
+};
+
+
+/**
+ * optional bool is_current = 7;
+ * @return {boolean}
+ */
+proto.dac.auth.UserSession.prototype.getIsCurrent = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 7, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.auth.UserSession} returns this
+ */
+proto.dac.auth.UserSession.prototype.setIsCurrent = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 7, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.RevokeSessionRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.RevokeSessionRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.RevokeSessionRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.RevokeSessionRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    userId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    sessionId: jspb.Message.getFieldWithDefault(msg, 2, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.RevokeSessionRequest}
+ */
+proto.dac.auth.RevokeSessionRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.RevokeSessionRequest;
+  return proto.dac.auth.RevokeSessionRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.RevokeSessionRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.RevokeSessionRequest}
+ */
+proto.dac.auth.RevokeSessionRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setUserId(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setSessionId(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.RevokeSessionRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.RevokeSessionRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.RevokeSessionRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.RevokeSessionRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getUserId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getSessionId();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 user_id = 1;
+ * @return {number}
+ */
+proto.dac.auth.RevokeSessionRequest.prototype.getUserId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.auth.RevokeSessionRequest} returns this
+ */
+proto.dac.auth.RevokeSessionRequest.prototype.setUserId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional string session_id = 2;
+ * @return {string}
+ */
+proto.dac.auth.RevokeSessionRequest.prototype.getSessionId = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.RevokeSessionRequest} returns this
+ */
+proto.dac.auth.RevokeSessionRequest.prototype.setSessionId = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.RevokeAllSessionsRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.RevokeAllSessionsRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.RevokeAllSessionsRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.RevokeAllSessionsRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    userId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    exceptCurrent: jspb.Message.getBooleanFieldWithDefault(msg, 2, false)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.RevokeAllSessionsRequest}
+ */
+proto.dac.auth.RevokeAllSessionsRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.RevokeAllSessionsRequest;
+  return proto.dac.auth.RevokeAllSessionsRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.RevokeAllSessionsRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.RevokeAllSessionsRequest}
+ */
+proto.dac.auth.RevokeAllSessionsRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setUserId(value);
+      break;
+    case 2:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setExceptCurrent(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.RevokeAllSessionsRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.RevokeAllSessionsRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.RevokeAllSessionsRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.RevokeAllSessionsRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getUserId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getExceptCurrent();
+  if (f) {
+    writer.writeBool(
+      2,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 user_id = 1;
+ * @return {number}
+ */
+proto.dac.auth.RevokeAllSessionsRequest.prototype.getUserId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.auth.RevokeAllSessionsRequest} returns this
+ */
+proto.dac.auth.RevokeAllSessionsRequest.prototype.setUserId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional bool except_current = 2;
+ * @return {boolean}
+ */
+proto.dac.auth.RevokeAllSessionsRequest.prototype.getExceptCurrent = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 2, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.auth.RevokeAllSessionsRequest} returns this
+ */
+proto.dac.auth.RevokeAllSessionsRequest.prototype.setExceptCurrent = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 2, value);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.dac.auth.SocialProfileRequest.repeatedFields_ = [4];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.SocialProfileRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.SocialProfileRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.SocialProfileRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.SocialProfileRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    userId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    pseudonym: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    bio: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    interestsList: (f = jspb.Message.getRepeatedField(msg, 4)) == null ? undefined : f,
+    privacyLevel: jspb.Message.getFieldWithDefault(msg, 5, 0)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.SocialProfileRequest}
+ */
+proto.dac.auth.SocialProfileRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.SocialProfileRequest;
+  return proto.dac.auth.SocialProfileRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.SocialProfileRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.SocialProfileRequest}
+ */
+proto.dac.auth.SocialProfileRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setUserId(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setPseudonym(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setBio(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addInterests(value);
+      break;
+    case 5:
+      var value = /** @type {!proto.dac.auth.PrivacyLevel} */ (reader.readEnum());
+      msg.setPrivacyLevel(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.SocialProfileRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.SocialProfileRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.SocialProfileRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.SocialProfileRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getUserId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getPseudonym();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getBio();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getInterestsList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      4,
+      f
+    );
+  }
+  f = message.getPrivacyLevel();
+  if (f !== 0.0) {
+    writer.writeEnum(
+      5,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 user_id = 1;
+ * @return {number}
+ */
+proto.dac.auth.SocialProfileRequest.prototype.getUserId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.auth.SocialProfileRequest} returns this
+ */
+proto.dac.auth.SocialProfileRequest.prototype.setUserId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional string pseudonym = 2;
+ * @return {string}
+ */
+proto.dac.auth.SocialProfileRequest.prototype.getPseudonym = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.SocialProfileRequest} returns this
+ */
+proto.dac.auth.SocialProfileRequest.prototype.setPseudonym = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string bio = 3;
+ * @return {string}
+ */
+proto.dac.auth.SocialProfileRequest.prototype.getBio = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.SocialProfileRequest} returns this
+ */
+proto.dac.auth.SocialProfileRequest.prototype.setBio = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * repeated string interests = 4;
+ * @return {!Array<string>}
+ */
+proto.dac.auth.SocialProfileRequest.prototype.getInterestsList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 4));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.dac.auth.SocialProfileRequest} returns this
+ */
+proto.dac.auth.SocialProfileRequest.prototype.setInterestsList = function(value) {
+  return jspb.Message.setField(this, 4, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.dac.auth.SocialProfileRequest} returns this
+ */
+proto.dac.auth.SocialProfileRequest.prototype.addInterests = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 4, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.auth.SocialProfileRequest} returns this
+ */
+proto.dac.auth.SocialProfileRequest.prototype.clearInterestsList = function() {
+  return this.setInterestsList([]);
+};
+
+
+/**
+ * optional PrivacyLevel privacy_level = 5;
+ * @return {!proto.dac.auth.PrivacyLevel}
+ */
+proto.dac.auth.SocialProfileRequest.prototype.getPrivacyLevel = function() {
+  return /** @type {!proto.dac.auth.PrivacyLevel} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
+};
+
+
+/**
+ * @param {!proto.dac.auth.PrivacyLevel} value
+ * @return {!proto.dac.auth.SocialProfileRequest} returns this
+ */
+proto.dac.auth.SocialProfileRequest.prototype.setPrivacyLevel = function(value) {
+  return jspb.Message.setProto3EnumField(this, 5, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.SocialProfileResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.SocialProfileResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.SocialProfileResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.SocialProfileResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    success: jspb.Message.getBooleanFieldWithDefault(msg, 1, false),
+    profile: (f = msg.getProfile()) && proto.dac.auth.SocialProfile.toObject(includeInstance, f),
+    encryptionKey: jspb.Message.getFieldWithDefault(msg, 3, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.SocialProfileResponse}
+ */
+proto.dac.auth.SocialProfileResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.SocialProfileResponse;
+  return proto.dac.auth.SocialProfileResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.SocialProfileResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.SocialProfileResponse}
+ */
+proto.dac.auth.SocialProfileResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setSuccess(value);
+      break;
+    case 2:
+      var value = new proto.dac.auth.SocialProfile;
+      reader.readMessage(value,proto.dac.auth.SocialProfile.deserializeBinaryFromReader);
+      msg.setProfile(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setEncryptionKey(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.SocialProfileResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.SocialProfileResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.SocialProfileResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.SocialProfileResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getSuccess();
+  if (f) {
+    writer.writeBool(
+      1,
+      f
+    );
+  }
+  f = message.getProfile();
+  if (f != null) {
+    writer.writeMessage(
+      2,
+      f,
+      proto.dac.auth.SocialProfile.serializeBinaryToWriter
+    );
+  }
+  f = message.getEncryptionKey();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional bool success = 1;
+ * @return {boolean}
+ */
+proto.dac.auth.SocialProfileResponse.prototype.getSuccess = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 1, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.auth.SocialProfileResponse} returns this
+ */
+proto.dac.auth.SocialProfileResponse.prototype.setSuccess = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 1, value);
+};
+
+
+/**
+ * optional SocialProfile profile = 2;
+ * @return {?proto.dac.auth.SocialProfile}
+ */
+proto.dac.auth.SocialProfileResponse.prototype.getProfile = function() {
+  return /** @type{?proto.dac.auth.SocialProfile} */ (
+    jspb.Message.getWrapperField(this, proto.dac.auth.SocialProfile, 2));
+};
+
+
+/**
+ * @param {?proto.dac.auth.SocialProfile|undefined} value
+ * @return {!proto.dac.auth.SocialProfileResponse} returns this
+*/
+proto.dac.auth.SocialProfileResponse.prototype.setProfile = function(value) {
+  return jspb.Message.setWrapperField(this, 2, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.auth.SocialProfileResponse} returns this
+ */
+proto.dac.auth.SocialProfileResponse.prototype.clearProfile = function() {
+  return this.setProfile(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.SocialProfileResponse.prototype.hasProfile = function() {
+  return jspb.Message.getField(this, 2) != null;
+};
+
+
+/**
+ * optional string encryption_key = 3;
+ * @return {string}
+ */
+proto.dac.auth.SocialProfileResponse.prototype.getEncryptionKey = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.SocialProfileResponse} returns this
+ */
+proto.dac.auth.SocialProfileResponse.prototype.setEncryptionKey = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.SocialAuthRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.SocialAuthRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.SocialAuthRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.SocialAuthRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    userId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    mfaCode: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    deviceFingerprint: jspb.Message.getFieldWithDefault(msg, 3, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.SocialAuthRequest}
+ */
+proto.dac.auth.SocialAuthRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.SocialAuthRequest;
+  return proto.dac.auth.SocialAuthRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.SocialAuthRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.SocialAuthRequest}
+ */
+proto.dac.auth.SocialAuthRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setUserId(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setMfaCode(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setDeviceFingerprint(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.SocialAuthRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.SocialAuthRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.SocialAuthRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.SocialAuthRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getUserId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getMfaCode();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getDeviceFingerprint();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 user_id = 1;
+ * @return {number}
+ */
+proto.dac.auth.SocialAuthRequest.prototype.getUserId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.auth.SocialAuthRequest} returns this
+ */
+proto.dac.auth.SocialAuthRequest.prototype.setUserId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional string mfa_code = 2;
+ * @return {string}
+ */
+proto.dac.auth.SocialAuthRequest.prototype.getMfaCode = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.SocialAuthRequest} returns this
+ */
+proto.dac.auth.SocialAuthRequest.prototype.setMfaCode = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string device_fingerprint = 3;
+ * @return {string}
+ */
+proto.dac.auth.SocialAuthRequest.prototype.getDeviceFingerprint = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.SocialAuthRequest} returns this
+ */
+proto.dac.auth.SocialAuthRequest.prototype.setDeviceFingerprint = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.dac.auth.SocialAuthResponse.repeatedFields_ = [4];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.SocialAuthResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.SocialAuthResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.SocialAuthResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.SocialAuthResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    success: jspb.Message.getBooleanFieldWithDefault(msg, 1, false),
+    socialToken: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    expiresAt: (f = msg.getExpiresAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
+    permissionsList: (f = jspb.Message.getRepeatedField(msg, 4)) == null ? undefined : f
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.SocialAuthResponse}
+ */
+proto.dac.auth.SocialAuthResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.SocialAuthResponse;
+  return proto.dac.auth.SocialAuthResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.SocialAuthResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.SocialAuthResponse}
+ */
+proto.dac.auth.SocialAuthResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setSuccess(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setSocialToken(value);
+      break;
+    case 3:
+      var value = new google_protobuf_timestamp_pb.Timestamp;
+      reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      msg.setExpiresAt(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addPermissions(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.SocialAuthResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.SocialAuthResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.SocialAuthResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.SocialAuthResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getSuccess();
+  if (f) {
+    writer.writeBool(
+      1,
+      f
+    );
+  }
+  f = message.getSocialToken();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getExpiresAt();
+  if (f != null) {
+    writer.writeMessage(
+      3,
+      f,
+      google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+  f = message.getPermissionsList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      4,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional bool success = 1;
+ * @return {boolean}
+ */
+proto.dac.auth.SocialAuthResponse.prototype.getSuccess = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 1, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.auth.SocialAuthResponse} returns this
+ */
+proto.dac.auth.SocialAuthResponse.prototype.setSuccess = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 1, value);
+};
+
+
+/**
+ * optional string social_token = 2;
+ * @return {string}
+ */
+proto.dac.auth.SocialAuthResponse.prototype.getSocialToken = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.SocialAuthResponse} returns this
+ */
+proto.dac.auth.SocialAuthResponse.prototype.setSocialToken = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional google.protobuf.Timestamp expires_at = 3;
+ * @return {?proto.google.protobuf.Timestamp}
+ */
+proto.dac.auth.SocialAuthResponse.prototype.getExpiresAt = function() {
+  return /** @type{?proto.google.protobuf.Timestamp} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 3));
+};
+
+
+/**
+ * @param {?proto.google.protobuf.Timestamp|undefined} value
+ * @return {!proto.dac.auth.SocialAuthResponse} returns this
+*/
+proto.dac.auth.SocialAuthResponse.prototype.setExpiresAt = function(value) {
+  return jspb.Message.setWrapperField(this, 3, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.auth.SocialAuthResponse} returns this
+ */
+proto.dac.auth.SocialAuthResponse.prototype.clearExpiresAt = function() {
+  return this.setExpiresAt(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.SocialAuthResponse.prototype.hasExpiresAt = function() {
+  return jspb.Message.getField(this, 3) != null;
+};
+
+
+/**
+ * repeated string permissions = 4;
+ * @return {!Array<string>}
+ */
+proto.dac.auth.SocialAuthResponse.prototype.getPermissionsList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 4));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.dac.auth.SocialAuthResponse} returns this
+ */
+proto.dac.auth.SocialAuthResponse.prototype.setPermissionsList = function(value) {
+  return jspb.Message.setField(this, 4, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.dac.auth.SocialAuthResponse} returns this
+ */
+proto.dac.auth.SocialAuthResponse.prototype.addPermissions = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 4, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.auth.SocialAuthResponse} returns this
+ */
+proto.dac.auth.SocialAuthResponse.prototype.clearPermissionsList = function() {
+  return this.setPermissionsList([]);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.dac.auth.SocialProfile.repeatedFields_ = [6];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.SocialProfile.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.SocialProfile.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.SocialProfile} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.SocialProfile.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    profileId: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    userId: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    pseudonym: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    bio: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    avatarUrl: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    interestsList: (f = jspb.Message.getRepeatedField(msg, 6)) == null ? undefined : f,
+    reputationScore: jspb.Message.getFieldWithDefault(msg, 7, 0),
+    privacyLevel: jspb.Message.getFieldWithDefault(msg, 8, 0),
+    createdAt: (f = msg.getCreatedAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
+    isVerified: jspb.Message.getBooleanFieldWithDefault(msg, 10, false),
+    stats: (f = msg.getStats()) && proto.dac.auth.SocialStats.toObject(includeInstance, f)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.SocialProfile}
+ */
+proto.dac.auth.SocialProfile.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.SocialProfile;
+  return proto.dac.auth.SocialProfile.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.SocialProfile} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.SocialProfile}
+ */
+proto.dac.auth.SocialProfile.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setProfileId(value);
+      break;
+    case 2:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setUserId(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setPseudonym(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setBio(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setAvatarUrl(value);
+      break;
+    case 6:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addInterests(value);
+      break;
+    case 7:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setReputationScore(value);
+      break;
+    case 8:
+      var value = /** @type {!proto.dac.auth.PrivacyLevel} */ (reader.readEnum());
+      msg.setPrivacyLevel(value);
+      break;
+    case 9:
+      var value = new google_protobuf_timestamp_pb.Timestamp;
+      reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      msg.setCreatedAt(value);
+      break;
+    case 10:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setIsVerified(value);
+      break;
+    case 11:
+      var value = new proto.dac.auth.SocialStats;
+      reader.readMessage(value,proto.dac.auth.SocialStats.deserializeBinaryFromReader);
+      msg.setStats(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.SocialProfile.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.SocialProfile.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.SocialProfile} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.SocialProfile.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getProfileId();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getUserId();
+  if (f !== 0) {
+    writer.writeInt32(
+      2,
+      f
+    );
+  }
+  f = message.getPseudonym();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getBio();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+  f = message.getAvatarUrl();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
+      f
+    );
+  }
+  f = message.getInterestsList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      6,
+      f
+    );
+  }
+  f = message.getReputationScore();
+  if (f !== 0) {
+    writer.writeInt32(
+      7,
+      f
+    );
+  }
+  f = message.getPrivacyLevel();
+  if (f !== 0.0) {
+    writer.writeEnum(
+      8,
+      f
+    );
+  }
+  f = message.getCreatedAt();
+  if (f != null) {
+    writer.writeMessage(
+      9,
+      f,
+      google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+  f = message.getIsVerified();
+  if (f) {
+    writer.writeBool(
+      10,
+      f
+    );
+  }
+  f = message.getStats();
+  if (f != null) {
+    writer.writeMessage(
+      11,
+      f,
+      proto.dac.auth.SocialStats.serializeBinaryToWriter
+    );
+  }
+};
+
+
+/**
+ * optional string profile_id = 1;
+ * @return {string}
+ */
+proto.dac.auth.SocialProfile.prototype.getProfileId = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.SocialProfile} returns this
+ */
+proto.dac.auth.SocialProfile.prototype.setProfileId = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional int32 user_id = 2;
+ * @return {number}
+ */
+proto.dac.auth.SocialProfile.prototype.getUserId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.auth.SocialProfile} returns this
+ */
+proto.dac.auth.SocialProfile.prototype.setUserId = function(value) {
+  return jspb.Message.setProto3IntField(this, 2, value);
+};
+
+
+/**
+ * optional string pseudonym = 3;
+ * @return {string}
+ */
+proto.dac.auth.SocialProfile.prototype.getPseudonym = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.SocialProfile} returns this
+ */
+proto.dac.auth.SocialProfile.prototype.setPseudonym = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string bio = 4;
+ * @return {string}
+ */
+proto.dac.auth.SocialProfile.prototype.getBio = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.SocialProfile} returns this
+ */
+proto.dac.auth.SocialProfile.prototype.setBio = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional string avatar_url = 5;
+ * @return {string}
+ */
+proto.dac.auth.SocialProfile.prototype.getAvatarUrl = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.SocialProfile} returns this
+ */
+proto.dac.auth.SocialProfile.prototype.setAvatarUrl = function(value) {
+  return jspb.Message.setProto3StringField(this, 5, value);
+};
+
+
+/**
+ * repeated string interests = 6;
+ * @return {!Array<string>}
+ */
+proto.dac.auth.SocialProfile.prototype.getInterestsList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 6));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.dac.auth.SocialProfile} returns this
+ */
+proto.dac.auth.SocialProfile.prototype.setInterestsList = function(value) {
+  return jspb.Message.setField(this, 6, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.dac.auth.SocialProfile} returns this
+ */
+proto.dac.auth.SocialProfile.prototype.addInterests = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 6, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.auth.SocialProfile} returns this
+ */
+proto.dac.auth.SocialProfile.prototype.clearInterestsList = function() {
+  return this.setInterestsList([]);
+};
+
+
+/**
+ * optional int32 reputation_score = 7;
+ * @return {number}
+ */
+proto.dac.auth.SocialProfile.prototype.getReputationScore = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 7, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.auth.SocialProfile} returns this
+ */
+proto.dac.auth.SocialProfile.prototype.setReputationScore = function(value) {
+  return jspb.Message.setProto3IntField(this, 7, value);
+};
+
+
+/**
+ * optional PrivacyLevel privacy_level = 8;
+ * @return {!proto.dac.auth.PrivacyLevel}
+ */
+proto.dac.auth.SocialProfile.prototype.getPrivacyLevel = function() {
+  return /** @type {!proto.dac.auth.PrivacyLevel} */ (jspb.Message.getFieldWithDefault(this, 8, 0));
+};
+
+
+/**
+ * @param {!proto.dac.auth.PrivacyLevel} value
+ * @return {!proto.dac.auth.SocialProfile} returns this
+ */
+proto.dac.auth.SocialProfile.prototype.setPrivacyLevel = function(value) {
+  return jspb.Message.setProto3EnumField(this, 8, value);
+};
+
+
+/**
+ * optional google.protobuf.Timestamp created_at = 9;
+ * @return {?proto.google.protobuf.Timestamp}
+ */
+proto.dac.auth.SocialProfile.prototype.getCreatedAt = function() {
+  return /** @type{?proto.google.protobuf.Timestamp} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 9));
+};
+
+
+/**
+ * @param {?proto.google.protobuf.Timestamp|undefined} value
+ * @return {!proto.dac.auth.SocialProfile} returns this
+*/
+proto.dac.auth.SocialProfile.prototype.setCreatedAt = function(value) {
+  return jspb.Message.setWrapperField(this, 9, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.auth.SocialProfile} returns this
+ */
+proto.dac.auth.SocialProfile.prototype.clearCreatedAt = function() {
+  return this.setCreatedAt(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.SocialProfile.prototype.hasCreatedAt = function() {
+  return jspb.Message.getField(this, 9) != null;
+};
+
+
+/**
+ * optional bool is_verified = 10;
+ * @return {boolean}
+ */
+proto.dac.auth.SocialProfile.prototype.getIsVerified = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 10, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.auth.SocialProfile} returns this
+ */
+proto.dac.auth.SocialProfile.prototype.setIsVerified = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 10, value);
+};
+
+
+/**
+ * optional SocialStats stats = 11;
+ * @return {?proto.dac.auth.SocialStats}
+ */
+proto.dac.auth.SocialProfile.prototype.getStats = function() {
+  return /** @type{?proto.dac.auth.SocialStats} */ (
+    jspb.Message.getWrapperField(this, proto.dac.auth.SocialStats, 11));
+};
+
+
+/**
+ * @param {?proto.dac.auth.SocialStats|undefined} value
+ * @return {!proto.dac.auth.SocialProfile} returns this
+*/
+proto.dac.auth.SocialProfile.prototype.setStats = function(value) {
+  return jspb.Message.setWrapperField(this, 11, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.auth.SocialProfile} returns this
+ */
+proto.dac.auth.SocialProfile.prototype.clearStats = function() {
+  return this.setStats(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.SocialProfile.prototype.hasStats = function() {
+  return jspb.Message.getField(this, 11) != null;
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.SocialStats.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.SocialStats.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.SocialStats} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.SocialStats.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    followersCount: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    followingCount: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    postsCount: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    endorsementsReceived: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    endorsementsGiven: jspb.Message.getFieldWithDefault(msg, 5, 0)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.SocialStats}
+ */
+proto.dac.auth.SocialStats.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.SocialStats;
+  return proto.dac.auth.SocialStats.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.SocialStats} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.SocialStats}
+ */
+proto.dac.auth.SocialStats.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setFollowersCount(value);
+      break;
+    case 2:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setFollowingCount(value);
+      break;
+    case 3:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setPostsCount(value);
+      break;
+    case 4:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setEndorsementsReceived(value);
+      break;
+    case 5:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setEndorsementsGiven(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.SocialStats.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.SocialStats.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.SocialStats} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.SocialStats.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getFollowersCount();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getFollowingCount();
+  if (f !== 0) {
+    writer.writeInt32(
+      2,
+      f
+    );
+  }
+  f = message.getPostsCount();
+  if (f !== 0) {
+    writer.writeInt32(
+      3,
+      f
+    );
+  }
+  f = message.getEndorsementsReceived();
+  if (f !== 0) {
+    writer.writeInt32(
+      4,
+      f
+    );
+  }
+  f = message.getEndorsementsGiven();
+  if (f !== 0) {
+    writer.writeInt32(
+      5,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 followers_count = 1;
+ * @return {number}
+ */
+proto.dac.auth.SocialStats.prototype.getFollowersCount = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.auth.SocialStats} returns this
+ */
+proto.dac.auth.SocialStats.prototype.setFollowersCount = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional int32 following_count = 2;
+ * @return {number}
+ */
+proto.dac.auth.SocialStats.prototype.getFollowingCount = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.auth.SocialStats} returns this
+ */
+proto.dac.auth.SocialStats.prototype.setFollowingCount = function(value) {
+  return jspb.Message.setProto3IntField(this, 2, value);
+};
+
+
+/**
+ * optional int32 posts_count = 3;
+ * @return {number}
+ */
+proto.dac.auth.SocialStats.prototype.getPostsCount = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.auth.SocialStats} returns this
+ */
+proto.dac.auth.SocialStats.prototype.setPostsCount = function(value) {
+  return jspb.Message.setProto3IntField(this, 3, value);
+};
+
+
+/**
+ * optional int32 endorsements_received = 4;
+ * @return {number}
+ */
+proto.dac.auth.SocialStats.prototype.getEndorsementsReceived = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.auth.SocialStats} returns this
+ */
+proto.dac.auth.SocialStats.prototype.setEndorsementsReceived = function(value) {
+  return jspb.Message.setProto3IntField(this, 4, value);
+};
+
+
+/**
+ * optional int32 endorsements_given = 5;
+ * @return {number}
+ */
+proto.dac.auth.SocialStats.prototype.getEndorsementsGiven = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.auth.SocialStats} returns this
+ */
+proto.dac.auth.SocialStats.prototype.setEndorsementsGiven = function(value) {
+  return jspb.Message.setProto3IntField(this, 5, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.PermissionRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.PermissionRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.PermissionRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.PermissionRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    userId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    resource: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    action: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    resourceId: jspb.Message.getFieldWithDefault(msg, 4, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.PermissionRequest}
+ */
+proto.dac.auth.PermissionRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.PermissionRequest;
+  return proto.dac.auth.PermissionRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.PermissionRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.PermissionRequest}
+ */
+proto.dac.auth.PermissionRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setUserId(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setResource(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setAction(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setResourceId(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.PermissionRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.PermissionRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.PermissionRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.PermissionRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getUserId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getResource();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getAction();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = /** @type {string} */ (jspb.Message.getField(message, 4));
+  if (f != null) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 user_id = 1;
+ * @return {number}
+ */
+proto.dac.auth.PermissionRequest.prototype.getUserId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.auth.PermissionRequest} returns this
+ */
+proto.dac.auth.PermissionRequest.prototype.setUserId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional string resource = 2;
+ * @return {string}
+ */
+proto.dac.auth.PermissionRequest.prototype.getResource = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.PermissionRequest} returns this
+ */
+proto.dac.auth.PermissionRequest.prototype.setResource = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string action = 3;
+ * @return {string}
+ */
+proto.dac.auth.PermissionRequest.prototype.getAction = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.PermissionRequest} returns this
+ */
+proto.dac.auth.PermissionRequest.prototype.setAction = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string resource_id = 4;
+ * @return {string}
+ */
+proto.dac.auth.PermissionRequest.prototype.getResourceId = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.PermissionRequest} returns this
+ */
+proto.dac.auth.PermissionRequest.prototype.setResourceId = function(value) {
+  return jspb.Message.setField(this, 4, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.dac.auth.PermissionRequest} returns this
+ */
+proto.dac.auth.PermissionRequest.prototype.clearResourceId = function() {
+  return jspb.Message.setField(this, 4, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.PermissionRequest.prototype.hasResourceId = function() {
+  return jspb.Message.getField(this, 4) != null;
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.dac.auth.PermissionResponse.repeatedFields_ = [3,4];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.PermissionResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.PermissionResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.PermissionResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.PermissionResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    granted: jspb.Message.getBooleanFieldWithDefault(msg, 1, false),
+    reason: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    requiredRolesList: (f = jspb.Message.getRepeatedField(msg, 3)) == null ? undefined : f,
+    missingPermissionsList: (f = jspb.Message.getRepeatedField(msg, 4)) == null ? undefined : f
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.PermissionResponse}
+ */
+proto.dac.auth.PermissionResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.PermissionResponse;
+  return proto.dac.auth.PermissionResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.PermissionResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.PermissionResponse}
+ */
+proto.dac.auth.PermissionResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setGranted(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setReason(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addRequiredRoles(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addMissingPermissions(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.PermissionResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.PermissionResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.PermissionResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.PermissionResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getGranted();
+  if (f) {
+    writer.writeBool(
+      1,
+      f
+    );
+  }
+  f = message.getReason();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getRequiredRolesList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      3,
+      f
+    );
+  }
+  f = message.getMissingPermissionsList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      4,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional bool granted = 1;
+ * @return {boolean}
+ */
+proto.dac.auth.PermissionResponse.prototype.getGranted = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 1, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.auth.PermissionResponse} returns this
+ */
+proto.dac.auth.PermissionResponse.prototype.setGranted = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 1, value);
+};
+
+
+/**
+ * optional string reason = 2;
+ * @return {string}
+ */
+proto.dac.auth.PermissionResponse.prototype.getReason = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.PermissionResponse} returns this
+ */
+proto.dac.auth.PermissionResponse.prototype.setReason = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * repeated string required_roles = 3;
+ * @return {!Array<string>}
+ */
+proto.dac.auth.PermissionResponse.prototype.getRequiredRolesList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 3));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.dac.auth.PermissionResponse} returns this
+ */
+proto.dac.auth.PermissionResponse.prototype.setRequiredRolesList = function(value) {
+  return jspb.Message.setField(this, 3, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.dac.auth.PermissionResponse} returns this
+ */
+proto.dac.auth.PermissionResponse.prototype.addRequiredRoles = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 3, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.auth.PermissionResponse} returns this
+ */
+proto.dac.auth.PermissionResponse.prototype.clearRequiredRolesList = function() {
+  return this.setRequiredRolesList([]);
+};
+
+
+/**
+ * repeated string missing_permissions = 4;
+ * @return {!Array<string>}
+ */
+proto.dac.auth.PermissionResponse.prototype.getMissingPermissionsList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 4));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.dac.auth.PermissionResponse} returns this
+ */
+proto.dac.auth.PermissionResponse.prototype.setMissingPermissionsList = function(value) {
+  return jspb.Message.setField(this, 4, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.dac.auth.PermissionResponse} returns this
+ */
+proto.dac.auth.PermissionResponse.prototype.addMissingPermissions = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 4, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.auth.PermissionResponse} returns this
+ */
+proto.dac.auth.PermissionResponse.prototype.clearMissingPermissionsList = function() {
+  return this.setMissingPermissionsList([]);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.UserRolesRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.UserRolesRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.UserRolesRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.UserRolesRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    userId: jspb.Message.getFieldWithDefault(msg, 1, 0)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.UserRolesRequest}
+ */
+proto.dac.auth.UserRolesRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.UserRolesRequest;
+  return proto.dac.auth.UserRolesRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.UserRolesRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.UserRolesRequest}
+ */
+proto.dac.auth.UserRolesRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setUserId(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.UserRolesRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.UserRolesRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.UserRolesRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.UserRolesRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getUserId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 user_id = 1;
+ * @return {number}
+ */
+proto.dac.auth.UserRolesRequest.prototype.getUserId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.auth.UserRolesRequest} returns this
+ */
+proto.dac.auth.UserRolesRequest.prototype.setUserId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.dac.auth.UserRolesResponse.repeatedFields_ = [1];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.UserRolesResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.UserRolesResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.UserRolesResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.UserRolesResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    rolesList: jspb.Message.toObjectList(msg.getRolesList(),
+    proto.dac.auth.UserRole.toObject, includeInstance)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.UserRolesResponse}
+ */
+proto.dac.auth.UserRolesResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.UserRolesResponse;
+  return proto.dac.auth.UserRolesResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.UserRolesResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.UserRolesResponse}
+ */
+proto.dac.auth.UserRolesResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = new proto.dac.auth.UserRole;
+      reader.readMessage(value,proto.dac.auth.UserRole.deserializeBinaryFromReader);
+      msg.addRoles(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.UserRolesResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.UserRolesResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.UserRolesResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.UserRolesResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getRolesList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
+      1,
+      f,
+      proto.dac.auth.UserRole.serializeBinaryToWriter
+    );
+  }
+};
+
+
+/**
+ * repeated UserRole roles = 1;
+ * @return {!Array<!proto.dac.auth.UserRole>}
+ */
+proto.dac.auth.UserRolesResponse.prototype.getRolesList = function() {
+  return /** @type{!Array<!proto.dac.auth.UserRole>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.dac.auth.UserRole, 1));
+};
+
+
+/**
+ * @param {!Array<!proto.dac.auth.UserRole>} value
+ * @return {!proto.dac.auth.UserRolesResponse} returns this
+*/
+proto.dac.auth.UserRolesResponse.prototype.setRolesList = function(value) {
+  return jspb.Message.setRepeatedWrapperField(this, 1, value);
+};
+
+
+/**
+ * @param {!proto.dac.auth.UserRole=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.dac.auth.UserRole}
+ */
+proto.dac.auth.UserRolesResponse.prototype.addRoles = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 1, opt_value, proto.dac.auth.UserRole, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.auth.UserRolesResponse} returns this
+ */
+proto.dac.auth.UserRolesResponse.prototype.clearRolesList = function() {
+  return this.setRolesList([]);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.dac.auth.UserRole.repeatedFields_ = [3];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.UserRole.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.UserRole.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.UserRole} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.UserRole.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    roleName: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    description: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    permissionsList: (f = jspb.Message.getRepeatedField(msg, 3)) == null ? undefined : f,
+    assignedAt: (f = msg.getAssignedAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
+    expiresAt: (f = msg.getExpiresAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
+    assignedBy: jspb.Message.getFieldWithDefault(msg, 6, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.UserRole}
+ */
+proto.dac.auth.UserRole.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.UserRole;
+  return proto.dac.auth.UserRole.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.UserRole} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.UserRole}
+ */
+proto.dac.auth.UserRole.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setRoleName(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setDescription(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addPermissions(value);
+      break;
+    case 4:
+      var value = new google_protobuf_timestamp_pb.Timestamp;
+      reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      msg.setAssignedAt(value);
+      break;
+    case 5:
+      var value = new google_protobuf_timestamp_pb.Timestamp;
+      reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      msg.setExpiresAt(value);
+      break;
+    case 6:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setAssignedBy(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.UserRole.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.UserRole.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.UserRole} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.UserRole.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getRoleName();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getDescription();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getPermissionsList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      3,
+      f
+    );
+  }
+  f = message.getAssignedAt();
+  if (f != null) {
+    writer.writeMessage(
+      4,
+      f,
+      google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+  f = message.getExpiresAt();
+  if (f != null) {
+    writer.writeMessage(
+      5,
+      f,
+      google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+  f = message.getAssignedBy();
+  if (f.length > 0) {
+    writer.writeString(
+      6,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string role_name = 1;
+ * @return {string}
+ */
+proto.dac.auth.UserRole.prototype.getRoleName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.UserRole} returns this
+ */
+proto.dac.auth.UserRole.prototype.setRoleName = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string description = 2;
+ * @return {string}
+ */
+proto.dac.auth.UserRole.prototype.getDescription = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.UserRole} returns this
+ */
+proto.dac.auth.UserRole.prototype.setDescription = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * repeated string permissions = 3;
+ * @return {!Array<string>}
+ */
+proto.dac.auth.UserRole.prototype.getPermissionsList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 3));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.dac.auth.UserRole} returns this
+ */
+proto.dac.auth.UserRole.prototype.setPermissionsList = function(value) {
+  return jspb.Message.setField(this, 3, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.dac.auth.UserRole} returns this
+ */
+proto.dac.auth.UserRole.prototype.addPermissions = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 3, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.auth.UserRole} returns this
+ */
+proto.dac.auth.UserRole.prototype.clearPermissionsList = function() {
+  return this.setPermissionsList([]);
+};
+
+
+/**
+ * optional google.protobuf.Timestamp assigned_at = 4;
+ * @return {?proto.google.protobuf.Timestamp}
+ */
+proto.dac.auth.UserRole.prototype.getAssignedAt = function() {
+  return /** @type{?proto.google.protobuf.Timestamp} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 4));
+};
+
+
+/**
+ * @param {?proto.google.protobuf.Timestamp|undefined} value
+ * @return {!proto.dac.auth.UserRole} returns this
+*/
+proto.dac.auth.UserRole.prototype.setAssignedAt = function(value) {
+  return jspb.Message.setWrapperField(this, 4, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.auth.UserRole} returns this
+ */
+proto.dac.auth.UserRole.prototype.clearAssignedAt = function() {
+  return this.setAssignedAt(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.UserRole.prototype.hasAssignedAt = function() {
+  return jspb.Message.getField(this, 4) != null;
+};
+
+
+/**
+ * optional google.protobuf.Timestamp expires_at = 5;
+ * @return {?proto.google.protobuf.Timestamp}
+ */
+proto.dac.auth.UserRole.prototype.getExpiresAt = function() {
+  return /** @type{?proto.google.protobuf.Timestamp} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 5));
+};
+
+
+/**
+ * @param {?proto.google.protobuf.Timestamp|undefined} value
+ * @return {!proto.dac.auth.UserRole} returns this
+*/
+proto.dac.auth.UserRole.prototype.setExpiresAt = function(value) {
+  return jspb.Message.setWrapperField(this, 5, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.auth.UserRole} returns this
+ */
+proto.dac.auth.UserRole.prototype.clearExpiresAt = function() {
+  return this.setExpiresAt(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.UserRole.prototype.hasExpiresAt = function() {
+  return jspb.Message.getField(this, 5) != null;
+};
+
+
+/**
+ * optional string assigned_by = 6;
+ * @return {string}
+ */
+proto.dac.auth.UserRole.prototype.getAssignedBy = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.UserRole} returns this
+ */
+proto.dac.auth.UserRole.prototype.setAssignedBy = function(value) {
+  return jspb.Message.setProto3StringField(this, 6, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.AssignRoleRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.AssignRoleRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.AssignRoleRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.AssignRoleRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    userId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    roleName: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    assignedBy: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    expiresAt: (f = msg.getExpiresAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
+    reason: jspb.Message.getFieldWithDefault(msg, 5, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.AssignRoleRequest}
+ */
+proto.dac.auth.AssignRoleRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.AssignRoleRequest;
+  return proto.dac.auth.AssignRoleRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.AssignRoleRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.AssignRoleRequest}
+ */
+proto.dac.auth.AssignRoleRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setUserId(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setRoleName(value);
+      break;
+    case 3:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setAssignedBy(value);
+      break;
+    case 4:
+      var value = new google_protobuf_timestamp_pb.Timestamp;
+      reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      msg.setExpiresAt(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setReason(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.AssignRoleRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.AssignRoleRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.AssignRoleRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.AssignRoleRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getUserId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getRoleName();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getAssignedBy();
+  if (f !== 0) {
+    writer.writeInt32(
+      3,
+      f
+    );
+  }
+  f = message.getExpiresAt();
+  if (f != null) {
+    writer.writeMessage(
+      4,
+      f,
+      google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+  f = message.getReason();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 user_id = 1;
+ * @return {number}
+ */
+proto.dac.auth.AssignRoleRequest.prototype.getUserId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.auth.AssignRoleRequest} returns this
+ */
+proto.dac.auth.AssignRoleRequest.prototype.setUserId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional string role_name = 2;
+ * @return {string}
+ */
+proto.dac.auth.AssignRoleRequest.prototype.getRoleName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.AssignRoleRequest} returns this
+ */
+proto.dac.auth.AssignRoleRequest.prototype.setRoleName = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional int32 assigned_by = 3;
+ * @return {number}
+ */
+proto.dac.auth.AssignRoleRequest.prototype.getAssignedBy = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.auth.AssignRoleRequest} returns this
+ */
+proto.dac.auth.AssignRoleRequest.prototype.setAssignedBy = function(value) {
+  return jspb.Message.setProto3IntField(this, 3, value);
+};
+
+
+/**
+ * optional google.protobuf.Timestamp expires_at = 4;
+ * @return {?proto.google.protobuf.Timestamp}
+ */
+proto.dac.auth.AssignRoleRequest.prototype.getExpiresAt = function() {
+  return /** @type{?proto.google.protobuf.Timestamp} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 4));
+};
+
+
+/**
+ * @param {?proto.google.protobuf.Timestamp|undefined} value
+ * @return {!proto.dac.auth.AssignRoleRequest} returns this
+*/
+proto.dac.auth.AssignRoleRequest.prototype.setExpiresAt = function(value) {
+  return jspb.Message.setWrapperField(this, 4, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.auth.AssignRoleRequest} returns this
+ */
+proto.dac.auth.AssignRoleRequest.prototype.clearExpiresAt = function() {
+  return this.setExpiresAt(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.auth.AssignRoleRequest.prototype.hasExpiresAt = function() {
+  return jspb.Message.getField(this, 4) != null;
+};
+
+
+/**
+ * optional string reason = 5;
+ * @return {string}
+ */
+proto.dac.auth.AssignRoleRequest.prototype.getReason = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.AssignRoleRequest} returns this
+ */
+proto.dac.auth.AssignRoleRequest.prototype.setReason = function(value) {
+  return jspb.Message.setProto3StringField(this, 5, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.auth.RevokeRoleRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.auth.RevokeRoleRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.auth.RevokeRoleRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.RevokeRoleRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    userId: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    roleName: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    revokedBy: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    reason: jspb.Message.getFieldWithDefault(msg, 4, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.auth.RevokeRoleRequest}
+ */
+proto.dac.auth.RevokeRoleRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.auth.RevokeRoleRequest;
+  return proto.dac.auth.RevokeRoleRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.auth.RevokeRoleRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.auth.RevokeRoleRequest}
+ */
+proto.dac.auth.RevokeRoleRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setUserId(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setRoleName(value);
+      break;
+    case 3:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setRevokedBy(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setReason(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.auth.RevokeRoleRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.auth.RevokeRoleRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.auth.RevokeRoleRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.auth.RevokeRoleRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getUserId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+  f = message.getRoleName();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getRevokedBy();
+  if (f !== 0) {
+    writer.writeInt32(
+      3,
+      f
+    );
+  }
+  f = message.getReason();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 user_id = 1;
+ * @return {number}
+ */
+proto.dac.auth.RevokeRoleRequest.prototype.getUserId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.auth.RevokeRoleRequest} returns this
+ */
+proto.dac.auth.RevokeRoleRequest.prototype.setUserId = function(value) {
+  return jspb.Message.setProto3IntField(this, 1, value);
+};
+
+
+/**
+ * optional string role_name = 2;
+ * @return {string}
+ */
+proto.dac.auth.RevokeRoleRequest.prototype.getRoleName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.RevokeRoleRequest} returns this
+ */
+proto.dac.auth.RevokeRoleRequest.prototype.setRoleName = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional int32 revoked_by = 3;
+ * @return {number}
+ */
+proto.dac.auth.RevokeRoleRequest.prototype.getRevokedBy = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.auth.RevokeRoleRequest} returns this
+ */
+proto.dac.auth.RevokeRoleRequest.prototype.setRevokedBy = function(value) {
+  return jspb.Message.setProto3IntField(this, 3, value);
+};
+
+
+/**
+ * optional string reason = 4;
+ * @return {string}
+ */
+proto.dac.auth.RevokeRoleRequest.prototype.getReason = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.auth.RevokeRoleRequest} returns this
+ */
+proto.dac.auth.RevokeRoleRequest.prototype.setReason = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * @enum {number}
+ */
+proto.dac.auth.MembershipTier = {
+  MEMBERSHIP_TIER_UNSPECIFIED: 0,
+  MEMBERSHIP_TIER_FREE: 1,
+  MEMBERSHIP_TIER_BASIC: 2,
+  MEMBERSHIP_TIER_PREMIUM: 3,
+  MEMBERSHIP_TIER_ENTERPRISE: 4
+};
+
+/**
+ * @enum {number}
+ */
+proto.dac.auth.ProfileVisibility = {
+  PROFILE_VISIBILITY_UNSPECIFIED: 0,
+  PROFILE_VISIBILITY_PUBLIC: 1,
+  PROFILE_VISIBILITY_MEMBERS_ONLY: 2,
+  PROFILE_VISIBILITY_PRIVATE: 3
+};
+
+/**
+ * @enum {number}
+ */
+proto.dac.auth.TokenType = {
+  TOKEN_TYPE_UNSPECIFIED: 0,
+  TOKEN_TYPE_ACCESS: 1,
+  TOKEN_TYPE_REFRESH: 2,
+  TOKEN_TYPE_SOCIAL: 3,
+  TOKEN_TYPE_API: 4
+};
+
+/**
+ * @enum {number}
+ */
+proto.dac.auth.WalletType = {
+  WALLET_TYPE_UNSPECIFIED: 0,
+  WALLET_TYPE_METAMASK: 1,
+  WALLET_TYPE_WALLET_CONNECT: 2,
+  WALLET_TYPE_COINBASE: 3,
+  WALLET_TYPE_TRUST_WALLET: 4,
+  WALLET_TYPE_HARDWARE: 5
+};
+
+/**
+ * @enum {number}
+ */
+proto.dac.auth.MFAMethod = {
+  MFA_METHOD_UNSPECIFIED: 0,
+  MFA_METHOD_TOTP: 1,
+  MFA_METHOD_SMS: 2,
+  MFA_METHOD_EMAIL: 3,
+  MFA_METHOD_HARDWARE_KEY: 4
+};
+
+/**
+ * @enum {number}
+ */
+proto.dac.auth.PrivacyLevel = {
+  PRIVACY_LEVEL_UNSPECIFIED: 0,
+  PRIVACY_LEVEL_OPEN: 1,
+  PRIVACY_LEVEL_SELECTIVE: 2,
+  PRIVACY_LEVEL_PRIVATE: 3
+};
+
+goog.object.extend(exports, proto.dac.auth);

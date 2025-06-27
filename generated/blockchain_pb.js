@@ -1,0 +1,14228 @@
+// source: blockchain.proto
+/**
+ * @fileoverview
+ * @enhanceable
+ * @suppress {missingRequire} reports error on implicit type usages.
+ * @suppress {messageConventions} JS Compiler reports an error if a variable or
+ *     field starts with 'MSG_' and isn't a translatable message.
+ * @public
+ */
+// GENERATED CODE -- DO NOT EDIT!
+/* eslint-disable */
+// @ts-nocheck
+
+var jspb = require('google-protobuf');
+var goog = jspb;
+var global = (function() {
+  if (this) { return this; }
+  if (typeof window !== 'undefined') { return window; }
+  if (typeof global !== 'undefined') { return global; }
+  if (typeof self !== 'undefined') { return self; }
+  return Function('return this')();
+}.call(null));
+
+var google_protobuf_timestamp_pb = require('google-protobuf/google/protobuf/timestamp_pb.js');
+goog.object.extend(proto, google_protobuf_timestamp_pb);
+var google_protobuf_empty_pb = require('google-protobuf/google/protobuf/empty_pb.js');
+goog.object.extend(proto, google_protobuf_empty_pb);
+goog.exportSymbol('proto.dac.blockchain.BalanceRequest', null, global);
+goog.exportSymbol('proto.dac.blockchain.BalanceResponse', null, global);
+goog.exportSymbol('proto.dac.blockchain.BeaconAddressResponse', null, global);
+goog.exportSymbol('proto.dac.blockchain.BlockInfo', null, global);
+goog.exportSymbol('proto.dac.blockchain.BlockInfoRequest', null, global);
+goog.exportSymbol('proto.dac.blockchain.BlockchainEvent', null, global);
+goog.exportSymbol('proto.dac.blockchain.ContractCallRequest', null, global);
+goog.exportSymbol('proto.dac.blockchain.ContractCallResponse', null, global);
+goog.exportSymbol('proto.dac.blockchain.ContractInfo', null, global);
+goog.exportSymbol('proto.dac.blockchain.ContractInfoRequest', null, global);
+goog.exportSymbol('proto.dac.blockchain.CostBreakdown', null, global);
+goog.exportSymbol('proto.dac.blockchain.CostEstimateRequest', null, global);
+goog.exportSymbol('proto.dac.blockchain.CostEstimateResponse', null, global);
+goog.exportSymbol('proto.dac.blockchain.DeployContractRequest', null, global);
+goog.exportSymbol('proto.dac.blockchain.DeploymentResponse', null, global);
+goog.exportSymbol('proto.dac.blockchain.DeploymentStatus', null, global);
+goog.exportSymbol('proto.dac.blockchain.EthicalValidationRequest', null, global);
+goog.exportSymbol('proto.dac.blockchain.EthicalValidationResponse', null, global);
+goog.exportSymbol('proto.dac.blockchain.EventLog', null, global);
+goog.exportSymbol('proto.dac.blockchain.EventLogRequest', null, global);
+goog.exportSymbol('proto.dac.blockchain.EventLogResponse', null, global);
+goog.exportSymbol('proto.dac.blockchain.EventParameter', null, global);
+goog.exportSymbol('proto.dac.blockchain.EventSubscriptionRequest', null, global);
+goog.exportSymbol('proto.dac.blockchain.EventType', null, global);
+goog.exportSymbol('proto.dac.blockchain.GasEstimateRequest', null, global);
+goog.exportSymbol('proto.dac.blockchain.GasEstimateResponse', null, global);
+goog.exportSymbol('proto.dac.blockchain.GasSettings', null, global);
+goog.exportSymbol('proto.dac.blockchain.MemberRegistrationRequest', null, global);
+goog.exportSymbol('proto.dac.blockchain.MembershipTier', null, global);
+goog.exportSymbol('proto.dac.blockchain.NFTAttribute', null, global);
+goog.exportSymbol('proto.dac.blockchain.NFTBalanceRequest', null, global);
+goog.exportSymbol('proto.dac.blockchain.NFTBalanceResponse', null, global);
+goog.exportSymbol('proto.dac.blockchain.NFTMetadata', null, global);
+goog.exportSymbol('proto.dac.blockchain.NFTToken', null, global);
+goog.exportSymbol('proto.dac.blockchain.NetworkHealth', null, global);
+goog.exportSymbol('proto.dac.blockchain.NetworkInfo', null, global);
+goog.exportSymbol('proto.dac.blockchain.PrometheaConfig', null, global);
+goog.exportSymbol('proto.dac.blockchain.PrometheaDeploymentRequest', null, global);
+goog.exportSymbol('proto.dac.blockchain.RegistrationResponse', null, global);
+goog.exportSymbol('proto.dac.blockchain.TokenBalanceRequest', null, global);
+goog.exportSymbol('proto.dac.blockchain.TokenBalanceResponse', null, global);
+goog.exportSymbol('proto.dac.blockchain.TokenInfo', null, global);
+goog.exportSymbol('proto.dac.blockchain.TokenTransferRequest', null, global);
+goog.exportSymbol('proto.dac.blockchain.TransactionEvent', null, global);
+goog.exportSymbol('proto.dac.blockchain.TransactionEventType', null, global);
+goog.exportSymbol('proto.dac.blockchain.TransactionInfo', null, global);
+goog.exportSymbol('proto.dac.blockchain.TransactionMonitorRequest', null, global);
+goog.exportSymbol('proto.dac.blockchain.TransactionQueryRequest', null, global);
+goog.exportSymbol('proto.dac.blockchain.TransactionReceipt', null, global);
+goog.exportSymbol('proto.dac.blockchain.TransactionReceiptRequest', null, global);
+goog.exportSymbol('proto.dac.blockchain.TransactionRequest', null, global);
+goog.exportSymbol('proto.dac.blockchain.TransactionResponse', null, global);
+goog.exportSymbol('proto.dac.blockchain.TransactionType', null, global);
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.DeployContractRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.dac.blockchain.DeployContractRequest.repeatedFields_, null);
+};
+goog.inherits(proto.dac.blockchain.DeployContractRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.DeployContractRequest.displayName = 'proto.dac.blockchain.DeployContractRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.DeploymentResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.dac.blockchain.DeploymentResponse.repeatedFields_, null);
+};
+goog.inherits(proto.dac.blockchain.DeploymentResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.DeploymentResponse.displayName = 'proto.dac.blockchain.DeploymentResponse';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.ContractInfoRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.blockchain.ContractInfoRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.ContractInfoRequest.displayName = 'proto.dac.blockchain.ContractInfoRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.ContractInfo = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.blockchain.ContractInfo, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.ContractInfo.displayName = 'proto.dac.blockchain.ContractInfo';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.ContractCallRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.dac.blockchain.ContractCallRequest.repeatedFields_, null);
+};
+goog.inherits(proto.dac.blockchain.ContractCallRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.ContractCallRequest.displayName = 'proto.dac.blockchain.ContractCallRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.ContractCallResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.blockchain.ContractCallResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.ContractCallResponse.displayName = 'proto.dac.blockchain.ContractCallResponse';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.GasEstimateRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.blockchain.GasEstimateRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.GasEstimateRequest.displayName = 'proto.dac.blockchain.GasEstimateRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.GasEstimateResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.blockchain.GasEstimateResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.GasEstimateResponse.displayName = 'proto.dac.blockchain.GasEstimateResponse';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.GasSettings = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.blockchain.GasSettings, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.GasSettings.displayName = 'proto.dac.blockchain.GasSettings';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.TransactionRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.blockchain.TransactionRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.TransactionRequest.displayName = 'proto.dac.blockchain.TransactionRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.TransactionResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.blockchain.TransactionResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.TransactionResponse.displayName = 'proto.dac.blockchain.TransactionResponse';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.TransactionQueryRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.blockchain.TransactionQueryRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.TransactionQueryRequest.displayName = 'proto.dac.blockchain.TransactionQueryRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.TransactionInfo = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.blockchain.TransactionInfo, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.TransactionInfo.displayName = 'proto.dac.blockchain.TransactionInfo';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.TransactionReceiptRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.blockchain.TransactionReceiptRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.TransactionReceiptRequest.displayName = 'proto.dac.blockchain.TransactionReceiptRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.TransactionReceipt = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.dac.blockchain.TransactionReceipt.repeatedFields_, null);
+};
+goog.inherits(proto.dac.blockchain.TransactionReceipt, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.TransactionReceipt.displayName = 'proto.dac.blockchain.TransactionReceipt';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.EventLog = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.dac.blockchain.EventLog.repeatedFields_, null);
+};
+goog.inherits(proto.dac.blockchain.EventLog, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.EventLog.displayName = 'proto.dac.blockchain.EventLog';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.TransactionMonitorRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.dac.blockchain.TransactionMonitorRequest.repeatedFields_, null);
+};
+goog.inherits(proto.dac.blockchain.TransactionMonitorRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.TransactionMonitorRequest.displayName = 'proto.dac.blockchain.TransactionMonitorRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.TransactionEvent = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.blockchain.TransactionEvent, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.TransactionEvent.displayName = 'proto.dac.blockchain.TransactionEvent';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.BalanceRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.blockchain.BalanceRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.BalanceRequest.displayName = 'proto.dac.blockchain.BalanceRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.BalanceResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.blockchain.BalanceResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.BalanceResponse.displayName = 'proto.dac.blockchain.BalanceResponse';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.TokenBalanceRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.blockchain.TokenBalanceRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.TokenBalanceRequest.displayName = 'proto.dac.blockchain.TokenBalanceRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.TokenBalanceResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.blockchain.TokenBalanceResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.TokenBalanceResponse.displayName = 'proto.dac.blockchain.TokenBalanceResponse';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.TokenInfo = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.blockchain.TokenInfo, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.TokenInfo.displayName = 'proto.dac.blockchain.TokenInfo';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.NFTBalanceRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.blockchain.NFTBalanceRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.NFTBalanceRequest.displayName = 'proto.dac.blockchain.NFTBalanceRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.NFTBalanceResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.dac.blockchain.NFTBalanceResponse.repeatedFields_, null);
+};
+goog.inherits(proto.dac.blockchain.NFTBalanceResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.NFTBalanceResponse.displayName = 'proto.dac.blockchain.NFTBalanceResponse';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.NFTToken = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.blockchain.NFTToken, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.NFTToken.displayName = 'proto.dac.blockchain.NFTToken';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.NFTMetadata = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.dac.blockchain.NFTMetadata.repeatedFields_, null);
+};
+goog.inherits(proto.dac.blockchain.NFTMetadata, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.NFTMetadata.displayName = 'proto.dac.blockchain.NFTMetadata';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.NFTAttribute = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.blockchain.NFTAttribute, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.NFTAttribute.displayName = 'proto.dac.blockchain.NFTAttribute';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.TokenTransferRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.blockchain.TokenTransferRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.TokenTransferRequest.displayName = 'proto.dac.blockchain.TokenTransferRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.NetworkInfo = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.blockchain.NetworkInfo, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.NetworkInfo.displayName = 'proto.dac.blockchain.NetworkInfo';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.NetworkHealth = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.blockchain.NetworkHealth, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.NetworkHealth.displayName = 'proto.dac.blockchain.NetworkHealth';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.BlockInfoRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.blockchain.BlockInfoRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.BlockInfoRequest.displayName = 'proto.dac.blockchain.BlockInfoRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.BlockInfo = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.dac.blockchain.BlockInfo.repeatedFields_, null);
+};
+goog.inherits(proto.dac.blockchain.BlockInfo, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.BlockInfo.displayName = 'proto.dac.blockchain.BlockInfo';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.CostEstimateRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.dac.blockchain.CostEstimateRequest.repeatedFields_, null);
+};
+goog.inherits(proto.dac.blockchain.CostEstimateRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.CostEstimateRequest.displayName = 'proto.dac.blockchain.CostEstimateRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.CostEstimateResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.blockchain.CostEstimateResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.CostEstimateResponse.displayName = 'proto.dac.blockchain.CostEstimateResponse';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.CostBreakdown = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.blockchain.CostBreakdown, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.CostBreakdown.displayName = 'proto.dac.blockchain.CostBreakdown';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.EventSubscriptionRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.dac.blockchain.EventSubscriptionRequest.repeatedFields_, null);
+};
+goog.inherits(proto.dac.blockchain.EventSubscriptionRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.EventSubscriptionRequest.displayName = 'proto.dac.blockchain.EventSubscriptionRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.BlockchainEvent = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.dac.blockchain.BlockchainEvent.repeatedFields_, null);
+};
+goog.inherits(proto.dac.blockchain.BlockchainEvent, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.BlockchainEvent.displayName = 'proto.dac.blockchain.BlockchainEvent';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.EventParameter = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.blockchain.EventParameter, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.EventParameter.displayName = 'proto.dac.blockchain.EventParameter';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.EventLogRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.dac.blockchain.EventLogRequest.repeatedFields_, null);
+};
+goog.inherits(proto.dac.blockchain.EventLogRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.EventLogRequest.displayName = 'proto.dac.blockchain.EventLogRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.EventLogResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.dac.blockchain.EventLogResponse.repeatedFields_, null);
+};
+goog.inherits(proto.dac.blockchain.EventLogResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.EventLogResponse.displayName = 'proto.dac.blockchain.EventLogResponse';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.PrometheaDeploymentRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.blockchain.PrometheaDeploymentRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.PrometheaDeploymentRequest.displayName = 'proto.dac.blockchain.PrometheaDeploymentRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.PrometheaConfig = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.dac.blockchain.PrometheaConfig.repeatedFields_, null);
+};
+goog.inherits(proto.dac.blockchain.PrometheaConfig, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.PrometheaConfig.displayName = 'proto.dac.blockchain.PrometheaConfig';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.BeaconAddressResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.blockchain.BeaconAddressResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.BeaconAddressResponse.displayName = 'proto.dac.blockchain.BeaconAddressResponse';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.EthicalValidationRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.dac.blockchain.EthicalValidationRequest.repeatedFields_, null);
+};
+goog.inherits(proto.dac.blockchain.EthicalValidationRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.EthicalValidationRequest.displayName = 'proto.dac.blockchain.EthicalValidationRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.EthicalValidationResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.dac.blockchain.EthicalValidationResponse.repeatedFields_, null);
+};
+goog.inherits(proto.dac.blockchain.EthicalValidationResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.EthicalValidationResponse.displayName = 'proto.dac.blockchain.EthicalValidationResponse';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.MemberRegistrationRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.blockchain.MemberRegistrationRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.MemberRegistrationRequest.displayName = 'proto.dac.blockchain.MemberRegistrationRequest';
+}
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.dac.blockchain.RegistrationResponse = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.dac.blockchain.RegistrationResponse, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  /**
+   * @public
+   * @override
+   */
+  proto.dac.blockchain.RegistrationResponse.displayName = 'proto.dac.blockchain.RegistrationResponse';
+}
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.dac.blockchain.DeployContractRequest.repeatedFields_ = [4];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.DeployContractRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.DeployContractRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.DeployContractRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.DeployContractRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    contractName: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    bytecode: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    abi: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    constructorArgsList: (f = jspb.Message.getRepeatedField(msg, 4)) == null ? undefined : f,
+    gasSettings: (f = msg.getGasSettings()) && proto.dac.blockchain.GasSettings.toObject(includeInstance, f),
+    deployerAddress: jspb.Message.getFieldWithDefault(msg, 6, ""),
+    network: jspb.Message.getFieldWithDefault(msg, 7, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.DeployContractRequest}
+ */
+proto.dac.blockchain.DeployContractRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.DeployContractRequest;
+  return proto.dac.blockchain.DeployContractRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.DeployContractRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.DeployContractRequest}
+ */
+proto.dac.blockchain.DeployContractRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setContractName(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setBytecode(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setAbi(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addConstructorArgs(value);
+      break;
+    case 5:
+      var value = new proto.dac.blockchain.GasSettings;
+      reader.readMessage(value,proto.dac.blockchain.GasSettings.deserializeBinaryFromReader);
+      msg.setGasSettings(value);
+      break;
+    case 6:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setDeployerAddress(value);
+      break;
+    case 7:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setNetwork(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.DeployContractRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.DeployContractRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.DeployContractRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.DeployContractRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getContractName();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getBytecode();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getAbi();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getConstructorArgsList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      4,
+      f
+    );
+  }
+  f = message.getGasSettings();
+  if (f != null) {
+    writer.writeMessage(
+      5,
+      f,
+      proto.dac.blockchain.GasSettings.serializeBinaryToWriter
+    );
+  }
+  f = message.getDeployerAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      6,
+      f
+    );
+  }
+  f = message.getNetwork();
+  if (f.length > 0) {
+    writer.writeString(
+      7,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string contract_name = 1;
+ * @return {string}
+ */
+proto.dac.blockchain.DeployContractRequest.prototype.getContractName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.DeployContractRequest} returns this
+ */
+proto.dac.blockchain.DeployContractRequest.prototype.setContractName = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string bytecode = 2;
+ * @return {string}
+ */
+proto.dac.blockchain.DeployContractRequest.prototype.getBytecode = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.DeployContractRequest} returns this
+ */
+proto.dac.blockchain.DeployContractRequest.prototype.setBytecode = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string abi = 3;
+ * @return {string}
+ */
+proto.dac.blockchain.DeployContractRequest.prototype.getAbi = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.DeployContractRequest} returns this
+ */
+proto.dac.blockchain.DeployContractRequest.prototype.setAbi = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * repeated string constructor_args = 4;
+ * @return {!Array<string>}
+ */
+proto.dac.blockchain.DeployContractRequest.prototype.getConstructorArgsList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 4));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.dac.blockchain.DeployContractRequest} returns this
+ */
+proto.dac.blockchain.DeployContractRequest.prototype.setConstructorArgsList = function(value) {
+  return jspb.Message.setField(this, 4, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.dac.blockchain.DeployContractRequest} returns this
+ */
+proto.dac.blockchain.DeployContractRequest.prototype.addConstructorArgs = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 4, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.blockchain.DeployContractRequest} returns this
+ */
+proto.dac.blockchain.DeployContractRequest.prototype.clearConstructorArgsList = function() {
+  return this.setConstructorArgsList([]);
+};
+
+
+/**
+ * optional GasSettings gas_settings = 5;
+ * @return {?proto.dac.blockchain.GasSettings}
+ */
+proto.dac.blockchain.DeployContractRequest.prototype.getGasSettings = function() {
+  return /** @type{?proto.dac.blockchain.GasSettings} */ (
+    jspb.Message.getWrapperField(this, proto.dac.blockchain.GasSettings, 5));
+};
+
+
+/**
+ * @param {?proto.dac.blockchain.GasSettings|undefined} value
+ * @return {!proto.dac.blockchain.DeployContractRequest} returns this
+*/
+proto.dac.blockchain.DeployContractRequest.prototype.setGasSettings = function(value) {
+  return jspb.Message.setWrapperField(this, 5, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.blockchain.DeployContractRequest} returns this
+ */
+proto.dac.blockchain.DeployContractRequest.prototype.clearGasSettings = function() {
+  return this.setGasSettings(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.blockchain.DeployContractRequest.prototype.hasGasSettings = function() {
+  return jspb.Message.getField(this, 5) != null;
+};
+
+
+/**
+ * optional string deployer_address = 6;
+ * @return {string}
+ */
+proto.dac.blockchain.DeployContractRequest.prototype.getDeployerAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.DeployContractRequest} returns this
+ */
+proto.dac.blockchain.DeployContractRequest.prototype.setDeployerAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 6, value);
+};
+
+
+/**
+ * optional string network = 7;
+ * @return {string}
+ */
+proto.dac.blockchain.DeployContractRequest.prototype.getNetwork = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.DeployContractRequest} returns this
+ */
+proto.dac.blockchain.DeployContractRequest.prototype.setNetwork = function(value) {
+  return jspb.Message.setProto3StringField(this, 7, value);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.dac.blockchain.DeploymentResponse.repeatedFields_ = [7];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.DeploymentResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.DeploymentResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.DeploymentResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.DeploymentResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    deploymentId: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    status: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    progressPercentage: jspb.Message.getFloatingPointFieldWithDefault(msg, 3, 0.0),
+    contractAddress: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    transactionHash: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    errorMessage: jspb.Message.getFieldWithDefault(msg, 6, ""),
+    deploymentStepsList: (f = jspb.Message.getRepeatedField(msg, 7)) == null ? undefined : f
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.DeploymentResponse}
+ */
+proto.dac.blockchain.DeploymentResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.DeploymentResponse;
+  return proto.dac.blockchain.DeploymentResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.DeploymentResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.DeploymentResponse}
+ */
+proto.dac.blockchain.DeploymentResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setDeploymentId(value);
+      break;
+    case 2:
+      var value = /** @type {!proto.dac.blockchain.DeploymentStatus} */ (reader.readEnum());
+      msg.setStatus(value);
+      break;
+    case 3:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setProgressPercentage(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setContractAddress(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setTransactionHash(value);
+      break;
+    case 6:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setErrorMessage(value);
+      break;
+    case 7:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addDeploymentSteps(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.DeploymentResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.DeploymentResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.DeploymentResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.DeploymentResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getDeploymentId();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getStatus();
+  if (f !== 0.0) {
+    writer.writeEnum(
+      2,
+      f
+    );
+  }
+  f = message.getProgressPercentage();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      3,
+      f
+    );
+  }
+  f = /** @type {string} */ (jspb.Message.getField(message, 4));
+  if (f != null) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+  f = /** @type {string} */ (jspb.Message.getField(message, 5));
+  if (f != null) {
+    writer.writeString(
+      5,
+      f
+    );
+  }
+  f = /** @type {string} */ (jspb.Message.getField(message, 6));
+  if (f != null) {
+    writer.writeString(
+      6,
+      f
+    );
+  }
+  f = message.getDeploymentStepsList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      7,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string deployment_id = 1;
+ * @return {string}
+ */
+proto.dac.blockchain.DeploymentResponse.prototype.getDeploymentId = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.DeploymentResponse} returns this
+ */
+proto.dac.blockchain.DeploymentResponse.prototype.setDeploymentId = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional DeploymentStatus status = 2;
+ * @return {!proto.dac.blockchain.DeploymentStatus}
+ */
+proto.dac.blockchain.DeploymentResponse.prototype.getStatus = function() {
+  return /** @type {!proto.dac.blockchain.DeploymentStatus} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+};
+
+
+/**
+ * @param {!proto.dac.blockchain.DeploymentStatus} value
+ * @return {!proto.dac.blockchain.DeploymentResponse} returns this
+ */
+proto.dac.blockchain.DeploymentResponse.prototype.setStatus = function(value) {
+  return jspb.Message.setProto3EnumField(this, 2, value);
+};
+
+
+/**
+ * optional double progress_percentage = 3;
+ * @return {number}
+ */
+proto.dac.blockchain.DeploymentResponse.prototype.getProgressPercentage = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 3, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.blockchain.DeploymentResponse} returns this
+ */
+proto.dac.blockchain.DeploymentResponse.prototype.setProgressPercentage = function(value) {
+  return jspb.Message.setProto3FloatField(this, 3, value);
+};
+
+
+/**
+ * optional string contract_address = 4;
+ * @return {string}
+ */
+proto.dac.blockchain.DeploymentResponse.prototype.getContractAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.DeploymentResponse} returns this
+ */
+proto.dac.blockchain.DeploymentResponse.prototype.setContractAddress = function(value) {
+  return jspb.Message.setField(this, 4, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.dac.blockchain.DeploymentResponse} returns this
+ */
+proto.dac.blockchain.DeploymentResponse.prototype.clearContractAddress = function() {
+  return jspb.Message.setField(this, 4, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.blockchain.DeploymentResponse.prototype.hasContractAddress = function() {
+  return jspb.Message.getField(this, 4) != null;
+};
+
+
+/**
+ * optional string transaction_hash = 5;
+ * @return {string}
+ */
+proto.dac.blockchain.DeploymentResponse.prototype.getTransactionHash = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.DeploymentResponse} returns this
+ */
+proto.dac.blockchain.DeploymentResponse.prototype.setTransactionHash = function(value) {
+  return jspb.Message.setField(this, 5, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.dac.blockchain.DeploymentResponse} returns this
+ */
+proto.dac.blockchain.DeploymentResponse.prototype.clearTransactionHash = function() {
+  return jspb.Message.setField(this, 5, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.blockchain.DeploymentResponse.prototype.hasTransactionHash = function() {
+  return jspb.Message.getField(this, 5) != null;
+};
+
+
+/**
+ * optional string error_message = 6;
+ * @return {string}
+ */
+proto.dac.blockchain.DeploymentResponse.prototype.getErrorMessage = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.DeploymentResponse} returns this
+ */
+proto.dac.blockchain.DeploymentResponse.prototype.setErrorMessage = function(value) {
+  return jspb.Message.setField(this, 6, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.dac.blockchain.DeploymentResponse} returns this
+ */
+proto.dac.blockchain.DeploymentResponse.prototype.clearErrorMessage = function() {
+  return jspb.Message.setField(this, 6, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.blockchain.DeploymentResponse.prototype.hasErrorMessage = function() {
+  return jspb.Message.getField(this, 6) != null;
+};
+
+
+/**
+ * repeated string deployment_steps = 7;
+ * @return {!Array<string>}
+ */
+proto.dac.blockchain.DeploymentResponse.prototype.getDeploymentStepsList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 7));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.dac.blockchain.DeploymentResponse} returns this
+ */
+proto.dac.blockchain.DeploymentResponse.prototype.setDeploymentStepsList = function(value) {
+  return jspb.Message.setField(this, 7, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.dac.blockchain.DeploymentResponse} returns this
+ */
+proto.dac.blockchain.DeploymentResponse.prototype.addDeploymentSteps = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 7, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.blockchain.DeploymentResponse} returns this
+ */
+proto.dac.blockchain.DeploymentResponse.prototype.clearDeploymentStepsList = function() {
+  return this.setDeploymentStepsList([]);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.ContractInfoRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.ContractInfoRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.ContractInfoRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.ContractInfoRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    contractAddress: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    network: jspb.Message.getFieldWithDefault(msg, 2, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.ContractInfoRequest}
+ */
+proto.dac.blockchain.ContractInfoRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.ContractInfoRequest;
+  return proto.dac.blockchain.ContractInfoRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.ContractInfoRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.ContractInfoRequest}
+ */
+proto.dac.blockchain.ContractInfoRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setContractAddress(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setNetwork(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.ContractInfoRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.ContractInfoRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.ContractInfoRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.ContractInfoRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getContractAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getNetwork();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string contract_address = 1;
+ * @return {string}
+ */
+proto.dac.blockchain.ContractInfoRequest.prototype.getContractAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.ContractInfoRequest} returns this
+ */
+proto.dac.blockchain.ContractInfoRequest.prototype.setContractAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string network = 2;
+ * @return {string}
+ */
+proto.dac.blockchain.ContractInfoRequest.prototype.getNetwork = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.ContractInfoRequest} returns this
+ */
+proto.dac.blockchain.ContractInfoRequest.prototype.setNetwork = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.ContractInfo.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.ContractInfo.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.ContractInfo} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.ContractInfo.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    address: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    name: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    abi: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    bytecode: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    deployer: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    deployedAt: (f = msg.getDeployedAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
+    network: jspb.Message.getFieldWithDefault(msg, 7, ""),
+    verificationStatus: jspb.Message.getFieldWithDefault(msg, 8, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.ContractInfo}
+ */
+proto.dac.blockchain.ContractInfo.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.ContractInfo;
+  return proto.dac.blockchain.ContractInfo.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.ContractInfo} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.ContractInfo}
+ */
+proto.dac.blockchain.ContractInfo.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setAddress(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setName(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setAbi(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setBytecode(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setDeployer(value);
+      break;
+    case 6:
+      var value = new google_protobuf_timestamp_pb.Timestamp;
+      reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      msg.setDeployedAt(value);
+      break;
+    case 7:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setNetwork(value);
+      break;
+    case 8:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setVerificationStatus(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.ContractInfo.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.ContractInfo.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.ContractInfo} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.ContractInfo.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getName();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getAbi();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getBytecode();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+  f = message.getDeployer();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
+      f
+    );
+  }
+  f = message.getDeployedAt();
+  if (f != null) {
+    writer.writeMessage(
+      6,
+      f,
+      google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+  f = message.getNetwork();
+  if (f.length > 0) {
+    writer.writeString(
+      7,
+      f
+    );
+  }
+  f = message.getVerificationStatus();
+  if (f.length > 0) {
+    writer.writeString(
+      8,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string address = 1;
+ * @return {string}
+ */
+proto.dac.blockchain.ContractInfo.prototype.getAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.ContractInfo} returns this
+ */
+proto.dac.blockchain.ContractInfo.prototype.setAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string name = 2;
+ * @return {string}
+ */
+proto.dac.blockchain.ContractInfo.prototype.getName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.ContractInfo} returns this
+ */
+proto.dac.blockchain.ContractInfo.prototype.setName = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string abi = 3;
+ * @return {string}
+ */
+proto.dac.blockchain.ContractInfo.prototype.getAbi = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.ContractInfo} returns this
+ */
+proto.dac.blockchain.ContractInfo.prototype.setAbi = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string bytecode = 4;
+ * @return {string}
+ */
+proto.dac.blockchain.ContractInfo.prototype.getBytecode = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.ContractInfo} returns this
+ */
+proto.dac.blockchain.ContractInfo.prototype.setBytecode = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional string deployer = 5;
+ * @return {string}
+ */
+proto.dac.blockchain.ContractInfo.prototype.getDeployer = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.ContractInfo} returns this
+ */
+proto.dac.blockchain.ContractInfo.prototype.setDeployer = function(value) {
+  return jspb.Message.setProto3StringField(this, 5, value);
+};
+
+
+/**
+ * optional google.protobuf.Timestamp deployed_at = 6;
+ * @return {?proto.google.protobuf.Timestamp}
+ */
+proto.dac.blockchain.ContractInfo.prototype.getDeployedAt = function() {
+  return /** @type{?proto.google.protobuf.Timestamp} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 6));
+};
+
+
+/**
+ * @param {?proto.google.protobuf.Timestamp|undefined} value
+ * @return {!proto.dac.blockchain.ContractInfo} returns this
+*/
+proto.dac.blockchain.ContractInfo.prototype.setDeployedAt = function(value) {
+  return jspb.Message.setWrapperField(this, 6, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.blockchain.ContractInfo} returns this
+ */
+proto.dac.blockchain.ContractInfo.prototype.clearDeployedAt = function() {
+  return this.setDeployedAt(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.blockchain.ContractInfo.prototype.hasDeployedAt = function() {
+  return jspb.Message.getField(this, 6) != null;
+};
+
+
+/**
+ * optional string network = 7;
+ * @return {string}
+ */
+proto.dac.blockchain.ContractInfo.prototype.getNetwork = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.ContractInfo} returns this
+ */
+proto.dac.blockchain.ContractInfo.prototype.setNetwork = function(value) {
+  return jspb.Message.setProto3StringField(this, 7, value);
+};
+
+
+/**
+ * optional string verification_status = 8;
+ * @return {string}
+ */
+proto.dac.blockchain.ContractInfo.prototype.getVerificationStatus = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 8, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.ContractInfo} returns this
+ */
+proto.dac.blockchain.ContractInfo.prototype.setVerificationStatus = function(value) {
+  return jspb.Message.setProto3StringField(this, 8, value);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.dac.blockchain.ContractCallRequest.repeatedFields_ = [3];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.ContractCallRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.ContractCallRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.ContractCallRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.ContractCallRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    contractAddress: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    methodName: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    methodArgsList: (f = jspb.Message.getRepeatedField(msg, 3)) == null ? undefined : f,
+    callerAddress: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    gasSettings: (f = msg.getGasSettings()) && proto.dac.blockchain.GasSettings.toObject(includeInstance, f),
+    network: jspb.Message.getFieldWithDefault(msg, 6, ""),
+    isViewCall: jspb.Message.getBooleanFieldWithDefault(msg, 7, false)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.ContractCallRequest}
+ */
+proto.dac.blockchain.ContractCallRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.ContractCallRequest;
+  return proto.dac.blockchain.ContractCallRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.ContractCallRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.ContractCallRequest}
+ */
+proto.dac.blockchain.ContractCallRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setContractAddress(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setMethodName(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addMethodArgs(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setCallerAddress(value);
+      break;
+    case 5:
+      var value = new proto.dac.blockchain.GasSettings;
+      reader.readMessage(value,proto.dac.blockchain.GasSettings.deserializeBinaryFromReader);
+      msg.setGasSettings(value);
+      break;
+    case 6:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setNetwork(value);
+      break;
+    case 7:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setIsViewCall(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.ContractCallRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.ContractCallRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.ContractCallRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.ContractCallRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getContractAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getMethodName();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getMethodArgsList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      3,
+      f
+    );
+  }
+  f = message.getCallerAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+  f = message.getGasSettings();
+  if (f != null) {
+    writer.writeMessage(
+      5,
+      f,
+      proto.dac.blockchain.GasSettings.serializeBinaryToWriter
+    );
+  }
+  f = message.getNetwork();
+  if (f.length > 0) {
+    writer.writeString(
+      6,
+      f
+    );
+  }
+  f = message.getIsViewCall();
+  if (f) {
+    writer.writeBool(
+      7,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string contract_address = 1;
+ * @return {string}
+ */
+proto.dac.blockchain.ContractCallRequest.prototype.getContractAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.ContractCallRequest} returns this
+ */
+proto.dac.blockchain.ContractCallRequest.prototype.setContractAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string method_name = 2;
+ * @return {string}
+ */
+proto.dac.blockchain.ContractCallRequest.prototype.getMethodName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.ContractCallRequest} returns this
+ */
+proto.dac.blockchain.ContractCallRequest.prototype.setMethodName = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * repeated string method_args = 3;
+ * @return {!Array<string>}
+ */
+proto.dac.blockchain.ContractCallRequest.prototype.getMethodArgsList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 3));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.dac.blockchain.ContractCallRequest} returns this
+ */
+proto.dac.blockchain.ContractCallRequest.prototype.setMethodArgsList = function(value) {
+  return jspb.Message.setField(this, 3, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.dac.blockchain.ContractCallRequest} returns this
+ */
+proto.dac.blockchain.ContractCallRequest.prototype.addMethodArgs = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 3, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.blockchain.ContractCallRequest} returns this
+ */
+proto.dac.blockchain.ContractCallRequest.prototype.clearMethodArgsList = function() {
+  return this.setMethodArgsList([]);
+};
+
+
+/**
+ * optional string caller_address = 4;
+ * @return {string}
+ */
+proto.dac.blockchain.ContractCallRequest.prototype.getCallerAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.ContractCallRequest} returns this
+ */
+proto.dac.blockchain.ContractCallRequest.prototype.setCallerAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional GasSettings gas_settings = 5;
+ * @return {?proto.dac.blockchain.GasSettings}
+ */
+proto.dac.blockchain.ContractCallRequest.prototype.getGasSettings = function() {
+  return /** @type{?proto.dac.blockchain.GasSettings} */ (
+    jspb.Message.getWrapperField(this, proto.dac.blockchain.GasSettings, 5));
+};
+
+
+/**
+ * @param {?proto.dac.blockchain.GasSettings|undefined} value
+ * @return {!proto.dac.blockchain.ContractCallRequest} returns this
+*/
+proto.dac.blockchain.ContractCallRequest.prototype.setGasSettings = function(value) {
+  return jspb.Message.setWrapperField(this, 5, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.blockchain.ContractCallRequest} returns this
+ */
+proto.dac.blockchain.ContractCallRequest.prototype.clearGasSettings = function() {
+  return this.setGasSettings(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.blockchain.ContractCallRequest.prototype.hasGasSettings = function() {
+  return jspb.Message.getField(this, 5) != null;
+};
+
+
+/**
+ * optional string network = 6;
+ * @return {string}
+ */
+proto.dac.blockchain.ContractCallRequest.prototype.getNetwork = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.ContractCallRequest} returns this
+ */
+proto.dac.blockchain.ContractCallRequest.prototype.setNetwork = function(value) {
+  return jspb.Message.setProto3StringField(this, 6, value);
+};
+
+
+/**
+ * optional bool is_view_call = 7;
+ * @return {boolean}
+ */
+proto.dac.blockchain.ContractCallRequest.prototype.getIsViewCall = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 7, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.blockchain.ContractCallRequest} returns this
+ */
+proto.dac.blockchain.ContractCallRequest.prototype.setIsViewCall = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 7, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.ContractCallResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.ContractCallResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.ContractCallResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.ContractCallResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    success: jspb.Message.getBooleanFieldWithDefault(msg, 1, false),
+    result: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    transactionHash: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    gasUsed: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    errorMessage: jspb.Message.getFieldWithDefault(msg, 5, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.ContractCallResponse}
+ */
+proto.dac.blockchain.ContractCallResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.ContractCallResponse;
+  return proto.dac.blockchain.ContractCallResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.ContractCallResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.ContractCallResponse}
+ */
+proto.dac.blockchain.ContractCallResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setSuccess(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setResult(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setTransactionHash(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setGasUsed(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setErrorMessage(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.ContractCallResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.ContractCallResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.ContractCallResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.ContractCallResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getSuccess();
+  if (f) {
+    writer.writeBool(
+      1,
+      f
+    );
+  }
+  f = message.getResult();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = /** @type {string} */ (jspb.Message.getField(message, 3));
+  if (f != null) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getGasUsed();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+  f = /** @type {string} */ (jspb.Message.getField(message, 5));
+  if (f != null) {
+    writer.writeString(
+      5,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional bool success = 1;
+ * @return {boolean}
+ */
+proto.dac.blockchain.ContractCallResponse.prototype.getSuccess = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 1, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.blockchain.ContractCallResponse} returns this
+ */
+proto.dac.blockchain.ContractCallResponse.prototype.setSuccess = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 1, value);
+};
+
+
+/**
+ * optional string result = 2;
+ * @return {string}
+ */
+proto.dac.blockchain.ContractCallResponse.prototype.getResult = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.ContractCallResponse} returns this
+ */
+proto.dac.blockchain.ContractCallResponse.prototype.setResult = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string transaction_hash = 3;
+ * @return {string}
+ */
+proto.dac.blockchain.ContractCallResponse.prototype.getTransactionHash = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.ContractCallResponse} returns this
+ */
+proto.dac.blockchain.ContractCallResponse.prototype.setTransactionHash = function(value) {
+  return jspb.Message.setField(this, 3, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.dac.blockchain.ContractCallResponse} returns this
+ */
+proto.dac.blockchain.ContractCallResponse.prototype.clearTransactionHash = function() {
+  return jspb.Message.setField(this, 3, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.blockchain.ContractCallResponse.prototype.hasTransactionHash = function() {
+  return jspb.Message.getField(this, 3) != null;
+};
+
+
+/**
+ * optional string gas_used = 4;
+ * @return {string}
+ */
+proto.dac.blockchain.ContractCallResponse.prototype.getGasUsed = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.ContractCallResponse} returns this
+ */
+proto.dac.blockchain.ContractCallResponse.prototype.setGasUsed = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional string error_message = 5;
+ * @return {string}
+ */
+proto.dac.blockchain.ContractCallResponse.prototype.getErrorMessage = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.ContractCallResponse} returns this
+ */
+proto.dac.blockchain.ContractCallResponse.prototype.setErrorMessage = function(value) {
+  return jspb.Message.setField(this, 5, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.dac.blockchain.ContractCallResponse} returns this
+ */
+proto.dac.blockchain.ContractCallResponse.prototype.clearErrorMessage = function() {
+  return jspb.Message.setField(this, 5, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.blockchain.ContractCallResponse.prototype.hasErrorMessage = function() {
+  return jspb.Message.getField(this, 5) != null;
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.GasEstimateRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.GasEstimateRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.GasEstimateRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.GasEstimateRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    fromAddress: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    toAddress: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    data: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    value: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    network: jspb.Message.getFieldWithDefault(msg, 5, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.GasEstimateRequest}
+ */
+proto.dac.blockchain.GasEstimateRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.GasEstimateRequest;
+  return proto.dac.blockchain.GasEstimateRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.GasEstimateRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.GasEstimateRequest}
+ */
+proto.dac.blockchain.GasEstimateRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setFromAddress(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setToAddress(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setData(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setValue(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setNetwork(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.GasEstimateRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.GasEstimateRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.GasEstimateRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.GasEstimateRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getFromAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getToAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getData();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getValue();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+  f = message.getNetwork();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string from_address = 1;
+ * @return {string}
+ */
+proto.dac.blockchain.GasEstimateRequest.prototype.getFromAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.GasEstimateRequest} returns this
+ */
+proto.dac.blockchain.GasEstimateRequest.prototype.setFromAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string to_address = 2;
+ * @return {string}
+ */
+proto.dac.blockchain.GasEstimateRequest.prototype.getToAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.GasEstimateRequest} returns this
+ */
+proto.dac.blockchain.GasEstimateRequest.prototype.setToAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string data = 3;
+ * @return {string}
+ */
+proto.dac.blockchain.GasEstimateRequest.prototype.getData = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.GasEstimateRequest} returns this
+ */
+proto.dac.blockchain.GasEstimateRequest.prototype.setData = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string value = 4;
+ * @return {string}
+ */
+proto.dac.blockchain.GasEstimateRequest.prototype.getValue = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.GasEstimateRequest} returns this
+ */
+proto.dac.blockchain.GasEstimateRequest.prototype.setValue = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional string network = 5;
+ * @return {string}
+ */
+proto.dac.blockchain.GasEstimateRequest.prototype.getNetwork = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.GasEstimateRequest} returns this
+ */
+proto.dac.blockchain.GasEstimateRequest.prototype.setNetwork = function(value) {
+  return jspb.Message.setProto3StringField(this, 5, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.GasEstimateResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.GasEstimateResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.GasEstimateResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.GasEstimateResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    gasLimit: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    gasPrice: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    maxFeePerGas: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    maxPriorityFeePerGas: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    estimatedCost: jspb.Message.getFieldWithDefault(msg, 5, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.GasEstimateResponse}
+ */
+proto.dac.blockchain.GasEstimateResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.GasEstimateResponse;
+  return proto.dac.blockchain.GasEstimateResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.GasEstimateResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.GasEstimateResponse}
+ */
+proto.dac.blockchain.GasEstimateResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setGasLimit(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setGasPrice(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setMaxFeePerGas(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setMaxPriorityFeePerGas(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setEstimatedCost(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.GasEstimateResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.GasEstimateResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.GasEstimateResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.GasEstimateResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getGasLimit();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getGasPrice();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getMaxFeePerGas();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getMaxPriorityFeePerGas();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+  f = message.getEstimatedCost();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string gas_limit = 1;
+ * @return {string}
+ */
+proto.dac.blockchain.GasEstimateResponse.prototype.getGasLimit = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.GasEstimateResponse} returns this
+ */
+proto.dac.blockchain.GasEstimateResponse.prototype.setGasLimit = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string gas_price = 2;
+ * @return {string}
+ */
+proto.dac.blockchain.GasEstimateResponse.prototype.getGasPrice = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.GasEstimateResponse} returns this
+ */
+proto.dac.blockchain.GasEstimateResponse.prototype.setGasPrice = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string max_fee_per_gas = 3;
+ * @return {string}
+ */
+proto.dac.blockchain.GasEstimateResponse.prototype.getMaxFeePerGas = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.GasEstimateResponse} returns this
+ */
+proto.dac.blockchain.GasEstimateResponse.prototype.setMaxFeePerGas = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string max_priority_fee_per_gas = 4;
+ * @return {string}
+ */
+proto.dac.blockchain.GasEstimateResponse.prototype.getMaxPriorityFeePerGas = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.GasEstimateResponse} returns this
+ */
+proto.dac.blockchain.GasEstimateResponse.prototype.setMaxPriorityFeePerGas = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional string estimated_cost = 5;
+ * @return {string}
+ */
+proto.dac.blockchain.GasEstimateResponse.prototype.getEstimatedCost = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.GasEstimateResponse} returns this
+ */
+proto.dac.blockchain.GasEstimateResponse.prototype.setEstimatedCost = function(value) {
+  return jspb.Message.setProto3StringField(this, 5, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.GasSettings.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.GasSettings.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.GasSettings} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.GasSettings.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    gasLimit: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    gasPrice: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    maxFeePerGas: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    maxPriorityFeePerGas: jspb.Message.getFieldWithDefault(msg, 4, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.GasSettings}
+ */
+proto.dac.blockchain.GasSettings.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.GasSettings;
+  return proto.dac.blockchain.GasSettings.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.GasSettings} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.GasSettings}
+ */
+proto.dac.blockchain.GasSettings.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setGasLimit(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setGasPrice(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setMaxFeePerGas(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setMaxPriorityFeePerGas(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.GasSettings.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.GasSettings.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.GasSettings} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.GasSettings.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = /** @type {string} */ (jspb.Message.getField(message, 1));
+  if (f != null) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = /** @type {string} */ (jspb.Message.getField(message, 2));
+  if (f != null) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = /** @type {string} */ (jspb.Message.getField(message, 3));
+  if (f != null) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = /** @type {string} */ (jspb.Message.getField(message, 4));
+  if (f != null) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string gas_limit = 1;
+ * @return {string}
+ */
+proto.dac.blockchain.GasSettings.prototype.getGasLimit = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.GasSettings} returns this
+ */
+proto.dac.blockchain.GasSettings.prototype.setGasLimit = function(value) {
+  return jspb.Message.setField(this, 1, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.dac.blockchain.GasSettings} returns this
+ */
+proto.dac.blockchain.GasSettings.prototype.clearGasLimit = function() {
+  return jspb.Message.setField(this, 1, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.blockchain.GasSettings.prototype.hasGasLimit = function() {
+  return jspb.Message.getField(this, 1) != null;
+};
+
+
+/**
+ * optional string gas_price = 2;
+ * @return {string}
+ */
+proto.dac.blockchain.GasSettings.prototype.getGasPrice = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.GasSettings} returns this
+ */
+proto.dac.blockchain.GasSettings.prototype.setGasPrice = function(value) {
+  return jspb.Message.setField(this, 2, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.dac.blockchain.GasSettings} returns this
+ */
+proto.dac.blockchain.GasSettings.prototype.clearGasPrice = function() {
+  return jspb.Message.setField(this, 2, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.blockchain.GasSettings.prototype.hasGasPrice = function() {
+  return jspb.Message.getField(this, 2) != null;
+};
+
+
+/**
+ * optional string max_fee_per_gas = 3;
+ * @return {string}
+ */
+proto.dac.blockchain.GasSettings.prototype.getMaxFeePerGas = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.GasSettings} returns this
+ */
+proto.dac.blockchain.GasSettings.prototype.setMaxFeePerGas = function(value) {
+  return jspb.Message.setField(this, 3, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.dac.blockchain.GasSettings} returns this
+ */
+proto.dac.blockchain.GasSettings.prototype.clearMaxFeePerGas = function() {
+  return jspb.Message.setField(this, 3, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.blockchain.GasSettings.prototype.hasMaxFeePerGas = function() {
+  return jspb.Message.getField(this, 3) != null;
+};
+
+
+/**
+ * optional string max_priority_fee_per_gas = 4;
+ * @return {string}
+ */
+proto.dac.blockchain.GasSettings.prototype.getMaxPriorityFeePerGas = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.GasSettings} returns this
+ */
+proto.dac.blockchain.GasSettings.prototype.setMaxPriorityFeePerGas = function(value) {
+  return jspb.Message.setField(this, 4, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.dac.blockchain.GasSettings} returns this
+ */
+proto.dac.blockchain.GasSettings.prototype.clearMaxPriorityFeePerGas = function() {
+  return jspb.Message.setField(this, 4, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.blockchain.GasSettings.prototype.hasMaxPriorityFeePerGas = function() {
+  return jspb.Message.getField(this, 4) != null;
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.TransactionRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.TransactionRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.TransactionRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.TransactionRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    fromAddress: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    toAddress: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    value: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    data: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    gasSettings: (f = msg.getGasSettings()) && proto.dac.blockchain.GasSettings.toObject(includeInstance, f),
+    network: jspb.Message.getFieldWithDefault(msg, 6, ""),
+    nonce: jspb.Message.getFieldWithDefault(msg, 7, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.TransactionRequest}
+ */
+proto.dac.blockchain.TransactionRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.TransactionRequest;
+  return proto.dac.blockchain.TransactionRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.TransactionRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.TransactionRequest}
+ */
+proto.dac.blockchain.TransactionRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setFromAddress(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setToAddress(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setValue(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setData(value);
+      break;
+    case 5:
+      var value = new proto.dac.blockchain.GasSettings;
+      reader.readMessage(value,proto.dac.blockchain.GasSettings.deserializeBinaryFromReader);
+      msg.setGasSettings(value);
+      break;
+    case 6:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setNetwork(value);
+      break;
+    case 7:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setNonce(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.TransactionRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.TransactionRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.TransactionRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.TransactionRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getFromAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getToAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getValue();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getData();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+  f = message.getGasSettings();
+  if (f != null) {
+    writer.writeMessage(
+      5,
+      f,
+      proto.dac.blockchain.GasSettings.serializeBinaryToWriter
+    );
+  }
+  f = message.getNetwork();
+  if (f.length > 0) {
+    writer.writeString(
+      6,
+      f
+    );
+  }
+  f = message.getNonce();
+  if (f.length > 0) {
+    writer.writeString(
+      7,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string from_address = 1;
+ * @return {string}
+ */
+proto.dac.blockchain.TransactionRequest.prototype.getFromAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TransactionRequest} returns this
+ */
+proto.dac.blockchain.TransactionRequest.prototype.setFromAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string to_address = 2;
+ * @return {string}
+ */
+proto.dac.blockchain.TransactionRequest.prototype.getToAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TransactionRequest} returns this
+ */
+proto.dac.blockchain.TransactionRequest.prototype.setToAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string value = 3;
+ * @return {string}
+ */
+proto.dac.blockchain.TransactionRequest.prototype.getValue = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TransactionRequest} returns this
+ */
+proto.dac.blockchain.TransactionRequest.prototype.setValue = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string data = 4;
+ * @return {string}
+ */
+proto.dac.blockchain.TransactionRequest.prototype.getData = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TransactionRequest} returns this
+ */
+proto.dac.blockchain.TransactionRequest.prototype.setData = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional GasSettings gas_settings = 5;
+ * @return {?proto.dac.blockchain.GasSettings}
+ */
+proto.dac.blockchain.TransactionRequest.prototype.getGasSettings = function() {
+  return /** @type{?proto.dac.blockchain.GasSettings} */ (
+    jspb.Message.getWrapperField(this, proto.dac.blockchain.GasSettings, 5));
+};
+
+
+/**
+ * @param {?proto.dac.blockchain.GasSettings|undefined} value
+ * @return {!proto.dac.blockchain.TransactionRequest} returns this
+*/
+proto.dac.blockchain.TransactionRequest.prototype.setGasSettings = function(value) {
+  return jspb.Message.setWrapperField(this, 5, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.blockchain.TransactionRequest} returns this
+ */
+proto.dac.blockchain.TransactionRequest.prototype.clearGasSettings = function() {
+  return this.setGasSettings(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.blockchain.TransactionRequest.prototype.hasGasSettings = function() {
+  return jspb.Message.getField(this, 5) != null;
+};
+
+
+/**
+ * optional string network = 6;
+ * @return {string}
+ */
+proto.dac.blockchain.TransactionRequest.prototype.getNetwork = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TransactionRequest} returns this
+ */
+proto.dac.blockchain.TransactionRequest.prototype.setNetwork = function(value) {
+  return jspb.Message.setProto3StringField(this, 6, value);
+};
+
+
+/**
+ * optional string nonce = 7;
+ * @return {string}
+ */
+proto.dac.blockchain.TransactionRequest.prototype.getNonce = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TransactionRequest} returns this
+ */
+proto.dac.blockchain.TransactionRequest.prototype.setNonce = function(value) {
+  return jspb.Message.setProto3StringField(this, 7, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.TransactionResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.TransactionResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.TransactionResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.TransactionResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    success: jspb.Message.getBooleanFieldWithDefault(msg, 1, false),
+    transactionHash: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    nonce: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    errorMessage: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    status: jspb.Message.getFieldWithDefault(msg, 5, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.TransactionResponse}
+ */
+proto.dac.blockchain.TransactionResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.TransactionResponse;
+  return proto.dac.blockchain.TransactionResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.TransactionResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.TransactionResponse}
+ */
+proto.dac.blockchain.TransactionResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setSuccess(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setTransactionHash(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setNonce(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setErrorMessage(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setStatus(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.TransactionResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.TransactionResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.TransactionResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.TransactionResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getSuccess();
+  if (f) {
+    writer.writeBool(
+      1,
+      f
+    );
+  }
+  f = message.getTransactionHash();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getNonce();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = /** @type {string} */ (jspb.Message.getField(message, 4));
+  if (f != null) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+  f = message.getStatus();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional bool success = 1;
+ * @return {boolean}
+ */
+proto.dac.blockchain.TransactionResponse.prototype.getSuccess = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 1, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.blockchain.TransactionResponse} returns this
+ */
+proto.dac.blockchain.TransactionResponse.prototype.setSuccess = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 1, value);
+};
+
+
+/**
+ * optional string transaction_hash = 2;
+ * @return {string}
+ */
+proto.dac.blockchain.TransactionResponse.prototype.getTransactionHash = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TransactionResponse} returns this
+ */
+proto.dac.blockchain.TransactionResponse.prototype.setTransactionHash = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string nonce = 3;
+ * @return {string}
+ */
+proto.dac.blockchain.TransactionResponse.prototype.getNonce = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TransactionResponse} returns this
+ */
+proto.dac.blockchain.TransactionResponse.prototype.setNonce = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string error_message = 4;
+ * @return {string}
+ */
+proto.dac.blockchain.TransactionResponse.prototype.getErrorMessage = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TransactionResponse} returns this
+ */
+proto.dac.blockchain.TransactionResponse.prototype.setErrorMessage = function(value) {
+  return jspb.Message.setField(this, 4, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.dac.blockchain.TransactionResponse} returns this
+ */
+proto.dac.blockchain.TransactionResponse.prototype.clearErrorMessage = function() {
+  return jspb.Message.setField(this, 4, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.blockchain.TransactionResponse.prototype.hasErrorMessage = function() {
+  return jspb.Message.getField(this, 4) != null;
+};
+
+
+/**
+ * optional string status = 5;
+ * @return {string}
+ */
+proto.dac.blockchain.TransactionResponse.prototype.getStatus = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TransactionResponse} returns this
+ */
+proto.dac.blockchain.TransactionResponse.prototype.setStatus = function(value) {
+  return jspb.Message.setProto3StringField(this, 5, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.TransactionQueryRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.TransactionQueryRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.TransactionQueryRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.TransactionQueryRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    transactionHash: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    network: jspb.Message.getFieldWithDefault(msg, 2, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.TransactionQueryRequest}
+ */
+proto.dac.blockchain.TransactionQueryRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.TransactionQueryRequest;
+  return proto.dac.blockchain.TransactionQueryRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.TransactionQueryRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.TransactionQueryRequest}
+ */
+proto.dac.blockchain.TransactionQueryRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setTransactionHash(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setNetwork(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.TransactionQueryRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.TransactionQueryRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.TransactionQueryRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.TransactionQueryRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getTransactionHash();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getNetwork();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string transaction_hash = 1;
+ * @return {string}
+ */
+proto.dac.blockchain.TransactionQueryRequest.prototype.getTransactionHash = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TransactionQueryRequest} returns this
+ */
+proto.dac.blockchain.TransactionQueryRequest.prototype.setTransactionHash = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string network = 2;
+ * @return {string}
+ */
+proto.dac.blockchain.TransactionQueryRequest.prototype.getNetwork = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TransactionQueryRequest} returns this
+ */
+proto.dac.blockchain.TransactionQueryRequest.prototype.setNetwork = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.TransactionInfo.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.TransactionInfo.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.TransactionInfo} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.TransactionInfo.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    hash: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    fromAddress: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    toAddress: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    value: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    gasUsed: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    gasPrice: jspb.Message.getFieldWithDefault(msg, 6, ""),
+    status: jspb.Message.getFieldWithDefault(msg, 7, ""),
+    blockNumber: jspb.Message.getFieldWithDefault(msg, 8, ""),
+    blockHash: jspb.Message.getFieldWithDefault(msg, 9, ""),
+    timestamp: (f = msg.getTimestamp()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
+    nonce: jspb.Message.getFieldWithDefault(msg, 11, ""),
+    data: jspb.Message.getFieldWithDefault(msg, 12, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.TransactionInfo}
+ */
+proto.dac.blockchain.TransactionInfo.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.TransactionInfo;
+  return proto.dac.blockchain.TransactionInfo.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.TransactionInfo} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.TransactionInfo}
+ */
+proto.dac.blockchain.TransactionInfo.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setHash(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setFromAddress(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setToAddress(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setValue(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setGasUsed(value);
+      break;
+    case 6:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setGasPrice(value);
+      break;
+    case 7:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setStatus(value);
+      break;
+    case 8:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setBlockNumber(value);
+      break;
+    case 9:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setBlockHash(value);
+      break;
+    case 10:
+      var value = new google_protobuf_timestamp_pb.Timestamp;
+      reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      msg.setTimestamp(value);
+      break;
+    case 11:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setNonce(value);
+      break;
+    case 12:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setData(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.TransactionInfo.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.TransactionInfo.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.TransactionInfo} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.TransactionInfo.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getHash();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getFromAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getToAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getValue();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+  f = message.getGasUsed();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
+      f
+    );
+  }
+  f = message.getGasPrice();
+  if (f.length > 0) {
+    writer.writeString(
+      6,
+      f
+    );
+  }
+  f = message.getStatus();
+  if (f.length > 0) {
+    writer.writeString(
+      7,
+      f
+    );
+  }
+  f = message.getBlockNumber();
+  if (f.length > 0) {
+    writer.writeString(
+      8,
+      f
+    );
+  }
+  f = message.getBlockHash();
+  if (f.length > 0) {
+    writer.writeString(
+      9,
+      f
+    );
+  }
+  f = message.getTimestamp();
+  if (f != null) {
+    writer.writeMessage(
+      10,
+      f,
+      google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+  f = message.getNonce();
+  if (f.length > 0) {
+    writer.writeString(
+      11,
+      f
+    );
+  }
+  f = message.getData();
+  if (f.length > 0) {
+    writer.writeString(
+      12,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string hash = 1;
+ * @return {string}
+ */
+proto.dac.blockchain.TransactionInfo.prototype.getHash = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TransactionInfo} returns this
+ */
+proto.dac.blockchain.TransactionInfo.prototype.setHash = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string from_address = 2;
+ * @return {string}
+ */
+proto.dac.blockchain.TransactionInfo.prototype.getFromAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TransactionInfo} returns this
+ */
+proto.dac.blockchain.TransactionInfo.prototype.setFromAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string to_address = 3;
+ * @return {string}
+ */
+proto.dac.blockchain.TransactionInfo.prototype.getToAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TransactionInfo} returns this
+ */
+proto.dac.blockchain.TransactionInfo.prototype.setToAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string value = 4;
+ * @return {string}
+ */
+proto.dac.blockchain.TransactionInfo.prototype.getValue = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TransactionInfo} returns this
+ */
+proto.dac.blockchain.TransactionInfo.prototype.setValue = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional string gas_used = 5;
+ * @return {string}
+ */
+proto.dac.blockchain.TransactionInfo.prototype.getGasUsed = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TransactionInfo} returns this
+ */
+proto.dac.blockchain.TransactionInfo.prototype.setGasUsed = function(value) {
+  return jspb.Message.setProto3StringField(this, 5, value);
+};
+
+
+/**
+ * optional string gas_price = 6;
+ * @return {string}
+ */
+proto.dac.blockchain.TransactionInfo.prototype.getGasPrice = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TransactionInfo} returns this
+ */
+proto.dac.blockchain.TransactionInfo.prototype.setGasPrice = function(value) {
+  return jspb.Message.setProto3StringField(this, 6, value);
+};
+
+
+/**
+ * optional string status = 7;
+ * @return {string}
+ */
+proto.dac.blockchain.TransactionInfo.prototype.getStatus = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TransactionInfo} returns this
+ */
+proto.dac.blockchain.TransactionInfo.prototype.setStatus = function(value) {
+  return jspb.Message.setProto3StringField(this, 7, value);
+};
+
+
+/**
+ * optional string block_number = 8;
+ * @return {string}
+ */
+proto.dac.blockchain.TransactionInfo.prototype.getBlockNumber = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 8, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TransactionInfo} returns this
+ */
+proto.dac.blockchain.TransactionInfo.prototype.setBlockNumber = function(value) {
+  return jspb.Message.setProto3StringField(this, 8, value);
+};
+
+
+/**
+ * optional string block_hash = 9;
+ * @return {string}
+ */
+proto.dac.blockchain.TransactionInfo.prototype.getBlockHash = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 9, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TransactionInfo} returns this
+ */
+proto.dac.blockchain.TransactionInfo.prototype.setBlockHash = function(value) {
+  return jspb.Message.setProto3StringField(this, 9, value);
+};
+
+
+/**
+ * optional google.protobuf.Timestamp timestamp = 10;
+ * @return {?proto.google.protobuf.Timestamp}
+ */
+proto.dac.blockchain.TransactionInfo.prototype.getTimestamp = function() {
+  return /** @type{?proto.google.protobuf.Timestamp} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 10));
+};
+
+
+/**
+ * @param {?proto.google.protobuf.Timestamp|undefined} value
+ * @return {!proto.dac.blockchain.TransactionInfo} returns this
+*/
+proto.dac.blockchain.TransactionInfo.prototype.setTimestamp = function(value) {
+  return jspb.Message.setWrapperField(this, 10, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.blockchain.TransactionInfo} returns this
+ */
+proto.dac.blockchain.TransactionInfo.prototype.clearTimestamp = function() {
+  return this.setTimestamp(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.blockchain.TransactionInfo.prototype.hasTimestamp = function() {
+  return jspb.Message.getField(this, 10) != null;
+};
+
+
+/**
+ * optional string nonce = 11;
+ * @return {string}
+ */
+proto.dac.blockchain.TransactionInfo.prototype.getNonce = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 11, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TransactionInfo} returns this
+ */
+proto.dac.blockchain.TransactionInfo.prototype.setNonce = function(value) {
+  return jspb.Message.setProto3StringField(this, 11, value);
+};
+
+
+/**
+ * optional string data = 12;
+ * @return {string}
+ */
+proto.dac.blockchain.TransactionInfo.prototype.getData = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 12, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TransactionInfo} returns this
+ */
+proto.dac.blockchain.TransactionInfo.prototype.setData = function(value) {
+  return jspb.Message.setProto3StringField(this, 12, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.TransactionReceiptRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.TransactionReceiptRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.TransactionReceiptRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.TransactionReceiptRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    transactionHash: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    network: jspb.Message.getFieldWithDefault(msg, 2, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.TransactionReceiptRequest}
+ */
+proto.dac.blockchain.TransactionReceiptRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.TransactionReceiptRequest;
+  return proto.dac.blockchain.TransactionReceiptRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.TransactionReceiptRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.TransactionReceiptRequest}
+ */
+proto.dac.blockchain.TransactionReceiptRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setTransactionHash(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setNetwork(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.TransactionReceiptRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.TransactionReceiptRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.TransactionReceiptRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.TransactionReceiptRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getTransactionHash();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getNetwork();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string transaction_hash = 1;
+ * @return {string}
+ */
+proto.dac.blockchain.TransactionReceiptRequest.prototype.getTransactionHash = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TransactionReceiptRequest} returns this
+ */
+proto.dac.blockchain.TransactionReceiptRequest.prototype.setTransactionHash = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string network = 2;
+ * @return {string}
+ */
+proto.dac.blockchain.TransactionReceiptRequest.prototype.getNetwork = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TransactionReceiptRequest} returns this
+ */
+proto.dac.blockchain.TransactionReceiptRequest.prototype.setNetwork = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.dac.blockchain.TransactionReceipt.repeatedFields_ = [6];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.TransactionReceipt.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.TransactionReceipt.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.TransactionReceipt} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.TransactionReceipt.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    transactionHash: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    blockHash: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    blockNumber: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    gasUsed: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    status: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    logsList: jspb.Message.toObjectList(msg.getLogsList(),
+    proto.dac.blockchain.EventLog.toObject, includeInstance),
+    cumulativeGasUsed: jspb.Message.getFieldWithDefault(msg, 7, ""),
+    effectiveGasPrice: jspb.Message.getFieldWithDefault(msg, 8, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.TransactionReceipt}
+ */
+proto.dac.blockchain.TransactionReceipt.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.TransactionReceipt;
+  return proto.dac.blockchain.TransactionReceipt.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.TransactionReceipt} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.TransactionReceipt}
+ */
+proto.dac.blockchain.TransactionReceipt.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setTransactionHash(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setBlockHash(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setBlockNumber(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setGasUsed(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setStatus(value);
+      break;
+    case 6:
+      var value = new proto.dac.blockchain.EventLog;
+      reader.readMessage(value,proto.dac.blockchain.EventLog.deserializeBinaryFromReader);
+      msg.addLogs(value);
+      break;
+    case 7:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setCumulativeGasUsed(value);
+      break;
+    case 8:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setEffectiveGasPrice(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.TransactionReceipt.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.TransactionReceipt.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.TransactionReceipt} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.TransactionReceipt.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getTransactionHash();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getBlockHash();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getBlockNumber();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getGasUsed();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+  f = message.getStatus();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
+      f
+    );
+  }
+  f = message.getLogsList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
+      6,
+      f,
+      proto.dac.blockchain.EventLog.serializeBinaryToWriter
+    );
+  }
+  f = message.getCumulativeGasUsed();
+  if (f.length > 0) {
+    writer.writeString(
+      7,
+      f
+    );
+  }
+  f = message.getEffectiveGasPrice();
+  if (f.length > 0) {
+    writer.writeString(
+      8,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string transaction_hash = 1;
+ * @return {string}
+ */
+proto.dac.blockchain.TransactionReceipt.prototype.getTransactionHash = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TransactionReceipt} returns this
+ */
+proto.dac.blockchain.TransactionReceipt.prototype.setTransactionHash = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string block_hash = 2;
+ * @return {string}
+ */
+proto.dac.blockchain.TransactionReceipt.prototype.getBlockHash = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TransactionReceipt} returns this
+ */
+proto.dac.blockchain.TransactionReceipt.prototype.setBlockHash = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string block_number = 3;
+ * @return {string}
+ */
+proto.dac.blockchain.TransactionReceipt.prototype.getBlockNumber = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TransactionReceipt} returns this
+ */
+proto.dac.blockchain.TransactionReceipt.prototype.setBlockNumber = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string gas_used = 4;
+ * @return {string}
+ */
+proto.dac.blockchain.TransactionReceipt.prototype.getGasUsed = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TransactionReceipt} returns this
+ */
+proto.dac.blockchain.TransactionReceipt.prototype.setGasUsed = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional string status = 5;
+ * @return {string}
+ */
+proto.dac.blockchain.TransactionReceipt.prototype.getStatus = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TransactionReceipt} returns this
+ */
+proto.dac.blockchain.TransactionReceipt.prototype.setStatus = function(value) {
+  return jspb.Message.setProto3StringField(this, 5, value);
+};
+
+
+/**
+ * repeated EventLog logs = 6;
+ * @return {!Array<!proto.dac.blockchain.EventLog>}
+ */
+proto.dac.blockchain.TransactionReceipt.prototype.getLogsList = function() {
+  return /** @type{!Array<!proto.dac.blockchain.EventLog>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.dac.blockchain.EventLog, 6));
+};
+
+
+/**
+ * @param {!Array<!proto.dac.blockchain.EventLog>} value
+ * @return {!proto.dac.blockchain.TransactionReceipt} returns this
+*/
+proto.dac.blockchain.TransactionReceipt.prototype.setLogsList = function(value) {
+  return jspb.Message.setRepeatedWrapperField(this, 6, value);
+};
+
+
+/**
+ * @param {!proto.dac.blockchain.EventLog=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.dac.blockchain.EventLog}
+ */
+proto.dac.blockchain.TransactionReceipt.prototype.addLogs = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 6, opt_value, proto.dac.blockchain.EventLog, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.blockchain.TransactionReceipt} returns this
+ */
+proto.dac.blockchain.TransactionReceipt.prototype.clearLogsList = function() {
+  return this.setLogsList([]);
+};
+
+
+/**
+ * optional string cumulative_gas_used = 7;
+ * @return {string}
+ */
+proto.dac.blockchain.TransactionReceipt.prototype.getCumulativeGasUsed = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TransactionReceipt} returns this
+ */
+proto.dac.blockchain.TransactionReceipt.prototype.setCumulativeGasUsed = function(value) {
+  return jspb.Message.setProto3StringField(this, 7, value);
+};
+
+
+/**
+ * optional string effective_gas_price = 8;
+ * @return {string}
+ */
+proto.dac.blockchain.TransactionReceipt.prototype.getEffectiveGasPrice = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 8, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TransactionReceipt} returns this
+ */
+proto.dac.blockchain.TransactionReceipt.prototype.setEffectiveGasPrice = function(value) {
+  return jspb.Message.setProto3StringField(this, 8, value);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.dac.blockchain.EventLog.repeatedFields_ = [2];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.EventLog.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.EventLog.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.EventLog} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.EventLog.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    address: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    topicsList: (f = jspb.Message.getRepeatedField(msg, 2)) == null ? undefined : f,
+    data: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    blockNumber: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    transactionHash: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    logIndex: jspb.Message.getFieldWithDefault(msg, 6, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.EventLog}
+ */
+proto.dac.blockchain.EventLog.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.EventLog;
+  return proto.dac.blockchain.EventLog.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.EventLog} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.EventLog}
+ */
+proto.dac.blockchain.EventLog.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setAddress(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addTopics(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setData(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setBlockNumber(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setTransactionHash(value);
+      break;
+    case 6:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setLogIndex(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.EventLog.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.EventLog.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.EventLog} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.EventLog.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getTopicsList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      2,
+      f
+    );
+  }
+  f = message.getData();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getBlockNumber();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+  f = message.getTransactionHash();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
+      f
+    );
+  }
+  f = message.getLogIndex();
+  if (f.length > 0) {
+    writer.writeString(
+      6,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string address = 1;
+ * @return {string}
+ */
+proto.dac.blockchain.EventLog.prototype.getAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.EventLog} returns this
+ */
+proto.dac.blockchain.EventLog.prototype.setAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * repeated string topics = 2;
+ * @return {!Array<string>}
+ */
+proto.dac.blockchain.EventLog.prototype.getTopicsList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 2));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.dac.blockchain.EventLog} returns this
+ */
+proto.dac.blockchain.EventLog.prototype.setTopicsList = function(value) {
+  return jspb.Message.setField(this, 2, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.dac.blockchain.EventLog} returns this
+ */
+proto.dac.blockchain.EventLog.prototype.addTopics = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 2, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.blockchain.EventLog} returns this
+ */
+proto.dac.blockchain.EventLog.prototype.clearTopicsList = function() {
+  return this.setTopicsList([]);
+};
+
+
+/**
+ * optional string data = 3;
+ * @return {string}
+ */
+proto.dac.blockchain.EventLog.prototype.getData = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.EventLog} returns this
+ */
+proto.dac.blockchain.EventLog.prototype.setData = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string block_number = 4;
+ * @return {string}
+ */
+proto.dac.blockchain.EventLog.prototype.getBlockNumber = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.EventLog} returns this
+ */
+proto.dac.blockchain.EventLog.prototype.setBlockNumber = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional string transaction_hash = 5;
+ * @return {string}
+ */
+proto.dac.blockchain.EventLog.prototype.getTransactionHash = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.EventLog} returns this
+ */
+proto.dac.blockchain.EventLog.prototype.setTransactionHash = function(value) {
+  return jspb.Message.setProto3StringField(this, 5, value);
+};
+
+
+/**
+ * optional string log_index = 6;
+ * @return {string}
+ */
+proto.dac.blockchain.EventLog.prototype.getLogIndex = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.EventLog} returns this
+ */
+proto.dac.blockchain.EventLog.prototype.setLogIndex = function(value) {
+  return jspb.Message.setProto3StringField(this, 6, value);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.dac.blockchain.TransactionMonitorRequest.repeatedFields_ = [1,2];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.TransactionMonitorRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.TransactionMonitorRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.TransactionMonitorRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.TransactionMonitorRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    addressesList: (f = jspb.Message.getRepeatedField(msg, 1)) == null ? undefined : f,
+    transactionHashesList: (f = jspb.Message.getRepeatedField(msg, 2)) == null ? undefined : f,
+    network: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    includePending: jspb.Message.getBooleanFieldWithDefault(msg, 4, false)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.TransactionMonitorRequest}
+ */
+proto.dac.blockchain.TransactionMonitorRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.TransactionMonitorRequest;
+  return proto.dac.blockchain.TransactionMonitorRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.TransactionMonitorRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.TransactionMonitorRequest}
+ */
+proto.dac.blockchain.TransactionMonitorRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addAddresses(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addTransactionHashes(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setNetwork(value);
+      break;
+    case 4:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setIncludePending(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.TransactionMonitorRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.TransactionMonitorRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.TransactionMonitorRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.TransactionMonitorRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getAddressesList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      1,
+      f
+    );
+  }
+  f = message.getTransactionHashesList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      2,
+      f
+    );
+  }
+  f = message.getNetwork();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getIncludePending();
+  if (f) {
+    writer.writeBool(
+      4,
+      f
+    );
+  }
+};
+
+
+/**
+ * repeated string addresses = 1;
+ * @return {!Array<string>}
+ */
+proto.dac.blockchain.TransactionMonitorRequest.prototype.getAddressesList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 1));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.dac.blockchain.TransactionMonitorRequest} returns this
+ */
+proto.dac.blockchain.TransactionMonitorRequest.prototype.setAddressesList = function(value) {
+  return jspb.Message.setField(this, 1, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.dac.blockchain.TransactionMonitorRequest} returns this
+ */
+proto.dac.blockchain.TransactionMonitorRequest.prototype.addAddresses = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 1, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.blockchain.TransactionMonitorRequest} returns this
+ */
+proto.dac.blockchain.TransactionMonitorRequest.prototype.clearAddressesList = function() {
+  return this.setAddressesList([]);
+};
+
+
+/**
+ * repeated string transaction_hashes = 2;
+ * @return {!Array<string>}
+ */
+proto.dac.blockchain.TransactionMonitorRequest.prototype.getTransactionHashesList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 2));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.dac.blockchain.TransactionMonitorRequest} returns this
+ */
+proto.dac.blockchain.TransactionMonitorRequest.prototype.setTransactionHashesList = function(value) {
+  return jspb.Message.setField(this, 2, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.dac.blockchain.TransactionMonitorRequest} returns this
+ */
+proto.dac.blockchain.TransactionMonitorRequest.prototype.addTransactionHashes = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 2, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.blockchain.TransactionMonitorRequest} returns this
+ */
+proto.dac.blockchain.TransactionMonitorRequest.prototype.clearTransactionHashesList = function() {
+  return this.setTransactionHashesList([]);
+};
+
+
+/**
+ * optional string network = 3;
+ * @return {string}
+ */
+proto.dac.blockchain.TransactionMonitorRequest.prototype.getNetwork = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TransactionMonitorRequest} returns this
+ */
+proto.dac.blockchain.TransactionMonitorRequest.prototype.setNetwork = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional bool include_pending = 4;
+ * @return {boolean}
+ */
+proto.dac.blockchain.TransactionMonitorRequest.prototype.getIncludePending = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 4, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.blockchain.TransactionMonitorRequest} returns this
+ */
+proto.dac.blockchain.TransactionMonitorRequest.prototype.setIncludePending = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 4, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.TransactionEvent.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.TransactionEvent.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.TransactionEvent} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.TransactionEvent.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    type: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    transaction: (f = msg.getTransaction()) && proto.dac.blockchain.TransactionInfo.toObject(includeInstance, f),
+    timestamp: (f = msg.getTimestamp()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
+    network: jspb.Message.getFieldWithDefault(msg, 4, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.TransactionEvent}
+ */
+proto.dac.blockchain.TransactionEvent.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.TransactionEvent;
+  return proto.dac.blockchain.TransactionEvent.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.TransactionEvent} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.TransactionEvent}
+ */
+proto.dac.blockchain.TransactionEvent.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {!proto.dac.blockchain.TransactionEventType} */ (reader.readEnum());
+      msg.setType(value);
+      break;
+    case 2:
+      var value = new proto.dac.blockchain.TransactionInfo;
+      reader.readMessage(value,proto.dac.blockchain.TransactionInfo.deserializeBinaryFromReader);
+      msg.setTransaction(value);
+      break;
+    case 3:
+      var value = new google_protobuf_timestamp_pb.Timestamp;
+      reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      msg.setTimestamp(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setNetwork(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.TransactionEvent.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.TransactionEvent.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.TransactionEvent} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.TransactionEvent.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getType();
+  if (f !== 0.0) {
+    writer.writeEnum(
+      1,
+      f
+    );
+  }
+  f = message.getTransaction();
+  if (f != null) {
+    writer.writeMessage(
+      2,
+      f,
+      proto.dac.blockchain.TransactionInfo.serializeBinaryToWriter
+    );
+  }
+  f = message.getTimestamp();
+  if (f != null) {
+    writer.writeMessage(
+      3,
+      f,
+      google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+  f = message.getNetwork();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional TransactionEventType type = 1;
+ * @return {!proto.dac.blockchain.TransactionEventType}
+ */
+proto.dac.blockchain.TransactionEvent.prototype.getType = function() {
+  return /** @type {!proto.dac.blockchain.TransactionEventType} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {!proto.dac.blockchain.TransactionEventType} value
+ * @return {!proto.dac.blockchain.TransactionEvent} returns this
+ */
+proto.dac.blockchain.TransactionEvent.prototype.setType = function(value) {
+  return jspb.Message.setProto3EnumField(this, 1, value);
+};
+
+
+/**
+ * optional TransactionInfo transaction = 2;
+ * @return {?proto.dac.blockchain.TransactionInfo}
+ */
+proto.dac.blockchain.TransactionEvent.prototype.getTransaction = function() {
+  return /** @type{?proto.dac.blockchain.TransactionInfo} */ (
+    jspb.Message.getWrapperField(this, proto.dac.blockchain.TransactionInfo, 2));
+};
+
+
+/**
+ * @param {?proto.dac.blockchain.TransactionInfo|undefined} value
+ * @return {!proto.dac.blockchain.TransactionEvent} returns this
+*/
+proto.dac.blockchain.TransactionEvent.prototype.setTransaction = function(value) {
+  return jspb.Message.setWrapperField(this, 2, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.blockchain.TransactionEvent} returns this
+ */
+proto.dac.blockchain.TransactionEvent.prototype.clearTransaction = function() {
+  return this.setTransaction(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.blockchain.TransactionEvent.prototype.hasTransaction = function() {
+  return jspb.Message.getField(this, 2) != null;
+};
+
+
+/**
+ * optional google.protobuf.Timestamp timestamp = 3;
+ * @return {?proto.google.protobuf.Timestamp}
+ */
+proto.dac.blockchain.TransactionEvent.prototype.getTimestamp = function() {
+  return /** @type{?proto.google.protobuf.Timestamp} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 3));
+};
+
+
+/**
+ * @param {?proto.google.protobuf.Timestamp|undefined} value
+ * @return {!proto.dac.blockchain.TransactionEvent} returns this
+*/
+proto.dac.blockchain.TransactionEvent.prototype.setTimestamp = function(value) {
+  return jspb.Message.setWrapperField(this, 3, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.blockchain.TransactionEvent} returns this
+ */
+proto.dac.blockchain.TransactionEvent.prototype.clearTimestamp = function() {
+  return this.setTimestamp(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.blockchain.TransactionEvent.prototype.hasTimestamp = function() {
+  return jspb.Message.getField(this, 3) != null;
+};
+
+
+/**
+ * optional string network = 4;
+ * @return {string}
+ */
+proto.dac.blockchain.TransactionEvent.prototype.getNetwork = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TransactionEvent} returns this
+ */
+proto.dac.blockchain.TransactionEvent.prototype.setNetwork = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.BalanceRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.BalanceRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.BalanceRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.BalanceRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    address: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    network: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    blockNumber: jspb.Message.getFieldWithDefault(msg, 3, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.BalanceRequest}
+ */
+proto.dac.blockchain.BalanceRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.BalanceRequest;
+  return proto.dac.blockchain.BalanceRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.BalanceRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.BalanceRequest}
+ */
+proto.dac.blockchain.BalanceRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setAddress(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setNetwork(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setBlockNumber(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.BalanceRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.BalanceRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.BalanceRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.BalanceRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getNetwork();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = /** @type {string} */ (jspb.Message.getField(message, 3));
+  if (f != null) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string address = 1;
+ * @return {string}
+ */
+proto.dac.blockchain.BalanceRequest.prototype.getAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.BalanceRequest} returns this
+ */
+proto.dac.blockchain.BalanceRequest.prototype.setAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string network = 2;
+ * @return {string}
+ */
+proto.dac.blockchain.BalanceRequest.prototype.getNetwork = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.BalanceRequest} returns this
+ */
+proto.dac.blockchain.BalanceRequest.prototype.setNetwork = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string block_number = 3;
+ * @return {string}
+ */
+proto.dac.blockchain.BalanceRequest.prototype.getBlockNumber = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.BalanceRequest} returns this
+ */
+proto.dac.blockchain.BalanceRequest.prototype.setBlockNumber = function(value) {
+  return jspb.Message.setField(this, 3, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.dac.blockchain.BalanceRequest} returns this
+ */
+proto.dac.blockchain.BalanceRequest.prototype.clearBlockNumber = function() {
+  return jspb.Message.setField(this, 3, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.blockchain.BalanceRequest.prototype.hasBlockNumber = function() {
+  return jspb.Message.getField(this, 3) != null;
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.BalanceResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.BalanceResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.BalanceResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.BalanceResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    balance: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    formattedBalance: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    currency: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    blockNumber: jspb.Message.getFieldWithDefault(msg, 4, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.BalanceResponse}
+ */
+proto.dac.blockchain.BalanceResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.BalanceResponse;
+  return proto.dac.blockchain.BalanceResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.BalanceResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.BalanceResponse}
+ */
+proto.dac.blockchain.BalanceResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setBalance(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setFormattedBalance(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setCurrency(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setBlockNumber(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.BalanceResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.BalanceResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.BalanceResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.BalanceResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getBalance();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getFormattedBalance();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getCurrency();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getBlockNumber();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string balance = 1;
+ * @return {string}
+ */
+proto.dac.blockchain.BalanceResponse.prototype.getBalance = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.BalanceResponse} returns this
+ */
+proto.dac.blockchain.BalanceResponse.prototype.setBalance = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string formatted_balance = 2;
+ * @return {string}
+ */
+proto.dac.blockchain.BalanceResponse.prototype.getFormattedBalance = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.BalanceResponse} returns this
+ */
+proto.dac.blockchain.BalanceResponse.prototype.setFormattedBalance = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string currency = 3;
+ * @return {string}
+ */
+proto.dac.blockchain.BalanceResponse.prototype.getCurrency = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.BalanceResponse} returns this
+ */
+proto.dac.blockchain.BalanceResponse.prototype.setCurrency = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string block_number = 4;
+ * @return {string}
+ */
+proto.dac.blockchain.BalanceResponse.prototype.getBlockNumber = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.BalanceResponse} returns this
+ */
+proto.dac.blockchain.BalanceResponse.prototype.setBlockNumber = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.TokenBalanceRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.TokenBalanceRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.TokenBalanceRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.TokenBalanceRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    walletAddress: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    tokenAddress: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    network: jspb.Message.getFieldWithDefault(msg, 3, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.TokenBalanceRequest}
+ */
+proto.dac.blockchain.TokenBalanceRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.TokenBalanceRequest;
+  return proto.dac.blockchain.TokenBalanceRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.TokenBalanceRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.TokenBalanceRequest}
+ */
+proto.dac.blockchain.TokenBalanceRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setWalletAddress(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setTokenAddress(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setNetwork(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.TokenBalanceRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.TokenBalanceRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.TokenBalanceRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.TokenBalanceRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getWalletAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getTokenAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getNetwork();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string wallet_address = 1;
+ * @return {string}
+ */
+proto.dac.blockchain.TokenBalanceRequest.prototype.getWalletAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TokenBalanceRequest} returns this
+ */
+proto.dac.blockchain.TokenBalanceRequest.prototype.setWalletAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string token_address = 2;
+ * @return {string}
+ */
+proto.dac.blockchain.TokenBalanceRequest.prototype.getTokenAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TokenBalanceRequest} returns this
+ */
+proto.dac.blockchain.TokenBalanceRequest.prototype.setTokenAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string network = 3;
+ * @return {string}
+ */
+proto.dac.blockchain.TokenBalanceRequest.prototype.getNetwork = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TokenBalanceRequest} returns this
+ */
+proto.dac.blockchain.TokenBalanceRequest.prototype.setNetwork = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.TokenBalanceResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.TokenBalanceResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.TokenBalanceResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.TokenBalanceResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    balance: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    formattedBalance: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    tokenInfo: (f = msg.getTokenInfo()) && proto.dac.blockchain.TokenInfo.toObject(includeInstance, f)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.TokenBalanceResponse}
+ */
+proto.dac.blockchain.TokenBalanceResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.TokenBalanceResponse;
+  return proto.dac.blockchain.TokenBalanceResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.TokenBalanceResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.TokenBalanceResponse}
+ */
+proto.dac.blockchain.TokenBalanceResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setBalance(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setFormattedBalance(value);
+      break;
+    case 3:
+      var value = new proto.dac.blockchain.TokenInfo;
+      reader.readMessage(value,proto.dac.blockchain.TokenInfo.deserializeBinaryFromReader);
+      msg.setTokenInfo(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.TokenBalanceResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.TokenBalanceResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.TokenBalanceResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.TokenBalanceResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getBalance();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getFormattedBalance();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getTokenInfo();
+  if (f != null) {
+    writer.writeMessage(
+      3,
+      f,
+      proto.dac.blockchain.TokenInfo.serializeBinaryToWriter
+    );
+  }
+};
+
+
+/**
+ * optional string balance = 1;
+ * @return {string}
+ */
+proto.dac.blockchain.TokenBalanceResponse.prototype.getBalance = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TokenBalanceResponse} returns this
+ */
+proto.dac.blockchain.TokenBalanceResponse.prototype.setBalance = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string formatted_balance = 2;
+ * @return {string}
+ */
+proto.dac.blockchain.TokenBalanceResponse.prototype.getFormattedBalance = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TokenBalanceResponse} returns this
+ */
+proto.dac.blockchain.TokenBalanceResponse.prototype.setFormattedBalance = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional TokenInfo token_info = 3;
+ * @return {?proto.dac.blockchain.TokenInfo}
+ */
+proto.dac.blockchain.TokenBalanceResponse.prototype.getTokenInfo = function() {
+  return /** @type{?proto.dac.blockchain.TokenInfo} */ (
+    jspb.Message.getWrapperField(this, proto.dac.blockchain.TokenInfo, 3));
+};
+
+
+/**
+ * @param {?proto.dac.blockchain.TokenInfo|undefined} value
+ * @return {!proto.dac.blockchain.TokenBalanceResponse} returns this
+*/
+proto.dac.blockchain.TokenBalanceResponse.prototype.setTokenInfo = function(value) {
+  return jspb.Message.setWrapperField(this, 3, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.blockchain.TokenBalanceResponse} returns this
+ */
+proto.dac.blockchain.TokenBalanceResponse.prototype.clearTokenInfo = function() {
+  return this.setTokenInfo(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.blockchain.TokenBalanceResponse.prototype.hasTokenInfo = function() {
+  return jspb.Message.getField(this, 3) != null;
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.TokenInfo.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.TokenInfo.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.TokenInfo} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.TokenInfo.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    address: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    name: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    symbol: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    decimals: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    totalSupply: jspb.Message.getFieldWithDefault(msg, 5, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.TokenInfo}
+ */
+proto.dac.blockchain.TokenInfo.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.TokenInfo;
+  return proto.dac.blockchain.TokenInfo.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.TokenInfo} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.TokenInfo}
+ */
+proto.dac.blockchain.TokenInfo.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setAddress(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setName(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setSymbol(value);
+      break;
+    case 4:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setDecimals(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setTotalSupply(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.TokenInfo.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.TokenInfo.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.TokenInfo} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.TokenInfo.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getName();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getSymbol();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getDecimals();
+  if (f !== 0) {
+    writer.writeInt32(
+      4,
+      f
+    );
+  }
+  f = message.getTotalSupply();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string address = 1;
+ * @return {string}
+ */
+proto.dac.blockchain.TokenInfo.prototype.getAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TokenInfo} returns this
+ */
+proto.dac.blockchain.TokenInfo.prototype.setAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string name = 2;
+ * @return {string}
+ */
+proto.dac.blockchain.TokenInfo.prototype.getName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TokenInfo} returns this
+ */
+proto.dac.blockchain.TokenInfo.prototype.setName = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string symbol = 3;
+ * @return {string}
+ */
+proto.dac.blockchain.TokenInfo.prototype.getSymbol = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TokenInfo} returns this
+ */
+proto.dac.blockchain.TokenInfo.prototype.setSymbol = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional int32 decimals = 4;
+ * @return {number}
+ */
+proto.dac.blockchain.TokenInfo.prototype.getDecimals = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.blockchain.TokenInfo} returns this
+ */
+proto.dac.blockchain.TokenInfo.prototype.setDecimals = function(value) {
+  return jspb.Message.setProto3IntField(this, 4, value);
+};
+
+
+/**
+ * optional string total_supply = 5;
+ * @return {string}
+ */
+proto.dac.blockchain.TokenInfo.prototype.getTotalSupply = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TokenInfo} returns this
+ */
+proto.dac.blockchain.TokenInfo.prototype.setTotalSupply = function(value) {
+  return jspb.Message.setProto3StringField(this, 5, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.NFTBalanceRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.NFTBalanceRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.NFTBalanceRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.NFTBalanceRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    walletAddress: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    contractAddress: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    network: jspb.Message.getFieldWithDefault(msg, 3, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.NFTBalanceRequest}
+ */
+proto.dac.blockchain.NFTBalanceRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.NFTBalanceRequest;
+  return proto.dac.blockchain.NFTBalanceRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.NFTBalanceRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.NFTBalanceRequest}
+ */
+proto.dac.blockchain.NFTBalanceRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setWalletAddress(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setContractAddress(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setNetwork(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.NFTBalanceRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.NFTBalanceRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.NFTBalanceRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.NFTBalanceRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getWalletAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getContractAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getNetwork();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string wallet_address = 1;
+ * @return {string}
+ */
+proto.dac.blockchain.NFTBalanceRequest.prototype.getWalletAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.NFTBalanceRequest} returns this
+ */
+proto.dac.blockchain.NFTBalanceRequest.prototype.setWalletAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string contract_address = 2;
+ * @return {string}
+ */
+proto.dac.blockchain.NFTBalanceRequest.prototype.getContractAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.NFTBalanceRequest} returns this
+ */
+proto.dac.blockchain.NFTBalanceRequest.prototype.setContractAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string network = 3;
+ * @return {string}
+ */
+proto.dac.blockchain.NFTBalanceRequest.prototype.getNetwork = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.NFTBalanceRequest} returns this
+ */
+proto.dac.blockchain.NFTBalanceRequest.prototype.setNetwork = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.dac.blockchain.NFTBalanceResponse.repeatedFields_ = [1];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.NFTBalanceResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.NFTBalanceResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.NFTBalanceResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.NFTBalanceResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    tokensList: jspb.Message.toObjectList(msg.getTokensList(),
+    proto.dac.blockchain.NFTToken.toObject, includeInstance),
+    totalCount: jspb.Message.getFieldWithDefault(msg, 2, 0)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.NFTBalanceResponse}
+ */
+proto.dac.blockchain.NFTBalanceResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.NFTBalanceResponse;
+  return proto.dac.blockchain.NFTBalanceResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.NFTBalanceResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.NFTBalanceResponse}
+ */
+proto.dac.blockchain.NFTBalanceResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = new proto.dac.blockchain.NFTToken;
+      reader.readMessage(value,proto.dac.blockchain.NFTToken.deserializeBinaryFromReader);
+      msg.addTokens(value);
+      break;
+    case 2:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setTotalCount(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.NFTBalanceResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.NFTBalanceResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.NFTBalanceResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.NFTBalanceResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getTokensList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
+      1,
+      f,
+      proto.dac.blockchain.NFTToken.serializeBinaryToWriter
+    );
+  }
+  f = message.getTotalCount();
+  if (f !== 0) {
+    writer.writeInt32(
+      2,
+      f
+    );
+  }
+};
+
+
+/**
+ * repeated NFTToken tokens = 1;
+ * @return {!Array<!proto.dac.blockchain.NFTToken>}
+ */
+proto.dac.blockchain.NFTBalanceResponse.prototype.getTokensList = function() {
+  return /** @type{!Array<!proto.dac.blockchain.NFTToken>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.dac.blockchain.NFTToken, 1));
+};
+
+
+/**
+ * @param {!Array<!proto.dac.blockchain.NFTToken>} value
+ * @return {!proto.dac.blockchain.NFTBalanceResponse} returns this
+*/
+proto.dac.blockchain.NFTBalanceResponse.prototype.setTokensList = function(value) {
+  return jspb.Message.setRepeatedWrapperField(this, 1, value);
+};
+
+
+/**
+ * @param {!proto.dac.blockchain.NFTToken=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.dac.blockchain.NFTToken}
+ */
+proto.dac.blockchain.NFTBalanceResponse.prototype.addTokens = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 1, opt_value, proto.dac.blockchain.NFTToken, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.blockchain.NFTBalanceResponse} returns this
+ */
+proto.dac.blockchain.NFTBalanceResponse.prototype.clearTokensList = function() {
+  return this.setTokensList([]);
+};
+
+
+/**
+ * optional int32 total_count = 2;
+ * @return {number}
+ */
+proto.dac.blockchain.NFTBalanceResponse.prototype.getTotalCount = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.blockchain.NFTBalanceResponse} returns this
+ */
+proto.dac.blockchain.NFTBalanceResponse.prototype.setTotalCount = function(value) {
+  return jspb.Message.setProto3IntField(this, 2, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.NFTToken.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.NFTToken.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.NFTToken} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.NFTToken.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    tokenId: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    contractAddress: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    tokenUri: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    metadata: (f = msg.getMetadata()) && proto.dac.blockchain.NFTMetadata.toObject(includeInstance, f),
+    owner: jspb.Message.getFieldWithDefault(msg, 5, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.NFTToken}
+ */
+proto.dac.blockchain.NFTToken.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.NFTToken;
+  return proto.dac.blockchain.NFTToken.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.NFTToken} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.NFTToken}
+ */
+proto.dac.blockchain.NFTToken.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setTokenId(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setContractAddress(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setTokenUri(value);
+      break;
+    case 4:
+      var value = new proto.dac.blockchain.NFTMetadata;
+      reader.readMessage(value,proto.dac.blockchain.NFTMetadata.deserializeBinaryFromReader);
+      msg.setMetadata(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setOwner(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.NFTToken.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.NFTToken.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.NFTToken} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.NFTToken.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getTokenId();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getContractAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getTokenUri();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getMetadata();
+  if (f != null) {
+    writer.writeMessage(
+      4,
+      f,
+      proto.dac.blockchain.NFTMetadata.serializeBinaryToWriter
+    );
+  }
+  f = message.getOwner();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string token_id = 1;
+ * @return {string}
+ */
+proto.dac.blockchain.NFTToken.prototype.getTokenId = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.NFTToken} returns this
+ */
+proto.dac.blockchain.NFTToken.prototype.setTokenId = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string contract_address = 2;
+ * @return {string}
+ */
+proto.dac.blockchain.NFTToken.prototype.getContractAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.NFTToken} returns this
+ */
+proto.dac.blockchain.NFTToken.prototype.setContractAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string token_uri = 3;
+ * @return {string}
+ */
+proto.dac.blockchain.NFTToken.prototype.getTokenUri = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.NFTToken} returns this
+ */
+proto.dac.blockchain.NFTToken.prototype.setTokenUri = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional NFTMetadata metadata = 4;
+ * @return {?proto.dac.blockchain.NFTMetadata}
+ */
+proto.dac.blockchain.NFTToken.prototype.getMetadata = function() {
+  return /** @type{?proto.dac.blockchain.NFTMetadata} */ (
+    jspb.Message.getWrapperField(this, proto.dac.blockchain.NFTMetadata, 4));
+};
+
+
+/**
+ * @param {?proto.dac.blockchain.NFTMetadata|undefined} value
+ * @return {!proto.dac.blockchain.NFTToken} returns this
+*/
+proto.dac.blockchain.NFTToken.prototype.setMetadata = function(value) {
+  return jspb.Message.setWrapperField(this, 4, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.blockchain.NFTToken} returns this
+ */
+proto.dac.blockchain.NFTToken.prototype.clearMetadata = function() {
+  return this.setMetadata(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.blockchain.NFTToken.prototype.hasMetadata = function() {
+  return jspb.Message.getField(this, 4) != null;
+};
+
+
+/**
+ * optional string owner = 5;
+ * @return {string}
+ */
+proto.dac.blockchain.NFTToken.prototype.getOwner = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.NFTToken} returns this
+ */
+proto.dac.blockchain.NFTToken.prototype.setOwner = function(value) {
+  return jspb.Message.setProto3StringField(this, 5, value);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.dac.blockchain.NFTMetadata.repeatedFields_ = [4];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.NFTMetadata.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.NFTMetadata.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.NFTMetadata} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.NFTMetadata.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    name: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    description: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    image: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    attributesList: jspb.Message.toObjectList(msg.getAttributesList(),
+    proto.dac.blockchain.NFTAttribute.toObject, includeInstance)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.NFTMetadata}
+ */
+proto.dac.blockchain.NFTMetadata.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.NFTMetadata;
+  return proto.dac.blockchain.NFTMetadata.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.NFTMetadata} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.NFTMetadata}
+ */
+proto.dac.blockchain.NFTMetadata.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setName(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setDescription(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setImage(value);
+      break;
+    case 4:
+      var value = new proto.dac.blockchain.NFTAttribute;
+      reader.readMessage(value,proto.dac.blockchain.NFTAttribute.deserializeBinaryFromReader);
+      msg.addAttributes(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.NFTMetadata.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.NFTMetadata.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.NFTMetadata} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.NFTMetadata.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getName();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getDescription();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getImage();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getAttributesList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
+      4,
+      f,
+      proto.dac.blockchain.NFTAttribute.serializeBinaryToWriter
+    );
+  }
+};
+
+
+/**
+ * optional string name = 1;
+ * @return {string}
+ */
+proto.dac.blockchain.NFTMetadata.prototype.getName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.NFTMetadata} returns this
+ */
+proto.dac.blockchain.NFTMetadata.prototype.setName = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string description = 2;
+ * @return {string}
+ */
+proto.dac.blockchain.NFTMetadata.prototype.getDescription = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.NFTMetadata} returns this
+ */
+proto.dac.blockchain.NFTMetadata.prototype.setDescription = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string image = 3;
+ * @return {string}
+ */
+proto.dac.blockchain.NFTMetadata.prototype.getImage = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.NFTMetadata} returns this
+ */
+proto.dac.blockchain.NFTMetadata.prototype.setImage = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * repeated NFTAttribute attributes = 4;
+ * @return {!Array<!proto.dac.blockchain.NFTAttribute>}
+ */
+proto.dac.blockchain.NFTMetadata.prototype.getAttributesList = function() {
+  return /** @type{!Array<!proto.dac.blockchain.NFTAttribute>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.dac.blockchain.NFTAttribute, 4));
+};
+
+
+/**
+ * @param {!Array<!proto.dac.blockchain.NFTAttribute>} value
+ * @return {!proto.dac.blockchain.NFTMetadata} returns this
+*/
+proto.dac.blockchain.NFTMetadata.prototype.setAttributesList = function(value) {
+  return jspb.Message.setRepeatedWrapperField(this, 4, value);
+};
+
+
+/**
+ * @param {!proto.dac.blockchain.NFTAttribute=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.dac.blockchain.NFTAttribute}
+ */
+proto.dac.blockchain.NFTMetadata.prototype.addAttributes = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 4, opt_value, proto.dac.blockchain.NFTAttribute, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.blockchain.NFTMetadata} returns this
+ */
+proto.dac.blockchain.NFTMetadata.prototype.clearAttributesList = function() {
+  return this.setAttributesList([]);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.NFTAttribute.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.NFTAttribute.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.NFTAttribute} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.NFTAttribute.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    traitType: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    value: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    displayType: jspb.Message.getFieldWithDefault(msg, 3, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.NFTAttribute}
+ */
+proto.dac.blockchain.NFTAttribute.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.NFTAttribute;
+  return proto.dac.blockchain.NFTAttribute.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.NFTAttribute} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.NFTAttribute}
+ */
+proto.dac.blockchain.NFTAttribute.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setTraitType(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setValue(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setDisplayType(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.NFTAttribute.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.NFTAttribute.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.NFTAttribute} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.NFTAttribute.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getTraitType();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getValue();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getDisplayType();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string trait_type = 1;
+ * @return {string}
+ */
+proto.dac.blockchain.NFTAttribute.prototype.getTraitType = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.NFTAttribute} returns this
+ */
+proto.dac.blockchain.NFTAttribute.prototype.setTraitType = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string value = 2;
+ * @return {string}
+ */
+proto.dac.blockchain.NFTAttribute.prototype.getValue = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.NFTAttribute} returns this
+ */
+proto.dac.blockchain.NFTAttribute.prototype.setValue = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string display_type = 3;
+ * @return {string}
+ */
+proto.dac.blockchain.NFTAttribute.prototype.getDisplayType = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.NFTAttribute} returns this
+ */
+proto.dac.blockchain.NFTAttribute.prototype.setDisplayType = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.TokenTransferRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.TokenTransferRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.TokenTransferRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.TokenTransferRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    fromAddress: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    toAddress: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    tokenAddress: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    amount: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    gasSettings: (f = msg.getGasSettings()) && proto.dac.blockchain.GasSettings.toObject(includeInstance, f),
+    network: jspb.Message.getFieldWithDefault(msg, 6, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.TokenTransferRequest}
+ */
+proto.dac.blockchain.TokenTransferRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.TokenTransferRequest;
+  return proto.dac.blockchain.TokenTransferRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.TokenTransferRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.TokenTransferRequest}
+ */
+proto.dac.blockchain.TokenTransferRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setFromAddress(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setToAddress(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setTokenAddress(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setAmount(value);
+      break;
+    case 5:
+      var value = new proto.dac.blockchain.GasSettings;
+      reader.readMessage(value,proto.dac.blockchain.GasSettings.deserializeBinaryFromReader);
+      msg.setGasSettings(value);
+      break;
+    case 6:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setNetwork(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.TokenTransferRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.TokenTransferRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.TokenTransferRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.TokenTransferRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getFromAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getToAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getTokenAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getAmount();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+  f = message.getGasSettings();
+  if (f != null) {
+    writer.writeMessage(
+      5,
+      f,
+      proto.dac.blockchain.GasSettings.serializeBinaryToWriter
+    );
+  }
+  f = message.getNetwork();
+  if (f.length > 0) {
+    writer.writeString(
+      6,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string from_address = 1;
+ * @return {string}
+ */
+proto.dac.blockchain.TokenTransferRequest.prototype.getFromAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TokenTransferRequest} returns this
+ */
+proto.dac.blockchain.TokenTransferRequest.prototype.setFromAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string to_address = 2;
+ * @return {string}
+ */
+proto.dac.blockchain.TokenTransferRequest.prototype.getToAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TokenTransferRequest} returns this
+ */
+proto.dac.blockchain.TokenTransferRequest.prototype.setToAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string token_address = 3;
+ * @return {string}
+ */
+proto.dac.blockchain.TokenTransferRequest.prototype.getTokenAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TokenTransferRequest} returns this
+ */
+proto.dac.blockchain.TokenTransferRequest.prototype.setTokenAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string amount = 4;
+ * @return {string}
+ */
+proto.dac.blockchain.TokenTransferRequest.prototype.getAmount = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TokenTransferRequest} returns this
+ */
+proto.dac.blockchain.TokenTransferRequest.prototype.setAmount = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional GasSettings gas_settings = 5;
+ * @return {?proto.dac.blockchain.GasSettings}
+ */
+proto.dac.blockchain.TokenTransferRequest.prototype.getGasSettings = function() {
+  return /** @type{?proto.dac.blockchain.GasSettings} */ (
+    jspb.Message.getWrapperField(this, proto.dac.blockchain.GasSettings, 5));
+};
+
+
+/**
+ * @param {?proto.dac.blockchain.GasSettings|undefined} value
+ * @return {!proto.dac.blockchain.TokenTransferRequest} returns this
+*/
+proto.dac.blockchain.TokenTransferRequest.prototype.setGasSettings = function(value) {
+  return jspb.Message.setWrapperField(this, 5, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.blockchain.TokenTransferRequest} returns this
+ */
+proto.dac.blockchain.TokenTransferRequest.prototype.clearGasSettings = function() {
+  return this.setGasSettings(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.blockchain.TokenTransferRequest.prototype.hasGasSettings = function() {
+  return jspb.Message.getField(this, 5) != null;
+};
+
+
+/**
+ * optional string network = 6;
+ * @return {string}
+ */
+proto.dac.blockchain.TokenTransferRequest.prototype.getNetwork = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.TokenTransferRequest} returns this
+ */
+proto.dac.blockchain.TokenTransferRequest.prototype.setNetwork = function(value) {
+  return jspb.Message.setProto3StringField(this, 6, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.NetworkInfo.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.NetworkInfo.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.NetworkInfo} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.NetworkInfo.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    chainId: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    networkName: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    rpcUrl: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    explorerUrl: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    currencySymbol: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    latestBlock: jspb.Message.getFieldWithDefault(msg, 6, ""),
+    isTestnet: jspb.Message.getBooleanFieldWithDefault(msg, 7, false),
+    health: (f = msg.getHealth()) && proto.dac.blockchain.NetworkHealth.toObject(includeInstance, f)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.NetworkInfo}
+ */
+proto.dac.blockchain.NetworkInfo.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.NetworkInfo;
+  return proto.dac.blockchain.NetworkInfo.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.NetworkInfo} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.NetworkInfo}
+ */
+proto.dac.blockchain.NetworkInfo.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setChainId(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setNetworkName(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setRpcUrl(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setExplorerUrl(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setCurrencySymbol(value);
+      break;
+    case 6:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setLatestBlock(value);
+      break;
+    case 7:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setIsTestnet(value);
+      break;
+    case 8:
+      var value = new proto.dac.blockchain.NetworkHealth;
+      reader.readMessage(value,proto.dac.blockchain.NetworkHealth.deserializeBinaryFromReader);
+      msg.setHealth(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.NetworkInfo.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.NetworkInfo.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.NetworkInfo} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.NetworkInfo.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getChainId();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getNetworkName();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getRpcUrl();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getExplorerUrl();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+  f = message.getCurrencySymbol();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
+      f
+    );
+  }
+  f = message.getLatestBlock();
+  if (f.length > 0) {
+    writer.writeString(
+      6,
+      f
+    );
+  }
+  f = message.getIsTestnet();
+  if (f) {
+    writer.writeBool(
+      7,
+      f
+    );
+  }
+  f = message.getHealth();
+  if (f != null) {
+    writer.writeMessage(
+      8,
+      f,
+      proto.dac.blockchain.NetworkHealth.serializeBinaryToWriter
+    );
+  }
+};
+
+
+/**
+ * optional string chain_id = 1;
+ * @return {string}
+ */
+proto.dac.blockchain.NetworkInfo.prototype.getChainId = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.NetworkInfo} returns this
+ */
+proto.dac.blockchain.NetworkInfo.prototype.setChainId = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string network_name = 2;
+ * @return {string}
+ */
+proto.dac.blockchain.NetworkInfo.prototype.getNetworkName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.NetworkInfo} returns this
+ */
+proto.dac.blockchain.NetworkInfo.prototype.setNetworkName = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string rpc_url = 3;
+ * @return {string}
+ */
+proto.dac.blockchain.NetworkInfo.prototype.getRpcUrl = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.NetworkInfo} returns this
+ */
+proto.dac.blockchain.NetworkInfo.prototype.setRpcUrl = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string explorer_url = 4;
+ * @return {string}
+ */
+proto.dac.blockchain.NetworkInfo.prototype.getExplorerUrl = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.NetworkInfo} returns this
+ */
+proto.dac.blockchain.NetworkInfo.prototype.setExplorerUrl = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional string currency_symbol = 5;
+ * @return {string}
+ */
+proto.dac.blockchain.NetworkInfo.prototype.getCurrencySymbol = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.NetworkInfo} returns this
+ */
+proto.dac.blockchain.NetworkInfo.prototype.setCurrencySymbol = function(value) {
+  return jspb.Message.setProto3StringField(this, 5, value);
+};
+
+
+/**
+ * optional string latest_block = 6;
+ * @return {string}
+ */
+proto.dac.blockchain.NetworkInfo.prototype.getLatestBlock = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.NetworkInfo} returns this
+ */
+proto.dac.blockchain.NetworkInfo.prototype.setLatestBlock = function(value) {
+  return jspb.Message.setProto3StringField(this, 6, value);
+};
+
+
+/**
+ * optional bool is_testnet = 7;
+ * @return {boolean}
+ */
+proto.dac.blockchain.NetworkInfo.prototype.getIsTestnet = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 7, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.blockchain.NetworkInfo} returns this
+ */
+proto.dac.blockchain.NetworkInfo.prototype.setIsTestnet = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 7, value);
+};
+
+
+/**
+ * optional NetworkHealth health = 8;
+ * @return {?proto.dac.blockchain.NetworkHealth}
+ */
+proto.dac.blockchain.NetworkInfo.prototype.getHealth = function() {
+  return /** @type{?proto.dac.blockchain.NetworkHealth} */ (
+    jspb.Message.getWrapperField(this, proto.dac.blockchain.NetworkHealth, 8));
+};
+
+
+/**
+ * @param {?proto.dac.blockchain.NetworkHealth|undefined} value
+ * @return {!proto.dac.blockchain.NetworkInfo} returns this
+*/
+proto.dac.blockchain.NetworkInfo.prototype.setHealth = function(value) {
+  return jspb.Message.setWrapperField(this, 8, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.blockchain.NetworkInfo} returns this
+ */
+proto.dac.blockchain.NetworkInfo.prototype.clearHealth = function() {
+  return this.setHealth(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.blockchain.NetworkInfo.prototype.hasHealth = function() {
+  return jspb.Message.getField(this, 8) != null;
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.NetworkHealth.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.NetworkHealth.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.NetworkHealth} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.NetworkHealth.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    isSynced: jspb.Message.getBooleanFieldWithDefault(msg, 1, false),
+    blockTime: jspb.Message.getFloatingPointFieldWithDefault(msg, 2, 0.0),
+    peerCount: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    gasPrice: jspb.Message.getFloatingPointFieldWithDefault(msg, 4, 0.0),
+    isCongested: jspb.Message.getBooleanFieldWithDefault(msg, 5, false)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.NetworkHealth}
+ */
+proto.dac.blockchain.NetworkHealth.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.NetworkHealth;
+  return proto.dac.blockchain.NetworkHealth.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.NetworkHealth} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.NetworkHealth}
+ */
+proto.dac.blockchain.NetworkHealth.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setIsSynced(value);
+      break;
+    case 2:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setBlockTime(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setPeerCount(value);
+      break;
+    case 4:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setGasPrice(value);
+      break;
+    case 5:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setIsCongested(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.NetworkHealth.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.NetworkHealth.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.NetworkHealth} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.NetworkHealth.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getIsSynced();
+  if (f) {
+    writer.writeBool(
+      1,
+      f
+    );
+  }
+  f = message.getBlockTime();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      2,
+      f
+    );
+  }
+  f = message.getPeerCount();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getGasPrice();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      4,
+      f
+    );
+  }
+  f = message.getIsCongested();
+  if (f) {
+    writer.writeBool(
+      5,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional bool is_synced = 1;
+ * @return {boolean}
+ */
+proto.dac.blockchain.NetworkHealth.prototype.getIsSynced = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 1, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.blockchain.NetworkHealth} returns this
+ */
+proto.dac.blockchain.NetworkHealth.prototype.setIsSynced = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 1, value);
+};
+
+
+/**
+ * optional double block_time = 2;
+ * @return {number}
+ */
+proto.dac.blockchain.NetworkHealth.prototype.getBlockTime = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 2, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.blockchain.NetworkHealth} returns this
+ */
+proto.dac.blockchain.NetworkHealth.prototype.setBlockTime = function(value) {
+  return jspb.Message.setProto3FloatField(this, 2, value);
+};
+
+
+/**
+ * optional string peer_count = 3;
+ * @return {string}
+ */
+proto.dac.blockchain.NetworkHealth.prototype.getPeerCount = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.NetworkHealth} returns this
+ */
+proto.dac.blockchain.NetworkHealth.prototype.setPeerCount = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional double gas_price = 4;
+ * @return {number}
+ */
+proto.dac.blockchain.NetworkHealth.prototype.getGasPrice = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 4, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.blockchain.NetworkHealth} returns this
+ */
+proto.dac.blockchain.NetworkHealth.prototype.setGasPrice = function(value) {
+  return jspb.Message.setProto3FloatField(this, 4, value);
+};
+
+
+/**
+ * optional bool is_congested = 5;
+ * @return {boolean}
+ */
+proto.dac.blockchain.NetworkHealth.prototype.getIsCongested = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 5, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.blockchain.NetworkHealth} returns this
+ */
+proto.dac.blockchain.NetworkHealth.prototype.setIsCongested = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 5, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.BlockInfoRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.BlockInfoRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.BlockInfoRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.BlockInfoRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    blockIdentifier: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    network: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    includeTransactions: jspb.Message.getBooleanFieldWithDefault(msg, 3, false)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.BlockInfoRequest}
+ */
+proto.dac.blockchain.BlockInfoRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.BlockInfoRequest;
+  return proto.dac.blockchain.BlockInfoRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.BlockInfoRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.BlockInfoRequest}
+ */
+proto.dac.blockchain.BlockInfoRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setBlockIdentifier(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setNetwork(value);
+      break;
+    case 3:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setIncludeTransactions(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.BlockInfoRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.BlockInfoRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.BlockInfoRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.BlockInfoRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getBlockIdentifier();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getNetwork();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getIncludeTransactions();
+  if (f) {
+    writer.writeBool(
+      3,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string block_identifier = 1;
+ * @return {string}
+ */
+proto.dac.blockchain.BlockInfoRequest.prototype.getBlockIdentifier = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.BlockInfoRequest} returns this
+ */
+proto.dac.blockchain.BlockInfoRequest.prototype.setBlockIdentifier = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string network = 2;
+ * @return {string}
+ */
+proto.dac.blockchain.BlockInfoRequest.prototype.getNetwork = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.BlockInfoRequest} returns this
+ */
+proto.dac.blockchain.BlockInfoRequest.prototype.setNetwork = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional bool include_transactions = 3;
+ * @return {boolean}
+ */
+proto.dac.blockchain.BlockInfoRequest.prototype.getIncludeTransactions = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 3, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.blockchain.BlockInfoRequest} returns this
+ */
+proto.dac.blockchain.BlockInfoRequest.prototype.setIncludeTransactions = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 3, value);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.dac.blockchain.BlockInfo.repeatedFields_ = [9];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.BlockInfo.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.BlockInfo.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.BlockInfo} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.BlockInfo.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    blockNumber: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    blockHash: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    parentHash: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    timestamp: (f = msg.getTimestamp()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
+    miner: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    gasUsed: jspb.Message.getFieldWithDefault(msg, 6, ""),
+    gasLimit: jspb.Message.getFieldWithDefault(msg, 7, ""),
+    transactionCount: jspb.Message.getFieldWithDefault(msg, 8, 0),
+    transactionsList: jspb.Message.toObjectList(msg.getTransactionsList(),
+    proto.dac.blockchain.TransactionInfo.toObject, includeInstance)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.BlockInfo}
+ */
+proto.dac.blockchain.BlockInfo.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.BlockInfo;
+  return proto.dac.blockchain.BlockInfo.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.BlockInfo} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.BlockInfo}
+ */
+proto.dac.blockchain.BlockInfo.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setBlockNumber(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setBlockHash(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setParentHash(value);
+      break;
+    case 4:
+      var value = new google_protobuf_timestamp_pb.Timestamp;
+      reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      msg.setTimestamp(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setMiner(value);
+      break;
+    case 6:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setGasUsed(value);
+      break;
+    case 7:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setGasLimit(value);
+      break;
+    case 8:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setTransactionCount(value);
+      break;
+    case 9:
+      var value = new proto.dac.blockchain.TransactionInfo;
+      reader.readMessage(value,proto.dac.blockchain.TransactionInfo.deserializeBinaryFromReader);
+      msg.addTransactions(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.BlockInfo.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.BlockInfo.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.BlockInfo} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.BlockInfo.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getBlockNumber();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getBlockHash();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getParentHash();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getTimestamp();
+  if (f != null) {
+    writer.writeMessage(
+      4,
+      f,
+      google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+  f = message.getMiner();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
+      f
+    );
+  }
+  f = message.getGasUsed();
+  if (f.length > 0) {
+    writer.writeString(
+      6,
+      f
+    );
+  }
+  f = message.getGasLimit();
+  if (f.length > 0) {
+    writer.writeString(
+      7,
+      f
+    );
+  }
+  f = message.getTransactionCount();
+  if (f !== 0) {
+    writer.writeInt32(
+      8,
+      f
+    );
+  }
+  f = message.getTransactionsList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
+      9,
+      f,
+      proto.dac.blockchain.TransactionInfo.serializeBinaryToWriter
+    );
+  }
+};
+
+
+/**
+ * optional string block_number = 1;
+ * @return {string}
+ */
+proto.dac.blockchain.BlockInfo.prototype.getBlockNumber = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.BlockInfo} returns this
+ */
+proto.dac.blockchain.BlockInfo.prototype.setBlockNumber = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string block_hash = 2;
+ * @return {string}
+ */
+proto.dac.blockchain.BlockInfo.prototype.getBlockHash = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.BlockInfo} returns this
+ */
+proto.dac.blockchain.BlockInfo.prototype.setBlockHash = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string parent_hash = 3;
+ * @return {string}
+ */
+proto.dac.blockchain.BlockInfo.prototype.getParentHash = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.BlockInfo} returns this
+ */
+proto.dac.blockchain.BlockInfo.prototype.setParentHash = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional google.protobuf.Timestamp timestamp = 4;
+ * @return {?proto.google.protobuf.Timestamp}
+ */
+proto.dac.blockchain.BlockInfo.prototype.getTimestamp = function() {
+  return /** @type{?proto.google.protobuf.Timestamp} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 4));
+};
+
+
+/**
+ * @param {?proto.google.protobuf.Timestamp|undefined} value
+ * @return {!proto.dac.blockchain.BlockInfo} returns this
+*/
+proto.dac.blockchain.BlockInfo.prototype.setTimestamp = function(value) {
+  return jspb.Message.setWrapperField(this, 4, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.blockchain.BlockInfo} returns this
+ */
+proto.dac.blockchain.BlockInfo.prototype.clearTimestamp = function() {
+  return this.setTimestamp(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.blockchain.BlockInfo.prototype.hasTimestamp = function() {
+  return jspb.Message.getField(this, 4) != null;
+};
+
+
+/**
+ * optional string miner = 5;
+ * @return {string}
+ */
+proto.dac.blockchain.BlockInfo.prototype.getMiner = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.BlockInfo} returns this
+ */
+proto.dac.blockchain.BlockInfo.prototype.setMiner = function(value) {
+  return jspb.Message.setProto3StringField(this, 5, value);
+};
+
+
+/**
+ * optional string gas_used = 6;
+ * @return {string}
+ */
+proto.dac.blockchain.BlockInfo.prototype.getGasUsed = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.BlockInfo} returns this
+ */
+proto.dac.blockchain.BlockInfo.prototype.setGasUsed = function(value) {
+  return jspb.Message.setProto3StringField(this, 6, value);
+};
+
+
+/**
+ * optional string gas_limit = 7;
+ * @return {string}
+ */
+proto.dac.blockchain.BlockInfo.prototype.getGasLimit = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.BlockInfo} returns this
+ */
+proto.dac.blockchain.BlockInfo.prototype.setGasLimit = function(value) {
+  return jspb.Message.setProto3StringField(this, 7, value);
+};
+
+
+/**
+ * optional int32 transaction_count = 8;
+ * @return {number}
+ */
+proto.dac.blockchain.BlockInfo.prototype.getTransactionCount = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 8, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.blockchain.BlockInfo} returns this
+ */
+proto.dac.blockchain.BlockInfo.prototype.setTransactionCount = function(value) {
+  return jspb.Message.setProto3IntField(this, 8, value);
+};
+
+
+/**
+ * repeated TransactionInfo transactions = 9;
+ * @return {!Array<!proto.dac.blockchain.TransactionInfo>}
+ */
+proto.dac.blockchain.BlockInfo.prototype.getTransactionsList = function() {
+  return /** @type{!Array<!proto.dac.blockchain.TransactionInfo>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.dac.blockchain.TransactionInfo, 9));
+};
+
+
+/**
+ * @param {!Array<!proto.dac.blockchain.TransactionInfo>} value
+ * @return {!proto.dac.blockchain.BlockInfo} returns this
+*/
+proto.dac.blockchain.BlockInfo.prototype.setTransactionsList = function(value) {
+  return jspb.Message.setRepeatedWrapperField(this, 9, value);
+};
+
+
+/**
+ * @param {!proto.dac.blockchain.TransactionInfo=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.dac.blockchain.TransactionInfo}
+ */
+proto.dac.blockchain.BlockInfo.prototype.addTransactions = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 9, opt_value, proto.dac.blockchain.TransactionInfo, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.blockchain.BlockInfo} returns this
+ */
+proto.dac.blockchain.BlockInfo.prototype.clearTransactionsList = function() {
+  return this.setTransactionsList([]);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.dac.blockchain.CostEstimateRequest.repeatedFields_ = [5];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.CostEstimateRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.CostEstimateRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.CostEstimateRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.CostEstimateRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    transactionType: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    network: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    contractAddress: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    methodName: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    methodArgsList: (f = jspb.Message.getRepeatedField(msg, 5)) == null ? undefined : f
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.CostEstimateRequest}
+ */
+proto.dac.blockchain.CostEstimateRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.CostEstimateRequest;
+  return proto.dac.blockchain.CostEstimateRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.CostEstimateRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.CostEstimateRequest}
+ */
+proto.dac.blockchain.CostEstimateRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {!proto.dac.blockchain.TransactionType} */ (reader.readEnum());
+      msg.setTransactionType(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setNetwork(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setContractAddress(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setMethodName(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addMethodArgs(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.CostEstimateRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.CostEstimateRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.CostEstimateRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.CostEstimateRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getTransactionType();
+  if (f !== 0.0) {
+    writer.writeEnum(
+      1,
+      f
+    );
+  }
+  f = message.getNetwork();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = /** @type {string} */ (jspb.Message.getField(message, 3));
+  if (f != null) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = /** @type {string} */ (jspb.Message.getField(message, 4));
+  if (f != null) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+  f = message.getMethodArgsList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      5,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional TransactionType transaction_type = 1;
+ * @return {!proto.dac.blockchain.TransactionType}
+ */
+proto.dac.blockchain.CostEstimateRequest.prototype.getTransactionType = function() {
+  return /** @type {!proto.dac.blockchain.TransactionType} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {!proto.dac.blockchain.TransactionType} value
+ * @return {!proto.dac.blockchain.CostEstimateRequest} returns this
+ */
+proto.dac.blockchain.CostEstimateRequest.prototype.setTransactionType = function(value) {
+  return jspb.Message.setProto3EnumField(this, 1, value);
+};
+
+
+/**
+ * optional string network = 2;
+ * @return {string}
+ */
+proto.dac.blockchain.CostEstimateRequest.prototype.getNetwork = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.CostEstimateRequest} returns this
+ */
+proto.dac.blockchain.CostEstimateRequest.prototype.setNetwork = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string contract_address = 3;
+ * @return {string}
+ */
+proto.dac.blockchain.CostEstimateRequest.prototype.getContractAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.CostEstimateRequest} returns this
+ */
+proto.dac.blockchain.CostEstimateRequest.prototype.setContractAddress = function(value) {
+  return jspb.Message.setField(this, 3, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.dac.blockchain.CostEstimateRequest} returns this
+ */
+proto.dac.blockchain.CostEstimateRequest.prototype.clearContractAddress = function() {
+  return jspb.Message.setField(this, 3, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.blockchain.CostEstimateRequest.prototype.hasContractAddress = function() {
+  return jspb.Message.getField(this, 3) != null;
+};
+
+
+/**
+ * optional string method_name = 4;
+ * @return {string}
+ */
+proto.dac.blockchain.CostEstimateRequest.prototype.getMethodName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.CostEstimateRequest} returns this
+ */
+proto.dac.blockchain.CostEstimateRequest.prototype.setMethodName = function(value) {
+  return jspb.Message.setField(this, 4, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.dac.blockchain.CostEstimateRequest} returns this
+ */
+proto.dac.blockchain.CostEstimateRequest.prototype.clearMethodName = function() {
+  return jspb.Message.setField(this, 4, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.blockchain.CostEstimateRequest.prototype.hasMethodName = function() {
+  return jspb.Message.getField(this, 4) != null;
+};
+
+
+/**
+ * repeated string method_args = 5;
+ * @return {!Array<string>}
+ */
+proto.dac.blockchain.CostEstimateRequest.prototype.getMethodArgsList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 5));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.dac.blockchain.CostEstimateRequest} returns this
+ */
+proto.dac.blockchain.CostEstimateRequest.prototype.setMethodArgsList = function(value) {
+  return jspb.Message.setField(this, 5, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.dac.blockchain.CostEstimateRequest} returns this
+ */
+proto.dac.blockchain.CostEstimateRequest.prototype.addMethodArgs = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 5, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.blockchain.CostEstimateRequest} returns this
+ */
+proto.dac.blockchain.CostEstimateRequest.prototype.clearMethodArgsList = function() {
+  return this.setMethodArgsList([]);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.CostEstimateResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.CostEstimateResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.CostEstimateResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.CostEstimateResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    estimatedGas: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    gasPrice: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    totalCostEth: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    totalCostUsd: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    breakdown: (f = msg.getBreakdown()) && proto.dac.blockchain.CostBreakdown.toObject(includeInstance, f)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.CostEstimateResponse}
+ */
+proto.dac.blockchain.CostEstimateResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.CostEstimateResponse;
+  return proto.dac.blockchain.CostEstimateResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.CostEstimateResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.CostEstimateResponse}
+ */
+proto.dac.blockchain.CostEstimateResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setEstimatedGas(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setGasPrice(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setTotalCostEth(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setTotalCostUsd(value);
+      break;
+    case 5:
+      var value = new proto.dac.blockchain.CostBreakdown;
+      reader.readMessage(value,proto.dac.blockchain.CostBreakdown.deserializeBinaryFromReader);
+      msg.setBreakdown(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.CostEstimateResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.CostEstimateResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.CostEstimateResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.CostEstimateResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getEstimatedGas();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getGasPrice();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getTotalCostEth();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getTotalCostUsd();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+  f = message.getBreakdown();
+  if (f != null) {
+    writer.writeMessage(
+      5,
+      f,
+      proto.dac.blockchain.CostBreakdown.serializeBinaryToWriter
+    );
+  }
+};
+
+
+/**
+ * optional string estimated_gas = 1;
+ * @return {string}
+ */
+proto.dac.blockchain.CostEstimateResponse.prototype.getEstimatedGas = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.CostEstimateResponse} returns this
+ */
+proto.dac.blockchain.CostEstimateResponse.prototype.setEstimatedGas = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string gas_price = 2;
+ * @return {string}
+ */
+proto.dac.blockchain.CostEstimateResponse.prototype.getGasPrice = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.CostEstimateResponse} returns this
+ */
+proto.dac.blockchain.CostEstimateResponse.prototype.setGasPrice = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string total_cost_eth = 3;
+ * @return {string}
+ */
+proto.dac.blockchain.CostEstimateResponse.prototype.getTotalCostEth = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.CostEstimateResponse} returns this
+ */
+proto.dac.blockchain.CostEstimateResponse.prototype.setTotalCostEth = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string total_cost_usd = 4;
+ * @return {string}
+ */
+proto.dac.blockchain.CostEstimateResponse.prototype.getTotalCostUsd = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.CostEstimateResponse} returns this
+ */
+proto.dac.blockchain.CostEstimateResponse.prototype.setTotalCostUsd = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional CostBreakdown breakdown = 5;
+ * @return {?proto.dac.blockchain.CostBreakdown}
+ */
+proto.dac.blockchain.CostEstimateResponse.prototype.getBreakdown = function() {
+  return /** @type{?proto.dac.blockchain.CostBreakdown} */ (
+    jspb.Message.getWrapperField(this, proto.dac.blockchain.CostBreakdown, 5));
+};
+
+
+/**
+ * @param {?proto.dac.blockchain.CostBreakdown|undefined} value
+ * @return {!proto.dac.blockchain.CostEstimateResponse} returns this
+*/
+proto.dac.blockchain.CostEstimateResponse.prototype.setBreakdown = function(value) {
+  return jspb.Message.setWrapperField(this, 5, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.blockchain.CostEstimateResponse} returns this
+ */
+proto.dac.blockchain.CostEstimateResponse.prototype.clearBreakdown = function() {
+  return this.setBreakdown(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.blockchain.CostEstimateResponse.prototype.hasBreakdown = function() {
+  return jspb.Message.getField(this, 5) != null;
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.CostBreakdown.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.CostBreakdown.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.CostBreakdown} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.CostBreakdown.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    baseFee: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    priorityFee: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    executionCost: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    storageCost: jspb.Message.getFieldWithDefault(msg, 4, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.CostBreakdown}
+ */
+proto.dac.blockchain.CostBreakdown.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.CostBreakdown;
+  return proto.dac.blockchain.CostBreakdown.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.CostBreakdown} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.CostBreakdown}
+ */
+proto.dac.blockchain.CostBreakdown.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setBaseFee(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setPriorityFee(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setExecutionCost(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setStorageCost(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.CostBreakdown.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.CostBreakdown.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.CostBreakdown} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.CostBreakdown.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getBaseFee();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getPriorityFee();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getExecutionCost();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getStorageCost();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string base_fee = 1;
+ * @return {string}
+ */
+proto.dac.blockchain.CostBreakdown.prototype.getBaseFee = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.CostBreakdown} returns this
+ */
+proto.dac.blockchain.CostBreakdown.prototype.setBaseFee = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string priority_fee = 2;
+ * @return {string}
+ */
+proto.dac.blockchain.CostBreakdown.prototype.getPriorityFee = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.CostBreakdown} returns this
+ */
+proto.dac.blockchain.CostBreakdown.prototype.setPriorityFee = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string execution_cost = 3;
+ * @return {string}
+ */
+proto.dac.blockchain.CostBreakdown.prototype.getExecutionCost = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.CostBreakdown} returns this
+ */
+proto.dac.blockchain.CostBreakdown.prototype.setExecutionCost = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string storage_cost = 4;
+ * @return {string}
+ */
+proto.dac.blockchain.CostBreakdown.prototype.getStorageCost = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.CostBreakdown} returns this
+ */
+proto.dac.blockchain.CostBreakdown.prototype.setStorageCost = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.dac.blockchain.EventSubscriptionRequest.repeatedFields_ = [1,2,5];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.EventSubscriptionRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.EventSubscriptionRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.EventSubscriptionRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.EventSubscriptionRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    contractAddressesList: (f = jspb.Message.getRepeatedField(msg, 1)) == null ? undefined : f,
+    eventSignaturesList: (f = jspb.Message.getRepeatedField(msg, 2)) == null ? undefined : f,
+    network: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    fromBlock: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    topicsList: (f = jspb.Message.getRepeatedField(msg, 5)) == null ? undefined : f
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.EventSubscriptionRequest}
+ */
+proto.dac.blockchain.EventSubscriptionRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.EventSubscriptionRequest;
+  return proto.dac.blockchain.EventSubscriptionRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.EventSubscriptionRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.EventSubscriptionRequest}
+ */
+proto.dac.blockchain.EventSubscriptionRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addContractAddresses(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addEventSignatures(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setNetwork(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setFromBlock(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addTopics(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.EventSubscriptionRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.EventSubscriptionRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.EventSubscriptionRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.EventSubscriptionRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getContractAddressesList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      1,
+      f
+    );
+  }
+  f = message.getEventSignaturesList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      2,
+      f
+    );
+  }
+  f = message.getNetwork();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = /** @type {string} */ (jspb.Message.getField(message, 4));
+  if (f != null) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+  f = message.getTopicsList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      5,
+      f
+    );
+  }
+};
+
+
+/**
+ * repeated string contract_addresses = 1;
+ * @return {!Array<string>}
+ */
+proto.dac.blockchain.EventSubscriptionRequest.prototype.getContractAddressesList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 1));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.dac.blockchain.EventSubscriptionRequest} returns this
+ */
+proto.dac.blockchain.EventSubscriptionRequest.prototype.setContractAddressesList = function(value) {
+  return jspb.Message.setField(this, 1, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.dac.blockchain.EventSubscriptionRequest} returns this
+ */
+proto.dac.blockchain.EventSubscriptionRequest.prototype.addContractAddresses = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 1, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.blockchain.EventSubscriptionRequest} returns this
+ */
+proto.dac.blockchain.EventSubscriptionRequest.prototype.clearContractAddressesList = function() {
+  return this.setContractAddressesList([]);
+};
+
+
+/**
+ * repeated string event_signatures = 2;
+ * @return {!Array<string>}
+ */
+proto.dac.blockchain.EventSubscriptionRequest.prototype.getEventSignaturesList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 2));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.dac.blockchain.EventSubscriptionRequest} returns this
+ */
+proto.dac.blockchain.EventSubscriptionRequest.prototype.setEventSignaturesList = function(value) {
+  return jspb.Message.setField(this, 2, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.dac.blockchain.EventSubscriptionRequest} returns this
+ */
+proto.dac.blockchain.EventSubscriptionRequest.prototype.addEventSignatures = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 2, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.blockchain.EventSubscriptionRequest} returns this
+ */
+proto.dac.blockchain.EventSubscriptionRequest.prototype.clearEventSignaturesList = function() {
+  return this.setEventSignaturesList([]);
+};
+
+
+/**
+ * optional string network = 3;
+ * @return {string}
+ */
+proto.dac.blockchain.EventSubscriptionRequest.prototype.getNetwork = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.EventSubscriptionRequest} returns this
+ */
+proto.dac.blockchain.EventSubscriptionRequest.prototype.setNetwork = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string from_block = 4;
+ * @return {string}
+ */
+proto.dac.blockchain.EventSubscriptionRequest.prototype.getFromBlock = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.EventSubscriptionRequest} returns this
+ */
+proto.dac.blockchain.EventSubscriptionRequest.prototype.setFromBlock = function(value) {
+  return jspb.Message.setField(this, 4, value);
+};
+
+
+/**
+ * Clears the field making it undefined.
+ * @return {!proto.dac.blockchain.EventSubscriptionRequest} returns this
+ */
+proto.dac.blockchain.EventSubscriptionRequest.prototype.clearFromBlock = function() {
+  return jspb.Message.setField(this, 4, undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.blockchain.EventSubscriptionRequest.prototype.hasFromBlock = function() {
+  return jspb.Message.getField(this, 4) != null;
+};
+
+
+/**
+ * repeated string topics = 5;
+ * @return {!Array<string>}
+ */
+proto.dac.blockchain.EventSubscriptionRequest.prototype.getTopicsList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 5));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.dac.blockchain.EventSubscriptionRequest} returns this
+ */
+proto.dac.blockchain.EventSubscriptionRequest.prototype.setTopicsList = function(value) {
+  return jspb.Message.setField(this, 5, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.dac.blockchain.EventSubscriptionRequest} returns this
+ */
+proto.dac.blockchain.EventSubscriptionRequest.prototype.addTopics = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 5, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.blockchain.EventSubscriptionRequest} returns this
+ */
+proto.dac.blockchain.EventSubscriptionRequest.prototype.clearTopicsList = function() {
+  return this.setTopicsList([]);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.dac.blockchain.BlockchainEvent.repeatedFields_ = [4];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.BlockchainEvent.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.BlockchainEvent.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.BlockchainEvent} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.BlockchainEvent.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    type: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    contractAddress: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    eventName: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    parametersList: jspb.Message.toObjectList(msg.getParametersList(),
+    proto.dac.blockchain.EventParameter.toObject, includeInstance),
+    transactionHash: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    blockNumber: jspb.Message.getFieldWithDefault(msg, 6, ""),
+    timestamp: (f = msg.getTimestamp()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.BlockchainEvent}
+ */
+proto.dac.blockchain.BlockchainEvent.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.BlockchainEvent;
+  return proto.dac.blockchain.BlockchainEvent.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.BlockchainEvent} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.BlockchainEvent}
+ */
+proto.dac.blockchain.BlockchainEvent.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {!proto.dac.blockchain.EventType} */ (reader.readEnum());
+      msg.setType(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setContractAddress(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setEventName(value);
+      break;
+    case 4:
+      var value = new proto.dac.blockchain.EventParameter;
+      reader.readMessage(value,proto.dac.blockchain.EventParameter.deserializeBinaryFromReader);
+      msg.addParameters(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setTransactionHash(value);
+      break;
+    case 6:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setBlockNumber(value);
+      break;
+    case 7:
+      var value = new google_protobuf_timestamp_pb.Timestamp;
+      reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      msg.setTimestamp(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.BlockchainEvent.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.BlockchainEvent.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.BlockchainEvent} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.BlockchainEvent.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getType();
+  if (f !== 0.0) {
+    writer.writeEnum(
+      1,
+      f
+    );
+  }
+  f = message.getContractAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getEventName();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getParametersList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
+      4,
+      f,
+      proto.dac.blockchain.EventParameter.serializeBinaryToWriter
+    );
+  }
+  f = message.getTransactionHash();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
+      f
+    );
+  }
+  f = message.getBlockNumber();
+  if (f.length > 0) {
+    writer.writeString(
+      6,
+      f
+    );
+  }
+  f = message.getTimestamp();
+  if (f != null) {
+    writer.writeMessage(
+      7,
+      f,
+      google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+};
+
+
+/**
+ * optional EventType type = 1;
+ * @return {!proto.dac.blockchain.EventType}
+ */
+proto.dac.blockchain.BlockchainEvent.prototype.getType = function() {
+  return /** @type {!proto.dac.blockchain.EventType} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {!proto.dac.blockchain.EventType} value
+ * @return {!proto.dac.blockchain.BlockchainEvent} returns this
+ */
+proto.dac.blockchain.BlockchainEvent.prototype.setType = function(value) {
+  return jspb.Message.setProto3EnumField(this, 1, value);
+};
+
+
+/**
+ * optional string contract_address = 2;
+ * @return {string}
+ */
+proto.dac.blockchain.BlockchainEvent.prototype.getContractAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.BlockchainEvent} returns this
+ */
+proto.dac.blockchain.BlockchainEvent.prototype.setContractAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string event_name = 3;
+ * @return {string}
+ */
+proto.dac.blockchain.BlockchainEvent.prototype.getEventName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.BlockchainEvent} returns this
+ */
+proto.dac.blockchain.BlockchainEvent.prototype.setEventName = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * repeated EventParameter parameters = 4;
+ * @return {!Array<!proto.dac.blockchain.EventParameter>}
+ */
+proto.dac.blockchain.BlockchainEvent.prototype.getParametersList = function() {
+  return /** @type{!Array<!proto.dac.blockchain.EventParameter>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.dac.blockchain.EventParameter, 4));
+};
+
+
+/**
+ * @param {!Array<!proto.dac.blockchain.EventParameter>} value
+ * @return {!proto.dac.blockchain.BlockchainEvent} returns this
+*/
+proto.dac.blockchain.BlockchainEvent.prototype.setParametersList = function(value) {
+  return jspb.Message.setRepeatedWrapperField(this, 4, value);
+};
+
+
+/**
+ * @param {!proto.dac.blockchain.EventParameter=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.dac.blockchain.EventParameter}
+ */
+proto.dac.blockchain.BlockchainEvent.prototype.addParameters = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 4, opt_value, proto.dac.blockchain.EventParameter, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.blockchain.BlockchainEvent} returns this
+ */
+proto.dac.blockchain.BlockchainEvent.prototype.clearParametersList = function() {
+  return this.setParametersList([]);
+};
+
+
+/**
+ * optional string transaction_hash = 5;
+ * @return {string}
+ */
+proto.dac.blockchain.BlockchainEvent.prototype.getTransactionHash = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.BlockchainEvent} returns this
+ */
+proto.dac.blockchain.BlockchainEvent.prototype.setTransactionHash = function(value) {
+  return jspb.Message.setProto3StringField(this, 5, value);
+};
+
+
+/**
+ * optional string block_number = 6;
+ * @return {string}
+ */
+proto.dac.blockchain.BlockchainEvent.prototype.getBlockNumber = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.BlockchainEvent} returns this
+ */
+proto.dac.blockchain.BlockchainEvent.prototype.setBlockNumber = function(value) {
+  return jspb.Message.setProto3StringField(this, 6, value);
+};
+
+
+/**
+ * optional google.protobuf.Timestamp timestamp = 7;
+ * @return {?proto.google.protobuf.Timestamp}
+ */
+proto.dac.blockchain.BlockchainEvent.prototype.getTimestamp = function() {
+  return /** @type{?proto.google.protobuf.Timestamp} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 7));
+};
+
+
+/**
+ * @param {?proto.google.protobuf.Timestamp|undefined} value
+ * @return {!proto.dac.blockchain.BlockchainEvent} returns this
+*/
+proto.dac.blockchain.BlockchainEvent.prototype.setTimestamp = function(value) {
+  return jspb.Message.setWrapperField(this, 7, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.blockchain.BlockchainEvent} returns this
+ */
+proto.dac.blockchain.BlockchainEvent.prototype.clearTimestamp = function() {
+  return this.setTimestamp(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.blockchain.BlockchainEvent.prototype.hasTimestamp = function() {
+  return jspb.Message.getField(this, 7) != null;
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.EventParameter.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.EventParameter.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.EventParameter} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.EventParameter.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    name: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    type: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    value: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    indexed: jspb.Message.getBooleanFieldWithDefault(msg, 4, false)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.EventParameter}
+ */
+proto.dac.blockchain.EventParameter.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.EventParameter;
+  return proto.dac.blockchain.EventParameter.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.EventParameter} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.EventParameter}
+ */
+proto.dac.blockchain.EventParameter.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setName(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setType(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setValue(value);
+      break;
+    case 4:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setIndexed(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.EventParameter.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.EventParameter.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.EventParameter} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.EventParameter.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getName();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getType();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getValue();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getIndexed();
+  if (f) {
+    writer.writeBool(
+      4,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string name = 1;
+ * @return {string}
+ */
+proto.dac.blockchain.EventParameter.prototype.getName = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.EventParameter} returns this
+ */
+proto.dac.blockchain.EventParameter.prototype.setName = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string type = 2;
+ * @return {string}
+ */
+proto.dac.blockchain.EventParameter.prototype.getType = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.EventParameter} returns this
+ */
+proto.dac.blockchain.EventParameter.prototype.setType = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string value = 3;
+ * @return {string}
+ */
+proto.dac.blockchain.EventParameter.prototype.getValue = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.EventParameter} returns this
+ */
+proto.dac.blockchain.EventParameter.prototype.setValue = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional bool indexed = 4;
+ * @return {boolean}
+ */
+proto.dac.blockchain.EventParameter.prototype.getIndexed = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 4, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.blockchain.EventParameter} returns this
+ */
+proto.dac.blockchain.EventParameter.prototype.setIndexed = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 4, value);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.dac.blockchain.EventLogRequest.repeatedFields_ = [2,6];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.EventLogRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.EventLogRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.EventLogRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.EventLogRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    contractAddress: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    eventSignaturesList: (f = jspb.Message.getRepeatedField(msg, 2)) == null ? undefined : f,
+    fromBlock: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    toBlock: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    network: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    topicsList: (f = jspb.Message.getRepeatedField(msg, 6)) == null ? undefined : f
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.EventLogRequest}
+ */
+proto.dac.blockchain.EventLogRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.EventLogRequest;
+  return proto.dac.blockchain.EventLogRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.EventLogRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.EventLogRequest}
+ */
+proto.dac.blockchain.EventLogRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setContractAddress(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addEventSignatures(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setFromBlock(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setToBlock(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setNetwork(value);
+      break;
+    case 6:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addTopics(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.EventLogRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.EventLogRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.EventLogRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.EventLogRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getContractAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getEventSignaturesList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      2,
+      f
+    );
+  }
+  f = message.getFromBlock();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getToBlock();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+  f = message.getNetwork();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
+      f
+    );
+  }
+  f = message.getTopicsList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      6,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string contract_address = 1;
+ * @return {string}
+ */
+proto.dac.blockchain.EventLogRequest.prototype.getContractAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.EventLogRequest} returns this
+ */
+proto.dac.blockchain.EventLogRequest.prototype.setContractAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * repeated string event_signatures = 2;
+ * @return {!Array<string>}
+ */
+proto.dac.blockchain.EventLogRequest.prototype.getEventSignaturesList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 2));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.dac.blockchain.EventLogRequest} returns this
+ */
+proto.dac.blockchain.EventLogRequest.prototype.setEventSignaturesList = function(value) {
+  return jspb.Message.setField(this, 2, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.dac.blockchain.EventLogRequest} returns this
+ */
+proto.dac.blockchain.EventLogRequest.prototype.addEventSignatures = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 2, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.blockchain.EventLogRequest} returns this
+ */
+proto.dac.blockchain.EventLogRequest.prototype.clearEventSignaturesList = function() {
+  return this.setEventSignaturesList([]);
+};
+
+
+/**
+ * optional string from_block = 3;
+ * @return {string}
+ */
+proto.dac.blockchain.EventLogRequest.prototype.getFromBlock = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.EventLogRequest} returns this
+ */
+proto.dac.blockchain.EventLogRequest.prototype.setFromBlock = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string to_block = 4;
+ * @return {string}
+ */
+proto.dac.blockchain.EventLogRequest.prototype.getToBlock = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.EventLogRequest} returns this
+ */
+proto.dac.blockchain.EventLogRequest.prototype.setToBlock = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional string network = 5;
+ * @return {string}
+ */
+proto.dac.blockchain.EventLogRequest.prototype.getNetwork = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.EventLogRequest} returns this
+ */
+proto.dac.blockchain.EventLogRequest.prototype.setNetwork = function(value) {
+  return jspb.Message.setProto3StringField(this, 5, value);
+};
+
+
+/**
+ * repeated string topics = 6;
+ * @return {!Array<string>}
+ */
+proto.dac.blockchain.EventLogRequest.prototype.getTopicsList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 6));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.dac.blockchain.EventLogRequest} returns this
+ */
+proto.dac.blockchain.EventLogRequest.prototype.setTopicsList = function(value) {
+  return jspb.Message.setField(this, 6, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.dac.blockchain.EventLogRequest} returns this
+ */
+proto.dac.blockchain.EventLogRequest.prototype.addTopics = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 6, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.blockchain.EventLogRequest} returns this
+ */
+proto.dac.blockchain.EventLogRequest.prototype.clearTopicsList = function() {
+  return this.setTopicsList([]);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.dac.blockchain.EventLogResponse.repeatedFields_ = [1];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.EventLogResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.EventLogResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.EventLogResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.EventLogResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    logsList: jspb.Message.toObjectList(msg.getLogsList(),
+    proto.dac.blockchain.EventLog.toObject, includeInstance),
+    totalCount: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    hasMore: jspb.Message.getBooleanFieldWithDefault(msg, 3, false)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.EventLogResponse}
+ */
+proto.dac.blockchain.EventLogResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.EventLogResponse;
+  return proto.dac.blockchain.EventLogResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.EventLogResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.EventLogResponse}
+ */
+proto.dac.blockchain.EventLogResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = new proto.dac.blockchain.EventLog;
+      reader.readMessage(value,proto.dac.blockchain.EventLog.deserializeBinaryFromReader);
+      msg.addLogs(value);
+      break;
+    case 2:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setTotalCount(value);
+      break;
+    case 3:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setHasMore(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.EventLogResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.EventLogResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.EventLogResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.EventLogResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getLogsList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
+      1,
+      f,
+      proto.dac.blockchain.EventLog.serializeBinaryToWriter
+    );
+  }
+  f = message.getTotalCount();
+  if (f !== 0) {
+    writer.writeInt32(
+      2,
+      f
+    );
+  }
+  f = message.getHasMore();
+  if (f) {
+    writer.writeBool(
+      3,
+      f
+    );
+  }
+};
+
+
+/**
+ * repeated EventLog logs = 1;
+ * @return {!Array<!proto.dac.blockchain.EventLog>}
+ */
+proto.dac.blockchain.EventLogResponse.prototype.getLogsList = function() {
+  return /** @type{!Array<!proto.dac.blockchain.EventLog>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.dac.blockchain.EventLog, 1));
+};
+
+
+/**
+ * @param {!Array<!proto.dac.blockchain.EventLog>} value
+ * @return {!proto.dac.blockchain.EventLogResponse} returns this
+*/
+proto.dac.blockchain.EventLogResponse.prototype.setLogsList = function(value) {
+  return jspb.Message.setRepeatedWrapperField(this, 1, value);
+};
+
+
+/**
+ * @param {!proto.dac.blockchain.EventLog=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.dac.blockchain.EventLog}
+ */
+proto.dac.blockchain.EventLogResponse.prototype.addLogs = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 1, opt_value, proto.dac.blockchain.EventLog, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.blockchain.EventLogResponse} returns this
+ */
+proto.dac.blockchain.EventLogResponse.prototype.clearLogsList = function() {
+  return this.setLogsList([]);
+};
+
+
+/**
+ * optional int32 total_count = 2;
+ * @return {number}
+ */
+proto.dac.blockchain.EventLogResponse.prototype.getTotalCount = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.blockchain.EventLogResponse} returns this
+ */
+proto.dac.blockchain.EventLogResponse.prototype.setTotalCount = function(value) {
+  return jspb.Message.setProto3IntField(this, 2, value);
+};
+
+
+/**
+ * optional bool has_more = 3;
+ * @return {boolean}
+ */
+proto.dac.blockchain.EventLogResponse.prototype.getHasMore = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 3, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.blockchain.EventLogResponse} returns this
+ */
+proto.dac.blockchain.EventLogResponse.prototype.setHasMore = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 3, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.PrometheaDeploymentRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.PrometheaDeploymentRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.PrometheaDeploymentRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.PrometheaDeploymentRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    network: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    deployerAddress: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    config: (f = msg.getConfig()) && proto.dac.blockchain.PrometheaConfig.toObject(includeInstance, f),
+    gasSettings: (f = msg.getGasSettings()) && proto.dac.blockchain.GasSettings.toObject(includeInstance, f)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.PrometheaDeploymentRequest}
+ */
+proto.dac.blockchain.PrometheaDeploymentRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.PrometheaDeploymentRequest;
+  return proto.dac.blockchain.PrometheaDeploymentRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.PrometheaDeploymentRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.PrometheaDeploymentRequest}
+ */
+proto.dac.blockchain.PrometheaDeploymentRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setNetwork(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setDeployerAddress(value);
+      break;
+    case 3:
+      var value = new proto.dac.blockchain.PrometheaConfig;
+      reader.readMessage(value,proto.dac.blockchain.PrometheaConfig.deserializeBinaryFromReader);
+      msg.setConfig(value);
+      break;
+    case 4:
+      var value = new proto.dac.blockchain.GasSettings;
+      reader.readMessage(value,proto.dac.blockchain.GasSettings.deserializeBinaryFromReader);
+      msg.setGasSettings(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.PrometheaDeploymentRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.PrometheaDeploymentRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.PrometheaDeploymentRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.PrometheaDeploymentRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getNetwork();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getDeployerAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getConfig();
+  if (f != null) {
+    writer.writeMessage(
+      3,
+      f,
+      proto.dac.blockchain.PrometheaConfig.serializeBinaryToWriter
+    );
+  }
+  f = message.getGasSettings();
+  if (f != null) {
+    writer.writeMessage(
+      4,
+      f,
+      proto.dac.blockchain.GasSettings.serializeBinaryToWriter
+    );
+  }
+};
+
+
+/**
+ * optional string network = 1;
+ * @return {string}
+ */
+proto.dac.blockchain.PrometheaDeploymentRequest.prototype.getNetwork = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.PrometheaDeploymentRequest} returns this
+ */
+proto.dac.blockchain.PrometheaDeploymentRequest.prototype.setNetwork = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string deployer_address = 2;
+ * @return {string}
+ */
+proto.dac.blockchain.PrometheaDeploymentRequest.prototype.getDeployerAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.PrometheaDeploymentRequest} returns this
+ */
+proto.dac.blockchain.PrometheaDeploymentRequest.prototype.setDeployerAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional PrometheaConfig config = 3;
+ * @return {?proto.dac.blockchain.PrometheaConfig}
+ */
+proto.dac.blockchain.PrometheaDeploymentRequest.prototype.getConfig = function() {
+  return /** @type{?proto.dac.blockchain.PrometheaConfig} */ (
+    jspb.Message.getWrapperField(this, proto.dac.blockchain.PrometheaConfig, 3));
+};
+
+
+/**
+ * @param {?proto.dac.blockchain.PrometheaConfig|undefined} value
+ * @return {!proto.dac.blockchain.PrometheaDeploymentRequest} returns this
+*/
+proto.dac.blockchain.PrometheaDeploymentRequest.prototype.setConfig = function(value) {
+  return jspb.Message.setWrapperField(this, 3, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.blockchain.PrometheaDeploymentRequest} returns this
+ */
+proto.dac.blockchain.PrometheaDeploymentRequest.prototype.clearConfig = function() {
+  return this.setConfig(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.blockchain.PrometheaDeploymentRequest.prototype.hasConfig = function() {
+  return jspb.Message.getField(this, 3) != null;
+};
+
+
+/**
+ * optional GasSettings gas_settings = 4;
+ * @return {?proto.dac.blockchain.GasSettings}
+ */
+proto.dac.blockchain.PrometheaDeploymentRequest.prototype.getGasSettings = function() {
+  return /** @type{?proto.dac.blockchain.GasSettings} */ (
+    jspb.Message.getWrapperField(this, proto.dac.blockchain.GasSettings, 4));
+};
+
+
+/**
+ * @param {?proto.dac.blockchain.GasSettings|undefined} value
+ * @return {!proto.dac.blockchain.PrometheaDeploymentRequest} returns this
+*/
+proto.dac.blockchain.PrometheaDeploymentRequest.prototype.setGasSettings = function(value) {
+  return jspb.Message.setWrapperField(this, 4, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.blockchain.PrometheaDeploymentRequest} returns this
+ */
+proto.dac.blockchain.PrometheaDeploymentRequest.prototype.clearGasSettings = function() {
+  return this.setGasSettings(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.blockchain.PrometheaDeploymentRequest.prototype.hasGasSettings = function() {
+  return jspb.Message.getField(this, 4) != null;
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.dac.blockchain.PrometheaConfig.repeatedFields_ = [4];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.PrometheaConfig.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.PrometheaConfig.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.PrometheaConfig} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.PrometheaConfig.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    dacTreasuryAddress: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    communityRewardsAddress: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    depthOsIncentivesAddress: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    founderAddressesList: (f = jspb.Message.getRepeatedField(msg, 4)) == null ? undefined : f,
+    initialEthicalCodeHash: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    initialEthicalCodeIpfs: jspb.Message.getFieldWithDefault(msg, 6, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.PrometheaConfig}
+ */
+proto.dac.blockchain.PrometheaConfig.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.PrometheaConfig;
+  return proto.dac.blockchain.PrometheaConfig.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.PrometheaConfig} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.PrometheaConfig}
+ */
+proto.dac.blockchain.PrometheaConfig.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setDacTreasuryAddress(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setCommunityRewardsAddress(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setDepthOsIncentivesAddress(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addFounderAddresses(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setInitialEthicalCodeHash(value);
+      break;
+    case 6:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setInitialEthicalCodeIpfs(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.PrometheaConfig.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.PrometheaConfig.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.PrometheaConfig} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.PrometheaConfig.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getDacTreasuryAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getCommunityRewardsAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getDepthOsIncentivesAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getFounderAddressesList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      4,
+      f
+    );
+  }
+  f = message.getInitialEthicalCodeHash();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
+      f
+    );
+  }
+  f = message.getInitialEthicalCodeIpfs();
+  if (f.length > 0) {
+    writer.writeString(
+      6,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string dac_treasury_address = 1;
+ * @return {string}
+ */
+proto.dac.blockchain.PrometheaConfig.prototype.getDacTreasuryAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.PrometheaConfig} returns this
+ */
+proto.dac.blockchain.PrometheaConfig.prototype.setDacTreasuryAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string community_rewards_address = 2;
+ * @return {string}
+ */
+proto.dac.blockchain.PrometheaConfig.prototype.getCommunityRewardsAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.PrometheaConfig} returns this
+ */
+proto.dac.blockchain.PrometheaConfig.prototype.setCommunityRewardsAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string depth_os_incentives_address = 3;
+ * @return {string}
+ */
+proto.dac.blockchain.PrometheaConfig.prototype.getDepthOsIncentivesAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.PrometheaConfig} returns this
+ */
+proto.dac.blockchain.PrometheaConfig.prototype.setDepthOsIncentivesAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * repeated string founder_addresses = 4;
+ * @return {!Array<string>}
+ */
+proto.dac.blockchain.PrometheaConfig.prototype.getFounderAddressesList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 4));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.dac.blockchain.PrometheaConfig} returns this
+ */
+proto.dac.blockchain.PrometheaConfig.prototype.setFounderAddressesList = function(value) {
+  return jspb.Message.setField(this, 4, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.dac.blockchain.PrometheaConfig} returns this
+ */
+proto.dac.blockchain.PrometheaConfig.prototype.addFounderAddresses = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 4, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.blockchain.PrometheaConfig} returns this
+ */
+proto.dac.blockchain.PrometheaConfig.prototype.clearFounderAddressesList = function() {
+  return this.setFounderAddressesList([]);
+};
+
+
+/**
+ * optional string initial_ethical_code_hash = 5;
+ * @return {string}
+ */
+proto.dac.blockchain.PrometheaConfig.prototype.getInitialEthicalCodeHash = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.PrometheaConfig} returns this
+ */
+proto.dac.blockchain.PrometheaConfig.prototype.setInitialEthicalCodeHash = function(value) {
+  return jspb.Message.setProto3StringField(this, 5, value);
+};
+
+
+/**
+ * optional string initial_ethical_code_ipfs = 6;
+ * @return {string}
+ */
+proto.dac.blockchain.PrometheaConfig.prototype.getInitialEthicalCodeIpfs = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.PrometheaConfig} returns this
+ */
+proto.dac.blockchain.PrometheaConfig.prototype.setInitialEthicalCodeIpfs = function(value) {
+  return jspb.Message.setProto3StringField(this, 6, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.BeaconAddressResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.BeaconAddressResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.BeaconAddressResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.BeaconAddressResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    beaconAddress: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    network: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    isActive: jspb.Message.getBooleanFieldWithDefault(msg, 3, false),
+    deployedAt: (f = msg.getDeployedAt()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.BeaconAddressResponse}
+ */
+proto.dac.blockchain.BeaconAddressResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.BeaconAddressResponse;
+  return proto.dac.blockchain.BeaconAddressResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.BeaconAddressResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.BeaconAddressResponse}
+ */
+proto.dac.blockchain.BeaconAddressResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setBeaconAddress(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setNetwork(value);
+      break;
+    case 3:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setIsActive(value);
+      break;
+    case 4:
+      var value = new google_protobuf_timestamp_pb.Timestamp;
+      reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      msg.setDeployedAt(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.BeaconAddressResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.BeaconAddressResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.BeaconAddressResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.BeaconAddressResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getBeaconAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getNetwork();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getIsActive();
+  if (f) {
+    writer.writeBool(
+      3,
+      f
+    );
+  }
+  f = message.getDeployedAt();
+  if (f != null) {
+    writer.writeMessage(
+      4,
+      f,
+      google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+};
+
+
+/**
+ * optional string beacon_address = 1;
+ * @return {string}
+ */
+proto.dac.blockchain.BeaconAddressResponse.prototype.getBeaconAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.BeaconAddressResponse} returns this
+ */
+proto.dac.blockchain.BeaconAddressResponse.prototype.setBeaconAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string network = 2;
+ * @return {string}
+ */
+proto.dac.blockchain.BeaconAddressResponse.prototype.getNetwork = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.BeaconAddressResponse} returns this
+ */
+proto.dac.blockchain.BeaconAddressResponse.prototype.setNetwork = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional bool is_active = 3;
+ * @return {boolean}
+ */
+proto.dac.blockchain.BeaconAddressResponse.prototype.getIsActive = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 3, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.blockchain.BeaconAddressResponse} returns this
+ */
+proto.dac.blockchain.BeaconAddressResponse.prototype.setIsActive = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 3, value);
+};
+
+
+/**
+ * optional google.protobuf.Timestamp deployed_at = 4;
+ * @return {?proto.google.protobuf.Timestamp}
+ */
+proto.dac.blockchain.BeaconAddressResponse.prototype.getDeployedAt = function() {
+  return /** @type{?proto.google.protobuf.Timestamp} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 4));
+};
+
+
+/**
+ * @param {?proto.google.protobuf.Timestamp|undefined} value
+ * @return {!proto.dac.blockchain.BeaconAddressResponse} returns this
+*/
+proto.dac.blockchain.BeaconAddressResponse.prototype.setDeployedAt = function(value) {
+  return jspb.Message.setWrapperField(this, 4, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.dac.blockchain.BeaconAddressResponse} returns this
+ */
+proto.dac.blockchain.BeaconAddressResponse.prototype.clearDeployedAt = function() {
+  return this.setDeployedAt(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.dac.blockchain.BeaconAddressResponse.prototype.hasDeployedAt = function() {
+  return jspb.Message.getField(this, 4) != null;
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.dac.blockchain.EthicalValidationRequest.repeatedFields_ = [3];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.EthicalValidationRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.EthicalValidationRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.EthicalValidationRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.EthicalValidationRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    actionDescription: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    requesterAddress: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    stakeholdersList: (f = jspb.Message.getRepeatedField(msg, 3)) == null ? undefined : f,
+    impactAssessment: jspb.Message.getFieldWithDefault(msg, 4, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.EthicalValidationRequest}
+ */
+proto.dac.blockchain.EthicalValidationRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.EthicalValidationRequest;
+  return proto.dac.blockchain.EthicalValidationRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.EthicalValidationRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.EthicalValidationRequest}
+ */
+proto.dac.blockchain.EthicalValidationRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setActionDescription(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setRequesterAddress(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addStakeholders(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setImpactAssessment(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.EthicalValidationRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.EthicalValidationRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.EthicalValidationRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.EthicalValidationRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getActionDescription();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getRequesterAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getStakeholdersList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      3,
+      f
+    );
+  }
+  f = message.getImpactAssessment();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string action_description = 1;
+ * @return {string}
+ */
+proto.dac.blockchain.EthicalValidationRequest.prototype.getActionDescription = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.EthicalValidationRequest} returns this
+ */
+proto.dac.blockchain.EthicalValidationRequest.prototype.setActionDescription = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string requester_address = 2;
+ * @return {string}
+ */
+proto.dac.blockchain.EthicalValidationRequest.prototype.getRequesterAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.EthicalValidationRequest} returns this
+ */
+proto.dac.blockchain.EthicalValidationRequest.prototype.setRequesterAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * repeated string stakeholders = 3;
+ * @return {!Array<string>}
+ */
+proto.dac.blockchain.EthicalValidationRequest.prototype.getStakeholdersList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 3));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.dac.blockchain.EthicalValidationRequest} returns this
+ */
+proto.dac.blockchain.EthicalValidationRequest.prototype.setStakeholdersList = function(value) {
+  return jspb.Message.setField(this, 3, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.dac.blockchain.EthicalValidationRequest} returns this
+ */
+proto.dac.blockchain.EthicalValidationRequest.prototype.addStakeholders = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 3, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.blockchain.EthicalValidationRequest} returns this
+ */
+proto.dac.blockchain.EthicalValidationRequest.prototype.clearStakeholdersList = function() {
+  return this.setStakeholdersList([]);
+};
+
+
+/**
+ * optional string impact_assessment = 4;
+ * @return {string}
+ */
+proto.dac.blockchain.EthicalValidationRequest.prototype.getImpactAssessment = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.EthicalValidationRequest} returns this
+ */
+proto.dac.blockchain.EthicalValidationRequest.prototype.setImpactAssessment = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.dac.blockchain.EthicalValidationResponse.repeatedFields_ = [3,4];
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.EthicalValidationResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.EthicalValidationResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.EthicalValidationResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.EthicalValidationResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    isAligned: jspb.Message.getBooleanFieldWithDefault(msg, 1, false),
+    alignmentScore: jspb.Message.getFloatingPointFieldWithDefault(msg, 2, 0.0),
+    ethicalConsiderationsList: (f = jspb.Message.getRepeatedField(msg, 3)) == null ? undefined : f,
+    recommendationsList: (f = jspb.Message.getRepeatedField(msg, 4)) == null ? undefined : f,
+    validationHash: jspb.Message.getFieldWithDefault(msg, 5, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.EthicalValidationResponse}
+ */
+proto.dac.blockchain.EthicalValidationResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.EthicalValidationResponse;
+  return proto.dac.blockchain.EthicalValidationResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.EthicalValidationResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.EthicalValidationResponse}
+ */
+proto.dac.blockchain.EthicalValidationResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setIsAligned(value);
+      break;
+    case 2:
+      var value = /** @type {number} */ (reader.readDouble());
+      msg.setAlignmentScore(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addEthicalConsiderations(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.addRecommendations(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setValidationHash(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.EthicalValidationResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.EthicalValidationResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.EthicalValidationResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.EthicalValidationResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getIsAligned();
+  if (f) {
+    writer.writeBool(
+      1,
+      f
+    );
+  }
+  f = message.getAlignmentScore();
+  if (f !== 0.0) {
+    writer.writeDouble(
+      2,
+      f
+    );
+  }
+  f = message.getEthicalConsiderationsList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      3,
+      f
+    );
+  }
+  f = message.getRecommendationsList();
+  if (f.length > 0) {
+    writer.writeRepeatedString(
+      4,
+      f
+    );
+  }
+  f = message.getValidationHash();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional bool is_aligned = 1;
+ * @return {boolean}
+ */
+proto.dac.blockchain.EthicalValidationResponse.prototype.getIsAligned = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 1, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.blockchain.EthicalValidationResponse} returns this
+ */
+proto.dac.blockchain.EthicalValidationResponse.prototype.setIsAligned = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 1, value);
+};
+
+
+/**
+ * optional double alignment_score = 2;
+ * @return {number}
+ */
+proto.dac.blockchain.EthicalValidationResponse.prototype.getAlignmentScore = function() {
+  return /** @type {number} */ (jspb.Message.getFloatingPointFieldWithDefault(this, 2, 0.0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.dac.blockchain.EthicalValidationResponse} returns this
+ */
+proto.dac.blockchain.EthicalValidationResponse.prototype.setAlignmentScore = function(value) {
+  return jspb.Message.setProto3FloatField(this, 2, value);
+};
+
+
+/**
+ * repeated string ethical_considerations = 3;
+ * @return {!Array<string>}
+ */
+proto.dac.blockchain.EthicalValidationResponse.prototype.getEthicalConsiderationsList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 3));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.dac.blockchain.EthicalValidationResponse} returns this
+ */
+proto.dac.blockchain.EthicalValidationResponse.prototype.setEthicalConsiderationsList = function(value) {
+  return jspb.Message.setField(this, 3, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.dac.blockchain.EthicalValidationResponse} returns this
+ */
+proto.dac.blockchain.EthicalValidationResponse.prototype.addEthicalConsiderations = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 3, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.blockchain.EthicalValidationResponse} returns this
+ */
+proto.dac.blockchain.EthicalValidationResponse.prototype.clearEthicalConsiderationsList = function() {
+  return this.setEthicalConsiderationsList([]);
+};
+
+
+/**
+ * repeated string recommendations = 4;
+ * @return {!Array<string>}
+ */
+proto.dac.blockchain.EthicalValidationResponse.prototype.getRecommendationsList = function() {
+  return /** @type {!Array<string>} */ (jspb.Message.getRepeatedField(this, 4));
+};
+
+
+/**
+ * @param {!Array<string>} value
+ * @return {!proto.dac.blockchain.EthicalValidationResponse} returns this
+ */
+proto.dac.blockchain.EthicalValidationResponse.prototype.setRecommendationsList = function(value) {
+  return jspb.Message.setField(this, 4, value || []);
+};
+
+
+/**
+ * @param {string} value
+ * @param {number=} opt_index
+ * @return {!proto.dac.blockchain.EthicalValidationResponse} returns this
+ */
+proto.dac.blockchain.EthicalValidationResponse.prototype.addRecommendations = function(value, opt_index) {
+  return jspb.Message.addToRepeatedField(this, 4, value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ * @return {!proto.dac.blockchain.EthicalValidationResponse} returns this
+ */
+proto.dac.blockchain.EthicalValidationResponse.prototype.clearRecommendationsList = function() {
+  return this.setRecommendationsList([]);
+};
+
+
+/**
+ * optional string validation_hash = 5;
+ * @return {string}
+ */
+proto.dac.blockchain.EthicalValidationResponse.prototype.getValidationHash = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.EthicalValidationResponse} returns this
+ */
+proto.dac.blockchain.EthicalValidationResponse.prototype.setValidationHash = function(value) {
+  return jspb.Message.setProto3StringField(this, 5, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.MemberRegistrationRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.MemberRegistrationRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.MemberRegistrationRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.MemberRegistrationRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    walletAddress: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    identityCommitment: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    tier: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    reputationProof: jspb.Message.getFieldWithDefault(msg, 4, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.MemberRegistrationRequest}
+ */
+proto.dac.blockchain.MemberRegistrationRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.MemberRegistrationRequest;
+  return proto.dac.blockchain.MemberRegistrationRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.MemberRegistrationRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.MemberRegistrationRequest}
+ */
+proto.dac.blockchain.MemberRegistrationRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setWalletAddress(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setIdentityCommitment(value);
+      break;
+    case 3:
+      var value = /** @type {!proto.dac.blockchain.MembershipTier} */ (reader.readEnum());
+      msg.setTier(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setReputationProof(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.MemberRegistrationRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.MemberRegistrationRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.MemberRegistrationRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.MemberRegistrationRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getWalletAddress();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getIdentityCommitment();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getTier();
+  if (f !== 0.0) {
+    writer.writeEnum(
+      3,
+      f
+    );
+  }
+  f = message.getReputationProof();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional string wallet_address = 1;
+ * @return {string}
+ */
+proto.dac.blockchain.MemberRegistrationRequest.prototype.getWalletAddress = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.MemberRegistrationRequest} returns this
+ */
+proto.dac.blockchain.MemberRegistrationRequest.prototype.setWalletAddress = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string identity_commitment = 2;
+ * @return {string}
+ */
+proto.dac.blockchain.MemberRegistrationRequest.prototype.getIdentityCommitment = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.MemberRegistrationRequest} returns this
+ */
+proto.dac.blockchain.MemberRegistrationRequest.prototype.setIdentityCommitment = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional MembershipTier tier = 3;
+ * @return {!proto.dac.blockchain.MembershipTier}
+ */
+proto.dac.blockchain.MemberRegistrationRequest.prototype.getTier = function() {
+  return /** @type {!proto.dac.blockchain.MembershipTier} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+};
+
+
+/**
+ * @param {!proto.dac.blockchain.MembershipTier} value
+ * @return {!proto.dac.blockchain.MemberRegistrationRequest} returns this
+ */
+proto.dac.blockchain.MemberRegistrationRequest.prototype.setTier = function(value) {
+  return jspb.Message.setProto3EnumField(this, 3, value);
+};
+
+
+/**
+ * optional string reputation_proof = 4;
+ * @return {string}
+ */
+proto.dac.blockchain.MemberRegistrationRequest.prototype.getReputationProof = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.MemberRegistrationRequest} returns this
+ */
+proto.dac.blockchain.MemberRegistrationRequest.prototype.setReputationProof = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * Optional fields that are not set will be set to undefined.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     net/proto2/compiler/js/internal/generator.cc#kKeyword.
+ * @param {boolean=} opt_includeInstance Deprecated. whether to include the
+ *     JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.dac.blockchain.RegistrationResponse.prototype.toObject = function(opt_includeInstance) {
+  return proto.dac.blockchain.RegistrationResponse.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Deprecated. Whether to include
+ *     the JSPB instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.dac.blockchain.RegistrationResponse} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.RegistrationResponse.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    success: jspb.Message.getBooleanFieldWithDefault(msg, 1, false),
+    memberId: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    registrationHash: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    assignedTier: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    initialReputation: jspb.Message.getFieldWithDefault(msg, 5, "")
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.dac.blockchain.RegistrationResponse}
+ */
+proto.dac.blockchain.RegistrationResponse.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.dac.blockchain.RegistrationResponse;
+  return proto.dac.blockchain.RegistrationResponse.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.dac.blockchain.RegistrationResponse} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.dac.blockchain.RegistrationResponse}
+ */
+proto.dac.blockchain.RegistrationResponse.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setSuccess(value);
+      break;
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setMemberId(value);
+      break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setRegistrationHash(value);
+      break;
+    case 4:
+      var value = /** @type {!proto.dac.blockchain.MembershipTier} */ (reader.readEnum());
+      msg.setAssignedTier(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setInitialReputation(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.dac.blockchain.RegistrationResponse.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.dac.blockchain.RegistrationResponse.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.dac.blockchain.RegistrationResponse} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.dac.blockchain.RegistrationResponse.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getSuccess();
+  if (f) {
+    writer.writeBool(
+      1,
+      f
+    );
+  }
+  f = message.getMemberId();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
+  f = message.getRegistrationHash();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getAssignedTier();
+  if (f !== 0.0) {
+    writer.writeEnum(
+      4,
+      f
+    );
+  }
+  f = message.getInitialReputation();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional bool success = 1;
+ * @return {boolean}
+ */
+proto.dac.blockchain.RegistrationResponse.prototype.getSuccess = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 1, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.dac.blockchain.RegistrationResponse} returns this
+ */
+proto.dac.blockchain.RegistrationResponse.prototype.setSuccess = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 1, value);
+};
+
+
+/**
+ * optional string member_id = 2;
+ * @return {string}
+ */
+proto.dac.blockchain.RegistrationResponse.prototype.getMemberId = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.RegistrationResponse} returns this
+ */
+proto.dac.blockchain.RegistrationResponse.prototype.setMemberId = function(value) {
+  return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional string registration_hash = 3;
+ * @return {string}
+ */
+proto.dac.blockchain.RegistrationResponse.prototype.getRegistrationHash = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.RegistrationResponse} returns this
+ */
+proto.dac.blockchain.RegistrationResponse.prototype.setRegistrationHash = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional MembershipTier assigned_tier = 4;
+ * @return {!proto.dac.blockchain.MembershipTier}
+ */
+proto.dac.blockchain.RegistrationResponse.prototype.getAssignedTier = function() {
+  return /** @type {!proto.dac.blockchain.MembershipTier} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+};
+
+
+/**
+ * @param {!proto.dac.blockchain.MembershipTier} value
+ * @return {!proto.dac.blockchain.RegistrationResponse} returns this
+ */
+proto.dac.blockchain.RegistrationResponse.prototype.setAssignedTier = function(value) {
+  return jspb.Message.setProto3EnumField(this, 4, value);
+};
+
+
+/**
+ * optional string initial_reputation = 5;
+ * @return {string}
+ */
+proto.dac.blockchain.RegistrationResponse.prototype.getInitialReputation = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.dac.blockchain.RegistrationResponse} returns this
+ */
+proto.dac.blockchain.RegistrationResponse.prototype.setInitialReputation = function(value) {
+  return jspb.Message.setProto3StringField(this, 5, value);
+};
+
+
+/**
+ * @enum {number}
+ */
+proto.dac.blockchain.DeploymentStatus = {
+  DEPLOYMENT_STATUS_UNSPECIFIED: 0,
+  DEPLOYMENT_STATUS_PENDING: 1,
+  DEPLOYMENT_STATUS_COMPILING: 2,
+  DEPLOYMENT_STATUS_DEPLOYING: 3,
+  DEPLOYMENT_STATUS_VERIFYING: 4,
+  DEPLOYMENT_STATUS_COMPLETED: 5,
+  DEPLOYMENT_STATUS_FAILED: 6
+};
+
+/**
+ * @enum {number}
+ */
+proto.dac.blockchain.TransactionEventType = {
+  TRANSACTION_EVENT_TYPE_UNSPECIFIED: 0,
+  TRANSACTION_EVENT_TYPE_PENDING: 1,
+  TRANSACTION_EVENT_TYPE_CONFIRMED: 2,
+  TRANSACTION_EVENT_TYPE_FAILED: 3,
+  TRANSACTION_EVENT_TYPE_REPLACED: 4
+};
+
+/**
+ * @enum {number}
+ */
+proto.dac.blockchain.TransactionType = {
+  TRANSACTION_TYPE_UNSPECIFIED: 0,
+  TRANSACTION_TYPE_TRANSFER: 1,
+  TRANSACTION_TYPE_CONTRACT_CALL: 2,
+  TRANSACTION_TYPE_CONTRACT_DEPLOYMENT: 3,
+  TRANSACTION_TYPE_TOKEN_TRANSFER: 4,
+  TRANSACTION_TYPE_NFT_TRANSFER: 5
+};
+
+/**
+ * @enum {number}
+ */
+proto.dac.blockchain.EventType = {
+  EVENT_TYPE_UNSPECIFIED: 0,
+  EVENT_TYPE_CONTRACT_EVENT: 1,
+  EVENT_TYPE_TRANSFER: 2,
+  EVENT_TYPE_APPROVAL: 3,
+  EVENT_TYPE_GOVERNANCE: 4,
+  EVENT_TYPE_CUSTOM: 5
+};
+
+/**
+ * @enum {number}
+ */
+proto.dac.blockchain.MembershipTier = {
+  MEMBERSHIP_TIER_UNSPECIFIED: 0,
+  MEMBERSHIP_TIER_FREE: 1,
+  MEMBERSHIP_TIER_BASIC: 2,
+  MEMBERSHIP_TIER_PREMIUM: 3,
+  MEMBERSHIP_TIER_ENTERPRISE: 4
+};
+
+goog.object.extend(exports, proto.dac.blockchain);
