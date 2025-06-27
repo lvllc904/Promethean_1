@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "grpc:generate": "node scripts/grpc-codegen.js",
+    "grpc:server": "tsx server/index-grpc.ts",
+    "grpc:dev": "npm run grpc:generate && npm run grpc:server",
+    "dev:full": "npm run grpc:generate && concurrently \"npm run dev\" \"npm run grpc:server\"",
+    "build:grpc": "npm run grpc:generate && npm run build",
+    "test:grpc": "vitest run --config vitest.grpc.config.ts"
+  }
+}
